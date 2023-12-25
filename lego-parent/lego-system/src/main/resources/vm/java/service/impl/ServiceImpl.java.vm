@@ -1,0 +1,64 @@
+package ${PackageName}.service.impl;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.lego.core.data.hibernate.impl.BusiService;
+import com.lego.core.dto.LegoPage;
+import com.lego.core.vo.GenericSearchVO;
+import ${PackageName}.action.Add${ClassName}Action;
+import ${PackageName}.action.Delete${ClassName}Action;
+import ${PackageName}.action.Modify${ClassName}Action;
+import ${PackageName}.assembler.${ClassName}Assembler;
+import ${PackageName}.dao.I${ClassName}Dao;
+import ${PackageName}.dto.${ClassName}Info;
+import ${PackageName}.entity.${ClassName};
+import ${PackageName}.service.I${ClassName}Service;
+import ${PackageName}.vo.${ClassName}CreateVO;
+import ${PackageName}.vo.${ClassName}ModifyVO;
+
+@Service
+public class ${ClassName}Service extends BusiService<I${ClassName}Dao, ${ClassName}Assembler> implements I${ClassName}Service {
+
+    @Override
+    public LegoPage<${ClassName}Info> findPageBy(GenericSearchVO vo) {
+        LegoPage<${ClassName}> ${FieldName}s = dao.findPageBy(buildCondition(vo));
+        return assembler.create(${FieldName}s);
+    }
+
+    @Override
+    public ${ClassName}Info findBy(String code) {
+        ${ClassName} ${FieldName} = dao.findByCode(code);
+        return assembler.create(${FieldName});
+    }
+
+    @Override
+    public List<${ClassName}Info> findBy(GenericSearchVO vo) {
+        List<${ClassName}> ${FieldName}s = dao.findBy(buildCondition(vo));
+        return assembler.create(${FieldName}s);
+    }
+
+    @Override
+    public List<${ClassName}Info> findBy(List<String> codes) {
+        List<${ClassName}> ${FieldName}s = dao.findByCodes(codes);
+        return assembler.create(${FieldName}s);
+    }
+
+    @Override
+    public void update(String operatorCode, ${ClassName}ModifyVO vo) {
+        new Modify${ClassName}Action(operatorCode, vo).run();
+    }
+
+    @Override
+    public void add(String operatorCode, ${ClassName}CreateVO vo) {
+        new Add${ClassName}Action(operatorCode, vo).run();
+    }
+
+    @Override
+    public void delete(String operatorCode, List<String> codes) {
+        for (String code : codes) {
+            new Delete${ClassName}Action(operatorCode, code).run();
+        }
+    }
+}

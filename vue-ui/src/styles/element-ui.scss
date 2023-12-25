@@ -1,0 +1,127 @@
+ //to reset element-ui default css
+ // .el-upload {
+ //   input[type="file"] {
+ //     display: none !important;
+ //   }
+ // }
+
+ // .el-upload__input {
+ //   display: none;
+ // }
+
+ // //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
+ // .el-dialog {
+ //   transform: none;
+ //   left: 0;
+ //   position: relative;
+ //   margin: 0 auto;
+ // }
+
+ // //element ui upload
+ // .upload-container {
+ //   .el-upload {
+ //     width: 100%;
+ //     .el-upload-dragger {
+ //       width: 100%;
+ //       height: 200px;
+ //     }
+ //   }
+ // }
+
+ // /** checkbox 更改 */
+ // .el-checkbox__label {
+ //   font-size: 13px;
+ //   color: #333333;
+ // }
+
+ // .el-checkbox__input.is-checked+.el-checkbox__label {
+ //   color: #333333;
+ // }
+
+ .el-input .el-input__inner {
+   padding: 0 8px;
+ }
+
+ .el-textarea .el-textarea__inner {
+   padding: 5px 8px;
+ }
+
+ .el-radio .el-radio__label {
+   padding-left: 8px;
+ }
+
+ .el-checkbox .el-checkbox__label {
+   padding-left: 8px;
+ }
+
+ // 参考 https://blog.csdn.net/HZKang/article/details/90447373
+// body .el-table th.gutter {
+//   display: table-cell !important;
+// }
+
+// body .el-table colgroup.gutter {
+//   display: table-cell !important;
+// }
+
+table {
+  width: 100% !important;
+}
+
+ // 弹窗样式
+ .el-dialog__footer {
+   padding: 10px !important;
+   background-color: #F7F8FA;
+   border-top: 1px solid $xr-border-line-color;
+ }
+
+ .el-dialog__close {
+   font-weight: 600 !important;
+   font-size: 18px !important;
+ }
+
+ .el-dialog__title {
+   font-weight: 600 !important;
+ }
+
+ // 消息框
+ .el-message-box__title {
+   font-weight: 600 !important;
+ }
+
+ .el-message-box__close {
+   font-weight: 600 !important;
+   font-size: 18px !important;
+ }
+
+ .el-message-box {
+   padding: 0 !important;
+ }
+
+ .el-message-box__btns {
+   padding: 8px 15px !important;
+   background-color: #F7F8FA;
+   border-top: 1px solid $xr-border-line-color;
+ }
+
+ .el-message-box__content {
+   padding-bottom: 20px !important;
+ }
+
+ .el-checkbox .el-checkbox__label,
+ .el-checkbox__input.is-checked + .el-checkbox__label,
+ .el-radio__input.is-checked + .el-radio__label,
+ .el-radio .el-radio__label {
+  color: #333 !important;
+ }
+ .el-upload-list__item {
+  transition: none !important;
+}
+
+.el-submenu-more {
+  .el-menu {
+    padding: 15px 0;
+  }
+  .el-menu-item + .el-menu-item {
+    margin-top: 10px;
+  }
+}

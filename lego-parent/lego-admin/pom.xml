@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.lego</groupId>
+		<artifactId>lego-parent</artifactId>
+		<version>1.0.0</version>
+	</parent>
+	<artifactId>lego-admin</artifactId>
+	<name>lego-admin</name>
+
+	<dependencies>
+	    <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		    <optional>true</optional>
+		</dependency>
+    	<dependency>
+    		<groupId>com.lego</groupId>
+    		<artifactId>lego-system</artifactId>
+    		<version>1.0.0</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lego</groupId>
+    		<artifactId>lego-pay</artifactId>
+    		<version>1.0.0</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.lego</groupId>
+    		<artifactId>lego-crm</artifactId>
+    		<version>1.0.0</version>
+    	</dependency>
+    	
+        <!-- sql driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+	</dependencies>
+	
+	<build>
+		<finalName>lego-admin</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>${start-class}</mainClass>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

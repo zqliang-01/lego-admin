@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lego.sharding.mapper.ShardingTableRuleConfigMapper">
+
+    <select id="selectValidBy" resultType="com.lego.sharding.dto.config.ShardingMetaTableRuleConfigInfo">
+		SELECT
+			t.LOGIC_TABLE_NAME logicTableName,
+			t.ACTUAL_DATA_NODES actualDataNodes,
+		    t.SHARDING_COLUMN shardingColumn,
+		    al.CODE algorithmCode,
+		    tmp.CODE templateCode
+		FROM sharding_table t
+		JOIN sharding_template tmp ON tmp.ID = t.TEMPLATE_ID
+		JOIN sharding_algorithms al ON al.id = t.ALGORITHM_ID
+		WHERE t.ENABLE = 1
+		    AND t.CONFIG_ID = #{configId}
+	</select>
+</mapper>

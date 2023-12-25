@@ -1,0 +1,96 @@
+import request from '@/utils/request'
+
+/**
+ * 新建
+ */
+export function ${FieldName}AddAPI(data) {
+  return request({
+    url: '/back-end/${AppCode}-${UrlName}/add',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+/**
+ * 修改
+ */
+export function ${FieldName}UpdateAPI(data) {
+  return request({
+    url: '/back-end/${AppCode}-${UrlName}/update',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+/**
+ * 列表
+ */
+export function ${FieldName}ListAPI(data) {
+  return request({
+    url: '/back-end/${AppCode}-${UrlName}/list',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+/**
+ * 删除
+ */
+export function ${FieldName}DeleteAPI(data) {
+  return request({
+    url: '/back-end/${AppCode}-${UrlName}/delete',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+/**
+ * 详情
+ */
+export function ${FieldName}GetAPI(code) {
+  return request({
+    url: `/back-end/${AppCode}-${UrlName}/get/${code}`
+  })
+}
+
+/**
+ * 部分导出
+ */
+export function ${FieldName}ExcelExportAPI(data) {
+  return request({
+    url: '/back-end/${AppCode}-${UrlName}/export',
+    method: 'post',
+    data: data,
+    responseType: 'blob',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+/**
+ * 全部导出
+ */
+export function ${FieldName}ExcelAllExportAPI(data) {
+  return request({
+    url: '/back-end/${AppCode}-${UrlName}/export-all',
+    method: 'post',
+    data: data,
+    responseType: 'blob',
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}

@@ -1,0 +1,28 @@
+/**客户下相关信息 table 效果 */
+.rc-cont {
+  position: relative;
+  padding: 15px;
+  height: 100%;
+  overflow-y: auto;
+  overflow-y: overlay;
+
+  .rc-head {
+    margin-bottom: 15px;
+    position: relative;
+
+    .rc-head-item {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: $xr-border-radius-base;
+    }
+
+    .rc-head-item:first-child {
+      margin-right: 0;
+    }
+
+    .el-button+.el-button {
+      margin-left: 0;
+      margin-right: 10px;
+    }
+  }
+}

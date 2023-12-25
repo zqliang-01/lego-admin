@@ -1,0 +1,12 @@
+package ${PackageName}.action;
+
+import com.lego.core.action.DeleteAction;
+import ${PackageName}.dao.I${ClassName}Dao;
+import ${PackageName}.entity.${ClassName};
+
+public class Delete${ClassName}Action extends DeleteAction<${ClassName}, I${ClassName}Dao> {
+
+    public Delete${ClassName}Action(String operatorCode, String code) {
+        super("${PermissionCode}", operatorCode, code);
+    }
+}

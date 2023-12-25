@@ -1,0 +1,31 @@
+package ${PackageName}.vo;
+
+#foreach ($import in $BaseImportList)
+import ${import};
+#end
+
+import com.lego.core.vo.VO;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ${ClassName}ModifyVO extends VO {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+#if($column.javaFieldType == 'Date')
+    private Date $column.javaField;
+#elseif($column.javaFieldType == 'BigDecimal')
+    private BigDecimal $column.javaField;
+#elseif($column.javaFieldType == 'int')
+    private int $column.javaField;
+#elseif($column.formType == 'boolean_value')
+    private boolean $column.javaField;
+#else
+    private String $column.javaField;
+#end
+#end
+}

@@ -1,0 +1,99 @@
+
+.lego-container,
+.bus-container {
+  background-color: white;
+  border-top: 1px solid $xr-border-line-color;
+  border-bottom: 1px solid $xr-border-line-color;
+  border-radius: 2px;
+}
+
+.status_button {
+  padding: 1px 6px;
+  border: 1px solid $xr-border-line-color;
+  border-radius: $xr-border-radius-base;
+  display: inline-block;
+  font-size: 12px;
+  margin: 0 auto;
+}
+
+.status-mark {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: $xr-border-radius-base;
+}
+
+.customer-lock {
+  color: #f95a5a;
+}
+
+.deal-suc {
+  font-size: 14px;
+  color: #20b559;
+}
+
+.deal-un {
+  font-size: 14px;
+  color: #f95a5a;
+}
+
+// 列表金额
+.money-bar {
+  color: #99a9bf;
+  line-height: 44px !important;
+  position: absolute;
+  left: 20px;
+  top: 0;
+}
+
+// 关注
+.focus-icon {
+  font-size: 14px;
+  color: #D9D9D9;
+  cursor: pointer;
+  &.active {
+    color: #FAC23D;
+  }
+}
+
+/deep/  .el-menu {
+  display: inline-block;
+  background-color: initial;
+  margin: 0 28px;
+
+  .el-menu-item {
+    padding: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #2a304d;
+
+    &:hover {
+      background: initial;
+    }
+
+    &.is-active {
+      border-width: 3px;
+    }
+
+    img {
+      width: 30px;
+      margin-right: 5px;
+    }
+
+    * {
+      transform: translateY(-1.5px);
+    }
+  }
+
+  .el-menu-item + .el-menu-item {
+    margin-left: 40px;
+  }
+}
+.d-view {
+  position: fixed;
+  min-width: 926px;
+  width: 75%;
+  top: 60px;
+  bottom: 0px;
+  right: 0px;
+}

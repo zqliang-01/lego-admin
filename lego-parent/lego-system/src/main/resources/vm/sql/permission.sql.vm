@@ -1,0 +1,7 @@
+CALL add_system_permission('${PermissionCode}', '${FunctionName}管理', 'menu', '${AppCode}', 'icon-title', ${startSn});
+CALL add_system_permission('${PermissionCode}:read', '查看列表', 'auth', '${PermissionCode}', NULL, ${startSn}1);
+CALL add_system_permission('${PermissionCode}:detail', '查看明细', 'auth', '${PermissionCode}', NULL, ${startSn}2);
+CALL add_system_permission('${PermissionCode}:add', '新增', 'auth', '${PermissionCode}', NULL, ${startSn}3);
+CALL add_system_permission('${PermissionCode}:delete', '删除', 'auth', '${PermissionCode}', NULL, ${startSn}4);
+CALL add_system_permission('${PermissionCode}:update', '更新', 'auth', '${PermissionCode}', NULL, ${startSn}5);
+CALL add_system_permission('${PermissionCode}:export', '导出', 'auth', '${PermissionCode}', NULL, ${startSn}6);

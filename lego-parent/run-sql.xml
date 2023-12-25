@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="lego" default="default">
+
+    <property environment="env"/>
+    <property file="./lego-admin/src/main/resources/application.properties"/>
+    <property name="temp.sql.path" value="./.temp"/>
+	
+    <target name="default" description="执行SQL">
+        <runsqldir sql.dir="sql/init" encoding="utf-8"/>
+    </target>
+
+	<macrodef name="runsqldir">
+		<attribute name="sql.dir"/>
+		<attribute name="encoding" default="gbk"/>
+		<sequential>
+			<echo message="sql.dir: @{sql.dir}"/>
+			<delete dir="${temp.sql.path}" failonerror="true"/>
+			<mkdir dir="${temp.sql.path}"/>
+			<copy todir="${temp.sql.path}">
+				<fileset dir="@{sql.dir}">
+					<include name="**/*.*"/>
+				</fileset>
+			</copy>
+
+			<replaceregexp encoding="@{encoding}" match="--.*" replace="" flags="i" byline="true">
+				<fileset dir="${temp.sql.path}" includes="**/*.sql"/>
+			</replaceregexp>
+
+			<replaceregexp encoding="@{encoding}" match=";[ |\t]*$" replace="~" flags="i" byline="true">
+				<fileset dir="${temp.sql.path}" includes="**/*.sql"/>
+			</replaceregexp >
+
+			<replace encoding="@{encoding}" dir="${temp.sql.path}" token="&#9;" value="    " summary="true">
+				<include name="**/*.*"/>
+			</replace>
+
+			<replace encoding="@{encoding}" dir="${temp.sql.path}" token="$$" value="$$$" summary="true">
+				<include name="**/*.*"/>
+			</replace>
+
+			<replaceregexp encoding="@{encoding}" match="(\r\n)/([\r|\n]?)" replace="\1~\2" flags="i" byline="false">
+				<fileset dir="${temp.sql.path}" excludes="**/*.sql"/>
+			</replaceregexp >
+
+			<replaceregexp encoding="@{encoding}" match="\bClear\b" replace="" flags="i" byline="true">
+				<fileset dir="${temp.sql.path}" includes="**/*.*"/>
+			</replaceregexp >
+
+			<replaceregexp encoding="@{encoding}" match="\bExec\b" replace="Call" flags="i" byline="true">
+				<fileset dir="${temp.sql.path}" includes="**/*.*"/>
+			</replaceregexp >
+
+			<replaceregexp encoding="@{encoding}" match="\bINSERT\s+INTO\b" replace="INSERT /*+ append */ INTO" flags="i" byline="true">
+				<fileset dir="${temp.sql.path}" includes="**/*.sql"/>
+			</replaceregexp >
+
+			<runsql delimiter="~" encoding="@{encoding}">
+				<fileset dir="${temp.sql.path}" includes="**/*.*"/>
+			</runsql>
+			<delete dir="${temp.sql.path}"/>
+		</sequential>
+	</macrodef>
+
+    <macrodef name="runsql">
+        <attribute name="toproperty" default="sqlresult"/>
+        <attribute name="delimiter" default=";"/>
+        <attribute name="encoding" default="utf-8"/>
+        <attribute name="onerror" default="abort"/>
+        <text name="sqltext"/>
+        <element name="sqlfiles" optional="true" implicit="yes"/>
+        <sequential>
+        <echo message="encoding:@{encoding}"/>
+        <echo message="数据库地址：${jdbc.url}" />
+            <sql driver="${jdbc.classname}"
+                url="${jdbc.url}"
+                userid="${jdbc.username}"
+                password="${jdbc.password}"
+                onerror="@{onerror}" print="true"
+                delimiter="@{delimiter}"
+                autocommit="true"
+                keepformat="true"
+                encoding="@{encoding}"
+                showheaders="false" showtrailers="false" output="_temp_sql_result.txt">
+                @{sqltext}
+                <classpath>
+                    <pathelement path="${driver_classpath}" />
+                </classpath>
+                <sqlfiles/>
+            </sql>
+            <loadresource property="@{toproperty}">
+                <file file="_temp_sql_result.txt"/>
+            </loadresource>
+            <delete file="_temp_sql_result.txt"/>
+        </sequential>
+    </macrodef>
+</project>

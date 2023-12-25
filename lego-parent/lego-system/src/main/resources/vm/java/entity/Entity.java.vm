@@ -1,0 +1,67 @@
+package ${PackageName}.entity;
+
+#foreach ($import in $BaseImportList)
+import ${import};
+#end
+import java.util.Map;
+
+import javax.persistence.Entity;
+#if($Property.hasEntity)
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+#end
+import javax.persistence.Table;
+
+import com.lego.core.data.hibernate.BusiEntity;
+#foreach ($import in $EntityImportList)
+import ${import};
+#end
+#foreach ($import in $UtilImportList)
+import ${import};
+#end
+import com.lego.core.util.StringUtil;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+@Entity
+@Table(name = "${TableName}")
+public class ${ClassName} extends BusiEntity {
+
+#foreach ($column in $columns)
+#if($column.formType == 'entity' || $column.formType == 'select')
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "$column.name")
+    private $column.className $column.javaField;
+#elseif(!$column.ignoreField)
+    private $column.javaFieldType $column.javaField;
+#end
+#end
+
+    protected ${ClassName}() { }
+
+    public ${ClassName}(String code, String name) {
+        super(code, name);
+    }
+
+    @Override
+    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+#foreach ($column in $columns)
+    #if($column.formType == 'date')
+        attributes.put("$column.comment", DateUtil.toDateString($column.javaField));
+    #elseif($column.formType == 'datetime')
+        attributes.put("$column.comment", DateUtil.toDateTimeString($column.javaField));
+    #elseif($column.formType == 'boolean_value')
+        attributes.put("$column.comment", $column.javaField ? "是" : "否");
+    #elseif($column.entityType)
+        attributes.put("$column.comment", EntityUtil.toString($column.javaField));
+    #else
+        attributes.put("$column.comment", StringUtil.toString($column.javaField));
+    #end
+#end
+    }
+}

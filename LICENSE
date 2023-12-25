@@ -1,0 +1,35 @@
+Copyright (c) 2023 LegoAdmin
+
+一、授权许可
+  1.1 您可以免费修改、复制、分发本软件及本软件的源码
+  1.2 您可以基于本软件进行二次开发用于学习交流，但不能用于商业活动
+二、免责声明
+  2.1 本软件及所附带的文件是作为不提供任何明确的或隐含的赔偿或担保的形式提供的
+  2.2 用户出于自愿而使用本软件，您必须了解使用本软件的风险
+  2.3 本软件本着开源共享技术交流的理念，我们不承诺提供任何形式的技术支持、使用担保，也不承担任何因使用本软件而产生问题的相关责任
+三、未尽事项
+  3.1 如果您需要更加完善和灵活的功能，可以联系作者提供定制开发服务
+
+# 其他授权许可 Other Licenses
+
+This software includes projects with the following licenses
+
+该软件包括其他开源项目涉及的授权协议
+
+### [Apache License](http://www.apache.org/licenses/LICENSE-2.0)
+This license is used by the following third-party libraries:
+
+  * Spring Framework (http://projects.spring.io/spring-framework/)
+  * ShardingSphere (https://shardingsphere.apache.org/)
+  * mybatis-plus (https://baomidou.com/)
+  * element-ui (https://element.eleme.cn/)
+
+### [LGPL License](https://www.gnu.org/copyleft/lesser.html)
+This license is used by the following third-party libraries:
+
+  * mybatis (http://www.mybatis.org/mybatis-3/)
+  * hibernate (http://hibernate.org/orm/)
+
+### [License(BSD)](https://github.com/ecomfe/echarts/blob/master/LICENSE)
+
+  * Echarts (http://echarts.baidu.com/)

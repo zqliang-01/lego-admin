@@ -1,0 +1,51 @@
+<template>
+  <xr-create
+    :loading="loading"
+    :title="title"
+    @close="close"
+    @save="saveClick">
+    <create-sections title="基本信息">
+      <el-form
+        ref="createForm"
+        :model="fieldFrom"
+        :rules="fieldRules"
+        :validate-on-rule-change="false"
+        class="form"
+        label-position="top">
+        <form-items
+          v-for="(children, index) in dataFieldList"
+          :key="index"
+          :field-from="fieldFrom"
+          :field-list="children"
+        />
+      </el-form>
+    </create-sections>
+  </xr-create>
+</template>
+
+<script>
+import {
+  ${FieldName}AddAPI,
+  ${FieldName}UpdateAPI
+} from '@/api/${AppCode}/${FieldName}'
+import CreateMixin from '@/components/Mixins/LegoCreate'
+
+export default {
+  name: '${ClassName}Create',
+  mixins: [CreateMixin],
+  computed: {
+    title() {
+      return this.action.type === 'update' ? '编辑${FunctionName}' : '新建${FunctionName}'
+    },
+    saveRequest() {
+      return this.action.type === 'update' ? ${FieldName}UpdateAPI : ${FieldName}AddAPI
+    }
+  },
+  created() {
+    this.initField()
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+</style>

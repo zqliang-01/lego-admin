@@ -1,0 +1,52 @@
+package ${PackageName}.action;
+
+import com.lego.core.action.AddAction;
+import com.lego.core.exception.BusinessException;
+import com.lego.core.util.StringUtil;
+import ${PackageName}.dao.I${ClassName}Dao;
+import ${PackageName}.entity.${ClassName};
+import ${PackageName}.vo.${ClassName}CreateVO;
+#foreach ($import in $EntityImportList)
+import ${import};
+#end
+
+public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}Dao> {
+
+    private ${ClassName}CreateVO vo;
+
+    public Add${ClassName}Action(String operatorCode, ${ClassName}CreateVO vo) {
+        super("${PermissionCode}", operatorCode);
+        this.vo = vo;
+    }
+
+    @Override
+    protected void preprocess() {
+#foreach ($column in $columns)
+    #if($column.required && $column.javaFieldType == 'String')
+    	BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}新增失败！");
+    #elseif($column.required && $column.javaFieldType == 'BigDecimal')
+    	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
+    #elseif($column.required && $column.javaFieldType == 'Date')
+    	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
+    #end
+#end
+    }
+
+    @Override
+    protected ${ClassName} createTargetEntity() {
+        ${ClassName} entity = new ${ClassName}(vo.getCode(), vo.getName());
+#foreach ($column in $columns)
+    #if($column.formType == 'boolean_value')
+        entity.set${column.firstUpperField}(vo.is${column.firstUpperField}());
+    #elseif($column.entityType && $column.required)
+        entity.set${column.firstUpperField}(findByCode(${column.className}.class, vo.get${column.firstUpperField}()));
+    #elseif($column.entityType)
+        entity.set${column.firstUpperField}(findByUnsureCode(${column.className}.class, vo.get${column.firstUpperField}()));
+    #elseif($column.javaField != 'code' && $column.javaField != 'name')
+        entity.set${column.firstUpperField}(vo.get${column.firstUpperField}());
+    #end
+#end
+        return entity;
+    }
+
+}

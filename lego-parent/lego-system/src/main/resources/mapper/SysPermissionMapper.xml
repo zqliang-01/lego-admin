@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lego.system.mapper.SysPermissionMapper">
+	
+    <select id="selectCodesByEmployee" resultType="java.lang.String">
+		SELECT p.code
+		FROM sys_permission p
+		JOIN sys_role_permission rp ON rp.permission_id = p.id
+		JOIN sys_employee_role er ON er.role_id = rp.role_id
+		JOIN sys_employee e ON e.id = er.employee_id
+		WHERE e.code = #{employeeCode}
+	</select>
+</mapper>

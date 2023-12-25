@@ -1,0 +1,367 @@
+@mixin center() {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cell {
+  width: 100%;
+  padding: 0 40px 10px;
+  display: flex;
+  .empty {
+    flex: 1;
+    visibility: hidden;
+  }
+  @media screen and (max-width: 1550px) {
+    padding: 0 40px 10px;
+  }
+}
+
+.login-from {
+  /deep/ input {
+    background-color: #F6F6F6;
+
+    &:focus,
+    &:hover:focus {
+      background-color: white !important;
+    }
+
+    &::-webkit-input-placeholder {
+      color: #C5C5C5;
+    }
+  }
+
+  /deep/ .error input {
+    border: 1px solid #EA3E4A;
+
+    &:focus {
+      border: 1px solid #EA3E4A;
+    }
+  }
+}
+
+
+// form
+.login-from {
+  width: 100%;
+  padding: 0 40px;
+
+  .el-form-item {
+    margin-bottom: 20px;
+
+    .el-input {
+      height: 50px;
+      font-size: 14px;
+      background-color: #F6F6F6;
+      border-radius: $xr-border-radius-base;
+      // border-radius: 10px;
+
+      /deep/ .el-input__inner {
+        height: 50px;
+        line-height: 50px;
+        padding: 0 10px;
+      }
+
+      /deep/ .el-input__prefix {
+        top: 0;
+        left: 8px;
+      }
+
+      .form-icon {
+        font-size: 14px;
+        color: #dadada;
+
+        &.full {
+          color: #999;
+        }
+
+        &.focus {
+          color: #3e6bea;
+        }
+      }
+    }
+  }
+  @media screen and (max-width: 1550px) {
+    padding: 0 40px;
+    .el-form-item {
+      margin-bottom: 15px;
+    }
+  }
+}
+
+// error message
+.error-info {
+  width: 100%;
+  height: 40px;
+  padding: 0 40px;
+
+  &.ok {
+    margin: 0;
+  }
+
+  .box {
+    height: 100%;
+    font-size: 14px;
+    color: #F54848;
+    line-height: 16px;
+    border: 1px solid #EA3E4A;
+    border-radius: $xr-border-radius-base;
+    background-color: #FFF2F2;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .icon {
+      width: 16px;
+      margin-right: 10px;
+    }
+  }
+}
+
+
+.control {
+  width: 100%;
+  padding: 10px 40px;
+
+  .btn {
+    width: 100%;
+    height: 50px;
+    font-size: 20px;
+    color: white;
+    text-align: center;
+    line-height: 50px;
+    background-color: #3E6BEA;
+    border-radius: $xr-border-radius-base;
+    padding: 0;
+    cursor: pointer;
+    &:hover {
+      background-color: #517aec;
+    }
+    &.is-disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  .others {
+    color: #3E6BEA;
+    line-height: 1.2;
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+
+    .el-dropdown {
+      cursor: pointer;
+      .dropdown {
+        color: #3E6BEA;
+      }
+    }
+
+    .empty {
+      flex: 1;
+    }
+
+    .box {
+      cursor: pointer;
+      @include center;
+
+      .icon {
+        font-size: 15px;
+        margin-right: 5px;
+      }
+
+      &:hover {
+        .text {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 1550px) {
+    .others {
+      margin-top: 10px;
+    }
+  }
+}
+
+// bottom-control
+.active-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 35px;
+  transform: translateX(-50%);
+  height: 38px;
+  color: #3E6BEA;
+  padding: 0 28px;
+  border: 1px solid #3E6BEA;
+  border-radius: 38px;
+  cursor: pointer;
+  @include center;
+
+  &:hover {
+    color: white;
+    border-color: #517aec;
+    background-color: #517aec;
+  }
+}
+
+// to-login
+.to-login {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+
+  .special {
+    color: #3E6BEA;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+  // @media screen and (max-width: 1550px) {
+  //   margin-top: 10px;
+  // }
+}
+
+// 图片验证码
+.verify-picture {
+  position: relative;
+  width: 100%;
+  height: 50px;
+  font-size: 14px;
+  line-height: 16px;
+  background-color: #EEF7FF;
+  border-radius: $xr-border-radius-base;
+  margin-bottom: 14px;
+  cursor: pointer;
+  @include center;
+
+  .icon {
+    width: 42px;
+    margin-left: -10px;
+  }
+
+  .slide-verify {
+    position: absolute;
+    top: -200px;
+    left: 0;
+    z-index: 100;
+  }
+
+  // @media screen and (max-width: 1550px) {
+  //   height: 50px;
+  //   .icon {
+  //     width: 42px;
+  //   }
+  // }
+}
+
+// 多企业选择
+.multiple-company {
+  padding: 0;
+  margin-top: 50px;
+
+  .list {
+    padding: 0;
+    max-height: 200px;
+    overflow: auto;
+
+    .list-item {
+      height: 42px;
+      color: #555;
+      list-style: none;
+      background-color: #f6f6f6;
+      border-radius: $xr-border-radius-base;
+      border: 1px solid #f6f6f6;
+      margin: 0 38px 14px;
+      padding: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+
+      .icon {
+        width: 15px;
+        color: #DADADA;
+        margin-right: 15px;
+      }
+
+      .text {
+        flex: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .icon-checked {
+        margin-left: 15px;
+      }
+
+      &.active {
+        background-color: #F4F7FF;
+        border-color: #3E4FEA;
+
+        .icon {
+          color: #3E6BEA;
+        }
+      }
+    }
+  }
+}
+
+.pwd-popover-content {
+  width: 100%;
+  color: #C5C5C5;
+  font-size: 14px;
+  padding: 14px;
+
+  .box {
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .text {
+      margin-right: 10px;
+    }
+
+    .item {
+      width: 30px;
+      height: 5px;
+      background-color: #EBEBEB;
+      margin-right: 5px;
+
+      &.active {
+        background-color: #3E6BEA;
+      }
+    }
+  }
+
+  .desc {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .text {
+      flex: 1;
+    }
+
+    .icon {
+      font-size: 14px;
+      color: #33cc45;
+
+      &.error {
+        color: #F54848;
+      }
+    }
+  }
+}
+
+.pwd-popover-control {
+  width: 100%;
+  height: 42px;
+}

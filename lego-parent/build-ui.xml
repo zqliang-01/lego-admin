@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="build-ui" basedir="." default="default">
+
+    <property name="ui.root" value="${basedir}/../vue-ui"/>
+    <property name="ui.target" value="${basedir}/lego-admin/target/public"/>
+
+    <target name="default" depends="install, package, deploy"/>
+
+    <target name="package">
+        <echo message="执行构建命令: npm run build"/>
+    	<exec executable="cmd.exe" failonerror="true" dir="${ui.root}">
+            <arg line="/c npm run build"/>
+        </exec>
+    </target>
+
+    <target name="install">
+        <echo message="前端安装依赖${ui.root}"/>
+    	<exec executable="cmd.exe" failonerror="true" dir="${ui.root}">
+	        <arg line="/c cnpm install"/>
+	    </exec>
+    </target>
+
+    <target name="deploy">
+        <delete dir="${ui.target}" failonerror="true"/>
+        <copy todir="${ui.target}" overwrite="true">
+            <fileset dir="${ui.root}/dist"/>
+        </copy>
+    </target>
+
+    <target name="clean">
+        <echo message="前端清理"/>
+        <delete dir="${ur.root}/dist" failonerror="true" />
+        <delete dir="${ui.target}" failonerror="true" />
+    </target>
+</project>

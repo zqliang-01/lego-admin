@@ -1,0 +1,372 @@
+@import './transition.scss';
+@import './element-ui.scss';
+@import './element-variables.scss';
+@import './button.scss';
+@import './table.scss';
+// 指令
+@import '../directives/empty/empty.scss';
+@import '../assets/iconfont/iconfont.css';
+@import './iconfont/iconfont.css';
+@import '../directives/style.scss';
+
+
+body {
+  height: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: 'MicrosoftYaHei', 'Avenir', Helvetica, Arial, sans-serif;
+  color: #333;
+  font-size: 14px;
+  background: #f5f6f9;
+}
+
+// 滚动条样式
+::-webkit-scrollbar-track-piece {
+  background: #EFEFEF;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C7D1DA;
+  border-radius: 3.5px;
+}
+
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+#app {
+  height: 100%;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  outline: none;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+.clearfix {
+  &:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0;
+  }
+}
+
+tr,
+th,
+td {
+  font-weight: normal;
+}
+
+li {
+  list-style: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* 右浮动 */
+.rt {
+  float: right;
+  margin-right: 30px;
+}
+
+/* 左浮动 */
+.lt {
+  float: left;
+  margin-left: 30px;
+}
+
+input:invalid {
+  box-shadow: none;
+}
+
+// 控制svg颜色
+path {
+  fill: inherit !important
+}
+
+// 通过 popper-class 去除默认padding
+.no-padding-popover {
+  padding: 0;
+}
+
+.no-padding-dialog {
+  .el-dialog__body {
+    padding: 0;
+  }
+}
+
+
+// 去除百度地图 图标
+.BMap_cpyCtrl {
+  display: none;
+}
+
+.anchorBL {
+  display: none;
+}
+
+/** 懒加载样式*/
+img[lazy="loading"] {
+  display: inline-block;
+  padding: 8px;
+  // width: 20px !important;
+  // height: 20px !important;
+  margin: 0 auto;
+}
+
+div[lazy=loading] {
+  display: inline-block;
+  padding: 8px;
+  // width: 20px !important;
+  // height: 20px !important;
+  margin: 0 auto;
+}
+
+/** 拖拽时候的样式 */
+.draggingStyle {
+  cursor: pointer;
+}
+
+.router-view {
+  width: 100%;
+  position: relative;
+  // height: 100%;
+  flex: 1;
+  overflow: hidden;
+}
+
+.project-settings-list-top {
+  top: 110px !important;
+}
+
+.task-board-rechristen-popover {
+  padding: 0;
+  margin-top: -40px !important;
+}
+
+.tooltip-change-border {
+  border-color: #eee !important;
+  box-shadow: 0 0 12px 1px #eee;
+  padding: 5px 10px !important;
+}
+
+.tooltip-change-border .popper__arrow {
+  border-color: transparent !important;
+}
+
+.task-tooltip {
+  z-index: 10 !important;
+}
+
+// 关闭message 内容样式
+.el-close-message {
+  p {
+    line-height: 20px;
+    max-height: 60px;
+    overflow-y: scroll;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    margin-right: 13px;
+  }
+}
+
+// 去除焦点时的蓝色边框
+* :focus {
+  outline: none;
+}
+
+// Pagination 分页
+.el-pagination {
+  * {
+    font-size: 12px !important;
+  }
+
+  .number.active {
+    list-style-position: inside;
+    border: 1px solid $xr-color-primary;
+    color: $xr-color-primary !important;
+    background-color: #f4f4f5 !important;
+  }
+}
+
+// 可访问
+.can-visit,
+.can-visit--underline {
+  color: $--color-primary !important;
+  cursor: pointer
+}
+
+.can-visit--bold {
+  font-weight: bold;
+}
+
+.header-can-visit-backgroud {
+  background-color: #ebeef5 !important;
+}
+
+
+.can-visit--underline:hover {
+  text-decoration: underline;
+}
+
+.can-visit-default {
+  cursor: pointer
+}
+
+.can-visit-default:hover {
+  color: $--color-primary !important;
+}
+
+// 滚动
+.scroll-bottom-tips {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+
+// 金额展示
+.xr-money {
+  font-weight: 600;
+  color: #333;
+}
+
+.xr-money.green {
+  color: #20B559 !important;
+}
+
+.xr-money.red {
+  color: #F94E4E !important;
+}
+
+
+// 禁止交互
+.xr-disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// 文本
+.text-one-line {
+  // text-overflow: ellipsis;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 1;
+  // -webkit-box-orient: vertical;
+  // overflow: hidden;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.text-one-ellipsis {
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// 项目下的侧滑框
+.project-drawer {
+  user-select: none;
+  .el-drawer__header {
+    display: none;
+  }
+
+  .el-drawer__body {
+    padding: 15px;
+    overflow: auto;
+  }
+}
+
+#project-container {
+  .el-dialog__wrapper,
+  .v-modal {
+    position: absolute;
+  }
+}
+
+// 帮助提示符
+.wk-help-tips {
+  cursor: pointer;
+  font-size: 13px;
+  color: #cbcbcb;
+}
+
+.wk-help-tips:hover {
+  color: $xr-color-primary;
+}
+
+// form 表单样式
+.el-form-item.is-error {
+  .xh-form-border {
+    border-color: #F56C6C;
+  }
+}
+
+
+// flex el-form
+.el-form--flex.el-form {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -23px;
+  .el-form-item.is-required .el-form-item__label:before {
+    margin-right: 0;
+  }
+
+  .el-form-item {
+    flex: 0 0 50%;
+    flex-shrink: 0;
+    padding: 0 30px;
+    padding-bottom: 10px;
+    margin-bottom: 4px;
+    .el-form-item__label {
+      color: #333333;
+    }
+
+    .el-form-item__error {
+      padding-top: 2px;
+    }
+  }
+}
+
+// 时间区间选择快捷键
+.el-picker-panel {
+  .el-picker-panel__sidebar {
+    padding-bottom: 40px;
+  }
+}

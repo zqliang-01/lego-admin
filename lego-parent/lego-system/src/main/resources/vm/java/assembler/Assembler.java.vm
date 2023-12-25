@@ -1,0 +1,33 @@
+package ${PackageName}.assembler;
+
+import org.springframework.stereotype.Component;
+
+import com.lego.core.assembler.BusiAssembler;
+#if($Property.hasCommon)
+import com.lego.core.vo.CustomFieldTypeEnum;
+#end
+import ${PackageName}.dto.${ClassName}Info;
+import ${PackageName}.entity.${ClassName};
+
+@Component
+public class ${ClassName}Assembler extends BusiAssembler<${ClassName}Info, ${ClassName}> {
+
+    @Override
+    protected ${ClassName}Info doCreate(${ClassName} entity) {
+        ${ClassName}Info info = new ${ClassName}Info();
+#foreach ($column in $columns)
+    #if($column.formType == 'boolean_value')
+    	info.set${column.firstUpperField}(entity.is${column.firstUpperField}());
+    #elseif($column.formType == 'user')
+    	info.set${column.firstUpperField}(create(CustomFieldTypeEnum.EMPLOYEE, entity.get${column.firstUpperField}()));
+    #elseif($column.formType == 'structure')
+    	info.set${column.firstUpperField}(create(CustomFieldTypeEnum.DEPT, entity.get${column.firstUpperField}()));
+    #elseif($column.typeInfo)
+    	info.set${column.firstUpperField}(createTypeInfo(entity.get${column.firstUpperField}()));
+    #else
+    	info.set${column.firstUpperField}(entity.get${column.firstUpperField}());
+    #end
+#end
+        return info;
+    }
+}

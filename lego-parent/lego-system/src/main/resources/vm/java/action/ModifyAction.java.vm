@@ -1,0 +1,50 @@
+package ${PackageName}.action;
+
+import com.lego.core.action.ModifyAction;
+import com.lego.core.exception.BusinessException;
+import com.lego.core.util.StringUtil;
+import ${PackageName}.dao.I${ClassName}Dao;
+import ${PackageName}.entity.${ClassName};
+import ${PackageName}.vo.${ClassName}ModifyVO;
+#foreach ($import in $EntityImportList)
+import ${import};
+#end
+
+public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${ClassName}Dao> {
+
+    private ${ClassName}ModifyVO vo;
+
+    public Modify${ClassName}Action(String operatorCode, ${ClassName}ModifyVO vo) {
+        super("${PermissionCode}", operatorCode, vo.getCode());
+        this.vo = vo;
+    }
+
+    @Override
+    protected void preprocess() {
+#foreach ($column in $columns)
+    #if($column.required && $column.javaFieldType == 'String')
+    	BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}修改失败！");
+    #elseif($column.required && $column.javaFieldType == 'BigDecimal')
+    	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
+    #elseif($column.required && $column.javaFieldType == 'Date')
+    	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
+    #end
+#end
+    }
+
+    @Override
+    protected void doModify(${ClassName} entity) {
+#foreach ($column in $columns)
+    #if($column.formType == 'boolean_value')
+        entity.set${column.firstUpperField}(vo.is${column.firstUpperField}());
+    #elseif($column.entityType && $column.required)
+        entity.set${column.firstUpperField}(findByCode(${column.className}.class, vo.get${column.firstUpperField}()));
+    #elseif($column.entityType)
+        entity.set${column.firstUpperField}(findByUnsureCode(${column.className}.class, vo.get${column.firstUpperField}()));
+    #elseif(!$column.unique)
+        entity.set${column.firstUpperField}(vo.get${column.firstUpperField}());
+    #end
+#end
+    }
+
+}

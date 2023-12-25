@@ -1,0 +1,15 @@
+export default [
+  {
+    ...layout({
+      permissions: ['${AppCode}', '${FieldName}']
+    }),
+    children: [{
+      path: '${FieldName}',
+      component: () => import('@/views/${AppCode}/${FieldName}'),
+      meta: {
+        title: '${FunctionName}',
+        icon: 'icon-title'
+      }
+    }]
+  }
+]

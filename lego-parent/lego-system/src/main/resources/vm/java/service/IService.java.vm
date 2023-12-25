@@ -1,0 +1,26 @@
+package ${PackageName}.service;
+
+import java.util.List;
+
+import com.lego.core.dto.LegoPage;
+import com.lego.core.vo.GenericSearchVO;
+import ${PackageName}.dto.${ClassName}Info;
+import ${PackageName}.vo.${ClassName}CreateVO;
+import ${PackageName}.vo.${ClassName}ModifyVO;
+
+public interface I${ClassName}Service {
+
+    LegoPage<${ClassName}Info> findPageBy(GenericSearchVO vo);
+
+    ${ClassName}Info findBy(String code);
+
+    List<${ClassName}Info> findBy(GenericSearchVO vo);
+
+    List<${ClassName}Info> findBy(List<String> codes);
+
+    void update(String operatorCode, ${ClassName}ModifyVO vo);
+
+    void add(String operatorCode, ${ClassName}CreateVO vo);
+
+    void delete(String operatorCode, List<String> codes);
+}

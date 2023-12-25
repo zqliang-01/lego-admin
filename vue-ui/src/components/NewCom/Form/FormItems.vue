@@ -1,0 +1,67 @@
+<template>
+  <flexbox
+    class="form-items"
+    align="flex-start"
+    wrap="wrap"
+    justify="flex-start">
+    <form-item
+      v-for="(item, index) in fieldList"
+      :key="index"
+      :prop-prefix="propPrefix"
+      :item="item"
+      :index="index"
+      :field-from="fieldFrom"
+      :disabled="disabled"
+      @change="fieldChange"
+    >
+      <template slot-scope="{ data, index }">
+        <slot :data="item" :index="index" />
+      </template>
+    </form-item>
+  </flexbox>
+</template>
+
+<script>
+import FormItem from './FormItem'
+
+export default {
+  // 多块形式的form-item 用于字段库
+  name: 'FormItems',
+
+  components: {
+    FormItem
+  },
+
+  props: {
+    // 表单验证前缀
+    propPrefix: {
+      type: String,
+      default: ''
+    },
+    fieldFrom: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
+    fieldList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    disabled: Boolean
+  },
+  methods: {
+    fieldChange(item, index, value, valueList) {
+      this.$emit('change', item, index, value, valueList)
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.form-items {
+  padding: 0 12px;
+}
+</style>

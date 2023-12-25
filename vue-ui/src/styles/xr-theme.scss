@@ -1,0 +1,58 @@
+
+/**  rel="stylesheet/scss" lang="scss"*/
+$xr-color-primary: #2362FB; // 主色调蓝色
+/// color|1|Background Color|4
+$xr-color-white: #FFFFFF !default;
+/// color|1|Background Color|4
+$xr-color-black: #000000 !default;
+
+/// color|1|Font Color|2
+$xr-color-text-primary: #333333 !default;
+/// color|1|Font Color|2
+$xr-color-text-regular: #666666 !default;
+/// color|1|Font Color|2
+$xr-color-text-secondary: #999999 !default;
+/// color|1|Font Color|2
+$xr-color-text-placeholder: #C0C4CC !default;
+
+
+// Box-shadow
+/// boxShadow|1|Shadow|1
+$xr-box-shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04) !default;
+// boxShadow|1|Shadow|1
+$xr-box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12) !default;
+/// boxShadow|1|Shadow|1
+$xr-box-shadow-light: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !default;
+
+/** backgroud */
+$xr--background-color-base: #F6F8FA;
+
+/** border */
+$xr-border-color-base: #e6e6e6;
+$xr-border-radius-base: 4px;
+/// borderRadius|1|Radius|0
+$xr-border-radius-small: 2px !default;
+$xr-border-line-color: #e6e6e6;
+$xr-focus-border: $xr-color-primary;
+
+/** table */
+$xr--table-border-color: $xr-border-color-base;
+
+$xr-font-size-base: 14px;
+$xr-font-size-small: 12px;
+$xr-font-size-large: 18px;
+
+$xr-backgroud: #f5f6f9;
+/* Popover
+-------------------------- */
+
+/* Dialog
+-------------------------- */
+$xr-dialog-title-font-size: 16px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  xrColorPrimary: $xr-color-primary;
+}
+

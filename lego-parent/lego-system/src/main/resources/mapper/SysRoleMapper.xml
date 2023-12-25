@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lego.system.mapper.SysRoleMapper">
+	
+    <select id="selectCodesByEmployee" resultType="java.lang.String">
+		SELECT r.code
+		FROM sys_role r
+		JOIN sys_employee_role er ON er.role_id = r.id
+		JOIN sys_employee e ON e.id = er.employee_id
+		WHERE e.code = #{employeeCode}
+	</select>
+	
+	<insert id="auth">
+		INSERT INTO sys_role_permission
+		SELECT #{roleId}, p.ID FROM sys_permission p
+		WHERE p.CODE IN 
+   		<foreach collection="permissionCodes" item="code" index="index" open="(" close=")" separator=",">
+   		    #{code}
+   		</foreach>
+   	</insert>
+	
+	<delete id="deleteAuth">
+		DELETE FROM sys_role_permission 
+		WHERE ROLE_ID = #{roleId}
+	</delete>
+</mapper>

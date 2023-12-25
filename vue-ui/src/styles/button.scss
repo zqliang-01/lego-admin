@@ -1,0 +1,102 @@
+// button
+.xr-btn--primary {
+  i {
+    font-size: 13px;
+    margin-right: 5px;
+  }
+}
+
+// 编辑绿
+.xr-btn--green {
+  background-color: #389E0B;
+  border-color: #389E0B;
+
+  i {
+    font-size: 13px;
+    margin-right: 5px;
+  }
+}
+
+.xr-btn--green:hover,
+.xr-btn--green.is-disabled,
+.xr-btn--green.is-disabled:hover,
+.xr-btn--green:focus {
+  background: #4ca824;
+  border-color: #4ca824;
+  color: #FFFFFF;
+}
+
+// 按钮橙黄
+.xr-btn--orange {
+  background-color: #ff6a00;
+  border-color: #ff6a00;
+
+  i {
+    font-size: 13px;
+    margin-right: 5px;
+  }
+}
+
+.xr-btn--orange:hover,
+.xr-btn--orange.is-disabled,
+.xr-btn--orange.is-disabled:hover,
+.xr-btn--orange:focus {
+  background: #fc7d63;
+  border-color: #fc7d63;
+  color: #FFFFFF;
+}
+
+// 拒绝红
+.xr-btn--red {
+  background-color: #f94e4e;
+  border-color: #f94e4e;
+
+  i {
+    font-size: 13px;
+    margin-right: 5px;
+  }
+}
+
+.xr-btn--red:hover,
+.xr-btn--red.is-disabled,
+.xr-btn--red.is-disabled:hover,
+.xr-btn--red:focus {
+  background: #fa6060;
+  border-color: #fa6060;
+  color: #FFFFFF;
+}
+
+
+// 文字按钮
+$btn-delete-color: #f94e4e;
+.xr-text-btn {
+  font-size: 12px;
+  cursor: pointer;
+}
+.xr-text-btn.primary {
+  color: $xr-color-primary;
+}
+.xr-text-btn.delete {
+  color: $btn-delete-color;
+}
+
+.xr-text-btn:hover {
+  text-decoration: underline;
+}
+
+.xr-text-btn + .xr-text-btn {
+  margin-left: 8px;
+}
+
+// 关闭按钮
+.xr-icon-close-btn {
+  border: none;
+  outline: none;
+  background: transparent !important;
+  padding: 0;
+  /deep/ i {
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+  }
+}

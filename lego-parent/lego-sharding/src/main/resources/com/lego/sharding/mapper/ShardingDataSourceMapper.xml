@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lego.sharding.mapper.ShardingDataSourceMapper">
+
+    <select id="selectValid" resultType="com.lego.core.dto.TypeInfo">
+		SELECT t.CODE, t.NAME FROM sharding_data_source t
+		WHERE t.ENABLE = 1
+	</select>
+	
+    <select id="selectValidPropertiesBy" resultType="com.lego.core.dto.TypeInfo">
+		SELECT t.CODE, t.NAME FROM sharding_properties t
+		JOIN sharding_data_source ds ON ds.CODE = t.ENTITY_CODE
+		WHERE t.TEMPLATE_ID = ds.TEMPLATE_ID
+		    AND t.ENABLE = 1
+		    AND ds.CODE = #{code}
+	</select>
+</mapper>

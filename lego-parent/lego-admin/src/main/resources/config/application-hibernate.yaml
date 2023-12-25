@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    database: MYSQL
+    show-sql: false
+  hibernate:
+    naming:
+      implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+      physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+    cache:
+      use_query_cache: true
+      use_second_level_cache: true
+      region:
+        factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
+    dialect: org.hibernate.dialect.MySQL5Dialect
+    format_sql: true

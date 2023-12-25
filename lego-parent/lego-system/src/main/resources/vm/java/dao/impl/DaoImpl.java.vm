@@ -1,0 +1,9 @@
+package ${PackageName}.dao.impl;
+
+import com.lego.core.data.hibernate.jpa.GenericDao;
+import ${PackageName}.dao.I${ClassName}Dao;
+import ${PackageName}.entity.${ClassName};
+
+public class ${ClassName}Dao extends GenericDao<${ClassName}> implements I${ClassName}Dao {
+
+}

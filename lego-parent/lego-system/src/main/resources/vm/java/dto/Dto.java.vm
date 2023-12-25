@@ -1,0 +1,56 @@
+package ${PackageName}.dto;
+
+#foreach ($import in $BaseImportList)
+import ${import};
+#end
+
+import com.alibaba.excel.annotation.ExcelProperty;
+#if($Property.hasDate)
+import com.alibaba.excel.annotation.format.DateTimeFormat;
+import com.lego.core.util.DateUtil;
+#end
+#if($Property.hasBoolean)
+import com.lego.core.common.BooleanConverter;
+#end
+#if($Property.hasEntity)
+import com.lego.core.common.TypeInfoConverter;
+import com.lego.core.dto.TypeInfo;
+#end
+import com.lego.core.dto.BusiDTO;
+
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ${ClassName}Info extends BusiDTO {
+
+    private static final long serialVersionUID = 1L;
+
+#foreach ($column in $columns)
+#if($column.formType == 'date')
+    @ExcelProperty(value = "$column.comment")
+    @DateTimeFormat(DateUtil.datePattern)
+    private Date $column.javaField;
+#elseif($column.formType == 'datetime')
+    @ExcelProperty(value = "$column.comment")
+    @DateTimeFormat(DateUtil.dateTimePattern)
+    private Date $column.javaField;
+#elseif($column.formType == 'boolean_value')
+    @ExcelProperty(value = "$column.comment", converter = BooleanConverter.class)
+    private boolean $column.javaField;
+#elseif($column.typeInfo)
+    @ExcelProperty(value = "$column.comment", converter = TypeInfoConverter.class)
+    private TypeInfo $column.javaField;
+#elseif($column.javaFieldType == 'BigDecimal')
+    @ExcelProperty(value = "$column.comment")
+    private BigDecimal $column.javaField;
+#elseif($column.javaFieldType == 'int')
+    @ExcelProperty(value = "$column.comment")
+    private int $column.javaField;
+#else
+    @ExcelProperty(value = "$column.comment")
+    private String $column.javaField;
+#end
+#end
+}
