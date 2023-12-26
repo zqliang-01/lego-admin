@@ -93,7 +93,6 @@ export default {
       if (this.disabled) {
         return true
       }
-
       return !this.code
     }
   },
@@ -117,17 +116,13 @@ export default {
     handleImage() {
       if (this.src) {
         if (!this.imageCache.hasOwnProperty(this.src)) {
-          this.$set(this.imageCache, this.src, '')
-          this.$store.commit('SET_IMAGECACHE', this.imageCache)
-          getImageData(this.src)
-            .then(data => {
-              this.$set(this.imageCache, this.src, data.src)
-              this.$store.commit('SET_IMAGECACHE', this.imageCache)
-            })
-            .catch(() => {
-              delete this.imageCache[this.src]
-              this.$store.commit('SET_IMAGECACHE', this.imageCache)
-            })
+          getImageData(this.src).then(data => {
+            this.$set(this.imageCache, this.src, data.src)
+            this.$store.commit('SET_IMAGECACHE', this.imageCache)
+          }).catch(() => {
+            delete this.imageCache[this.src]
+            this.$store.commit('SET_IMAGECACHE', this.imageCache)
+          })
         }
       }
     },

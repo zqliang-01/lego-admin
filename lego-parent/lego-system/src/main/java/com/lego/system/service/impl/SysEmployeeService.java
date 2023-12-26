@@ -10,6 +10,7 @@ import com.lego.core.dto.TypeInfo;
 import com.lego.system.action.AddSysEmployeeAction;
 import com.lego.system.action.LoginSysEmployeeAction;
 import com.lego.system.action.ModifySysEmployeeAction;
+import com.lego.system.action.ModifySysEmployeeCurrentAction;
 import com.lego.system.action.ModifySysEmployeePasswordAction;
 import com.lego.system.action.ModifySysEmployeeRoleAction;
 import com.lego.system.action.ResetPasswordAction;
@@ -21,6 +22,7 @@ import com.lego.system.dto.SysLoginInfo;
 import com.lego.system.entity.SysEmployee;
 import com.lego.system.service.ISysEmployeeService;
 import com.lego.system.vo.SysEmployeeCreateVO;
+import com.lego.system.vo.SysEmployeeCurrentModifyVO;
 import com.lego.system.vo.SysEmployeeModifyVO;
 import com.lego.system.vo.SysEmployeePasswordModifyVO;
 import com.lego.system.vo.SysEmployeeRoleModifyVO;
@@ -44,6 +46,11 @@ public class SysEmployeeService extends BusiService<ISysEmployeeDao, SysEmployee
 	@Override
 	public void modify(String operatorCode, SysEmployeeModifyVO vo) {
 		new ModifySysEmployeeAction(operatorCode, vo).run();
+	}
+
+	@Override
+	public void modifyCurrent(String operatorCode, SysEmployeeCurrentModifyVO vo) {
+		new ModifySysEmployeeCurrentAction(operatorCode, vo).run();
 	}
 
 	@Override

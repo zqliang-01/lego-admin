@@ -40,6 +40,11 @@ public class SysEmployee extends BaseEntity {
     private SysDept dept;
 
     @Setter
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private SysFile image;
+
+    @Setter
     @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(fetch = FetchType.LAZY)
     @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -71,6 +76,7 @@ public class SysEmployee extends BaseEntity {
     	attributes.put("密码", getPassword());
     	attributes.put("部门", EntityUtil.toString(dept));
     	attributes.put("角色", EntityUtil.toString(roles));
+    	attributes.put("头像", EntityUtil.toString(image));
     	attributes.put("状态", enable ? "生效" : "失效");
     }
 

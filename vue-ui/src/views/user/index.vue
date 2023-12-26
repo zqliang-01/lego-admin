@@ -5,7 +5,7 @@
         <xr-avatar
           :name="userInfo.name"
           :size="50"
-          :src="userInfo.img"
+          :src="userInfo.imageCode"
           class="user-img" />
         <span class="username">
           {{ userInfo.name }}

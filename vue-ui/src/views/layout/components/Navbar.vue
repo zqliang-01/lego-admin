@@ -57,7 +57,7 @@
           <xr-avatar
             :name="userInfo.name"
             :size="32"
-            :src="userInfo.img"
+            :src="userInfo.imageCode"
             class="user-img" />
         </template>
         <i class="el-icon-caret-bottom mark"/>

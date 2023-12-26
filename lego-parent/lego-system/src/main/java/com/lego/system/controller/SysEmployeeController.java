@@ -17,6 +17,7 @@ import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysEmployeeInfo;
 import com.lego.system.service.ISysEmployeeService;
 import com.lego.system.vo.SysEmployeeCreateVO;
+import com.lego.system.vo.SysEmployeeCurrentModifyVO;
 import com.lego.system.vo.SysEmployeeModifyVO;
 import com.lego.system.vo.SysEmployeePasswordModifyVO;
 import com.lego.system.vo.SysEmployeeRoleModifyVO;
@@ -53,6 +54,12 @@ public class SysEmployeeController extends BaseController {
     @SaCheckPermission("manage:users:update")
     public JsonResponse<Object> modify(@RequestBody SysEmployeeModifyVO vo) {
     	employeeService.modify(getLoginCode(), vo);
+        return JsonResponse.success();
+    }
+
+    @PostMapping("/modify-current")
+    public JsonResponse<Object> modifyCurrent(@RequestBody SysEmployeeCurrentModifyVO vo) {
+    	employeeService.modifyCurrent(getLoginCode(), vo);
         return JsonResponse.success();
     }
 

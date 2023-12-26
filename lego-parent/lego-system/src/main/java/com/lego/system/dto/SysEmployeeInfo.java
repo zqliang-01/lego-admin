@@ -18,6 +18,7 @@ public class SysEmployeeInfo extends VersionDTO {
 
 	private String code;
 	private String name;
+	private String imageCode;
 	private String defaultLang = Constants.DEFAULT_LANG;
 	private TypeInfo dept;
 	private Date createTime;

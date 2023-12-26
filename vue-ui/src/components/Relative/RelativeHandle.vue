@@ -17,7 +17,7 @@
         :name="item.operator.name"
         :code="item.operator.code"
         :size="30"
-        :src="item.img"
+        :src="item.imageCode"
         :disabled="false"
         class="ha-img" />
       <div class="ha-name">{{ item.operator.name }}</div>

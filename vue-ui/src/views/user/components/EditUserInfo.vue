@@ -7,7 +7,7 @@
       <span class="text">个人信息</span>
     </div>
     <el-form
-      ref="form"
+      ref="userForm"
       :model="form"
       :rules="rules"
       label-position="left"
@@ -17,33 +17,24 @@
           <xr-avatar
             :name="userInfo.name"
             :size="70"
-            :src="userInfo.img"
+            :src="userInfo.imageCode"
             class="user-img" />
           <div class="change-avatar" @click="handleChangeAvatar">
             更换头像
           </div>
         </flexbox>
       </el-form-item>
-      <el-form-item
-        v-for="(item, index) in fieldList"
-        :key="index"
-        :prop="item.field"
-        :label="item.label">
-        <el-select
-          v-if="item.type == 'select'"
-          v-model="form[item.field]"
-          :disabled="item.disabled">
-          <el-option
-            v-for="option in item.setting"
-            :key="option.value"
-            :label="option.label"
-            :value="option.value" />
-        </el-select>
-        <el-input
-          v-else
-          v-model="form[item.field]"
-          :maxlength="30"
-          :disabled="item.disabled" />
+      <el-form-item prop="code" label="编码">
+        <el-input v-model="form.code" :maxlength="30" :disabled="true" />
+      </el-form-item>
+      <el-form-item prop="name" label="姓名">
+        <el-input v-model="form.name" :maxlength="30" />
+      </el-form-item>
+      <el-form-item label="部门">
+        <el-input v-model="userInfo.dept.name" :maxlength="30" :disabled="true" />
+      </el-form-item>
+      <el-form-item label="开户时间">
+        <el-input v-model="userInfo.createTime" :maxlength="30" :disabled="true" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSave">保存</el-button>
@@ -67,9 +58,11 @@
 
 <script>
 import {
-  adminUsersUpdateImgAPI,
-  employeeModifyAPI
+  employeeCurrentModifyAPI
 } from '@/api/user/personCenter'
+import {
+  fileUploadAPI
+} from '@/api/common'
 import { mapGetters } from 'vuex'
 import EditImage from '@/components/EditImage'
 
@@ -80,15 +73,10 @@ export default {
   },
   data() {
     return {
-      fieldList: [
-        { label: '工号', field: 'code', disabled: true },
-        { label: '姓名', field: 'name' },
-        { label: '部门', field: 'dept', disabled: true },
-        { label: '开户时间', field: 'createTime', disabled: true }
-      ],
       rules: {
         name: [{ required: true, message: '请填写姓名', trigger: 'blur' }]
       },
+      imageCode: '',
       form: {},
       loading: false,
       showEditImage: false,
@@ -112,13 +100,9 @@ export default {
   },
   methods: {
     initData() {
-      this.fieldList.map(field => {
-        let value = this.userInfo[field.field]
-        if (value.hasOwnProperty('name')) {
-          value = value.name
-        }
-        this.form[field.field] = value
-      })
+      this.form.code = this.userInfo.code
+      this.form.name = this.userInfo.name
+      this.form.imageCode = this.userInfo.imageCode
     },
     handleChangeAvatar() {
       document.getElementById('inputFile').click()
@@ -144,6 +128,7 @@ export default {
         self.editFile = file
         self.showEditImage = true
         e.target.value = ''
+        event.target.value = ''
       }
       reader.readAsDataURL(file)
     },
@@ -153,10 +138,13 @@ export default {
      */
     submitImage(data) {
       this.loading = true
-      const param = new FormData()
-      param.append('code', this.form.code)
-      param.append('file', data.blob, data.file.name)
-      adminUsersUpdateImgAPI(param).then(() => {
+      fileUploadAPI({
+        file: new File([data.blob], data.file.name),
+        entityCode: 'manage',
+        permissionCode: 'manage'
+      }).then(res => {
+        this.imageCode = res.data || ''
+        this.$set(this.userInfo, 'imageCode', res.data || '')
         this.loading = false
         this.$emit('change')
       }).catch(() => {
@@ -167,11 +155,13 @@ export default {
      * 个人信息编辑
      */
     handleSave() {
-      this.form.enable = true
-      this.$refs.form.validate(valid => {
+      if (this.imageCode) {
+        this.form.imageCode = this.imageCode
+      }
+      this.$refs.userForm.validate(valid => {
         if (valid) {
           this.loading = true
-          employeeModifyAPI(this.form).then(() => {
+          employeeCurrentModifyAPI(this.form).then(() => {
             this.loading = false
             this.$message.success('保存成功')
             this.$emit('change')

@@ -73,7 +73,7 @@ export default {
     },
 
     dataSrc() {
-      return this.src || this.userData.img
+      return this.src || this.userData.imageCode
     },
 
     userData() {

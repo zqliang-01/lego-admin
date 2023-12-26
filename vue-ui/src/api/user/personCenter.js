@@ -1,20 +1,6 @@
 import request from '@/utils/request'
 
 /**
- * 修改头像
- */
-export function adminUsersUpdateImgAPI(data) {
-  return request({
-    url: 'adminUser/updateImg',
-    method: 'post',
-    data: data,
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
-  })
-}
-
-/**
  * 个人详情
  */
 export function employeeCurrentGetAPI(data) {
@@ -27,11 +13,11 @@ export function employeeCurrentGetAPI(data) {
 /**
  * 修改个人信息
  */
-export function employeeModifyAPI(data) {
+export function employeeCurrentModifyAPI(params) {
   return request({
-    url: '/back-end/sys-employee/modify',
+    url: '/back-end/sys-employee/modify-current',
     method: 'post',
-    data: data,
+    data: params,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

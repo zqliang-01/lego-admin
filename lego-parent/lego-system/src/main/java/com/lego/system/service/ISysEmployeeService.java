@@ -7,6 +7,7 @@ import com.lego.core.dto.TypeInfo;
 import com.lego.system.dto.SysEmployeeInfo;
 import com.lego.system.dto.SysLoginInfo;
 import com.lego.system.vo.SysEmployeeCreateVO;
+import com.lego.system.vo.SysEmployeeCurrentModifyVO;
 import com.lego.system.vo.SysEmployeeModifyVO;
 import com.lego.system.vo.SysEmployeePasswordModifyVO;
 import com.lego.system.vo.SysEmployeeRoleModifyVO;
@@ -19,6 +20,8 @@ public interface ISysEmployeeService {
 	void add(String operatorCode, SysEmployeeCreateVO vo);
 
 	void modify(String operatorCode, SysEmployeeModifyVO vo);
+
+	void modifyCurrent(String operatorCode, SysEmployeeCurrentModifyVO vo);
 
 	void modifyRole(String operatorCode, SysEmployeeRoleModifyVO vo);
 
