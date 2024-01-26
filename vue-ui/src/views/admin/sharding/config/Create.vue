@@ -34,9 +34,12 @@ export default {
   computed: {
     title() {
       return this.action.type === 'update' ? '编辑配置' : '新建配置'
-    },
-    saveRequest() {
-      return this.action.type === 'update' ? configUpdateAPI : configAddAPI
+    }
+  },
+  data() {
+    return {
+      addRequest: configAddAPI,
+      updateRequest: configUpdateAPI
     }
   },
   created() {

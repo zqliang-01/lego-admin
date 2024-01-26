@@ -13,7 +13,7 @@
         :prop="item.fieldCode"
         :label="item.name"
         show-overflow-tooltip>
-        <template slot-scope="{ row, column, $index }">
+        <template slot-scope="{ row }">
           <field-view
             :props="item"
             :form-type="item.formType"

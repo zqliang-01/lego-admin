@@ -172,7 +172,7 @@ export default {
 
     .el-input-number {
       width: 140px;
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         padding: 0 8px;
         text-align: left;
       }

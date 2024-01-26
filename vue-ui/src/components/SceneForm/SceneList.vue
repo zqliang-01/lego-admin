@@ -104,7 +104,7 @@ export default {
   }
 }
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .scene-container {
   position: relative;
   width: 180px;

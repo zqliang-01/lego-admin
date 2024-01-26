@@ -1,10 +1,10 @@
-import {
-  mapGetters
-} from 'vuex'
-
+import { mapGetters } from 'vuex'
 import { debounce } from 'throttle-debounce'
 
-import { tableHeaderFieldListAPI } from '@/api/admin/formField'
+import { detailFieldListAPI } from '@/api/admin/formField'
+import { getMenuAuth, getFormAuth } from '@/utils/auth'
+
+import LegoCommonMixin from './LegoCommon'
 import ImportInfo from '../ImportInfo'
 import SlideView from '../SlideView'
 import LegoDetailHead from '../LegoDetailHead'
@@ -17,14 +17,17 @@ export default {
     LegoEditBaseInfo,
     ImportInfo
   },
+  mixins: [LegoCommonMixin],
   data() {
     return {
       loading: false,
-      visible: false,
+      pageIndex: 0,
       detailData: null,
-      tabsNumber: {},
+      relativeEntity: {
+        show: false
+      },
       importList: [],
-      tabNumRequest: null,
+      fieldList: [],
       showImportInfo: false,
       tabCurrentName: 'LegoEditBaseInfo',
       headFieldList: [
@@ -41,15 +44,20 @@ export default {
     }
   },
   props: {
+    detailCode: String,
     menuCode: String,
-    unionKey: String,
-    pageIndex: [String, Number],
-    pageList: Array, // 用于详情切换
+    formCode: String,
+    pageCodes: {
+      type: Array,
+      default: function() {
+        return []
+      }
+    }, // 用于详情切换
     // 监听的dom 进行隐藏详情
     listenerIDs: {
       type: Array,
       default: () => {
-        return ['crm-main-container']
+        return ['main-container']
       }
     },
     // 不监听
@@ -66,47 +74,43 @@ export default {
       }
     }
   },
-
   computed: {
     ...mapGetters([
       'allAuth'
     ]),
     auth() {
-      const menuList = this.menuCode.split(':')
-      var auth = { ...this.allAuth }
-      menuList.forEach(menu => {
-        if (auth) {
-          auth = auth[menu]
-        }
-      })
-      return auth
-    },
-    // 能否查看详情
-    canShowDetail() {
-      return this.auth && this.auth.detail
+      if (this.menuCode) {
+        return getMenuAuth(this.menuCode)
+      }
+      return getFormAuth(this.formCode)
     }
   },
-
   watch: {
-    code: function() {
-      if (this.canShowDetail) {
+    detailCode() {
+      if (this.auth.detail) {
         this.detailData = null
-        this.tabsNumber = {}
+        this.pageIndex = this.getRowIndex()
         this.getDetial()
         this.getTabsNum()
       }
     },
-
+    formCode: function() {
+      this.initFieldList()
+    },
     detailData() {
       if (this.$refs.detailMain && this.$refs.detailMain.style.background == 'white') {
         this.$refs.detailMain.style.background = 'inherit'
       }
     }
   },
-
   mounted() {
     this.$refs.detailMain.style.background = 'white'
     this.debouncedGetTabsNum = debounce(300, this.getTabsNum)
+    this.initFieldList()
+    if (this.detailCode) {
+      this.pageIndex = this.getRowIndex()
+      this.getDetial()
+    }
   },
 
   beforeDestroy() {
@@ -118,25 +122,26 @@ export default {
      * 详情
      */
     getDetial() {
-      this.loading = true
-      this.detailRequest(this.code)
-        .then(res => {
+      if (typeof this.detailRequest === 'function' && this.detailCode) {
+        this.loading = true
+        this.detailRequest(this.detailCode).then(res => {
           this.detailData = res.data
-          this.headFieldList.map(detail => {
-            detail.value = this.detailData[detail.fieldCode]
+          this.headFieldList.map(field => {
+            this.$set(field, 'value', this.detailData[field.fieldCode])
           })
           this.fieldList.map(field => {
-            field.value = this.detailData[field.fieldCode]
+            this.$set(field, 'isEdit', false)
+            this.$set(field, 'value', this.detailData[field.fieldCode])
           })
           this.systemFieldList.map(field => {
-            field.value = this.detailData[field.fieldCode]
+            this.$set(field, 'value', this.detailData[field.fieldCode])
           })
           this.loading = false
-        })
-        .catch(() => {
+        }).catch(() => {
           this.loading = false
           this.hideView()
         })
+      }
     },
     /**
      * 获取重要信息
@@ -145,31 +150,47 @@ export default {
       this.loading = true
     },
 
+    async initFieldList() {
+      if (this.formCode) {
+        await detailFieldListAPI(this.formCode).then(res => {
+          this.initRequest(res.data.form)
+          this.fieldList = res.data.fields
+          this.fieldList.forEach(field => {
+            this.initSettingValue(field)
+          })
+        })
+      }
+    },
     /**
      * 详情页面切换下一行
      */
     pageChange(type) {
+      let currentIndex = this.pageIndex
       if (type === 'left') {
-        if (this.pageIndex > 0) {
-          let pageIndex = this.pageIndex
-          this.$emit('update:pageIndex', --pageIndex)
-          this.$emit('update:code', this.pageList[pageIndex][this.unionKey])
-        } else {
-          this.$message.error('没有更多了')
-        }
+        currentIndex--
       } else {
-        if (this.pageIndex < this.pageList.length - 1) {
-          let pageIndex = this.pageIndex
-          this.$emit('update:pageIndex', ++pageIndex)
-          this.$emit('update:code', this.pageList[pageIndex][this.unionKey])
-        } else {
-          this.$message.error('没有更多了')
-        }
+        currentIndex++
+      }
+      if (currentIndex >= 0 && currentIndex < this.pageCodes.length) {
+        this.pageIndex = currentIndex
+        this.$emit('update:detailCode', this.pageCodes[this.pageIndex])
+      } else {
+        this.$message.error('没有更多了')
       }
     },
-
+    /**
+     * 获取当前code的下标
+     */
+    getRowIndex() {
+      for (let index = 0; index < this.pageCodes.length; index++) {
+        if (this.pageCodes[index] === this.detailCode) {
+          return index
+        }
+      }
+      return 0
+    },
     viewAfterEnter() {
-      if (this.canShowDetail) {
+      if (this.auth.detail) {
         this.getDetial()
         this.getTabsNum()
         this.$bus.on('crm-tab-num-update', this.debouncedGetTabsNum)
@@ -180,12 +201,6 @@ export default {
      * 获取tab数量
      */
     getTabsNum() {
-      if (!this.tabNumRequest) {
-        return
-      }
-      this.tabNumRequest({ code: this.code }).then(res => {
-        this.tabsNumber = res.data || {}
-      })
     },
     /**
      * 触发事件按钮
@@ -203,7 +218,7 @@ export default {
         this.updateRequest(data.data).then(res => {
           this.loading = false
           this.editSaveSuccess()
-        }).catch(err => {
+        }).catch(() => {
           this.loading = false
         })
         return
@@ -216,23 +231,14 @@ export default {
     },
 
     handleEntityClick(data) {
-      const detailComponent = this.entityDetailList.find(detail => detail.code == data.field.fieldCode)
-      if (detailComponent) {
-        detailComponent.detailCode = data.value.code
-        detailComponent.formCode = data.field.relativeForm.code
-        tableHeaderFieldListAPI(data.field.relativeForm.code).then(res => {
-          detailComponent.menuCode = res.data.permissionCode
-          detailComponent.fieldList = res.data.fields
-          this.visible = true
-          detailComponent.show = true
-        })
-      }
+      const au = getFormAuth(data.field.relativeForm.code)
+      this.relativeEntity.menuCode = au.code
+      this.relativeEntity.code = data.value.code
+      this.relativeEntity.formCode = data.field.relativeForm.code
+      this.relativeEntity.show = true
     },
-    closeEntityDetail(item) {
-      item.show = false
-      setTimeout(() => {
-        this.visible = false
-      }, 350)
+    closeEntityDetail() {
+      this.relativeEntity.show = false
     },
 
     /**

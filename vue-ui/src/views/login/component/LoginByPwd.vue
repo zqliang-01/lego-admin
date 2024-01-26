@@ -83,8 +83,8 @@ export default {
       codeUrl: '',
       captchaCode: '',
       form: {
-        username: '',
-        password: '',
+        username: 'admin',
+        password: 'hello@1234',
         code: ''
       },
       errorInfo: null,
@@ -227,7 +227,7 @@ export default {
     }
   }
 
-  /deep/ .el-checkbox {
+  ::v-deep .el-checkbox {
     .el-checkbox__inner {
       width: 14px;
       height: 14px;

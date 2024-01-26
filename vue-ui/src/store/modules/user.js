@@ -1,30 +1,15 @@
-import {
-  loginAPI,
-  logoutAPI
-} from '@/api/login'
-import {
-  permissionCurrentGetAPI
-} from '@/api/admin/permission'
-import {
-  resetRouter
-} from '@/router'
-
-import {
-  employeeCurrentGetAPI
-} from '@/api/user/personCenter'
-
-import {
-  addAuth,
-  removeAuth
-} from '@/utils/auth'
+import { loginAPI, logoutAPI } from '@/api/login'
+import { permissionCurrentGetAPI } from '@/api/admin/permission'
+import { resetRouter } from '@/router'
+import { employeeCurrentGetAPI } from '@/api/user/personCenter'
+import { addAuth, removeAuth } from '@/utils/auth'
 import Lockr from 'lockr'
 
 const user = {
   state: {
     userInfo: null, // 用户信息
-    // 权限信息
     allAuth: null, // 总权限信息 默认空 调整动态路由
-    manage: {} // 管理后台
+    manage: {} // 管理后台权限信息
   },
 
   mutations: {

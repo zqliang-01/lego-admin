@@ -303,7 +303,7 @@ export default {
 .main {
   height:100%;
 
-  /deep/ .xr-header {
+  ::v-deep .xr-header {
     padding: 15px 30px;
   }
 

@@ -38,7 +38,6 @@
 <script>
 import { employeeGetAPI } from '@/api/admin/employee'
 import { getImageData } from '@/utils'
-import XRTheme from '@/styles/xr-theme.scss'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -66,7 +65,7 @@ export default {
     },
     background: {
       type: String,
-      default: XRTheme.xrColorPrimary
+      default: '#2362FB'
     }
   },
   data() {
@@ -144,7 +143,7 @@ export default {
 }
 
 .el-avatar {
-  /deep/ img {
+  ::v-deep img {
     width: 100%;
     background: white !important;
   }

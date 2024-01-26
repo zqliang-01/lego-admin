@@ -144,7 +144,7 @@ export default {
       }
     }
 
-    .el-textarea /deep/ .el-textarea__inner {
+    .el-textarea ::v-deep .el-textarea__inner {
       resize: none;
       border: 0;
     }

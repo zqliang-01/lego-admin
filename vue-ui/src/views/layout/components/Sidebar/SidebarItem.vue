@@ -15,7 +15,7 @@
             :index="resolvePath(onlyOneChild.path)"
             :class="{ 'is-select': activeMenu == resolvePath(onlyOneChild.path)}">
             <item
-              :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)"
+              :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
               :title="onlyOneChild.meta.title"
               :num="onlyOneChild.meta.num"
               :count="onlyOneChild.count"
@@ -118,15 +118,16 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import './variables.scss';
+@import './variables.module.scss';
 
 .menu-wrapper {
-  /deep/ .el-submenu__title {
+  ::v-deep .el-submenu__title {
     height: auto;
     line-height: normal;
+    color: #bebec0;
   }
 
-  /deep/ .el-submenu.is-active {
+  ::v-deep .el-submenu.is-active {
     .el-submenu__title {
       span,
       i:first-child {
@@ -136,24 +137,27 @@ export default {
   }
 }
 
+
 .el-menu-item {
   height: auto;
   line-height: normal;
-  padding: 0 14px;
-  background-color: #001529 !important;
+  padding: 0 14px !important;
+  background-color: $menuBg !important;
   color: #bebec0;
 }
 
 .el-menu-item:not(.is-select) {
   color: $menuText !important;
+  height: auto;
 }
 
 // element自带的有问题 is-active 换成 is-select
 .el-menu-item.is-select {
+  height: auto;
   .menu-item-content {
     background-color: #2362fb !important;
     color: white !important;
-    /deep/ i {
+    ::v-deep i {
       color: white !important;
     }
   }
@@ -163,7 +167,7 @@ export default {
   .menu-item-content {
     background-color: rgba($color: #fff, $alpha: 0.1);
     color: white;
-    /deep/ i {
+    ::v-deep i {
       color: white !important;
     }
   }

@@ -5,27 +5,27 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.crm.dao.ICrmContractDao;
 import com.lego.crm.entity.CrmContract;
-import com.lego.crm.vo.CrmContractCreateVO;
-import com.lego.crm.entity.CrmDictionary;
 import com.lego.crm.entity.CrmCustomer;
+import com.lego.crm.entity.CrmDictionary;
 import com.lego.crm.entity.CrmLead;
+import com.lego.crm.vo.CrmContractCreateVO;
 
 public class AddCrmContractAction extends AddAction<CrmContract, ICrmContractDao> {
 
     private CrmContractCreateVO vo;
 
     public AddCrmContractAction(String operatorCode, CrmContractCreateVO vo) {
-        super("crm:contract", operatorCode);
+        super("crm_contract", operatorCode);
         this.vo = vo;
     }
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，合同新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，合同新增失败！");
-    	BusinessException.check(vo.getStartTime() != null, "开始时间不能为空，合同新增失败！");
-    	BusinessException.check(vo.getEndTime() != null, "结束时间不能为空，合同新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getOwnerCode()), "负责人不能为空，合同新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，合同新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，合同新增失败！");
+        BusinessException.check(vo.getStartTime() != null, "开始时间不能为空，合同新增失败！");
+        BusinessException.check(vo.getEndTime() != null, "结束时间不能为空，合同新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getOwnerCode()), "负责人不能为空，合同新增失败！");
     }
 
     @Override

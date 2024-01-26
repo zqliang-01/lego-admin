@@ -4,26 +4,26 @@ import com.lego.core.action.AddAction;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.crm.dao.ICrmLeadDao;
+import com.lego.crm.entity.CrmCustomer;
+import com.lego.crm.entity.CrmDictionary;
 import com.lego.crm.entity.CrmLead;
 import com.lego.crm.vo.CrmLeadCreateVO;
-import com.lego.crm.entity.CrmDictionary;
-import com.lego.crm.entity.CrmCustomer;
 
 public class AddCrmLeadAction extends AddAction<CrmLead, ICrmLeadDao> {
 
     private CrmLeadCreateVO vo;
 
     public AddCrmLeadAction(String operatorCode, CrmLeadCreateVO vo) {
-        super("crm:lead", operatorCode);
+        super("crm_lead", operatorCode);
         this.vo = vo;
     }
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，线索新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索新增失败！");
     }
 
     @Override

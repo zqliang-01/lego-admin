@@ -199,11 +199,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-/deep/ .el-dialog__body {
+::v-deep .el-dialog__body {
   padding: 10px 20px;
 }
 
-/deep/ .el-form-item__label {
+::v-deep .el-form-item__label {
   width: 100%;
   text-align: left;
 }
@@ -217,7 +217,7 @@ export default {
   .name {
     width: 300px;
     margin-left: 10px;
-    /deep/ .el-input__inner {
+    ::v-deep .el-input__inner {
       height: 32px;
     }
   }
@@ -240,13 +240,13 @@ export default {
   .el-select,
   .el-date-editor {
     width: 100%;
-    /deep/ .el-range__icon {
+    ::v-deep .el-range__icon {
       line-height: 26px;
     }
   }
 
   .el-input-number {
-    /deep/ input {
+    ::v-deep input {
       text-align: left;
       padding: 0 8px;
     }

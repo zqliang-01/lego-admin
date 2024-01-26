@@ -167,12 +167,12 @@ export default {
         }
       }
     .el-radio-group {
-      /deep/ .el-radio-button__inner {
+      ::v-deep .el-radio-button__inner {
           font-size: 12px;
           padding: 11px 12px;
         }
       }
-      /deep/ .type-select {
+      ::v-deep .type-select {
         height: 36px;
       }
     }

@@ -21,7 +21,7 @@
         :label="item.name"
         :key="index"
         show-overflow-tooltip>
-        <template slot-scope="{ row, column, $index }">
+        <template slot-scope="{ row }">
           <field-view
             :props="item"
             :form-type="item.formType"

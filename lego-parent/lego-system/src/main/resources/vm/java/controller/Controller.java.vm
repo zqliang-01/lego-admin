@@ -32,47 +32,47 @@ public class ${ClassName}Controller extends BaseController {
     private I${ClassName}Service ${FieldName}Service;
 
     @PostMapping("/add")
-    @SaCheckPermission("${PermissionCode}:add")
+    @SaCheckPermission("${PermissionCode}_add")
     public JsonResponse<Object> add(@RequestBody ${ClassName}CreateVO vo) {
         ${FieldName}Service.add(getLoginCode(), vo);
         return JsonResponse.success();
     }
 
     @PostMapping("/update")
-    @SaCheckPermission("${PermissionCode}:update")
+    @SaCheckPermission("${PermissionCode}_update")
     public JsonResponse<Object> update(@RequestBody ${ClassName}ModifyVO vo) {
         ${FieldName}Service.update(getLoginCode(), vo);
         return JsonResponse.success();
     }
 
     @PostMapping("/delete")
-    @SaCheckPermission("${PermissionCode}:delete")
+    @SaCheckPermission("${PermissionCode}_delete")
     public JsonResponse<Object> delete(@RequestBody List<String> codes) {
         ${FieldName}Service.delete(getLoginCode(), codes);
         return JsonResponse.success();
     }
 
     @PostMapping("/list")
-    @SaCheckPermission("${PermissionCode}:read")
+    @SaCheckPermission("${PermissionCode}_read")
     public JsonResponse<LegoPage<${ClassName}Info>> list(@RequestBody GenericSearchVO vo) {
         return JsonResponse.success(${FieldName}Service.findPageBy(vo));
     }
 
     @GetMapping("/get/{code}")
-    @SaCheckPermission("${PermissionCode}:detail")
+    @SaCheckPermission("${PermissionCode}_detail")
     public JsonResponse<${ClassName}Info> getByCode(@PathVariable String code) {
         return JsonResponse.success(${FieldName}Service.findBy(code));
     }
 
     @PostMapping("/export")
-    @SaCheckPermission("${PermissionCode}:export")
+    @SaCheckPermission("${PermissionCode}_export")
     public void exportAll(@RequestBody List<String> codes, HttpServletResponse response) {
         List<${ClassName}Info> datas = ${FieldName}Service.findBy(codes);
         ExcelUtil.exportExcel(datas, "${FunctionName}数据", ${ClassName}Info.class, response);
     }
 
     @PostMapping("/export-all")
-    @SaCheckPermission("${PermissionCode}:export")
+    @SaCheckPermission("${PermissionCode}_export")
     public void exportAll(@RequestBody GenericSearchVO vo, HttpServletResponse response) {
         List<${ClassName}Info> datas = ${FieldName}Service.findBy(vo);
         ExcelUtil.exportExcel(datas, "${FunctionName}数据", ${ClassName}Info.class, response);

@@ -90,7 +90,10 @@ export default {
       'userInfo'
     ]),
     auth() {
-      const menuList = this.menuCode.split(':')
+      if (!this.menuCode) {
+        return {}
+      }
+      const menuList = this.menuCode.split('_')
       var auth = { ...this.allAuth }
       menuList.forEach(menu => {
         if (auth) {
@@ -183,7 +186,7 @@ export default {
   }
 
   .el-input {
-    /deep/ .el-input-group__append {
+    ::v-deep .el-input-group__append {
       background-color: $xr-color-primary;
       border-color: $xr-color-primary;
       color: white;

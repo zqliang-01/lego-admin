@@ -76,7 +76,7 @@
 </template>
 <script>
 import { employeeAddAPI, employeeModifyAPI } from '@/api/admin/employee'
-import SelectTree from '@/components/SelectTree'
+import SelectTree from '@/components/NewCom/SelectTree'
 
 export default {
   name: 'EmployeeDialog',
@@ -200,20 +200,20 @@ export default {
   overflow-y: auto;
   padding: 20px;
 }
-.new-dialog-form /deep/ .el-form-item {
+.new-dialog-form ::v-deep .el-form-item {
   width: 50%;
   margin: 0;
   padding-bottom: 10px;
 }
-.new-dialog-form /deep/ .el-form-item .el-form-item__label {
+.new-dialog-form ::v-deep .el-form-item .el-form-item__label {
   padding: 0;
 }
 .new-dialog-form {
-  /deep/ .el-form-item:nth-child(even) {
+  ::v-deep .el-form-item:nth-child(even) {
     padding-left: 15px;
   }
 
-  /deep/ .el-form-item:nth-child(odd) {
+  ::v-deep .el-form-item:nth-child(odd) {
     padding-right: 15px;
   }
 }

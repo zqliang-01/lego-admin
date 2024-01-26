@@ -168,12 +168,12 @@ export default {
 .new-dialog-form {
   padding: 0px;
 }
-.new-dialog-form /deep/ .el-form-item {
+.new-dialog-form ::v-deep .el-form-item {
   width: 100%;
   margin: 0;
   padding-bottom: 10px;
 }
-.new-dialog-form /deep/ .el-form-item .el-form-item__label {
+.new-dialog-form ::v-deep .el-form-item .el-form-item__label {
   padding: 0;
 }
 </style>

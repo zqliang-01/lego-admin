@@ -3,7 +3,7 @@ import request from '@/utils/request'
 export function genTableListAPI(data) {
   return request({
     url: '/back-end/sys-gen-table/list',
-    method: 'get',
+    method: 'post',
     data: data
   })
 }

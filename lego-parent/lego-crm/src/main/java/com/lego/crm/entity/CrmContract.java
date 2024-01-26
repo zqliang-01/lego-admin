@@ -1,28 +1,26 @@
 package com.lego.crm.entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Map;
+import com.lego.core.data.hibernate.BusEntity;
+import com.lego.core.util.DateUtil;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.lego.core.data.hibernate.BusiEntity;
-import com.lego.core.util.DateUtil;
-import com.lego.core.util.EntityUtil;
-import com.lego.core.util.StringUtil;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
 
 @Setter
 @Getter
 @Entity
 @Table(name = "crm_contract")
-public class CrmContract extends BusiEntity {
+public class CrmContract extends BusEntity {
 
     private Date startTime;
     private Date endTime;
@@ -41,7 +39,8 @@ public class CrmContract extends BusiEntity {
     @JoinColumn(name = "type_id")
     private CrmDictionary type;
 
-    protected CrmContract() { }
+    protected CrmContract() {
+    }
 
     public CrmContract(String code, String name) {
         super(code, name);

@@ -90,19 +90,18 @@
       重<br>要<br>信<br>息<br>
       <i :class="{ 'is-reverse': !showImportInfo }" class="el-icon-arrow-right el-icon--right" />
     </el-button>
-    <div
-      v-show="visible"
-      class="full-container">
-      <component
-        v-for="(item, index) in entityDetailList"
-        v-if="item.show"
-        :key="index"
-        :is="item.name"
-        :code.sync="item.detailCode"
-        :menu-code="item.menuCode"
-        :field-list="item.fieldList"
-        @hide-view="closeEntityDetail(item)"
-        class="d-view"/>
+    <div v-show="visible" class="full-container">
+      <template v-for="(item, index) in entityDetailList">
+        <lego-all-detail
+          :visible.sync="item.show"
+          :key="index"
+          :domName="item.name"
+          :code.sync="item.detailCode"
+          :menu-code="item.menuCode"
+          :field-list="item.fieldList"
+          class="d-view"
+          @hide-view="closeEntityDetail(item)"/>
+      </template>
     </div>
   </slide-view>
 </template>
@@ -167,7 +166,7 @@ export default {
     /** 更多操作 */
     actionTypes() {
       return [
-        { name: '测试', type: 'test', icon: 'transfer' }
+        { name: '删除', type: 'delete', icon: 'delete' }
       ]
     }
   },
@@ -180,12 +179,8 @@ export default {
         }).then(() => {
           const loading = Loading.service({ fullscreen: true, text: '删除中...' })
           this.deleteRequest([this.code]).then(res => {
-            this.getMainTable().clearSelection()
-            this.getList()
-            loading.close()
-          })
-          .catch(() => {
-            loading.close()
+            this.$emit('handle', { type: 'save-success' })
+            this.hideView()
           })
         })
       }

@@ -1,28 +1,42 @@
 package com.lego.system.service;
 
-import java.util.List;
-
+import com.lego.core.dto.TypeInfo;
 import com.lego.system.dto.SysAppInfo;
 import com.lego.system.dto.SysPermissionInfo;
 import com.lego.system.vo.SysPermissionCreateVO;
+import com.lego.system.vo.SysPermissionModifyVO;
+
+import java.util.List;
 
 public interface ISysPermissionService {
 
-	void add(String employeeCode, SysPermissionCreateVO vo);
+    void add(String employeeCode, SysPermissionCreateVO vo);
 
-	List<SysPermissionInfo> findAll();
+    List<SysPermissionInfo> findBy(String routeType);
 
-	List<SysPermissionInfo> findByEmployee(String employeeCode);
+    List<SysPermissionInfo> findByEmployee(String employeeCode);
 
-	List<SysPermissionInfo> findAllMenu();
+    List<SysPermissionInfo> findDynamicByEmployee(String employeeCode);
 
-	List<SysAppInfo> findAllApp();
+    SysPermissionInfo findByCode(String code);
 
-	List<SysAppInfo> findAppBy(String employeeCode);
+    List<SysPermissionInfo> findAllMenu();
 
-	List<String> findSortAppBy(String employeeCode);
+    List<SysAppInfo> findAllApp();
 
-	List<String> findCodeBy(String roleCode);
+    List<SysAppInfo> findAppBy(String employeeCode);
 
-	int findMaxSn(String appCode);
+    List<String> findSortAppBy(String employeeCode);
+
+    List<String> findCodeBy(String roleCode);
+
+    int findMaxSn(String appCode);
+
+    List<TypeInfo> findAllType();
+
+    List<TypeInfo> findAllRouteType();
+
+    void modify(String loginCode, SysPermissionModifyVO vo);
+
+    void delete(String operatorCode, String code);
 }

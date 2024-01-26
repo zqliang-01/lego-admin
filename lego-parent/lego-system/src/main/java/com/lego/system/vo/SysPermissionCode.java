@@ -6,10 +6,11 @@ import java.util.List;
 public interface SysPermissionCode {
 
     String manage = "manage";
-	String manageUser = "manage:users";
-	String manageRole = "manage:role";
-	String manageCustomForm = "manage:customForm";
-	String manageGenTable = "manage:genTable";
+    String manageUser = "manage_users";
+    String manageRole = "manage_role";
+    String manageCustomForm = "manage_customForm";
+    String manageGenTable = "manage_genTable";
+    String manageWorkFlow = "manage_workflow";
 
-	List<String> SYSTEM_APP = Arrays.asList("manage");
+    List<String> SYSTEM_APP = Arrays.asList("manage");
 }

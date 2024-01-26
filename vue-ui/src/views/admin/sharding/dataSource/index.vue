@@ -163,7 +163,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .content {
   height: 100%;
   .table {

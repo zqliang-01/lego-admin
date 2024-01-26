@@ -10,9 +10,9 @@
       v-if="!disabled && showSelectView"
       ref="legoRelative"
       :radio="radio"
-      :action="action"
       :field-list="tableFieldList"
       :selected-data="selectedData"
+      :query-api-url="queryApiUrl"
       @close="showPopover = false"
       @changeCheckout="checkInfos"/>
     <flexbox
@@ -67,12 +67,7 @@ export default {
       type: Boolean,
       default: false
     },
-    action: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
+    queryApi: String
   },
   data() {
     return {
@@ -90,35 +85,42 @@ export default {
   },
   watch: {
     value: function(val) {
+      if (isEmpty(val)) {
+        this.dataValue = []
+        this.checkInfos(this.dataValue)
+      }
       if (!isEmpty(val) && val.code) {
         this.dataValue = [val]
         this.checkInfos(this.dataValue)
       }
     },
     formCode: function(val) {
-      if (val) {
-        tableHeaderFieldListAPI(val).then(res => {
-          this.tableFieldList = res.data
-        })
-        return
-      }
-      this.tableFieldList = objDeepCopy(this.fieldList)
+      this.initFields()
     }
   },
   mounted() {
+    if (isEmpty(this.value)) {
+      this.dataValue = []
+      this.checkInfos(this.dataValue)
+    }
     if (!isEmpty(this.value) && this.value.code) {
       this.dataValue = [this.value]
       this.checkInfos(this.dataValue)
     }
-    if (this.formCode) {
-      tableHeaderFieldListAPI(this.formCode).then(res => {
-        this.tableFieldList = res.data.fields
-      })
-    } else {
-      this.tableFieldList = objDeepCopy(this.fieldList)
-    }
+    this.initFields()
   },
   methods: {
+    initFields() {
+      if (this.formCode) {
+        tableHeaderFieldListAPI(this.formCode).then(res => {
+          this.queryApiUrl = res.data.form.queryApiUrl
+          this.tableFieldList = res.data.fields
+        })
+      } else {
+        this.queryApiUrl = this.queryApi
+        this.tableFieldList = objDeepCopy(this.fieldList)
+      }
+    },
     /** 选中 */
     checkInfos(data) {
       this.dataValue = data

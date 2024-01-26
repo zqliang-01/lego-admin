@@ -7,7 +7,7 @@
     <el-table-column
       label="序号"
       width="50">
-      <template slot-scope="{ row, column, $index }">
+      <template slot-scope="{ $index }">
         {{ $index + 1 }}
       </template>
     </el-table-column>
@@ -22,7 +22,7 @@
         slot-scope="scope">
         <span v-if="item.isNull == 1" class="red">*</span>{{ item.name }}
       </template>
-      <template slot-scope="{ row, column, $index }">
+      <template slot-scope="{ $index }">
         <form-item
           :prop-prefix="`${propPrefix || ''}[${$index}].`"
           :item="fieldList[index]"
@@ -42,7 +42,7 @@
       fixed="right"
       label="操作"
       width="60">
-      <template slot-scope="{ row, column, $index }">
+      <template slot-scope="{ $index }">
         <el-button
           :icon="'icon-bin' | iconPre" type="text" @click="deleteClick($index)"/>
       </template>

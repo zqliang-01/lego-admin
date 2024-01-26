@@ -8,7 +8,6 @@
 import { mapGetters } from 'vuex'
 import cache from '@/utils/cache'
 
-
 export default {
   name: 'App',
   components: {},
@@ -56,7 +55,6 @@ export default {
             window.location.reload()
           }
         }
-        this.$bus.emit('document-visibility', document[state])
       }, false)
     },
 
@@ -81,9 +79,7 @@ export default {
 
 <style>
 #app {
-  width: 100%;
   position: relative;
-  height: 100%;
   min-width: 1200px;
   min-height: 605px;
 }

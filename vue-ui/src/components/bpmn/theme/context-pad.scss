@@ -1,0 +1,8 @@
+.enhancement-op {
+  background: url('@/assets/img/bpmn/tool.png');
+  background-size: 100% 100%;
+  &:hover {
+    background-image: url('@/assets/img/bpmn/tool.png') !important;
+    background-size: 100% 100% !important;
+  }
+}

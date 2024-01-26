@@ -136,10 +136,7 @@ export default {
       } else {
         var hidden = true
         this.noListenerIDs.forEach(element => {
-          if (
-            document.getElementById(element) &&
-          document.getElementById(element).contains(e.target)
-          ) {
+          if (document.getElementById(element) && document.getElementById(element).contains(e.target)) {
             hidden = false
           }
         })
@@ -157,10 +154,7 @@ export default {
           }
         })
 
-        if (
-          this.$el &&
-        this.$el.contains(e.target)
-        ) {
+        if (this.$el && this.$el.contains(e.target)) {
           hidden = false
         }
         if (hidden) {
@@ -225,7 +219,7 @@ export default {
   border-bottom-right-radius: 0;
   padding: 6px;
 
-  /deep/ i {
+  ::v-deep i {
     font-size: 26px;
     margin-right: 0;
   }

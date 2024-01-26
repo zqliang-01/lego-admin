@@ -222,7 +222,7 @@ export function previewFile(path, name) {
 }
 
 export function previewFileUrl(path, name) {
-  return `${SystemConfig.getLocationOrigin()}/file/onlinePreview?url=${encodeURIComponent(Base64.encode(`${path}${path.includes('?fullfilename=') ? '' : `?fullfilename=${name || ''}`}&c=${axios.defaults.headers['Admin-Token']}`))}`
+  return `/file/onlinePreview?url=${encodeURIComponent(Base64.encode(`${path}${path.includes('?fullfilename=') ? '' : `?fullfilename=${name || ''}`}&c=${axios.defaults.headers['Admin-Token']}`))}`
 }
 
 export function getFileIconWithSuffix(ext) {
@@ -467,18 +467,6 @@ export function getImageData(code) {
   })
 }
 
-/**
- * path  和 name
- */
-export function downloadFile(data) {
-  fileUrlDownloadAPI(data.path).then(res => {
-    const blob = new Blob([res.data], {
-      type: ''
-    })
-    downloadFileWithBuffer(blob, data.name || '文件')
-  }).catch(() => {})
-}
-
 export function dataURLtoBlob(dataurl) {
   // eslint-disable-next-line one-var
   var arr = dataurl.split(','),
@@ -528,7 +516,7 @@ export function getExcelLines(file) {
       // var fromTo = ''
       // 遍历每张表读取
       for (var sheet in workbook.Sheets) {
-        if (workbook.Sheets.hasOwnProperty(sheet)) {
+        if (Object.prototype.hasOwnProperty.call(workbook.Sheets, sheet)) {
           // fromTo = workbook.Sheets[sheet]['!ref']
           buildings = buildings.concat(XLSX.utils.sheet_to_json(workbook.Sheets[sheet]))
           break // 如果只取第一张sheet表，就取消注释这行
@@ -538,7 +526,7 @@ export function getExcelLines(file) {
 
       return fileRows
     } catch (e) {
-      console.log('文件类型不正确', e)
+      // console.log('文件类型不正确', e)
       return
     }
   }
@@ -719,7 +707,7 @@ export function getBaiduMap() {
       }
       const $script = document.createElement('script')
       global.document.body.appendChild($script)
-      $script.src = `https://api.map.baidu.com/api?v=3.0&ak=${SystemConfig.baiduKey}&callback=_initBaiduMap`
+      $script.src = `https://api.map.baidu.com/api?v=3.0&ak=${process.env.baiduKey}&callback=_initBaiduMap`
     })
     return global.BMap._preloader
   } else if (!global.BMap._preloader) {

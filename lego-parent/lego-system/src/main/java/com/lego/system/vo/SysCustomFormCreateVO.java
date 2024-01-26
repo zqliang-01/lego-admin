@@ -1,7 +1,6 @@
 package com.lego.system.vo;
 
 import com.lego.core.vo.VO;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,9 +8,17 @@ import lombok.Setter;
 @Setter
 public class SysCustomFormCreateVO extends VO {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String name;
-	private String tableCode;
-	private String permissionCode;
+    private String code;
+    private String name;
+    private String table;
+    private boolean enable;
+    private String queryApiUrl;
+    private String detailApiUrl;
+    private String addApiUrl;
+    private String updateApiUrl;
+    private String deleteApiUrl;
+    private String exportApiUrl;
+    private String exportAllApiUrl;
 }

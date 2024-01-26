@@ -13,7 +13,7 @@ import javax.persistence.ManyToOne;
 #end
 import javax.persistence.Table;
 
-import com.lego.core.data.hibernate.BusiEntity;
+import com.lego.core.data.hibernate.BusEntity;
 #foreach ($import in $EntityImportList)
 import ${import};
 #end

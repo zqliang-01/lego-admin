@@ -31,7 +31,6 @@
             :field-from="editForm" />
           <flexbox
             v-else
-            :class="{'can-check':isModule(item)}"
             align="stretch"
             style="width: 100%;"
             class="form-item__value">
@@ -40,7 +39,10 @@
               :form-type="item.formType"
               :value="item.value"
               @clickEntity="handleEntityClick"/>
-            <i v-if="getEditAuth(item)" :class="'edit form-item__edit' | iconPre" @click.stop="editClick(item, index)" />
+            <i
+              v-if="canEdit(item)"
+              :class="'edit form-item__edit' | iconPre"
+              @click.stop="editClick(item, index)" />
           </flexbox>
         </el-form-item>
       </el-form>
@@ -80,9 +82,9 @@
 import Sections from './Sections'
 import FieldView from './NewCom/Form/FieldView'
 import Field from './NewCom/Form/Field'
-import FileListView from './FileListView'
-
+import { mapGetters } from 'vuex'
 import { objDeepCopy } from '@/utils'
+import { getMenuAuth, getFormAuth } from '@/utils/auth'
 import { getFormFieldValue } from './NewCom/Form/utils'
 import GenerateRulesMixin from './Mixins/GenerateRules'
 
@@ -90,26 +92,27 @@ export default {
   name: 'LegoditBaseInfo',
   components: {
     Sections,
-    FileListView,
     FieldView,
     Field
   },
-  filters: {
-  },
   mixins: [GenerateRulesMixin],
   props: {
-    code: [String, Number],
-    detail: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-    // 自定义字段
+    menuCode: String,
+    formCode: String,
+    detailCode: [String, Number],
     fieldList: Array,
-    systemFieldList: Array,
-    // 系统消息之前的数据
-    otherList: Array
+    systemFieldList: Array
+  },
+  computed: {
+    ...mapGetters([
+      'allAuth'
+    ]),
+    auth() {
+      if (this.menuCode) {
+        return getMenuAuth(this.menuCode)
+      }
+      return getFormAuth(this.formCode)
+    }
   },
   data() {
     return {
@@ -123,17 +126,14 @@ export default {
   },
   inject: ['rootTabs'],
   watch: {
-    detail: {
-      handler(val) {
-        if (this.fieldList) {
-          this.editCancel()
-        }
-      },
-      deep: true,
-      immediate: true
+    detailCode(val) {
+      if (this.fieldList) {
+        this.editCancel()
+      }
     },
     'rootTabs.currentName'(val) {
       if (val === 'LegoEditBaseInfo') {
+        console.log(val)
       }
     }
   },
@@ -143,13 +143,13 @@ export default {
     })
   },
   methods: {
-    /**
-     * 控制是否支持链接点击打开其他模块详情
-     */
-    isModule(item) {
-      return false
+    canEdit(item) {
+      let au = this.auth
+      if (item.formType === 'entity') {
+        au = getFormAuth(item.relativeForm.code)
+      }
+      return !item.unique && au.update
     },
-
     /**
      * 是整行展示字段
      */
@@ -157,13 +157,6 @@ export default {
       return [
         'map_address',
         'file'].includes(item.formType)
-    },
-
-    /**
-     * 编辑逻辑
-     */
-    getEditAuth(item) {
-      return !item.unique
     },
 
     /**
@@ -236,14 +229,14 @@ export default {
 
 .section {
   margin-top: 0;
-  /deep/ .content {
+  ::v-deep .content {
     overflow: hidden;
   }
 }
 
 .el-input-number {
   width: 100%;
-  /deep/ .el-input__inner {
+  ::v-deep .el-input__inner {
     text-align: left;
     padding: 0 8px;
   }
@@ -259,7 +252,7 @@ export default {
 
 .el-form--flex {
   margin: 20px 10px 0;
-  /deep/ .el-form-item {
+  ::v-deep .el-form-item {
     padding: 0 40px 0 15px;
     margin-bottom: 13px;
     max-width: 100%;

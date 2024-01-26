@@ -3,7 +3,7 @@
     <flexbox
       class="t-section"
       align="stretch">
-      <i :class="menuIcon | iconPre" class="menu-icon" />
+      <i :class="auth.icon | iconPre" class="menu-icon" />
       <div class="t-section__bd">
         <div class="type-name">{{ typeName }}</div>
         <flexbox class="type-content">
@@ -14,7 +14,7 @@
             placement="top-start">
             <div class="name">{{ name }}</div>
           </el-tooltip>
-          <el-button-group v-if="pageList && pageList.length > 1" class="wk-header-page-btn">
+          <el-button-group v-if="pageCodes && pageCodes.length > 1" class="wk-header-page-btn">
             <el-button icon="el-icon-arrow-left" @click="$emit('pageChange', 'left')"/>
             <el-button icon="el-icon-arrow-right" @click="$emit('pageChange', 'right')"/>
           </el-button-group>
@@ -71,6 +71,7 @@
 <script type="text/javascript">
 import { mapGetters } from 'vuex'
 import FieldView from './NewCom/Form/FieldView'
+import { getMenuAuth, getFormAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoDetailHead',
@@ -80,6 +81,7 @@ export default {
   props: {
     typeName: String,
     menuCode: String,
+    formCode: String,
     detail: {
       type: Object,
       default: () => {
@@ -98,22 +100,15 @@ export default {
         return []
       }
     },
-    pageList: Array
+    pageCodes: Array
   },
   computed: {
     ...mapGetters(['allAuth']),
     auth() {
-      const menuList = this.menuCode.split(':')
-      var auth = { ...this.allAuth }
-      menuList.forEach(menu => {
-        if (auth) {
-          auth = auth[menu]
-        }
-      })
-      return auth
-    },
-    menuIcon() {
-      return this.auth.icon
+      if (this.menuCode) {
+        return getMenuAuth(this.menuCode)
+      }
+      return getFormAuth(this.formCode)
     },
     name() {
       if (this.detail) {
@@ -259,7 +254,7 @@ export default {
 }
 
 .head-handle-button {
-  /deep/ i {
+  ::v-deep i {
     font-size: 13px;
     margin-right: 5px;
   }

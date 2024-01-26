@@ -94,7 +94,7 @@ $btn-delete-color: #f94e4e;
   outline: none;
   background: transparent !important;
   padding: 0;
-  /deep/ i {
+  ::v-deep i {
     font-weight: 600;
     font-size: 18px;
     cursor: pointer;

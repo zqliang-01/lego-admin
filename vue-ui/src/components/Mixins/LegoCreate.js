@@ -2,9 +2,11 @@ import XrCreate from '../XrCreate'
 import CreateSections from '../CreateSections'
 import FormItems from '../NewCom/Form/FormItems'
 
-import { getFormFieldValue } from '../NewCom/Form/utils'
+import { showFormErrorMessage } from '../NewCom/Form/utils'
 import GenerateRulesMixin from './GenerateRules'
-import { codeGeneratorGenerateAPI } from '@/api/admin/codeGenerator'
+import LegoCommonMixin from './LegoCommon'
+import { createFieldListAPI } from '@/api/admin/formField'
+import { getMenuAuth, getFormAuth } from '@/utils/auth'
 
 export default {
   // 新建编辑
@@ -13,7 +15,7 @@ export default {
     CreateSections,
     FormItems
   },
-  mixins: [GenerateRulesMixin],
+  mixins: [GenerateRulesMixin, LegoCommonMixin],
   props: {
     action: {
       type: Object,
@@ -25,6 +27,8 @@ export default {
         }
       }
     },
+    menuCode: String,
+    formCode: String,
     fieldList: {
       type: Array,
       default: () => {
@@ -32,24 +36,51 @@ export default {
       }
     }
   },
+  watch: {
+    formCode() {
+      this.initField()
+    }
+  },
+  computed: {
+    saveRequest() {
+      return this.action.type === 'update' ? this.updateRequest : this.addRequest
+    },
+    auth() {
+      if (this.menuCode) {
+        const menu = getMenuAuth(this.menuCode)
+        this.$emit('update:formCode', menu.formCode)
+        return menu
+      }
+      return getFormAuth(this.formCode)
+    }
+  },
   data() {
     return {
       loading: false,
-      test: [],
       dataFieldList: [],
       fieldFrom: {},
       fieldRules: {}
     }
   },
+  created() {
+    this.initField()
+  },
   methods: {
     initField() {
+      if (this.fieldList.length > 0) {
+        this.initLocalField()
+        return
+      }
+      this.initRemoteField()
+    },
+    initLocalField() {
       let maxIndex = 0
+      this.dataFieldList = []
       this.fieldList.forEach(field => {
+        this.initSettingValue(field)
         maxIndex = field.xAxis > maxIndex ? field.xAxis : maxIndex
-        field.disabled = this.action.type === 'update' && field.unique
-        this.getDefaultValue(field).then(res => {
-          this.$set(this.fieldFrom, field.fieldCode, res)
-        })
+        field.disabled = this.getDisable(field, this.action.type === 'update')
+        this.setDefaultValue(field, this.fieldFrom, this.action.type === 'save')
         this.fieldRules[field.fieldCode] = this.getRules(field)
       })
       for (var i = 0; i < maxIndex + 1; ++i) {
@@ -61,18 +92,24 @@ export default {
         }
       }
     },
-
-    async getDefaultValue(field) {
-      const isCreate = this.action.type === 'save'
-      let value = getFormFieldValue(field, isCreate)
-      if (isCreate && field.unique && field.codeGenerator && field.codeGenerator.code) {
-        await codeGeneratorGenerateAPI(field.codeGenerator.code).then(res => {
-          value = res.data
-        })
+    initRemoteField() {
+      if (!this.formCode) {
+        return
       }
-      return value
+      createFieldListAPI(this.formCode).then(res => {
+        this.initRequest(res.data.form)
+        this.dataFieldList = res.data.fields
+        this.dataFieldList.forEach(fields => {
+          fields.forEach(field => {
+            this.initSettingValue(field)
+            field.value = this.action.detailData[field.fieldCode]
+            field.disabled = this.getDisable(field, this.action.type === 'update')
+            this.setDefaultValue(field, this.fieldFrom, this.action.type === 'save')
+            this.fieldRules[field.fieldCode] = this.getRules(field)
+          })
+        })
+      })
     },
-
     /**
      * 保存
      */
@@ -82,7 +119,7 @@ export default {
       createForm.validate(valid => {
         if (!valid) {
           this.loading = false
-          this.getFormErrorMessage(createForm)
+          showFormErrorMessage(createForm)
           return false
         }
         this.saveRequest(this.fieldFrom)
@@ -102,25 +139,6 @@ export default {
      */
     close() {
       this.$emit('close')
-    },
-    /**
-     * 获取error错误
-     */
-    getFormErrorMessage(createForm) {
-      // 提示第一个error
-      if (createForm.fields) {
-        for (
-          let index = 0;
-          index < createForm.fields.length;
-          index++
-        ) {
-          const ruleField = createForm.fields[index]
-          if (ruleField.validateState == 'error') {
-            this.$message.error(ruleField.validateMessage)
-            break
-          }
-        }
-      }
     }
   }
 }

@@ -185,7 +185,7 @@ export default {
   }
 }
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .map {
   height: 150px;
   width: 100%;
@@ -199,12 +199,12 @@ export default {
   padding-bottom: 10px;
 }
 
-.distpicker-address-wrapper /deep/ select {
+.distpicker-address-wrapper ::v-deep select {
   height: 34px;
   font-size: 12px;
   border-radius: 0.1rem;
 }
-/deep/ .el-dialog__body {
+::v-deep .el-dialog__body {
   padding: 10px 20px 20px;
 }
 </style>

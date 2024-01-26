@@ -279,7 +279,7 @@ export default {
   line-height: 80px;
   text-align: center;
 }
-.upload /deep/ .el-upload-dragger {
+.upload ::v-deep .el-upload-dragger {
   width: 300px;
   height: 80px;
 }

@@ -2,10 +2,10 @@ package com.lego.sharding.vo;
 
 public interface ShardingPermissionCode {
 
-	String sharding = "manage:sharding";
-	String shardingConfig = "manage:sharding:config";
-	String shardingAlgorithm = "manage:sharding:algorithm";
-	String shardingDataSource = "manage:sharding:dataSource";
-	String shardingTableConfig = "manage:sharding:tableConfig";
-	String shardingTemplate = "manage:sharding:template";
+    String sharding = "manage_sharding";
+    String shardingConfig = "manage_sharding_config";
+    String shardingAlgorithm = "manage_sharding_algorithm";
+    String shardingDataSource = "manage_sharding_dataSource";
+    String shardingTable = "manage_sharding_table";
+    String shardingTemplate = "manage_sharding_template";
 }

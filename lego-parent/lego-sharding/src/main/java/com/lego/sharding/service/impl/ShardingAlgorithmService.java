@@ -1,10 +1,6 @@
 package com.lego.sharding.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.lego.core.data.hibernate.impl.BusiService;
+import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericConditionItemVO;
@@ -20,9 +16,12 @@ import com.lego.sharding.entity.ShardingAlgorithm;
 import com.lego.sharding.service.IShardingAlgorithmService;
 import com.lego.sharding.vo.ShardingAlgorithmCreateVO;
 import com.lego.sharding.vo.ShardingAlgorithmModifyVO;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
-public class ShardingAlgorithmService extends BusiService<IShardingAlgorithmDao, ShardingAlgorithmAssembler> implements IShardingAlgorithmService {
+public class ShardingAlgorithmService extends BusService<IShardingAlgorithmDao, ShardingAlgorithmAssembler> implements IShardingAlgorithmService {
 
     @Override
     public LegoPage<ShardingAlgorithmInfo> findPageBy(GenericSearchVO vo) {
@@ -65,11 +64,11 @@ public class ShardingAlgorithmService extends BusiService<IShardingAlgorithmDao,
         }
     }
 
-	@Override
-	public List<TypeInfo> findSimpleType() {
-		GenericConditionVO conditionVO = GenericConditionVO.create();
-		conditionVO.addItem(GenericConditionItemVO.createEqual("enable", true));
+    @Override
+    public List<TypeInfo> findSimpleType() {
+        GenericConditionVO conditionVO = GenericConditionVO.create();
+        conditionVO.addItem(GenericConditionItemVO.createEqual("enable", true));
         List<ShardingAlgorithm> templates = dao.findBy(conditionVO);
-		return assembler.createTypeInfo(templates);
-	}
+        return assembler.createTypeInfo(templates);
+    }
 }

@@ -18,9 +18,28 @@ const getters = {
   manage: state => state.user.manage,
 
   // 路由
-  addRouters: state => state.permission.addRouters,
-  crmRouters: state => state.permission.crmRouters,
+  allRouters: state => state.permission.allRouters,
+  menuRouters: state => state.permission.menuRouters,
   manageRouters: state => state.permission.manageRouters,
-  imageCache: state => state.app.imageCache
+  imageCache: state => state.app.imageCache,
+
+  // bpmn图形编辑器
+  getEditor: state => state.bpmn.editor,
+  getProcessDef: state => ({
+    processName: state.bpmn.editor.processName,
+    processId: state.bpmn.editor.processId
+  }),
+  getProcessEngine: state => state.bpmn.editor.processEngine,
+  getEditorConfig: state => {
+    return Object.keys(state.bpmn.editor).reduce((config, key) => {
+      if (!['processName', 'processId', 'processEngine'].includes(key)) {
+        config[key] = state.bpmn.editor[key]
+      }
+      return config
+    }, {})
+  },
+  getModeler: state => state.bpmn.data._modeler,
+  getModeling: state => (state.bpmn.data._modeler ? state.bpmn.data._modeler.get('modeling') : undefined),
+  getActive: state => state.bpmn.activeElement
 }
 export default getters

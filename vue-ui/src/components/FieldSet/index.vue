@@ -37,8 +37,7 @@
       v-else
       slot="reference"
       :class="'config' | iconPre"
-      class="table-set"
-      @click="show = !show"/>
+      class="table-set"/>
   </el-popover>
 </template>
 
@@ -57,7 +56,7 @@ export default {
     Draggable
   },
   props: {
-    menuCode: String
+    formCode: String
   },
   data() {
     return {
@@ -82,7 +81,7 @@ export default {
      */
     getList() {
       this.loading = this.fields.length == 0
-      columnSortListAPI({ permissionCode: this.menuCode })
+      columnSortListAPI({ formCode: this.formCode })
         .then(res => {
           const resData = res.data || {}
           const list = resData.map(function(item, index) {
@@ -168,7 +167,7 @@ export default {
       .el-switch {
         transform: scale(0.8);
         margin-right: 3px;
-        /deep/ .el-switch__core {
+        ::v-deep .el-switch__core {
           width: 33px !important;
         }
       }

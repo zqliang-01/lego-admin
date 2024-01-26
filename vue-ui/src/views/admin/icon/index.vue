@@ -8,18 +8,8 @@
       icon-color="#2362fb"
       label="应用管理" />
     <div class="body">
-      <el-button type="primary" @click="dialogTableVisible = !dialogTableVisible">
-        <span>选择图标</span>
-      </el-button>
-      <i :class="currentIcon | iconPre">
-        <span>{{ currentIcon }}</span>
-      </i>
-      <icon-list @select="iconSelect" />
-      <el-dialog :visible.sync="dialogTableVisible" width="60%" title="图标选择">
-        <div style="max-height: 500px; overflow-y: auto;">
-          <icon-list @select="iconSelect" />
-        </div>
-      </el-dialog>
+      <select-icon v-model="currentIcon"/>
+      <icon-list @select="iconSelect"/>
     </div>
   </flexbox>
 </template>
@@ -27,24 +17,24 @@
 <script>
 import XrHeader from '@/components/XrHeader'
 import IconList from '@/components/IconList'
+import SelectIcon from '@/components/NewCom/SelectIcon'
 
 export default {
-  /** 客户管理 的 线索列表 */
   name: 'IconIndex',
   components: {
     XrHeader,
-    IconList
+    IconList,
+    SelectIcon
   },
   data() {
     return {
-      currentIcon: '',
-      dialogTableVisible: false
+      currentIcon: ''
     }
   },
   methods: {
     iconSelect(value) {
       this.currentIcon = value
-      this.dialogTableVisible = false
+      console.log(this.currentIcon)
     }
   }
 }

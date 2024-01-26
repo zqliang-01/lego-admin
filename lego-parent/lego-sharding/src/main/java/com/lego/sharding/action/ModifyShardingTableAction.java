@@ -4,27 +4,28 @@ import com.lego.core.action.ModifyAction;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.sharding.dao.IShardingTableDao;
-import com.lego.sharding.entity.ShardingTable;
-import com.lego.sharding.vo.ShardingTableModifyVO;
-import com.lego.sharding.entity.ShardingTemplate;
-import com.lego.sharding.entity.ShardingConfig;
 import com.lego.sharding.entity.ShardingAlgorithm;
+import com.lego.sharding.entity.ShardingConfig;
+import com.lego.sharding.entity.ShardingTable;
+import com.lego.sharding.entity.ShardingTemplate;
+import com.lego.sharding.vo.ShardingPermissionCode;
+import com.lego.sharding.vo.ShardingTableModifyVO;
 
 public class ModifyShardingTableAction extends ModifyAction<ShardingTable, IShardingTableDao> {
 
     private ShardingTableModifyVO vo;
 
     public ModifyShardingTableAction(String operatorCode, ShardingTableModifyVO vo) {
-        super("manage:sharding:table", operatorCode, vo.getCode());
+        super(ShardingPermissionCode.shardingTable, operatorCode, vo.getCode());
         this.vo = vo;
     }
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片表修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片表修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getLogicTableName()), "逻辑表名称不能为空，分片表修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getActualDataNodes()), "物理表表达式不能为空，分片表修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片表修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片表修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getLogicTableName()), "逻辑表名称不能为空，分片表修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getActualDataNodes()), "物理表表达式不能为空，分片表修改失败！");
     }
 
     @Override

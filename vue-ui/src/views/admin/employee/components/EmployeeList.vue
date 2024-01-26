@@ -52,7 +52,7 @@
           :prop="item.fieldCode"
           :label="item.name"
           show-overflow-tooltip>
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row }">
             <field-view
               :props="item"
               :form-type="item.formType"
@@ -311,7 +311,7 @@ export default {
     font-size: 12px;
     height: 28px;
     border-radius: 14px;
-    /deep/ i {
+    ::v-deep i {
       font-size: 12px;
       margin-right: 5px;
     }
@@ -347,7 +347,7 @@ export default {
   display: inline-block;
 }
 
-.el-table /deep/ .el-table-column--selection .cell {
+.el-table ::v-deep .el-table-column--selection .cell {
   padding-left: 14px;
 }
 .flex-box {

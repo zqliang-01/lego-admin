@@ -7,7 +7,7 @@
         v-loading="loading"
         :style="{ 'width': width}"
         :body-style="bodyStyle"
-        class="crm-create-card-container">
+        class="create-card-container">
         <slot name="header"/>
         <slot/>
       </el-card>
@@ -80,10 +80,10 @@ export default {
   bottom: 0;
   right: 0;
 }
-.crm-create-card-container {
+.create-card-container {
   margin: 0 auto;
   height: 100%;
-  /deep/ .el-card__body {
+  ::v-deep .el-card__body {
     padding: 20px 30px;
   }
 }

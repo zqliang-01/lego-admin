@@ -1,26 +1,8 @@
 package com.lego.system.controller;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.hutool.core.io.IORuntimeException;
+import cn.hutool.core.io.IoUtil;
 import com.lego.core.common.Constants;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
@@ -36,28 +18,43 @@ import com.lego.system.util.VelocityUtil;
 import com.lego.system.vo.SysGenTableCreateVO;
 import com.lego.system.vo.SysGenTableModifyVO;
 import com.lego.system.vo.SysGenTableSearchVO;
-
-import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.hutool.core.io.IORuntimeException;
-import cn.hutool.core.io.IoUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.velocity.Template;
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.Velocity;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Slf4j
 @RestController
 @RequestMapping("/back-end/sys-gen-table")
 public class SysGenTableController extends BaseController {
 
-	@Autowired
-	private ISysGenTableService tableService;
+    @Autowired
+    private ISysGenTableService tableService;
 
-	@Autowired
-	private ISysGenTableColumnService columnService;
+    @Autowired
+    private ISysGenTableColumnService columnService;
 
-	@Autowired
-	private ISysPermissionService permissionService;
+    @Autowired
+    private ISysPermissionService permissionService;
 
-    @GetMapping("/list")
-    @SaCheckPermission("manage:genTable:read")
+    @PostMapping("/list")
+    @SaCheckPermission("manage_genTable_read")
     public JsonResponse<LegoPage<SysGenTableInfo>> list(SysGenTableSearchVO vo) {
         return JsonResponse.success(tableService.findPageBy(vo));
     }
@@ -73,41 +70,41 @@ public class SysGenTableController extends BaseController {
     }
 
     @GetMapping("/get-init/{code}")
-    @SaCheckPermission("manage:genTable:update")
+    @SaCheckPermission("manage_genTable_update")
     public JsonResponse<SysGenTableInfo> getInit(@PathVariable String code) {
         return JsonResponse.success(tableService.findInitBy(code));
     }
 
     @PostMapping("/add")
-    @SaCheckPermission("manage:genTable:update")
+    @SaCheckPermission("manage_genTable_update")
     public JsonResponse<Object> add(@RequestBody SysGenTableCreateVO vo) {
-    	tableService.add(getLoginCode(), vo);
+        tableService.add(getLoginCode(), vo);
         return JsonResponse.success();
     }
 
     @PostMapping("/modify")
-    @SaCheckPermission("manage:genTable:update")
+    @SaCheckPermission("manage_genTable_update")
     public JsonResponse<Object> modify(@RequestBody SysGenTableModifyVO vo) {
-    	tableService.modify(getLoginCode(), vo);
+        tableService.modify(getLoginCode(), vo);
         return JsonResponse.success();
     }
 
     @PostMapping("/sync/{code}")
-    @SaCheckPermission("manage:genTable:sync")
+    @SaCheckPermission("manage_genTable_sync")
     public JsonResponse<Object> sync(@PathVariable String code) {
-    	tableService.sync(getLoginCode(), code);
+        tableService.sync(getLoginCode(), code);
         return JsonResponse.success();
     }
 
     @GetMapping("/preview/{code}")
-    @SaCheckPermission("manage:genTable:read")
+    @SaCheckPermission("manage_genTable_read")
     public JsonResponse<List<SysCodePreviewInfo>> preview(@PathVariable String code) {
-    	SysGenTableInfo table = tableService.findByCode(code);
-    	int sn = permissionService.findMaxSn(table.getAppCode());
-    	List<SysGenTableColumnInfo> columns = columnService.findByTable(code);
-		VelocityContext context = VelocityUtil.prepareContext(sn / 10 + 1, table, columns);
+        SysGenTableInfo table = tableService.findByCode(code);
+        int sn = permissionService.findMaxSn(table.getAppCode());
+        List<SysGenTableColumnInfo> columns = columnService.findByTable(code);
+        VelocityContext context = VelocityUtil.prepareContext(sn / 10 + 1, table, columns);
 
-		SysCodePreviewInfo rootPath = new SysCodePreviewInfo("root");
+        SysCodePreviewInfo rootPath = new SysCodePreviewInfo("root");
         for (TypeInfo template : VelocityUtil.getTemplateList()) {
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template.getName(), Constants.DEFAULT_CHARSET_NAME);
@@ -118,15 +115,15 @@ public class SysGenTableController extends BaseController {
     }
 
     @GetMapping("/download/{code}")
-    @SaCheckPermission("manage:genTable:read")
+    @SaCheckPermission("manage_genTable_read")
     public void download(@PathVariable String code, HttpServletResponse response) throws IORuntimeException, IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         ZipOutputStream zip = new ZipOutputStream(outputStream);
 
-    	SysGenTableInfo table = tableService.findByCode(code);
-    	int sn = permissionService.findMaxSn(table.getAppCode());
-    	List<SysGenTableColumnInfo> columns = columnService.findByTable(code);
-		VelocityContext context = VelocityUtil.prepareContext(sn / 10 + 1, table, columns);
+        SysGenTableInfo table = tableService.findByCode(code);
+        int sn = permissionService.findMaxSn(table.getAppCode());
+        List<SysGenTableColumnInfo> columns = columnService.findByTable(code);
+        VelocityContext context = VelocityUtil.prepareContext(sn / 10 + 1, table, columns);
 
         for (TypeInfo template : VelocityUtil.getTemplateList()) {
             StringWriter sw = new StringWriter();

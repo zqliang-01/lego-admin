@@ -473,7 +473,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .print-template-detail {
   height: 100%;
   box-sizing: border-box;
@@ -498,7 +498,7 @@ export default {
   border: 1px solid $xr-border-line-color;
   border-radius: $xr-border-radius-base;
 
-  /deep/ .el-tabs {
+  ::v-deep .el-tabs {
     padding: 0 5px;
     border-bottom: 1px solid #E4E7ED;
 
@@ -518,7 +518,7 @@ export default {
   display: flex;
   flex-direction: column;
   overflow-x: auto;
-  /deep/ .tox-tinymce {
+  ::v-deep .tox-tinymce {
     border: none;
   }
 }
@@ -562,7 +562,7 @@ export default {
 }
 
 .xr-reminder {
-  /deep/ .reminder-body {
+  ::v-deep .reminder-body {
     align-items: stretch;
     width: 100%;
     height: 35px;

@@ -1,11 +1,8 @@
 import { asyncRouterMap } from '@/router'
-import Vue from 'vue'
+import { permissionListAPI } from '@/api/admin/permission'
+import Layout from '@/views/layout/TableFormLayout'
+import LegoIndex from '@/components/LegoIndex'
 
-/**
- *
- * @param {*} router
- * @param {*} authInfo
- */
 function checkAuth(router, authInfo) {
   // 判断当前路由在权限数组中是否存在
   if (router.meta) {
@@ -33,8 +30,6 @@ function checkAuth(router, authInfo) {
 
 /**
  * 循环关键字检查权限
- * @param {*} permissions 权限关键数组
- * @param {*} authInfo
  */
 const forCheckPermission = function(permissions, authInfo) {
   for (let index = 0; index < permissions.length; index++) {
@@ -48,11 +43,6 @@ const forCheckPermission = function(permissions, authInfo) {
   }
 }
 
-/**
- *
- * @param {*} routers
- * @param {*} authInfo
- */
 const filterAsyncRouter = function(routers, authInfo) {
   const res = []
   routers.forEach(router => {
@@ -72,8 +62,6 @@ const filterAsyncRouter = function(routers, authInfo) {
 
 /**
  * 忽略用于菜单展示的传参路由
- * @param {*} routers
- * @param {*} authInfo
  */
 const filterIgnoreRouter = function(routers) {
   const res = []
@@ -92,22 +80,46 @@ const filterIgnoreRouter = function(routers) {
 }
 
 /**
- * 路由重定向和角色路由完善
+ * 当模块第一个路由为动态路由时，会配置为hidden并跳过作为首页重定向，此方法获取回动态路由作为首页重定向目标
  */
-const perfectRouter = function(authInfo, result) {
+const setRouterRedirect = function(redirect, accessedRouters) {
+  for (let index = 0; index < accessedRouters.length; index++) {
+    const element = accessedRouters[index]
+    if (element.children && element.children.length > 0) {
+      const firstChild = element.children[0]
+      if (firstChild.ignore) {
+        continue
+      }
+      element.redirect = redirect
+      break
+    }
+  }
+}
+
+/**
+ * 合并静态路由 + 动态路由，取第一个可视路由作为模块首页跳转
+ */
+const initRouter = function(authInfo, dynamicRouters) {
   const routerObj = {}
   let addRouter = []
   let redirect = ''
   let topRedirect = '' // 置顶的第一个路由
-  for (let index = 0; index < asyncRouterMap.length; index++) {
-    const mainRouter = asyncRouterMap[index]
+  const allRouters = asyncRouterMap.concat(dynamicRouters)
+  for (let index = 0; index < allRouters.length; index++) {
+    const mainRouter = allRouters[index]
     const accessedRouters = filterAsyncRouter(mainRouter.router, authInfo)
     for (let childIndex = 0; childIndex < accessedRouters.length; childIndex++) {
       const element = accessedRouters[childIndex]
       if (element.children && element.children.length > 0) {
         const firstChild = element.children[0]
+        if (firstChild.hidden) {
+          continue
+        }
         const childPath = firstChild.meta ? firstChild.meta.redirect || firstChild.path : firstChild.path
         element.redirect = element.path + '/' + childPath
+        if (element.ignore) {
+          setRouterRedirect(element.path + '/' + childPath, accessedRouters)
+        }
       }
 
       // 获取跳转
@@ -144,37 +156,63 @@ const perfectRouter = function(authInfo, result) {
       hidden: true
     })
   }
-  if (result) {
-    result({ router: routerObj, addRouter })
-  }
+  return { router: routerObj, addRouter }
 }
 
+/**
+ * 路由重定向和角色路由完善
+ */
+const perfectRouter = function(authInfo, result) {
+  const dynamicRouters = []
+  permissionListAPI({ routeType: 'Dynamic' }).then(res => {
+    res.data.forEach(router => {
+      if (router.childrens.length > 0) {
+        const modelRouters = [{
+          path: '/:model',
+          component: Layout,
+          meta: {},
+          children: [{
+            path: ':menuCode',
+            component: LegoIndex,
+            hidden: true,
+            meta: {}
+          }]
+        }]
+        router.childrens.forEach(item => {
+          modelRouters.push({
+            path: '/' + router.code,
+            component: Layout,
+            ignore: true,
+            meta: {},
+            children: [{
+              path: `${encodeURI(item.code)}`,
+              meta: {
+                title: item.name,
+                icon: item.icon
+              }
+            }]
+          })
+        })
+        dynamicRouters.push({ type: router.code, router: modelRouters })
+      }
+    })
+    if (result) {
+      result(initRouter(authInfo, dynamicRouters))
+    }
+  })
+}
 
 const permission = {
   state: {
-    addRouters: [],
-    crmRouters: [],
-    taskExamineRouters: [],
+    allRouters: [],
+    menuRouters: [],
     manageRouters: []
   },
   mutations: {
     SET_ROUTERS: (state, data) => {
-      state.addRouters = data.addRouter
-      state.crmRouters = data.router.crm || []
+      state.allRouters = data.addRouter
+      state.menuRouters = data.router || []
       state.manageRouters = data.router.manage || []
-    },
-
-    /**
-     * 客户管理待办消息数
-     */
-    SET_CRMROUTERSNUM: (state, num) => {
-      const messageItem = state.crmRouters[1]
-      messageItem.children[0].meta.num = num
-      Vue.set(state.crmRouters, 1, messageItem)
-    },
-
-    SET_GROUPSLIST: (state, data) => {
-      state.groupsList = data
     }
   },
   actions: {

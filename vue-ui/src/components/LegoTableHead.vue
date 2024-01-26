@@ -162,7 +162,7 @@ export default {
     loading(val) {
       if (val) {
         this.loadingObj = Loading.service({
-          target: document.querySelector('#crm-main-container')
+          target: document.querySelector('#main-container')
         })
       } else {
         this.loadingObj && this.loadingObj.close()
@@ -252,7 +252,15 @@ export default {
     },
     // 子组件 回调的 结果
     handleCallBack(data) {
-      this.$emit('handle', data)
+      if (data.type === 'delete') {
+        this.$confirm('此操作将永久删除所选择的数据，是否继续?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.$emit('handle', data)
+        })
+      } else {
+        this.$emit('handle', data)
+      }
     },
     // 获取默认场景名字
     getDefaultSceneName() {
@@ -273,14 +281,17 @@ export default {
 
   .scene-select {
     width: 180px;
-    /deep/ .el-input__inner {
+    ::v-deep .el-input__inner {
       cursor: pointer;
+      height: 34px;
+      font-size: 13px;
     }
   }
 
   .filter-button {
     margin-left: 20px;
-    /deep/ i {
+    padding: 8px 12px;
+    ::v-deep i {
       font-size: 14px;
       margin-right: 5px;
     }
@@ -331,7 +342,8 @@ export default {
     font-size: 12px;
     height: 28px;
     border-radius: 4px;
-    /deep/ i {
+    padding: 8px 12px;
+    ::v-deep i {
       font-size: 12px;
       margin-right: 5px;
     }

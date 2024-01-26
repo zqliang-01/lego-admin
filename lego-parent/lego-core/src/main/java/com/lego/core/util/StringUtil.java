@@ -1,5 +1,10 @@
 package com.lego.core.util;
 
+import cn.hutool.core.io.IoUtil;
+import com.lego.core.common.Constants;
+import com.lego.core.exception.CoreException;
+import org.apache.commons.codec.binary.Base64;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,13 +25,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
-
-import org.apache.commons.codec.binary.Base64;
-
-import com.lego.core.common.Constants;
-import com.lego.core.exception.CoreException;
-
-import cn.hutool.core.io.IoUtil;
 
 public class StringUtil {
 
@@ -60,13 +58,16 @@ public class StringUtil {
     }
 
     public static String toString(Object obj) {
-    	if (obj instanceof InputStream) {
-    		return IoUtil.readUtf8((InputStream) obj);
-    	}
-    	if (obj instanceof BigDecimal) {
-    		BigDecimal bg = (BigDecimal) obj;
-    		return new DecimalFormat(NUMBER_PATTERN).format(bg.setScale(DEFAULT_SCALE, RoundingMode.HALF_UP));
-    	}
+        if (obj instanceof InputStream) {
+            return IoUtil.readUtf8((InputStream) obj);
+        }
+        if (obj instanceof byte[]) {
+            return new String((byte[]) obj, Constants.DEFAULT_CHARSET);
+        }
+        if (obj instanceof BigDecimal) {
+            BigDecimal bg = (BigDecimal) obj;
+            return new DecimalFormat(NUMBER_PATTERN).format(bg.setScale(DEFAULT_SCALE, RoundingMode.HALF_UP));
+        }
         return obj == null ? "" : String.valueOf(obj);
     }
 
@@ -76,8 +77,7 @@ public class StringUtil {
                 return value;
             }
             return URLEncoder.encode(value, Constants.DEFAULT_CHARSET_NAME);
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new CoreException("Url编码异常！", e);
         }
     }
@@ -88,8 +88,7 @@ public class StringUtil {
                 return value;
             }
             return URLEncoder.encode(value, charset);
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new CoreException("Url编码异常！", e);
         }
     }
@@ -100,8 +99,7 @@ public class StringUtil {
                 return value;
             }
             return URLDecoder.decode(value, Constants.DEFAULT_CHARSET_NAME);
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new CoreException("Url解码异常！", e);
         }
     }
@@ -112,8 +110,7 @@ public class StringUtil {
                 return value;
             }
             return URLDecoder.decode(value, charset);
-        }
-        catch (UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             throw new CoreException("Url解码异常！", e);
         }
     }
@@ -142,8 +139,7 @@ public class StringUtil {
         try {
             md = MessageDigest.getInstance("MD5");
             md.update(value.getBytes("UTF-8"));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new CoreException("MD5编码出错", e);
         }
         byte[] b = md.digest();
@@ -170,16 +166,14 @@ public class StringUtil {
         Reader is = null;
         try {
             is = clob.getCharacterStream();
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new CoreException("Clob转String异常！", e);
         }
         BufferedReader br = new BufferedReader(is);
         String s = null;
         try {
             s = br.readLine();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new CoreException("Clob转为String出错", e);
         }
         StringBuffer sb = new StringBuffer();
@@ -187,8 +181,7 @@ public class StringUtil {
             sb.append(s);
             try {
                 s = br.readLine();
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 throw new CoreException("Clob转为String出错", e);
             }
         }
@@ -210,8 +203,7 @@ public class StringUtil {
         for (int i = 0; i < arr.length; i++) {
             if (start <= i && i < end) {
                 str.append(replaceStr);
-            }
-            else {
+            } else {
                 str.append(arr[i]);
             }
         }
@@ -264,18 +256,18 @@ public class StringUtil {
         return str;
     }
 
-    public static String format(String pattern, Object ... arguments) {
+    public static String format(String pattern, Object... arguments) {
         MessageFormat temp = new MessageFormat(pattern);
         return temp.format(arguments);
     }
 
-    public static String format(double d){
+    public static String format(double d) {
         BigDecimal bd = new BigDecimal(d).setScale(2, RoundingMode.UP);
         return bd.toString();
     }
 
-    public static String formatCent(BigDecimal amount){
-    	BigDecimal centAmount = amount.multiply(new BigDecimal(100));
+    public static String formatCent(BigDecimal amount) {
+        BigDecimal centAmount = amount.multiply(new BigDecimal(100));
         return new DecimalFormat(NUMBER_PATTERN_CENT).format(centAmount);
     }
 
@@ -295,15 +287,15 @@ public class StringUtil {
     }
 
     public static String toNumberString(String prefix, long number, int length) {
-    	String str = toString(number);
-		int strLen = str.length();
+        String str = toString(number);
+        int strLen = str.length();
         StringBuffer sb = null;
-         while (strLen < length) {
-               sb = new StringBuffer();
-               sb.append("0").append(str);// 左补0
-               str = sb.toString();
-               strLen = str.length();
-         }
+        while (strLen < length) {
+            sb = new StringBuffer();
+            sb.append("0").append(str);// 左补0
+            str = sb.toString();
+            strLen = str.length();
+        }
         return prefix + str;
     }
 
@@ -354,7 +346,7 @@ public class StringUtil {
     }
 
     public static String stripStart(final String str, final String stripChars) {
-       int strLen = str == null ? 0 : str.length();
+        int strLen = str == null ? 0 : str.length();
         if (strLen == 0) {
             return str;
         }
@@ -363,11 +355,9 @@ public class StringUtil {
             while (start != strLen && Character.isWhitespace(str.charAt(start))) {
                 start++;
             }
-        }
-        else if (stripChars.isEmpty()) {
+        } else if (stripChars.isEmpty()) {
             return str;
-        }
-        else {
+        } else {
             while (start != strLen && stripChars.indexOf(str.charAt(start)) != -1) {
                 start++;
             }
@@ -375,21 +365,19 @@ public class StringUtil {
         return str.substring(start);
     }
 
-	public static String join(Collection<String> values, String separator) {
-		if (values == null || values.isEmpty()) {
+    public static String join(Collection<String> values, String separator) {
+        if (values == null || values.isEmpty()) {
             return "";
         }
-		Iterator<String> iterator = values.iterator();
-		String first = iterator.next();
+        Iterator<String> iterator = values.iterator();
+        String first = iterator.next();
         if (!iterator.hasNext()) {
             return Objects.toString(first, "");
         }
-
         StringBuilder buf = new StringBuilder(STRING_BUILDER_SIZE);
         if (first != null) {
             buf.append(first);
         }
-
         while (iterator.hasNext()) {
             if (separator != null) {
                 buf.append(separator);
@@ -400,9 +388,9 @@ public class StringUtil {
             }
         }
         return buf.toString();
-	}
+    }
 
-	public static String toCamelCase(String name, boolean isFirstUpper) {
+    public static String toCamelCase(String name, boolean isFirstUpper) {
         if (name == null) {
             return null;
         }
@@ -413,19 +401,17 @@ public class StringUtil {
             char k = name.charAt(i);
             if ('_' == k) {
                 upperCase = true;
-            }
-            else if (upperCase) {
+            } else if (upperCase) {
                 sb.append(Character.toUpperCase(k));
                 upperCase = false;
-            }
-            else {
+            } else {
                 sb.append(k);
             }
         }
         return sb.toString();
     }
 
-	public static String toFirstUpper(String name) {
+    public static String toFirstUpper(String name) {
         if (name == null) {
             return null;
         }

@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
-export const filePreviewUrl = process.env.BASE_API + 'back-end/sys-file/download/'
-export const fileUploadUrl = process.env.BASE_API + 'back-end/sys-file/upload'
+export const filePreviewUrl = process.env.VUE_APP_BASE_API + 'back-end/sys-file/download/'
+export const fileUploadUrl = process.env.VUE_APP_BASE_API + 'back-end/sys-file/upload'
 
 /**
  * 操作记录

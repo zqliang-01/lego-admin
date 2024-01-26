@@ -49,8 +49,8 @@
 </template>
 <script>
 import {
-  permissionAllListAPI,
-  permissionListAPI
+  permissionListAPI,
+  permissionAuthListAPI
 } from '@/api/admin/permission'
 import { roleAuthAPI } from '@/api/admin/role'
 import { mapGetters } from 'vuex'
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     getAllAuthList() {
-      permissionAllListAPI().then(res => {
+      permissionListAPI().then(res => {
         this.menuList = res.data
         if (this.currentAppCode == 0 && this.menuList.length > 0) {
           this.currentAppCode = this.menuList[0].code
@@ -113,7 +113,7 @@ export default {
       return data
     },
     refreshAuthList() {
-      permissionListAPI({ roleCode: this.roleCode }).then(res => {
+      permissionAuthListAPI({ roleCode: this.roleCode }).then(res => {
         const codes = this.generateArr(this.menuList, res.data)
         this.menuList.forEach(menu => {
           const treeRefs = this.$refs['tree' + menu.code]
@@ -186,30 +186,22 @@ export default {
   overflow-y: scroll;
   padding: 20px;
 
-  /deep/ .el-tree-node__content:hover {
+  ::v-deep .el-tree-node__content:hover {
     background-color: white;
     color: $xr-color-primary;
   }
 }
 .jurisdiction-content-checkbox
   .el-tree
-  /deep/
+  ::v-deep
   .el-tree-node
   > .el-tree-node__content {
   margin-bottom: 20px;
   width: 150px;
 }
-.jurisdiction-content-checkbox /deep/ .el-tree .el-tree-node {
+.jurisdiction-content-checkbox ::v-deep .el-tree .el-tree-node {
   white-space: inherit;
   margin-bottom: 5px;
-}
-.jurisdiction-content-checkbox
-  /deep/
-  .el-tree
-  > .el-tree-node
-  > .el-tree-node__children
-  > .is-expanded {
-  //display: inline-block;
 }
 .jurisdiction-edit {
   text-align: right;
@@ -227,7 +219,7 @@ export default {
     position: absolute;
     top: -8px;
     right: -80px;
-    /deep/ span {
+    ::v-deep span {
       margin-left: 3px;
     }
   }

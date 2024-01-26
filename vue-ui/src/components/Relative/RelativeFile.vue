@@ -28,7 +28,7 @@
         :prop="item.fieldCode"
         :label="item.name"
         show-overflow-tooltip>
-        <template slot-scope="{ row, column, $index }">
+        <template slot-scope="{ row }">
           <field-view
             :props="item"
             :form-type="item.formType"
@@ -100,13 +100,7 @@ export default {
     FieldView
   },
   props: {
-    code: String,
-    detail: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
+    detailCode: String,
     menuCode: {
       type: String,
       default: ''
@@ -122,7 +116,7 @@ export default {
         { fieldCode: 'creator', name: '上传人', formType: 'user', width: '100' },
         { fieldCode: 'createTime', name: '上传时间', formType: 'text', width: '100' }
       ],
-      tableHeight: '400px',
+      tableHeight: document.documentElement.clientHeight - 285,
       /** 重命名 弹窗 */
       editDialog: false,
       /** 编辑信息 */
@@ -132,7 +126,7 @@ export default {
   inject: ['rootTabs'],
   computed: {},
   watch: {
-    code(val) {
+    detailCode(val) {
       this.list = []
       this.getList()
     },
@@ -149,7 +143,7 @@ export default {
     getList(loading = true) {
       this.loading = loading
       fileListAPI({
-        entityCode: this.code,
+        entityCode: this.detailCode,
         permissionCode: this.menuCode
       }).then(res => {
         this.loading = false
@@ -172,7 +166,7 @@ export default {
         this.$legoUploadFile.upload({
           file: files[index],
           params: {
-            entityCode: this.code,
+            entityCode: this.detailCode,
             permissionCode: this.menuCode
           }
         }).then(completeData => {

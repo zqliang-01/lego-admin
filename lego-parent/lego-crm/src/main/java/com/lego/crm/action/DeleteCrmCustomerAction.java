@@ -7,6 +7,6 @@ import com.lego.crm.entity.CrmCustomer;
 public class DeleteCrmCustomerAction extends DeleteAction<CrmCustomer, ICrmCustomerDao> {
 
     public DeleteCrmCustomerAction(String operatorCode, String code) {
-        super("crm:customer", operatorCode, code);
+        super("crm_customer", operatorCode, code);
     }
 }

@@ -1,23 +1,29 @@
 package com.lego.system.assembler;
 
-import org.springframework.stereotype.Component;
-
-import com.lego.core.assembler.BaseAssembler;
+import com.lego.core.assembler.EntityAssembler;
 import com.lego.system.dto.SysCustomFormInfo;
 import com.lego.system.entity.SysCustomForm;
+import org.springframework.stereotype.Component;
 
 @Component
-public class SysCustomFormAssembler extends BaseAssembler<SysCustomFormInfo, SysCustomForm> {
+public class SysCustomFormAssembler extends EntityAssembler<SysCustomFormInfo, SysCustomForm> {
 
-	@Override
-	protected SysCustomFormInfo doCreate(SysCustomForm entity) {
-		SysCustomFormInfo info = new SysCustomFormInfo();
-		info.setCode(entity.getCode());
-		info.setName(entity.getName());
-		info.setTable(createTypeInfo(entity.getTable()));
-		info.setPermission(createTypeInfo(entity.getPermission()));
-		info.setCreateTime(entity.getCreateTime());
-		return info;
-	}
+    @Override
+    protected SysCustomFormInfo doCreate(SysCustomForm entity) {
+        SysCustomFormInfo info = new SysCustomFormInfo();
+        info.setCode(entity.getCode());
+        info.setName(entity.getName());
+        info.setEnable(entity.isEnable());
+        info.setQueryApiUrl(entity.getQueryApiUrl());
+        info.setDeleteApiUrl(entity.getDeleteApiUrl());
+        info.setUpdateApiUrl(entity.getUpdateApiUrl());
+        info.setDetailApiUrl(entity.getDetailApiUrl());
+        info.setAddApiUrl(entity.getAddApiUrl());
+        info.setExportAllApiUrl(entity.getExportAllApiUrl());
+        info.setExportApiUrl(entity.getExportApiUrl());
+        info.setTable(createTypeInfo(entity.getTable()));
+        info.setCreateTime(entity.getCreateTime());
+        return info;
+    }
 
 }

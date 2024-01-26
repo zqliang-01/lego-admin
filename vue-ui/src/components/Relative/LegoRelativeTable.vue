@@ -39,7 +39,7 @@
         :label="item.name"
         :width="item.width ? item.width : 150"
         show-overflow-tooltip >
-        <template slot-scope="{ row, column, $index }">
+        <template slot-scope="{ row }">
           <field-view
             :props="item"
             :form-type="item.formType"
@@ -60,6 +60,7 @@
 <script type="text/javascript">
 import { mapGetters } from 'vuex'
 import FieldView from '@/components/NewCom/Form/FieldView'
+import { postRequest } from '@/api/crm/common'
 
 export default {
   name: 'LegoRelativeTable',
@@ -85,15 +86,7 @@ export default {
         return []
       }
     },
-    action: {
-      type: Object,
-      default: () => {
-        return {
-          type: 'default',
-          data: {}
-        }
-      }
-    }
+    queryApiUrl: String
   },
   data() {
     return {
@@ -108,9 +101,6 @@ export default {
   computed: {
     ...mapGetters(['crm']),
     showSearch() {
-      if (this.action.hasOwnProperty('showSearch')) {
-        return this.action.showSearch
-      }
       return true
     },
     canShowList() {
@@ -118,11 +108,6 @@ export default {
     }
   },
   watch: {
-    action: function(val) {
-      this.dataList = [] // 表数据
-      this.currentPage = 1 // 当前页数
-      this.totalPage = 1 // 总页数
-    }
   },
   mounted() {
     this.refreshList()
@@ -133,32 +118,27 @@ export default {
       this.getList()
     },
     getList() {
-      if (!this.action.request) {
+      if (!this.queryApiUrl) {
         return
       }
       this.loading = true
-      let params = {
+      const params = {
         search: this.searchContent,
         pageIndex: this.currentPage,
         pageSize: 10
       }
-      if (this.action.params) {
-        params = { ...params, ...this.action.params }
-      }
-      this.action.request(params)
-        .then(res => {
+      postRequest(this.queryApiUrl, params).then(res => {
+        this.dataList = res.data.result
+        if (this.selectedData && this.selectedData.length > 0) {
+          this.checkItemsWithSelectedData()
+        } else {
           this.dataList = res.data.result
-          if (this.selectedData && this.selectedData.length > 0) {
-            this.checkItemsWithSelectedData()
-          } else {
-            this.dataList = res.data.result
-          }
-          this.totalPage = Math.ceil(res.data.totalCount / 10)
-          this.loading = false
-        })
-        .catch(() => {
-          this.loading = false
-        })
+        }
+        this.totalPage = Math.ceil(res.data.totalCount / 10)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
     // 标记选择数据
     checkItemsWithSelectedData() {
@@ -250,7 +230,7 @@ export default {
   .el-select {
     width: 120px;
 
-    /deep/ .el-icon-circle-close {
+    ::v-deep .el-icon-circle-close {
       visibility: hidden;
       display: none;
     }
@@ -277,16 +257,16 @@ export default {
   padding: 8px 20px;
 }
 
-.el-table /deep/ thead th {
+.el-table ::v-deep thead th {
   font-weight: 400;
   font-size: 12px;
 }
 
-.el-table /deep/ tbody tr td {
+.el-table ::v-deep tbody tr td {
   font-size: 12px;
 }
 
-.el-table /deep/ thead .el-checkbox {
+.el-table ::v-deep thead .el-checkbox {
   display: none;
 }
 
@@ -294,7 +274,7 @@ body .el-table th.gutter {
   display: table-cell !important;
 }
 
-.el-table /deep/ .el-table__body-wrapper {
+.el-table ::v-deep .el-table__body-wrapper {
   height: calc(100% - 48px) !important;
 }
 .el-table--border {

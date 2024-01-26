@@ -5,9 +5,11 @@ import java.util.List;
 
 public interface GenConstants {
 
-	String ROOT_PACKAGE_NAME = "com.lego";
+    String ROOT_PACKAGE_NAME = "com.lego";
 
-	/**
+    String API_URL_TEMPLATE = "/back-end/{0}-{1}/{2}";
+
+    /**
      * 数据库字符串类型
      */
     List<String> COLUMNTYPE_STRING = Arrays.asList("char", "varchar", "nvarchar", "varchar2");

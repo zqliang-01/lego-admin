@@ -7,6 +7,6 @@ import com.lego.crm.entity.CrmContract;
 public class DeleteCrmContractAction extends DeleteAction<CrmContract, ICrmContractDao> {
 
     public DeleteCrmContractAction(String operatorCode, String code) {
-        super("crm:contract", operatorCode, code);
+        super("crm_contract", operatorCode, code);
     }
 }

@@ -24,3 +24,19 @@ export function isEmpty(data) {
   if (typeof data === 'string') return data.trim() === ''
   return false
 }
+
+export function getValueObj(obj, value, valueKey) {
+  let result = {}
+  for (const key in obj) {
+    if (!isEmpty(result)) {
+      break
+    }
+    if (isObject(obj[key])) {
+      result = getValueObj(obj[key], value, valueKey)
+    }
+    if (key == valueKey && obj[key] === value) {
+      result = obj
+    }
+  }
+  return result
+}

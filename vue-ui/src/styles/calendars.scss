@@ -5,11 +5,11 @@
   background: #fff;
 }
 
-#calendar /deep/ .fc-license-message {
+#calendar ::v-deep .fc-license-message {
   display: none !important;
 }
 
-#calendar /deep/ .fc-toolbar {
+#calendar ::v-deep .fc-toolbar {
   padding-top: 1em;
 
   .fc-left {
@@ -75,7 +75,7 @@
   }
 }
 
-#calendar /deep/ .fc-view-container {
+#calendar ::v-deep .fc-view-container {
   .fc-body {
     .fc-row {
       .fc-day {
@@ -156,7 +156,7 @@
   }
 }
 
-#calendar /deep/ .fc-day-header {
+#calendar ::v-deep .fc-day-header {
   background: #f5f5f5;
   border-width: 0;
   font-weight: normal;

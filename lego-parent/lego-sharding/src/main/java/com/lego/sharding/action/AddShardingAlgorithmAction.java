@@ -5,23 +5,24 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.sharding.dao.IShardingAlgorithmDao;
 import com.lego.sharding.entity.ShardingAlgorithm;
-import com.lego.sharding.vo.ShardingAlgorithmCreateVO;
-import com.lego.sharding.entity.ShardingTemplate;
 import com.lego.sharding.entity.ShardingConfig;
+import com.lego.sharding.entity.ShardingTemplate;
+import com.lego.sharding.vo.ShardingAlgorithmCreateVO;
+import com.lego.sharding.vo.ShardingPermissionCode;
 
 public class AddShardingAlgorithmAction extends AddAction<ShardingAlgorithm, IShardingAlgorithmDao> {
 
     private ShardingAlgorithmCreateVO vo;
 
     public AddShardingAlgorithmAction(String operatorCode, ShardingAlgorithmCreateVO vo) {
-        super("manage:sharding:algorithm", operatorCode);
+        super(ShardingPermissionCode.shardingAlgorithm, operatorCode);
         this.vo = vo;
     }
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片算法新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片算法新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片算法新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片算法新增失败！");
     }
 
     @Override

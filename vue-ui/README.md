@@ -3,27 +3,27 @@
 ### 技术栈
 | 技术 | 说明 | 版本 |
 | --- | --- | --- |
-| [Vue](https://vuejs.org) | 框架 | 2.5.17 |
-| [Vue-router](https://router.vuejs.org) | 路由框架 | 3.0.1 |
-| [Vuex](https://vuex.vuejs.org) | 全局状态管理框架 | 3.0.1 |
+| [Vue](https://vuejs.org) | 框架 | 2.6.11 |
+| [Vue-router](https://router.vuejs.org) | 路由框架 | 3.4.9 |
+| [Vuex](https://vuex.vuejs.org) | 全局状态管理框架 | 3.6.2 |
 | [Element](https://element.eleme.io) | UI框架 | 2.12.0 |
 | [Axios](https://github.com/axios/axios) | HTTP框架 | 0.18.0 |
 | [element-ui](https://element.eleme.cn) | ElementUI框架 | 2.15.14 |
-| [node-sass](https://sass-lang.com) | 样式打包框架，依赖Python | 4.7.2 |
-| [sass-loader](https://sass-lang.com) | 样式打包框架 | 7.0.3 |
+| [sass](https://sass-lang.com) | SCSS样式打包框架 | 1.32.7 |
+| [sass-loader](https://sass-lang.com) | 样式打包框架 | 12.0.0 |
 ### 打包工具版本
-- `node` >= 6.0.0 建议 v14.15.3
-- `npm` >= 3.0.0 建议 6.14.9
-- `cnpm` >= 3.0.0 建议 6.1.1
+- `node` >= 10.0.0
+- `npm` >= 6.0.0
 ### 打包命令
-- 拷贝config目录下index-template.js在同目录新建index.js文件，如果为开发阶段则按需修改后端服务地址
+- 如果为开发阶段按需修改.env.development配置文件VUE_APP_PROXY_TARGET后端服务地址
 - `npm install` 安装依赖
 - `npm run dev` 开发环境运行
-- `cnpm run build` 版本包，打包后会生成dist目录
+- `npm run build` 版本包，打包后会生成dist目录
 ### 目录结构
 ``` lua
 ├── build -- webpack 配置文件
-├── config -- 项目配置文件
+├── .env.development -- 开发环境配置
+├── .env.production -- 生产环境配置
 ├── src -- 源码目录
 │   ├── api -- api请求接口
 │   ├── assets -- 静态图片资源文件
@@ -40,7 +40,8 @@
 │       ├── home -- 首页
 │       ├── layout -- 模块主页框架
 │       ├── login -- 登录
+│       ├── user -- 用户中心
 │       ├── ...
 │       └── Xxx -- 自定义模块
-└── static -- 静态资源
+└── public -- 首页静态资源
 ```

@@ -26,22 +26,23 @@
             @end="leftMoveEnd">
             <flexbox
               v-for="(item, index) in checkedLeftData"
-              v-if="item.isSystem != 1"
               :key="index"
               class="list-item">
-              <div
-                :class="{'default-mark-active': false}"
-                class="default-mark"/>
-              <el-checkbox
-                v-model="item.check"
-                class="list-item-check"
-                @change="leftCheckItemChange"/>
-              <div class="list-item-name">{{ item.name }}</div>
-              <div class="list-item-handle">
-                <i
-                  class="el-icon-edit"
-                  @click="itemHandle('edit', item, index)"/>
-              </div>
+              <template v-if="item.isSystem != 1">
+                <div
+                  :class="{'default-mark-active': false}"
+                  class="default-mark"/>
+                <el-checkbox
+                  v-model="item.check"
+                  class="list-item-check"
+                  @change="leftCheckItemChange"/>
+                <div class="list-item-name">{{ item.name }}</div>
+                <div class="list-item-handle">
+                  <i
+                    class="el-icon-edit"
+                    @click="itemHandle('edit', item, index)"/>
+                </div>
+              </template>
             </flexbox>
           </draggable>
         </div>

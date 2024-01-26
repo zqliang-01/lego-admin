@@ -7,7 +7,7 @@
     </el-header>
     <el-container>
       <el-main
-        id="crm-main-container"
+        id="main-container"
         style="padding:15px;">
         <app-main/>
       </el-main>
@@ -16,14 +16,13 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components'
+import { Navbar, AppMain } from './components'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'UserLayout',
   components: {
     Navbar,
-    Sidebar,
     AppMain
   },
   data() {

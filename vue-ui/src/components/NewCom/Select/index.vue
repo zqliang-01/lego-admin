@@ -22,6 +22,7 @@
       <el-radio
         v-for="(item, index) in options"
         :key="index"
+        :disabled="disabled"
         :label="item.code">
         {{ item.name }}
       </el-radio>
