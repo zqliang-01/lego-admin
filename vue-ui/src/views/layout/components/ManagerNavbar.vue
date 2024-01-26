@@ -85,7 +85,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .navbar {
   height: 60px;
   min-height: 60px;

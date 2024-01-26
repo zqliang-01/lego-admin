@@ -11,17 +11,17 @@ export default {
       this.focusKey = null
       if (!key) return false
       this.clearError()
-      if (!this.rules.hasOwnProperty(key)) return true
+      if (!Object.prototype.hasOwnProperty.call(this.rules, key)) return true
       const ruleArr = this.rules[key]
       for (let i = 0; i < ruleArr.length; i++) {
         const rule = ruleArr[i]
-        if (rule.hasOwnProperty('required') && rule.required) {
+        if (Object.prototype.hasOwnProperty.call(rule, 'required') && rule.required) {
           if (!value) {
             this.setError(key, rule.msg)
             return false
           }
         }
-        if (rule.hasOwnProperty('reg') && rule.reg) {
+        if (Object.prototype.hasOwnProperty.call(rule, 'reg') && rule.reg) {
           if (rule.required) {
             if (!(rule.reg.test(value))) {
               this.setError(key, rule.msg)

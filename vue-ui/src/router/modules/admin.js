@@ -84,6 +84,20 @@ export default [
   },
   {
     ...layout({
+      permissions: ['manage']
+    }),
+    children: [{
+      name: 'Workflow',
+      path: 'work-flow',
+      component: () => import('@/views/admin/workflow'),
+      meta: {
+        title: '工作流',
+        icon: 'icon-workflow'
+      }
+    }]
+  },
+  {
+    ...layout({
       permissions: ['manage', 'genTable']
     }),
     children: [{
@@ -110,21 +124,35 @@ export default [
       permissions: ['manage', 'customForm']
     }),
     children: [{
-      name: 'customFieldList',
-      path: 'custom-field-list',
-      component: () => import('@/views/admin/customField'),
+      name: 'customForm',
+      path: 'custom-form',
+      component: () => import('@/views/admin/customForm'),
       meta: {
         title: '自定义表单',
-        icon: 'icon-list'
+        icon: 'icon-full-setting'
       }
     },
     {
       name: 'customField',
       path: 'custom-field/:formCode',
-      component: () => import('@/views/admin/fields'),
+      component: () => import('@/views/admin/customForm/fields'),
       hidden: true,
       meta: {
-        activeMenu: '/manage/custom-field-list'
+        activeMenu: '/manage/custom-form'
+      }
+    }]
+  },
+  {
+    ...layout({
+      permissions: ['manage', 'role']
+    }),
+    children: [{
+      name: 'Menu',
+      path: 'menu',
+      component: () => import('@/views/admin/menu'),
+      meta: {
+        title: '菜单管理',
+        icon: 'icon-des'
       }
     }]
   },

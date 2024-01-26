@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.lego.core.data.hibernate.impl.BusiService;
+import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.GenericSearchVO;
 import ${PackageName}.action.Add${ClassName}Action;

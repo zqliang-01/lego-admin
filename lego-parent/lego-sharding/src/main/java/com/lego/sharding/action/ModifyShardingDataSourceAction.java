@@ -5,22 +5,23 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.sharding.dao.IShardingDataSourceDao;
 import com.lego.sharding.entity.ShardingDataSource;
-import com.lego.sharding.vo.ShardingDataSourceModifyVO;
 import com.lego.sharding.entity.ShardingTemplate;
+import com.lego.sharding.vo.ShardingDataSourceModifyVO;
+import com.lego.sharding.vo.ShardingPermissionCode;
 
 public class ModifyShardingDataSourceAction extends ModifyAction<ShardingDataSource, IShardingDataSourceDao> {
 
     private ShardingDataSourceModifyVO vo;
 
     public ModifyShardingDataSourceAction(String operatorCode, ShardingDataSourceModifyVO vo) {
-        super("manage:sharding:dataSource", operatorCode, vo.getCode());
+        super(ShardingPermissionCode.shardingDataSource, operatorCode, vo.getCode());
         this.vo = vo;
     }
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片数据源修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片数据源修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片数据源修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片数据源修改失败！");
     }
 
     @Override

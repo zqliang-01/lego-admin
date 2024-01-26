@@ -77,25 +77,6 @@ export default {
     },
     isEmpty() {
       return isEmpty(this.value)
-    },
-    infoName() {
-      if (isEmpty(this.value)) {
-        return this.value
-      }
-      if (isObject(this.value) && this.value.hasOwnProperty('name')) {
-        return this.value.name
-      }
-      const info = this.props.setting.find(item => item.code == this.value)
-      return isEmpty(info) ? this.value : info.name
-    },
-    treeName() {
-      if (isEmpty(this.value)) {
-        return this.value
-      }
-      if (isObject(this.value) && this.value.hasOwnProperty('name')) {
-        return this.value.name
-      }
-      return this.getTreeName(this.props.setting, this.value)
     }
   },
   methods: {
@@ -123,20 +104,6 @@ export default {
       return getFormFieldShowValue(this.formType, this.value)
     },
 
-    getTreeName(trees, value) {
-      let name = ''
-      trees.forEach(tree => {
-        if (tree.childrens.length > 0) {
-          const tmp = this.getTreeName(tree.childrens, value)
-          if (tmp) {
-            name = tmp
-          }
-        } else if (tree.code = value) {
-          name = tree.name
-        }
-      })
-      return name
-    },
     handleEntityClick(value) {
       this.$emit('clickEntity', { field: this.props, value: value })
     }

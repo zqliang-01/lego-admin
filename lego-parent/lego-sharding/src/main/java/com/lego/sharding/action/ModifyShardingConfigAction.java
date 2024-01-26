@@ -6,20 +6,21 @@ import com.lego.core.util.StringUtil;
 import com.lego.sharding.dao.IShardingConfigDao;
 import com.lego.sharding.entity.ShardingConfig;
 import com.lego.sharding.vo.ShardingConfigModifyVO;
+import com.lego.sharding.vo.ShardingPermissionCode;
 
 public class ModifyShardingConfigAction extends ModifyAction<ShardingConfig, IShardingConfigDao> {
 
     private ShardingConfigModifyVO vo;
 
     public ModifyShardingConfigAction(String operatorCode, ShardingConfigModifyVO vo) {
-        super("manage:sharding:config", operatorCode, vo.getCode());
+        super(ShardingPermissionCode.shardingConfig, operatorCode, vo.getCode());
         this.vo = vo;
     }
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片规则修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片规则修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，分片规则修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，分片规则修改失败！");
     }
 
     @Override

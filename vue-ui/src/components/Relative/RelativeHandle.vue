@@ -36,13 +36,7 @@ export default {
   name: 'RelativeHandle',
   components: {},
   props: {
-    code: [String, Number],
-    detail: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
+    detailCode: [String, Number],
     menuCode: {
       type: String,
       default: ''
@@ -57,7 +51,7 @@ export default {
   inject: ['rootTabs'],
   computed: {},
   watch: {
-    code(val) {
+    detailCode(val) {
       this.list = []
       this.getDetail()
     },
@@ -75,7 +69,7 @@ export default {
     getDetail(loading = true) {
       this.loading = loading
       operationLogListAPI({
-        entityCode: this.code,
+        entityCode: this.detailCode,
         permissionCode: this.menuCode
       })
         .then(res => {

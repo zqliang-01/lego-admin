@@ -1,32 +1,35 @@
 module.exports = {
   root: true,
-  parserOptions: {
-    parser: 'babel-eslint',
-    sourceType: 'module'
-  },
   env: {
     browser: true,
     node: true,
-    es6: true,
+    es6: true
   },
-  extends: ['plugin:vue/recommended', 'eslint:recommended'],
-  globals: {
-    "BMap": "readonly",
-    "BMAP_STATUS_SUCCESS": "readonly",
-    "fullcalendar": "readonly",
-    "SystemConfig": "readonly"
+  extends: [
+    'plugin:vue/essential',
+    'eslint:recommended',
+    'plugin:prettier/recommended'
+  ],
+  parserOptions: {
+    parser: '@babel/eslint-parser'
   },
-
-  // add your custom rules here
-  //it is base on https://github.com/vuejs/eslint-config-vue
   rules: {
-    "vue/max-attributes-per-line": [2, {
-      "singleline": 10,
-      "multiline": {
-        "max": 10,
-        "allowFirstLine": false
+    'prettier/prettier': [
+      'off',
+      {
+        singleQuote: true,
+        printWidth: 120,
+        semi: false,
+        trailingComma: 'none'
       }
-    }],
+    ],
+    'vue/no-mutating-props': 0,
+    'vue/multi-word-component-names': 'off',
+    'vue/require-v-for-key': 'off',
+    'vue/no-unused-components': 'off',
+    'vue/require-valid-default-prop': 'off',
+    'no-prototype-builtins': 'off',
+    'linebreak-style': 0,
     "vue/html-closing-bracket-newline": [
       "off"
     ],
@@ -134,14 +137,14 @@ module.exports = {
     'no-return-assign': [2, 'except-parens'],
     'no-self-assign': 2,
     'no-self-compare': 2,
-    'no-sequences': 2,
+    'no-sequences': 0,
     'no-shadow-restricted-names': 2,
     'no-spaced-func': 2,
     'no-sparse-arrays': 2,
     'no-this-before-super': 2,
     'no-throw-literal': 2,
     'no-trailing-spaces': 2,
-    'no-undef': 2,
+    'no-undef': 0,
     'no-undef-init': 2,
     'no-unexpected-multiline': 2,
     'no-unmodified-loop-condition': 2,
@@ -197,10 +200,10 @@ module.exports = {
     'yield-star-spacing': [2, 'both'],
     'yoda': [2, 'never'],
     'prefer-const': 2,
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
+    'no-debugger': 'off',
     'object-curly-spacing': [2, 'always', {
       objectsInObjects: false
     }],
-    'array-bracket-spacing': [2, 'never'],
+    'array-bracket-spacing': [2, 'never']
   }
 }

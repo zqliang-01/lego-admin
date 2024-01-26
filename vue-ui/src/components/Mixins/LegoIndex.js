@@ -1,12 +1,8 @@
-import { dictListAPI } from '@/api/crm/common'
-import {
-  tableHeaderFieldPermissionListAPI,
-  columnWidthModifyAPI
-} from '@/api/admin/formField'
-import { employeeSimpleListAPI } from '@/api/admin/employee'
-import { depSimpleListAPI } from '@/api/admin/dept'
+import { columnWidthModifyAPI } from '@/api/admin/formField'
+import { permissionGetAPI } from '@/api/admin/permission'
 import { tableHeaderFieldListAPI } from '@/api/admin/formField'
 
+import LegoCommonMixin from './LegoCommon'
 import LegoListHead from '../LegoListHead'
 import LegoTableHead from '../LegoTableHead'
 import Empty from '../Empty'
@@ -17,6 +13,8 @@ import { mapGetters } from 'vuex'
 import Lockr from 'lockr'
 import { Loading } from 'element-ui'
 import { downloadExcelWithResData } from '@/utils'
+import { isEmpty } from '@/utils/types'
+import { getMenuAuth, getFormAuth } from '@/utils/auth'
 
 export default {
   components: {
@@ -26,11 +24,16 @@ export default {
     Empty,
     FieldView
   },
+  mixins: [LegoCommonMixin],
   data() {
     return {
       loading: false, // 加载动画
       tableHeight: document.documentElement.clientHeight - 235, // 表的高度
-      list: [],
+      pageList: [],
+      pageCodes: [],
+      relativeEntity: {
+        show: false
+      },
       formCode: '',
       fieldList: [],
       sortData: {}, // 字段排序
@@ -39,39 +42,31 @@ export default {
       pageSizes: [15, 30, 60, 100],
       total: 0,
       search: '', // 搜索内容
-      /** 控制详情展示 */
-      rowID: '', // 行信息
-      showDetail: false,
-      /** 高级筛选 */
-      filterList: [], // 筛选确定数据
+      filterList: [], // 高级筛选确定数据
       sceneData: [], // 场景条件集合
-      /** 勾选行 */
       selectionList: [], // 勾选数据 用于全局导出
-      rowIndex: 0, // 行索引
       formErrorMsg: null
     }
   },
   computed: {
     ...mapGetters([
-      'navActiveIndex',
       'allAuth'
     ]),
     auth() {
-      const menuList = this.menuCode.split(':')
-      var auth = { ...this.allAuth }
-      menuList.forEach(menu => {
-        if (auth) {
-          auth = auth[menu]
-        }
-      })
-      return auth
+      return getMenuAuth(this.$route.params.menuCode)
     }
   },
-  watch: {},
+  watch: {
+    $route: function(val) {
+      this.menuCode = this.$route.params.menuCode
+      this.getFieldList(true)
+    }
+  },
   mounted() {
     window.onresize = () => {
       this.updateTableHeight()
     }
+    this.menuCode = this.$route.params.menuCode
     this.getFieldList()
   },
 
@@ -100,77 +95,59 @@ export default {
         params.searchList = params.searchList.concat(this.sceneData)
       }
 
-      this.listRequest(params)
-        .then(res => {
-          this.list = res.data.result
+      this.listRequest(params).then(res => {
+        this.pageList = res.data.result
+        this.pageCodes = res.data.result.map(item => item.code)
 
-          if (res.data.totalCount && Math.ceil(res.data.totalCount / this.pageSize) < this.currentPage && this.currentPage > 1) {
-            this.currentPage = this.currentPage - 1
-            this.getList()
-          } else {
-            this.total = res.data.totalCount
-            this.loading = false
-          }
-
-          this.$nextTick(() => {
-            document.querySelector('.el-table__body-wrapper').scrollTop = 1
-          })
-        })
-        .catch(() => {
+        if (res.data.totalCount && Math.ceil(res.data.totalCount / this.pageSize) < this.currentPage && this.currentPage > 1) {
+          this.currentPage = this.currentPage - 1
+          this.getList()
+        } else {
+          this.total = res.data.totalCount
           this.loading = false
+        }
+
+        this.$nextTick(() => {
+          document.querySelector('.el-table__body-wrapper').scrollTop = 1
         })
+      }).catch(() => {
+        this.loading = false
+      })
     },
     /**
      * 获取字段
-     * @param {*} force
      */
     getFieldList(force) {
       if (this.fieldList.length == 0 || force) {
         this.loading = true
         this.formErrorMsg = null
-        tableHeaderFieldPermissionListAPI(this.menuCode)
-          .then(res => {
-            this.formCode = res.data.formCode
+        permissionGetAPI(this.menuCode).then(res => {
+          if (isEmpty(res.data.form) || isEmpty(res.data.form.code)) {
+            this.loading = false
+            this.formErrorMsg = '功能菜单[' + res.data.name + ']未关联表单！'
+            this.$message.error(this.formErrorMsg)
+            return
+          }
+          this.formCode = res.data.form.code
+          tableHeaderFieldListAPI(this.formCode).then(res => {
+            this.initRequest(res.data.form)
             this.fieldList = []
             res.data.fields.forEach(field => {
               if (!field.width) {
                 field.width = 100
               }
               this.initSettingValue(field)
-              if (this.initRelativeAPI) {
-                this.initRelativeAPI(field)
-              }
               this.fieldList.push(field)
             })
-            // 获取好字段开始请求数据
             this.getList()
-          })
-          .catch(res => {
+          }).catch(res => {
             this.loading = false
             this.formErrorMsg = res.msg
           })
+        })
       } else {
         // 获取好字段开始请求数据
         this.getList()
-      }
-    },
-    initSettingValue(field) {
-      if (this.navActiveIndex &&
-        field.optionDataType === 'dict' &&
-        field.optionDictType) {
-        dictListAPI(this.navActiveIndex, field.optionDictType).then(res => {
-          field.setting = res.data
-        })
-      }
-      if (field.formType == 'user') {
-        employeeSimpleListAPI().then(res => {
-          field.setting = res.data
-        })
-      }
-      if (field.formType == 'structure') {
-        depSimpleListAPI().then(res => {
-          field.setting = res.data
-        })
       }
     },
 
@@ -190,7 +167,7 @@ export default {
      * 控制表格需要高亮的列
      */
     cellClassName({ row, column, rowIndex, columnIndex }) {
-      if (column.property === this.highlightColumnKey) {
+      if (column.property === this.unionKey) {
         return 'can-visit--underline can-visit--bold'
       } else {
         return ''
@@ -199,54 +176,35 @@ export default {
 
     /**
      * 列表点击某行操作
-     * @param {*} row
-     * @param {*} column
-     * @param {*} event
      */
     handleRowClick(row, column, event) {
       if (column.type === 'selection') {
-        return // 多选首列不能点击
-      }
-      if (this.showDetail) {
-        this.$store.commit('SET_COLLAPSE', this.showDetail)
-      }
-      // 只有点击高亮列才触发打开详情信息
-      if (column.property === this.highlightColumnKey) {
-        this.rowID = row[this.unionKey]
-        this.showDetail = true
-        this.rowIndex = this.getRowIndex()
         return
       }
-      this.showDetail = false
+      if (this.relativeEntity.show) {
+        this.$store.commit('SET_COLLAPSE', this.relativeEntity.show)
+      }
+      // 只有点击高亮列才触发打开详情信息
+      if (column.property === this.unionKey) {
+        this.$set(this.relativeEntity, 'show', true)
+        this.$set(this.relativeEntity, 'code', row[this.unionKey])
+        this.$set(this.relativeEntity, 'menuCode', this.menuCode)
+        this.$set(this.relativeEntity, 'formCode', this.formCode)
+        this.$set(this.relativeEntity, 'pageCodes', this.pageCodes)
+        return
+      }
     },
 
     handleEntityClick(data) {
-      const detailComponent = this.entityDetailList.find(detail => detail.code == data.field.fieldCode)
-      if (detailComponent) {
-        detailComponent.detailCode = data.value.code
-        detailComponent.formCode = data.field.relativeForm.code
-        tableHeaderFieldListAPI(data.field.relativeForm.code).then(res => {
-          detailComponent.menuCode = res.data.permissionCode
-          detailComponent.fieldList = res.data.fields
-          detailComponent.show = true
-        })
-      }
+      const menu = getFormAuth(data.field.relativeForm.code)
+      this.$set(this.relativeEntity, 'show', true)
+      this.$set(this.relativeEntity, 'code', data.value.code)
+      this.$set(this.relativeEntity, 'menuCode', menu.code)
+      this.$set(this.relativeEntity, 'formCode', data.field.relativeForm.code)
+      this.$set(this.relativeEntity, 'pageCodes', [])
     },
     closeEntityDetail(item) {
       item.show = false
-    },
-
-    /**
-     * 获取点击行索引
-     */
-    getRowIndex() {
-      for (let index = 0; index < this.list.length; index++) {
-        const element = this.list[index]
-        if (element[this.unionKey] === this.rowID) {
-          return index
-        }
-      }
-      return 0
     },
 
     /**
@@ -269,19 +227,16 @@ export default {
       }
 
       const loading = Loading.service({ fullscreen: true, text: '导出中...' })
-      this.exportAllRequest(params)
-        .then(res => {
-          downloadExcelWithResData(res)
-          loading.close()
-        })
-        .catch(() => {
-          loading.close()
-        })
+      this.exportAllRequest().then(res => {
+        downloadExcelWithResData(res)
+        loading.close()
+      }).catch(() => {
+        loading.close()
+      })
     },
 
     /**
      * 筛选操作
-     * @param {*} data
      */
     handleFilter(data) {
       if (!data) {
@@ -297,7 +252,6 @@ export default {
 
     /**
      * 场景操作
-     * @param {*} data
      */
     handleScene(data) {
       this.sceneData = data
@@ -335,18 +289,14 @@ export default {
         const codes = this.selectionList.map(item => {
           return item.code
         })
-        this.$confirm('此操作将永久删除[' + codes.length + ']，是否继续?', '提示', {
-          type: 'warning'
-        }).then(() => {
-          const loading = Loading.service({ fullscreen: true, text: '删除中...' })
-          this.deleteRequest(codes).then(res => {
-            this.getMainTable().clearSelection()
-            this.getList()
-            loading.close()
-          })
-            .catch(() => {
-              loading.close()
-            })
+        const loading = Loading.service({ fullscreen: true, text: '删除中...' })
+        this.deleteRequest(codes).then(res => {
+          this.$message.success('删除成功')
+          this.getMainTable().clearSelection()
+          this.getList()
+          loading.close()
+        }).catch(() => {
+          loading.close()
         })
       }
       if (data.type === 'export') {
@@ -356,6 +306,7 @@ export default {
         const loading = Loading.service({ fullscreen: true, text: `导出[${codes.length}]条数据中...` })
         this.exportRequest(codes).then(res => {
           downloadExcelWithResData(res)
+          this.$message.success('导出成功')
           this.getMainTable().clearSelection()
           this.getList()
           loading.close()
@@ -434,7 +385,6 @@ export default {
 
     /**
      * 更改每页展示数量
-     * @param {*} val
      */
     handleSizeChange(val) {
       Lockr.set('legoPageSizes', val)
@@ -444,7 +394,6 @@ export default {
 
     /**
      * 更改当前页数
-     * @param {*} val
      */
     handleCurrentChange(val) {
       this.currentPage = val

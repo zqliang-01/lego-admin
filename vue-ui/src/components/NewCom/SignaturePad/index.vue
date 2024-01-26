@@ -117,7 +117,7 @@ export default {
       } else if (type === 'undo') {
         this.$refs.signaturePad.undoSignature()
       } else if (type === 'save') {
-        const { isEmpty, data } = this.$refs.signaturePad.saveSignature()
+        const { isEmpty } = this.$refs.signaturePad.saveSignature()
         if (isEmpty) {
           this.$message.error('签字内容为空！')
         }

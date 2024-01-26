@@ -4,11 +4,9 @@ const getLocationOrigin = () => {
 
 const companyName = 'LegoAdmin'
 const version = 'V1.0.0'
-const baiduKey = '0DpVxVNK9fNRuqIRBweKgMrIcuNHElGM' // '百度key'
 
 export default {
   version,
   companyName,
-  getLocationOrigin,
-  baiduKey
+  getLocationOrigin
 }

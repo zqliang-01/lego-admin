@@ -107,6 +107,11 @@
     v-model="fieldFrom[item.fieldCode]"
     :disabled="item.disabled || disabled"
     @change="commonChange(item, index, $event)"/>
+  <select-icon
+    v-else-if="item.formType == 'icon'"
+    v-model="fieldFrom[item.fieldCode]"
+    :disabled="item.disabled || disabled"
+    @change="commonChange(item, index, $event)"/>
   <signature-pad
     v-else-if="item.formType == 'handwriting_sign'"
     v-model="fieldFrom[item.fieldCode]"
@@ -118,7 +123,6 @@
     v-else-if="item.formType == 'entity'"
     :value="item.value"
     :form-code="relativeFormCode"
-    :action="item"
     :disabled="item.disabled"
     @value-change="entityChange(item, index, $event)"/>
   <div v-else>
@@ -135,7 +139,8 @@ import LegoSelect from '@/components/NewCom/Select'
 import LegoCheckbox from '@/components/NewCom/Checkbox'
 import JsonEditor from '@/components/NewCom/JsonEditor'
 import VDistpicker from '@/components/VDistpicker'
-import SelectTree from '@/components/SelectTree'
+import SelectTree from '@/components/NewCom/SelectTree'
+import SelectIcon from '@/components/NewCom/SelectIcon'
 
 import Mixin from './Mixin'
 
@@ -150,6 +155,7 @@ export default {
     JsonEditor,
     VDistpicker,
     SelectTree,
+    SelectIcon,
     LegoRelativeCell
   },
   mixins: [Mixin],
@@ -179,24 +185,12 @@ export default {
     }
   },
   watch: {},
-  created() {
-    if (this.item.fieldCode == 'returnTime') {
-      this.pickerOptions = {
-        disabledDate(time) {
-          return time.getTime() > Date.now()
-        }
-      }
-    }
-  },
-
+  created() {},
   mounted() {},
-
   beforeDestroy() {},
-
   methods: {
     entityChange(item, index, value) {
       const result = value ? value.code : ''
-      console.log(value)
       this.$set(this.fieldFrom, item.fieldCode, result)
       this.commonChange(item, index, value)
     }
@@ -207,7 +201,7 @@ export default {
 <style lang="scss" scoped>
 .el-input-number {
   width: 100%;
-  /deep/ .el-input__inner {
+  ::v-deep .el-input__inner {
     text-align: left;
     padding: 0 8px;
   }

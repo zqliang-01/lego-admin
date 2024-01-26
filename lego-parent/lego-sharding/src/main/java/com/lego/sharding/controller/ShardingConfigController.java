@@ -1,17 +1,6 @@
 package com.lego.sharding.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.ExcelUtil;
@@ -22,8 +11,16 @@ import com.lego.sharding.dto.ShardingConfigInfo;
 import com.lego.sharding.service.IShardingConfigService;
 import com.lego.sharding.vo.ShardingConfigCreateVO;
 import com.lego.sharding.vo.ShardingConfigModifyVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @RestController
 @RequestMapping("/back-end/sharding-config")
@@ -33,53 +30,53 @@ public class ShardingConfigController extends BaseController {
     private IShardingConfigService configService;
 
     @PostMapping("/add")
-    @SaCheckPermission("manage:sharding:config:add")
+    @SaCheckPermission("manage_sharding_config_add")
     public JsonResponse<Object> add(@RequestBody ShardingConfigCreateVO vo) {
         configService.add(getLoginCode(), vo);
         return JsonResponse.success();
     }
 
     @PostMapping("/update")
-    @SaCheckPermission("manage:sharding:config:update")
+    @SaCheckPermission("manage_sharding_config_update")
     public JsonResponse<Object> update(@RequestBody ShardingConfigModifyVO vo) {
         configService.update(getLoginCode(), vo);
         return JsonResponse.success();
     }
 
     @PostMapping("/delete")
-    @SaCheckPermission("manage:sharding:config:delete")
+    @SaCheckPermission("manage_sharding_config_delete")
     public JsonResponse<Object> delete(@RequestBody List<String> codes) {
         configService.delete(getLoginCode(), codes);
         return JsonResponse.success();
     }
 
     @PostMapping("/list")
-    @SaCheckPermission("manage:sharding:config:read")
+    @SaCheckPermission("manage_sharding_config_read")
     public JsonResponse<LegoPage<ShardingConfigInfo>> list(@RequestBody GenericSearchVO vo) {
         return JsonResponse.success(configService.findPageBy(vo));
     }
 
     @GetMapping("/list-simple")
-    @SaCheckPermission("manage:sharding")
+    @SaCheckPermission("manage_sharding")
     public JsonResponse<List<TypeInfo>> listSimple() {
         return JsonResponse.success(configService.findSimpleType());
     }
 
     @GetMapping("/get/{code}")
-    @SaCheckPermission("manage:sharding:config:detail")
+    @SaCheckPermission("manage_sharding_config_detail")
     public JsonResponse<ShardingConfigInfo> getByCode(@PathVariable String code) {
         return JsonResponse.success(configService.findBy(code));
     }
 
     @PostMapping("/export")
-    @SaCheckPermission("manage:sharding:config:export")
+    @SaCheckPermission("manage_sharding_config_export")
     public void exportAll(@RequestBody List<String> codes, HttpServletResponse response) {
         List<ShardingConfigInfo> datas = configService.findBy(codes);
         ExcelUtil.exportExcel(datas, "分片规则数据", ShardingConfigInfo.class, response);
     }
 
     @PostMapping("/export-all")
-    @SaCheckPermission("manage:sharding:config:export")
+    @SaCheckPermission("manage_sharding_config_export")
     public void exportAll(@RequestBody GenericSearchVO vo, HttpServletResponse response) {
         List<ShardingConfigInfo> datas = configService.findBy(vo);
         ExcelUtil.exportExcel(datas, "分片规则数据", ShardingConfigInfo.class, response);

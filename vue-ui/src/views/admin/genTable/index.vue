@@ -3,7 +3,7 @@
     <xr-header
       :icon-class="'double-gear'"
       :show-search="true"
-      :show-save="manage.genTable.update ? true : false"
+      :show-save="manage.genTable.update"
       icon-color="#1CBAF5"
       label="代码生成设置"
       placeholder="请输入表名搜索"
@@ -23,16 +23,11 @@
           :prop="item.fieldCode"
           :label="item.name"
           show-overflow-tooltip>
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row }">
             <field-view
               :props="item"
               :form-type="item.formType"
               :value="row[item.fieldCode]">
-              <img
-                v-if="item.fieldCode == 'code'"
-                slot="leftContent"
-                :src="getTableIcon()"
-                class="table-item-icon" >
             </field-view>
           </template>
         </el-table-column>
@@ -159,7 +154,7 @@ export default {
         { fieldCode: 'comment', name: '描述', formType: 'text', width: '150', xAxis: 1, yAxis: 0 },
         { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150', required: true, xAxis: 1, yAxis: 1, tipType: 'tooltip', inputTips: '生成在哪个java包下，例如 com.lego.system' },
         { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100', required: true, xAxis: 2, yAxis: 0, tipType: 'tooltip', inputTips: '可理解为子系统名，对应前台应用以及后端微服务模块' },
-        { fieldCode: 'permissionCode', name: '权限编码', formType: 'text', width: '100', required: true, xAxis: 2, yAxis: 1, tipType: 'tooltip', inputTips: '权限编码，格式为-模块编码:一级菜单:二级菜单:...' },
+        { fieldCode: 'permissionCode', name: '权限编码', formType: 'text', width: '100', required: true, xAxis: 2, yAxis: 1, tipType: 'tooltip', inputTips: '权限编码，格式为-模块编码_一级菜单_二级菜单_...' },
         { fieldCode: 'className', name: '类名', formType: 'text', width: '100', required: true, xAxis: 3, yAxis: 0 },
         { fieldCode: 'fieldName', name: '属性名称', formType: 'text', width: '100', required: true, xAxis: 3, yAxis: 1, tipType: 'tooltip', inputTips: '属性命名，涉及JAVA类属性命名以及前端路由名等' },
         { fieldCode: 'urlName', name: '资源名称', formType: 'text', width: '100', required: true, xAxis: 4, yAxis: 0, tipType: 'tooltip', inputTips: 'Url地址路径，前端api以及后端Controller使用' }
@@ -237,9 +232,6 @@ export default {
       this.action.detailData = item
       this.isCreate = true
     },
-    getTableIcon() {
-      return require('@/assets/img/crm/product.png')
-    },
     onSearch(value) {
       this.search = value
       this.getList()
@@ -258,76 +250,12 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .system-customer {
   height: 100%;
 }
 .customer-content {
   border-top: 1px solid $xr-border-line-color;
   border-bottom: 1px solid $xr-border-line-color;
-}
-
-.table-item-label {
-  vertical-align:middle;
-}
-.table-item-icon {
-  width: 30px;
-  height: 30px;
-  margin-right: 8px;
-  vertical-align:middle;
-  border-radius: 4px;
-}
-
-.table-item-time {
-  color: #999;
-}
-
-.el-table {
-  /deep/ .el-table__body td {
-    height: 60px;
-  }
-}
-
-/* 新建和编辑 */
-.new-dialog-form {
-  height: 47vh;
-  overflow-y: auto;
-  padding: 20px;
-}
-.new-dialog-form /deep/ .el-form-item {
-  width: 49%;
-  margin: 0;
-  padding-bottom: 10px;
-}
-.new-dialog-form /deep/ .el-form-item .el-form-item__label {
-  padding: 0;
-}
-.new-dialog-form {
-  /deep/ .el-form-item:nth-child(even) {
-    padding-left: 15px;
-  }
-
-  /deep/ .el-form-item:nth-child(odd) {
-    padding-right: 15px;
-  }
- .new-dialog-form
-  /deep/
-  .el-form-item
-  .el-form-item__content
-  .el-select-group__wrap:not(:last-of-type)::after {
-  display: none;
-}
-.new-dialog-form /deep/ .el-form-item .el-form-item__content .el-select-group {
-  padding-left: 10px;
-}
-.new-dialog-form
-  /deep/
-  .el-form-item
-  .el-form-item__content
-  .el-select-group__title {
-  border-bottom: 1px solid #e4e7ed;
-  padding: 0 0 7px;
-  margin: 0 20px 5px;
-}
 }
 </style>

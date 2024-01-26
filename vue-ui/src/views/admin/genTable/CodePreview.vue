@@ -9,7 +9,7 @@
     append-to-body class="scrollbar preview-box"
     @close="handleCancel">
     <div slot="title">
-      <h2>代码预览 <el-button :icon="isFull ? 'shrink' : 'full' | iconPre" @click="isFull = !isFull"/></h2>
+      <h2>代码预览</h2>
     </div>
     <div class="nav">
       <el-tree
@@ -111,8 +111,7 @@ export default {
   }
 }
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
-
+<style lang="scss" scoped>
 .nav {
   width: 280px;
   position: absolute;
@@ -122,11 +121,18 @@ export default {
 }
 .content-box {
   background: #fff;
-  margin-left: 280px;
+  margin-left: 265px;
   position: relative;
+  padding: 5px;
+  border-radius: 5px;
+  background: #faebd7;
   .copy-button {
     text-align: right;
     padding-right: 10px;
+    margin-bottom: 10px;
+    a {
+      margin-left: 10px;
+    }
   }
   .code-content {
     overflow: auto;

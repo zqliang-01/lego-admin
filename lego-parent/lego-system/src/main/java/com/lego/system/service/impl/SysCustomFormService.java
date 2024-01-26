@@ -1,67 +1,87 @@
 package com.lego.system.service.impl;
 
-import org.springframework.stereotype.Service;
-
-import com.lego.core.data.hibernate.impl.BusiService;
+import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
-import com.lego.core.exception.BusinessException;
+import com.lego.core.dto.TypeInfo;
 import com.lego.system.action.AddSysCustomFormAction;
 import com.lego.system.action.DeleteSysCustomFormAction;
 import com.lego.system.action.ModifySysCustomFormAction;
 import com.lego.system.action.ModifySysCustomFormFieldAction;
 import com.lego.system.assembler.SysCustomFormAssembler;
 import com.lego.system.dao.ISysCustomFormDao;
+import com.lego.system.dao.ISysGenTableDao;
 import com.lego.system.dto.SysCustomFormInfo;
 import com.lego.system.entity.SysCustomForm;
+import com.lego.system.entity.SysGenTable;
 import com.lego.system.service.ISysCustomFormService;
 import com.lego.system.vo.SysCustomFormCreateVO;
 import com.lego.system.vo.SysCustomFormFieldModifyVO;
 import com.lego.system.vo.SysCustomFormModifyVO;
 import com.lego.system.vo.SysCustomFormSearchVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
-public class SysCustomFormService extends BusiService<ISysCustomFormDao, SysCustomFormAssembler> implements ISysCustomFormService {
+public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCustomFormAssembler> implements ISysCustomFormService {
 
-	@Override
-	public LegoPage<SysCustomFormInfo> findBy(SysCustomFormSearchVO vo) {
-		LegoPage<SysCustomForm> page = dao.findBy(vo);
-		return assembler.create(page);
-	}
+    @Autowired
+    private ISysGenTableDao tableDao;
 
-	@Override
-	public void modifyField(String operatorCode, SysCustomFormFieldModifyVO vo) {
-		new ModifySysCustomFormFieldAction(operatorCode, vo).run();
-	}
+    @Override
+    public LegoPage<SysCustomFormInfo> findBy(SysCustomFormSearchVO vo) {
+        LegoPage<SysCustomForm> page = dao.findBy(vo);
+        return assembler.create(page);
+    }
 
-	@Override
-	public void modify(String operatorCode, SysCustomFormModifyVO vo) {
-		new ModifySysCustomFormAction(operatorCode, vo).run();
-	}
+    @Override
+    public SysCustomFormInfo findBy(String code) {
+        SysCustomForm form = dao.findByCode(code);
+        return assembler.create(form);
+    }
 
-	@Override
-	public void add(String operatorCode, SysCustomFormCreateVO vo) {
-		new AddSysCustomFormAction(operatorCode, vo).run();
-	}
+    @Override
+    public void modifyField(String operatorCode, SysCustomFormFieldModifyVO vo) {
+        new ModifySysCustomFormFieldAction(operatorCode, vo).run();
+    }
 
-	@Override
-	public void delete(String operatorCode, String code) {
-		new DeleteSysCustomFormAction(operatorCode, code).run();
-	}
+    @Override
+    public void modify(String operatorCode, SysCustomFormModifyVO vo) {
+        new ModifySysCustomFormAction(operatorCode, vo).run();
+    }
 
-	@Override
-	public String findAppCodeBy(String code) {
-		SysCustomForm customForm = dao.findByCode(code);
-		BusinessException.check(customForm.getPermission() != null, "表单[{0}]未配置菜单，查询表单信息失败！", customForm.getName());
+    @Override
+    public void add(String operatorCode, SysCustomFormCreateVO vo) {
+        new AddSysCustomFormAction(operatorCode, vo).run();
+    }
 
-		String permissionCode = customForm.getPermission().getCode();
-		return permissionCode.split(":")[0];
-	}
+    @Override
+    public void delete(String operatorCode, String code) {
+        new DeleteSysCustomFormAction(operatorCode, code).run();
+    }
 
-	@Override
-	public String findCodeByPermission(String permissionCode) {
-		SysCustomForm form = dao.findByPermission(permissionCode);
-		BusinessException.check(form != null, "功能[{0}]未配置表单，获取表单信息失败！", permissionCode);
-		return form.getCode();
-	}
+    @Override
+    public SysCustomFormInfo findInitByTable(String tableCode) {
+        SysGenTable table = tableDao.findByCode(tableCode);
+        SysCustomFormInfo info = new SysCustomFormInfo();
+        info.setCode(table.getCode() + "_form");
+        info.setName(table.getName() + "表单");
+        info.setTable(assembler.createTypeInfo(table));
+        info.setAddApiUrl(table.createApiUrl("add"));
+        info.setDeleteApiUrl(table.createApiUrl("delete"));
+        info.setUpdateApiUrl(table.createApiUrl("update"));
+        info.setQueryApiUrl(table.createApiUrl("list"));
+        info.setDetailApiUrl(table.createApiUrl("get"));
+        info.setExportAllApiUrl(table.createApiUrl("export-all"));
+        info.setExportApiUrl(table.createApiUrl("export"));
+        return info;
+    }
+
+    @Override
+    public List<TypeInfo> findSimpleType() {
+        List<SysCustomForm> forms = dao.findAll();
+        return assembler.createTypeInfo(forms);
+    }
 
 }

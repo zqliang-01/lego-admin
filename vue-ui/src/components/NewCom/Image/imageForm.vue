@@ -290,7 +290,7 @@ export default {
   }
 }
 
-/deep/.el-icon-zoom-in {
+::v-deep.el-icon-zoom-in {
   margin-right: 10px;
 }
 </style>

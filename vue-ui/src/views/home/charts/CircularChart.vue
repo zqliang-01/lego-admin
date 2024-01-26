@@ -6,7 +6,7 @@
       <span :class="[prop.icon, 'icon']" />
       <div class="card-title-center text-one-ellipsis">
         {{ prop.title }} (
-        <span v-for="(item, index) in list">
+        <span v-for="(item, index) in list" :key="index">
           {{ item.categoryName }}、
         </span>
         )

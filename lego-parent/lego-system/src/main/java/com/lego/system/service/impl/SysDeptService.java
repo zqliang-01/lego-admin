@@ -1,10 +1,6 @@
 package com.lego.system.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.lego.core.data.hibernate.impl.BusiService;
+import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.TreeInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.system.action.AddSysDeptAction;
@@ -17,41 +13,44 @@ import com.lego.system.service.ISysDeptService;
 import com.lego.system.vo.SysDeptCreateVO;
 import com.lego.system.vo.SysDeptModifyVO;
 import com.lego.system.vo.SysDeptSearchVO;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
-public class SysDeptService extends BusiService<ISysDeptDao, SysDeptAssembler> implements ISysDeptService {
+public class SysDeptService extends BusService<ISysDeptDao, SysDeptAssembler> implements ISysDeptService {
 
-	@Override
-	public List<SysDeptInfo> findBy(SysDeptSearchVO vo) {
-		List<SysDept> page = dao.findBy(vo);
-		return assembler.createTree(page);
-	}
+    @Override
+    public List<SysDeptInfo> findBy(SysDeptSearchVO vo) {
+        List<SysDept> page = dao.findBy(vo);
+        return assembler.createTree(page);
+    }
 
-	@Override
-	public void add(String operatorCode, SysDeptCreateVO vo) {
-		new AddSysDeptAction(operatorCode, vo).run();
-	}
+    @Override
+    public void add(String operatorCode, SysDeptCreateVO vo) {
+        new AddSysDeptAction(operatorCode, vo).run();
+    }
 
-	@Override
-	public void modify(String operatorCode, SysDeptModifyVO vo) {
-		new ModifySysDeptAction(operatorCode, vo).run();
-	}
+    @Override
+    public void modify(String operatorCode, SysDeptModifyVO vo) {
+        new ModifySysDeptAction(operatorCode, vo).run();
+    }
 
-	@Override
-	public void deleteBy(String code) {
-		SysDept dept = dao.findByCode(code);
-		dao.delete(dept);
-	}
+    @Override
+    public void deleteBy(String code) {
+        SysDept dept = dao.findByCode(code);
+        dao.delete(dept);
+    }
 
-	@Override
-	public List<TreeInfo> findTreeType() {
-		return assembler.createTreeInfo(dao.findAll());
-	}
+    @Override
+    public List<TreeInfo> findTreeType() {
+        return assembler.createTreeInfo(dao.findAll());
+    }
 
-	@Override
-	public TypeInfo findSimpleTypeBy(String code) {
-		SysDept dept = dao.findByCode(code);
-		return assembler.createTypeInfo(dept);
-	}
+    @Override
+    public TypeInfo findSimpleTypeBy(String code) {
+        SysDept dept = dao.findByCode(code);
+        return assembler.createTypeInfo(dept);
+    }
 
 }

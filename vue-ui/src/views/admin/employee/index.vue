@@ -246,11 +246,11 @@ export default {
   right: 0;
 }
 /* 详情 */
-.employee-dep-management /deep/ .el-dialog__wrapper {
+.employee-dep-management ::v-deep .el-dialog__wrapper {
   margin-top: 60px !important;
 }
 
-.el-tree /deep/ .el-tree-node__content {
+.el-tree ::v-deep .el-tree-node__content {
   height: 40px;
 
   .node-data {
@@ -301,26 +301,26 @@ export default {
     background-color: $xr--background-color-base;
   }
 }
-.el-tree /deep/ .el-tree-node__expand-icon {
+.el-tree ::v-deep .el-tree-node__expand-icon {
   display: none;
 }
-.system-nav /deep/ .el-tree-node > .el-tree-node__children {
+.system-nav ::v-deep .el-tree-node > .el-tree-node__children {
   overflow: visible;
 }
-.system-nav /deep/ .el-tree > .el-tree-node {
+.system-nav ::v-deep .el-tree > .el-tree-node {
   min-width: 100%;
   display: inline-block !important;
 }
 
 .system-nav
-  /deep/
+  ::v-deep
   .el-tree--highlight-current
   .el-tree-node.is-current
   > .el-tree-node__content {
   background-color: white;
 }
 
-.system-nav /deep/ .el-tree-node__content:hover {
+.system-nav ::v-deep .el-tree-node__content:hover {
   background-color: white;
 }
 /* 设置flex布局 */

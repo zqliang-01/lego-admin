@@ -169,7 +169,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-/deep/ .type-select {
+::v-deep .type-select {
   margin-right: 15px;
   .el-input__inner {
     height: inherit;

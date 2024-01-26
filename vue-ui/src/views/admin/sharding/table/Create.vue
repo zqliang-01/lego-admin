@@ -34,9 +34,12 @@ export default {
   computed: {
     title() {
       return this.action.type === 'update' ? '编辑分片表策略' : '新建分片表策略'
-    },
-    saveRequest() {
-      return this.action.type === 'update' ? tableUpdateAPI : tableAddAPI
+    }
+  },
+  data() {
+    return {
+      addRequest: tableAddAPI,
+      updateRequest: tableUpdateAPI
     }
   },
   created() {

@@ -17,7 +17,7 @@ const homeRouter = [
     ...layout(),
     children: [{
       path: 'index',
-      component: () => import('@/views/home/index')
+      component: () => import('@/views/home')
     }]
   }
 ]

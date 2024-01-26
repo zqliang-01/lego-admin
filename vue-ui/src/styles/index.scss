@@ -5,10 +5,9 @@
 @import './table.scss';
 // 指令
 @import '../directives/empty/empty.scss';
-@import '../assets/iconfont/iconfont.css';
-@import './iconfont/iconfont.css';
 @import '../directives/style.scss';
-
+@import './iconfont/iconfont.css';
+@import '../assets/iconfont/iconfont.css';
 
 body {
   height: 100%;
@@ -116,7 +115,7 @@ input:invalid {
 
 // 控制svg颜色
 path {
-  fill: inherit !important
+  fill: inherit
 }
 
 // 通过 popper-class 去除默认padding

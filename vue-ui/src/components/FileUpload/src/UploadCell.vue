@@ -141,7 +141,7 @@ export default {
       background: transparent;
       font-weight: bold;
       padding: 0;
-      /deep/ i {
+      ::v-deep i {
         font-size: 15px;
         font-weight: bold;
       }

@@ -34,9 +34,12 @@ export default {
   computed: {
     title() {
       return this.action.type === 'update' ? '编辑模板' : '新建模板'
-    },
-    saveRequest() {
-      return this.action.type === 'update' ? templateUpdateAPI : templateAddAPI
+    }
+  },
+  data() {
+    return {
+      addRequest: templateAddAPI,
+      updateRequest: templateUpdateAPI
     }
   },
   created() {

@@ -1,10 +1,6 @@
 package com.lego.sharding.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.lego.core.data.hibernate.impl.BusiService;
+import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.sharding.action.AddShardingTableAction;
@@ -17,9 +13,12 @@ import com.lego.sharding.entity.ShardingTable;
 import com.lego.sharding.service.IShardingTableService;
 import com.lego.sharding.vo.ShardingTableCreateVO;
 import com.lego.sharding.vo.ShardingTableModifyVO;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
-public class ShardingTableService extends BusiService<IShardingTableDao, ShardingTableAssembler> implements IShardingTableService {
+public class ShardingTableService extends BusService<IShardingTableDao, ShardingTableAssembler> implements IShardingTableService {
 
     @Override
     public LegoPage<ShardingTableInfo> findPageBy(GenericSearchVO vo) {

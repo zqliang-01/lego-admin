@@ -51,7 +51,7 @@
           :prop="item.field"
           :label="item.name"
           :min-width="getMinWidth(item.formType)">
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row }">
             <field-view
               :props="item"
               :form-type="item.formType"

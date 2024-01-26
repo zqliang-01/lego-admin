@@ -1,10 +1,6 @@
 package com.lego.crm.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
-import com.lego.core.data.hibernate.impl.BusiService;
+import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.crm.action.AddCrmCustomerAction;
@@ -17,9 +13,12 @@ import com.lego.crm.entity.CrmCustomer;
 import com.lego.crm.service.ICrmCustomerService;
 import com.lego.crm.vo.CrmCustomerCreateVO;
 import com.lego.crm.vo.CrmCustomerModifyVO;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
-public class CrmCustomerService extends BusiService<ICrmCustomerDao, CrmCustomerAssembler> implements ICrmCustomerService {
+public class CrmCustomerService extends BusService<ICrmCustomerDao, CrmCustomerAssembler> implements ICrmCustomerService {
 
     @Override
     public LegoPage<CrmCustomerInfo> findPageBy(GenericSearchVO vo) {

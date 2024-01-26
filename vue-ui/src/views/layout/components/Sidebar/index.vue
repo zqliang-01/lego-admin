@@ -72,7 +72,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import SidebarItem from './SidebarItem'
-import variables from './variables.scss'
+import variables from './variables.module.scss'
 
 export default {
   components: { SidebarItem },
@@ -160,7 +160,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import './variables.scss';
+@import './variables.module.scss';
 
 .sidebar-container {
   transition: width 0.28s;
@@ -198,24 +198,27 @@ export default {
   overflow-x: hidden;
   padding-bottom: 48px;
   border-right-color: $menuBg;
+  background-color: #001529;
 }
 
 .el-menu-vertical.el-menu--collapse {
-  /deep/ .el-submenu__icon-arrow {
+  ::v-deep .el-submenu__icon-arrow {
     display: none;
   }
 
-  /deep/ .el-submenu__title {
+  ::v-deep .el-submenu__title {
     span {
       display: none;
     }
   }
 
-  /deep/ .menu-item-content {
+  ::v-deep .menu-item-content {
     text-overflow: clip;
   }
+  ::v-deep .el-menu {
+    background-color: $menuBg !important;
+  }
 }
-
 // 创建
 
 .create-button-container {

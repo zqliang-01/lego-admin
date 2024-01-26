@@ -12,7 +12,7 @@
 <script>
 import data from '@/utils/icon-data.js'
 export default {
-  name: 'Emoji',
+  name: 'IconList',
   data() {
     return {
       iconData: data,
@@ -56,6 +56,8 @@ export default {
       width: 60px;
       float: left;
       text-align: center;
+      line-height: 10px;
+      display: block;
     }
   }
 </style>

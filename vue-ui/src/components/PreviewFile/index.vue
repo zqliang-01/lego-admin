@@ -143,8 +143,7 @@ import {
   getMaxIndex,
   getFileIconWithSuffix,
   downloadFileWithBuffer,
-  canPreviewFile,
-  previewFile
+  canPreviewFile
 } from '@/utils'
 import { fileDownloadAPI, filePreviewUrl } from '@/api/common'
 
@@ -412,9 +411,6 @@ export default {
     previewFile() {
       this.$message.error('暂未支持非图片类型文件预览！')
       return
-      if (this.currentFile.url) {
-        previewFile(this.currentFile.url, this.currentFile.name)
-      }
     },
     getFileIcon(name) {
       var ext = ''

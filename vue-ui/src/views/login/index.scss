@@ -18,7 +18,7 @@
 }
 
 .login-from {
-  /deep/ input {
+  ::v-deep input {
     background-color: #F6F6F6;
 
     &:focus,
@@ -31,7 +31,7 @@
     }
   }
 
-  /deep/ .error input {
+  ::v-deep .error input {
     border: 1px solid #EA3E4A;
 
     &:focus {
@@ -56,13 +56,13 @@
       border-radius: $xr-border-radius-base;
       // border-radius: 10px;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         height: 50px;
         line-height: 50px;
         padding: 0 10px;
       }
 
-      /deep/ .el-input__prefix {
+      ::v-deep .el-input__prefix {
         top: 0;
         left: 8px;
       }

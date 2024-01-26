@@ -9,8 +9,7 @@
       main-title="新建${FunctionName}"
       @on-handle="listHeadHandle"
       @on-search="commonSearch"
-      @on-export="exportInfos">
-    </lego-list-head>
+      @on-export="exportInfos" />
     <div
       v-empty="formErrorMsg != null || !auth.read"
       xs-empty-icon="nopermission"
@@ -57,7 +56,7 @@
           :min-width="item.width"
           sortable="custom"
           show-overflow-tooltip>
-          <template slot-scope="{ row, column, $index }">
+          <template slot-scope="{ row, column }">
             <field-view
               :props="item"
               :form-type="item.formType"
@@ -69,9 +68,7 @@
           :resizable="false"
           fixed="right"
           width="40">
-          <template
-            slot="header"
-            slot-scope="slot">
+          <template slot="header">
             <field-set
               :menu-code="menuCode"
               @change="setSave"/>
@@ -100,8 +97,9 @@
           @current-change="handleCurrentChange"/>
       </div>
     </div>
-    <detail
-      v-if="showDetail"
+    <lego-all-detail
+      :visible.sync="showDetail"
+      domName="${ClassName}Detail"
       :code.sync="rowID"
       :union-key="unionKey"
       :menu-code="menuCode"
@@ -118,28 +116,27 @@
       @close="createShow = false"
       @handle="actionHandle"
     />
-    <component
-      v-for="(item, index) in entityDetailList"
-      v-if="item.show"
-      :key="index"
-      :is="item.name"
-      :code.sync="item.detailCode"
-      :menu-code="item.menuCode"
-      :field-list="item.fieldList"
-      @hide-view="closeEntityDetail(item)"
-      class="d-view"/>
+    <template v-for="(item, index) in entityDetailList">
+      <lego-all-detail
+      :visible.sync="item.show"
+        :key="index"
+        :domName="item.name"
+        :code.sync="item.detailCode"
+        :menu-code="item.menuCode"
+        :field-list="item.fieldList"
+        class="d-view"
+        @hide-view="closeEntityDetail(item)"/>
+    </template>
   </div>
 </template>
 
 <script>
 import Create from './Create'
-import Detail from './Detail'
 #foreach ($column in $columns)
 #if($column.formType == 'entity')
 import ${column.relativeTable.className}Detail from '@/views/${column.relativeTable.appCode}/${column.relativeTable.FieldName}/Detail'
 #end
 #end
-import IndexMixin from '@/components/Mixins/LegoIndex'
 import {
   ${FieldName}ListAPI,
   ${FieldName}DeleteAPI,
@@ -151,6 +148,7 @@ import {
 import { ${column.relativeTable.FieldName}ListAPI } from '@/api/crm/${column.relativeTable.FieldName}'
 #end
 #end
+import IndexMixin from '@/components/Mixins/LegoIndex'
 
 export default {
   name: '${ClassName}Index',
@@ -160,7 +158,6 @@ export default {
     ${column.relativeTable.className}Detail,
   #end
 #end
-    Detail,
     Create
   },
   mixins: [IndexMixin],
@@ -168,8 +165,8 @@ export default {
     return {
       createShow: false,
       menuCode: '${PermissionCode}', // 菜单编码
-      unionKey: "${UnionKey}", // 表格对象唯一键
-      highlightColumnKey: "${UnionKey}", // 表格需要高亮点击的列key
+      unionKey: '${UnionKey}', // 表格对象唯一键
+      highlightColumnKey: '${UnionKey}', // 表格需要高亮点击的列key
       listRequest: ${FieldName}ListAPI,
       deleteRequest: ${FieldName}DeleteAPI,
       exportRequest: ${FieldName}ExcelExportAPI,

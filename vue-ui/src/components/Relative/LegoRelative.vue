@@ -5,8 +5,8 @@
       <lego-relative-table
         ref="legoRelativeTable"
         :radio="radio"
-        :action="action"
         :field-list="fieldList"
+        :query-api-url="queryApiUrl"
         :selected-data="currentSelectedData"
         @changeCheckout="checkSelectInfos" />
     </div>
@@ -48,19 +48,7 @@ export default {
         return []
       }
     },
-    /**
-     * default 默认  condition 固定条件筛选 moduleType 下的
-     * relative: 相关 添加
-     */
-    action: {
-      type: Object,
-      default: () => {
-        return {
-          type: 'default',
-          data: {}
-        }
-      }
-    }
+    queryApiUrl: String
   },
   data() {
     return {
@@ -121,7 +109,7 @@ export default {
   }
 }
 </script>
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .cr-contianer {
   // height: 450px;
   position: relative;

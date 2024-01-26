@@ -174,7 +174,7 @@ export default {
       font-weight: bold;
       padding: 6px;
       margin-left: 0;
-      /deep/ i {
+      ::v-deep i {
         font-size: 15px;
         font-weight: bold;
       }

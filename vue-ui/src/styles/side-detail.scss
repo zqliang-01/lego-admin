@@ -29,27 +29,27 @@
 
 // 详情
 .side-detail__tabs {
-  /deep/ .el-tabs__item {
+  ::v-deep .el-tabs__item {
     color: #333;
     font-size: 12px;
     top: 2px;
     margin-top: -2px;
   }
 
-  /deep/ .el-tabs__nav-scroll {
+  ::v-deep .el-tabs__nav-scroll {
     min-height: 39px;
   }
 
-  /deep/ .el-tabs__item.is-active {
+  ::v-deep .el-tabs__item.is-active {
     border-top: 2px solid $xr-color-primary;
     color: #333;
   }
 
-  /deep/ .el-tabs {
+  ::v-deep .el-tabs {
     height: calc(100% - 15px) !important;
   }
 
-  /deep/ .el-tabs__content {
+  ::v-deep .el-tabs__content {
     height: calc(100% - 40px) !important;
     padding: 0;
     overflow: hidden;
@@ -83,7 +83,7 @@
 }
 
 // 详情
-/deep/ .side-detail__tabs--default {
+::v-deep .side-detail__tabs--default {
   flex: 1;
   overflow: hidden;
 

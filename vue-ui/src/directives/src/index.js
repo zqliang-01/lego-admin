@@ -8,7 +8,7 @@ const loadData = (el, binding) => {
 
   if (binding.value && (binding.value.indexOf('/file/downFile') == 0 ||
   binding.value.indexOf('/adminFile/down') == 0)) {
-    const src = `${process.env.BASE_API}${binding.value}`
+    const src = `${process.env.VUE_APP_BASE_API}${binding.value}`
     setSrc(el, binding, src.replace('//', '/'))
     // if (window.dataCache[binding.value]) {
     //   setSrc(el, binding, window.dataCache[binding.value])

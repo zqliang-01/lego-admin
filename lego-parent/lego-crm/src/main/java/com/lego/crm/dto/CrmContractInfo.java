@@ -1,21 +1,20 @@
 package com.lego.crm.dto;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.lego.core.util.DateUtil;
 import com.lego.core.common.TypeInfoConverter;
+import com.lego.core.dto.BusDTO;
 import com.lego.core.dto.TypeInfo;
-import com.lego.core.dto.BusiDTO;
-
+import com.lego.core.util.DateUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 @Getter
 @Setter
-public class CrmContractInfo extends BusiDTO {
+public class CrmContractInfo extends BusDTO {
 
     private static final long serialVersionUID = 1L;
 

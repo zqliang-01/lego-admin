@@ -1,0 +1,19 @@
+export const defaultSettings = {
+  processId: `Process_${new Date().getTime()}`,
+  processName: `业务流程`,
+  processEngine: 'flowable',
+  paletteMode: 'enhancement',
+  penalMode: 'custom',
+  contextPadMode: 'enhancement',
+  rendererMode: 'rewrite',
+  bg: 'grid-image',
+  toolbar: true,
+  useMinimap: false,
+  useLint: false,
+  useMock: true,
+  contextmenu: true,
+  customContextmenu: true,
+  otherModule: true,
+  templateChooser: true,
+  customTheme: {}
+}

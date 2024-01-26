@@ -1,6 +1,7 @@
 import { isArray, isObject, isEmpty } from '@/utils/types'
 import { separator } from '@/filters/vueNumeralFilter/filters'
 import { objDeepCopy } from '@/utils'
+import { Message } from 'element-ui'
 
 /**
  * 获取自定义字段展示值
@@ -90,7 +91,25 @@ export function getFormFieldValue(item, isDefault = false) {
   }
   return isEmpty(value) ? undefined : value
 }
-
+/**
+ * 显示表单error错误
+ */
+export function showFormErrorMessage(createForm) {
+  // 提示第一个error
+  if (createForm.fields) {
+    for (
+      let index = 0;
+      index < createForm.fields.length;
+      index++
+    ) {
+      const ruleField = createForm.fields[index]
+      if (ruleField.validateState == 'error') {
+        Message.error(ruleField.validateMessage)
+        break
+      }
+    }
+  }
+}
 /**
  * 获取date类型展示时间
  */

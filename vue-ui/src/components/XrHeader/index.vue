@@ -159,7 +159,7 @@ export default {
   }
 
   &__search.is-text {
-    /deep/ .el-input-group__append {
+    ::v-deep .el-input-group__append {
       background-color: $xr-color-primary;
       border-color: $xr-color-primary;
       color: white;

@@ -486,7 +486,7 @@ export default {
   bottom: 0px;
   right: 0px;
   background-color: white;
-  /deep/ .el-card__body {
+  ::v-deep .el-card__body {
     height: 100%;
   }
 }
@@ -564,7 +564,7 @@ export default {
     font-size: 12px;
     height: 28px;
     border-radius: 14px;
-    /deep/ i {
+    ::v-deep i {
       font-size: 12px;
       margin-right: 5px;
     }
@@ -588,7 +588,7 @@ export default {
 }
 
 .el-badge {
-  /deep/ .el-badge__content.is-fixed {
+  ::v-deep .el-badge__content.is-fixed {
     z-index: 2;
   }
 }

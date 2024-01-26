@@ -14,7 +14,7 @@
       :disabled="disabled"
       @change="fieldChange"
     >
-      <template slot-scope="{ data, index }">
+      <template slot-scope="{ index }">
         <slot :data="item" :index="index" />
       </template>
     </form-item>

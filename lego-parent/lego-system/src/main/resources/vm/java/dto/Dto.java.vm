@@ -16,7 +16,7 @@ import com.lego.core.common.BooleanConverter;
 import com.lego.core.common.TypeInfoConverter;
 import com.lego.core.dto.TypeInfo;
 #end
-import com.lego.core.dto.BusiDTO;
+import com.lego.core.dto.BusDTO;
 
 import lombok.Getter;
 import lombok.Setter;

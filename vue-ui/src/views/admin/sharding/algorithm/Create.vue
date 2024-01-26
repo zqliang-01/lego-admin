@@ -34,9 +34,12 @@ export default {
   computed: {
     title() {
       return this.action.type === 'update' ? '编辑分片算法' : '新建分片算法'
-    },
-    saveRequest() {
-      return this.action.type === 'update' ? algorithmUpdateAPI : algorithmAddAPI
+    }
+  },
+  data() {
+    return {
+      addRequest: algorithmAddAPI,
+      updateRequest: algorithmUpdateAPI
     }
   },
   created() {

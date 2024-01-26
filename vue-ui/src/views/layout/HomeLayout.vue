@@ -7,7 +7,7 @@
     </el-header>
     <el-container>
       <el-main
-        id="crm-main-container"
+        id="main-container"
         style="padding:15px;">
         <app-main/>
       </el-main>

@@ -7,6 +7,6 @@ import com.lego.crm.entity.CrmLead;
 public class DeleteCrmLeadAction extends DeleteAction<CrmLead, ICrmLeadDao> {
 
     public DeleteCrmLeadAction(String operatorCode, String code) {
-        super("crm:lead", operatorCode, code);
+        super("crm_lead", operatorCode, code);
     }
 }

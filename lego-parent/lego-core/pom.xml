@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <project
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
-	xmlns="http://maven.apache.org/POM/4.0.0"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.lego</groupId>
-		<artifactId>lego-parent</artifactId>
-		<version>1.0.0</version>
-	</parent>
-	<artifactId>lego-core</artifactId>
-	<name>lego-core</name>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+        xmlns="http://maven.apache.org/POM/4.0.0">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.lego</groupId>
+        <artifactId>lego-parent</artifactId>
+        <version>1.0.0</version>
+    </parent>
+    <artifactId>lego-core</artifactId>
+    <name>lego-core</name>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
         <!-- mvc spring boot -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -55,17 +55,17 @@
             <version>1.2.3</version>
         </dependency>
 
-    	<!-- Sa-Token -->
-    	<dependency>
-		    <groupId>cn.dev33</groupId>
-		    <artifactId>sa-token-spring-boot-starter</artifactId>
-		    <version>1.34.0</version>
-		</dependency>
-		<dependency>
-		    <groupId>cn.dev33</groupId>
-		    <artifactId>sa-token-jwt</artifactId>
-		    <version>1.34.0</version>
-		</dependency>
+        <!-- Sa-Token -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>1.34.0</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-jwt</artifactId>
+            <version>1.34.0</version>
+        </dependency>
 
         <!-- log4j -->
         <dependency>
@@ -89,10 +89,10 @@
             <version>4.1.0</version>
         </dependency>
         <dependency>
-		    <groupId>com.alibaba</groupId>
-		    <artifactId>fastjson</artifactId>
-		    <version>2.0.26</version>
-		</dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>2.0.26</version>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -108,11 +108,17 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.9</version>
         </dependency>
-		<!--velocity代码生成使用模板 -->
-		<dependency>
-			<groupId>org.apache.velocity</groupId>
-			<artifactId>velocity-engine-core</artifactId>
-			<version>2.3</version>
-		</dependency>
-	</dependencies>
+        <!--velocity代码生成使用模板 -->
+        <dependency>
+            <groupId>org.apache.velocity</groupId>
+            <artifactId>velocity-engine-core</artifactId>
+            <version>2.3</version>
+        </dependency>
+        <!--flowable工作流 -->
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-process</artifactId>
+            <version>6.8.0</version>
+        </dependency>
+    </dependencies>
 </project>

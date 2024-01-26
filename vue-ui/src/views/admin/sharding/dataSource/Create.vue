@@ -34,9 +34,12 @@ export default {
   computed: {
     title() {
       return this.action.type === 'update' ? '编辑数据源' : '新建数据源'
-    },
-    saveRequest() {
-      return this.action.type === 'update' ? dataSourceUpdateAPI : dataSourceAddAPI
+    }
+  },
+  data() {
+    return {
+      addRequest: dataSourceAddAPI,
+      updateRequest: dataSourceUpdateAPI
     }
   },
   created() {

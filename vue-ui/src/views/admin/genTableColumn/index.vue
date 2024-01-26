@@ -51,9 +51,9 @@
               <template v-if="scope.row.editJavaFiledType">
                 <lego-relative-cell
                   v-if="scope.row.formType == 'entity'"
+                  query-api="/back-end/sys-gen-table/list"
                   :value="scope.row.relativeTable"
                   :field-list="fieldList"
-                  :action="{request: tableListRequest}"
                   @value-change="entityChange(scope.row, $event)"/>
                 <el-input v-else v-model="scope.row.javaFieldType"/>
               </template>
@@ -87,8 +87,7 @@ import {
   genTableModifyAPI
 } from '@/api/admin/genTableColumn'
 import {
-  genTableSyncAPI,
-  genTableListAPI
+  genTableSyncAPI
 } from '@/api/admin/genTable'
 import { customFieldTypeListAPI } from '@/api/admin/formField'
 import { Loading } from 'element-ui'
@@ -111,7 +110,6 @@ export default {
       dataList: [],
       // 字典信息
       formTypeList: [],
-      tableListRequest: genTableListAPI,
       fieldList: [
         { fieldCode: 'code', name: '表名', formType: 'select', width: '150' },
         { fieldCode: 'name', name: '功能名称', formType: 'text', width: '150' },

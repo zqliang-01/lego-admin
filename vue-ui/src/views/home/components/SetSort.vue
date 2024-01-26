@@ -173,7 +173,7 @@ export default {
   .content {
     height: 100px;
 
-    /deep/ .el-switch {
+    ::v-deep .el-switch {
       position: absolute;
       right: 0;
       top: 0;

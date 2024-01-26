@@ -58,7 +58,7 @@ export default {
 
 <style lang="scss" scoped>
 .code-json-editor {
-  /deep/ .jsoneditor-poweredBy {
+  ::v-deep .jsoneditor-poweredBy {
     display: none !important;
   }
 }

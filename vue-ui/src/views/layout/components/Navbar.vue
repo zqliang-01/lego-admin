@@ -15,7 +15,7 @@
           v-for="(item, index) in showItems"
           :key="index"
           :index="item.code">
-          <i :class="item.icon | iconPre" style="fontSize: 17px" />
+          <i :class="item.icon | iconPre" style="fontSize: 17px;margin-right: 0.3em;" />
           <span>{{ item.name }}</span>
         </el-menu-item>
         <el-menu-item ref="navManagerMenu" index="other">
@@ -171,18 +171,12 @@ export default {
         divided: false,
         label: '退出登录',
         icon: 'logout'
-      },
-      {
-        command: 'help',
-        divided: false,
-        label: '关于我们',
-        icon: 'help'
       }
       ]
     },
     manageAuth() {
       if (this.allAuth) {
-        return this.allAuth.hasOwnProperty('manage')
+        return Object.prototype.hasOwnProperty.call(this.allAuth, 'manage')
       }
       return false
     }
@@ -263,12 +257,10 @@ export default {
     navItemsClick(code) {
       if (code === 'other') {
         this.navManagerShow = !this.navManagerShow
-      }
-      else if (code === 'user') {
+      } else if (code === 'user') {
         this.navManagerShow = false
         code = 'other'
-      }
-      else {
+      } else {
         this.navManagerShow = false
         this.$router.push('/' + code)
       }
@@ -322,8 +314,6 @@ export default {
         this.$router.push({
           name: 'person'
         })
-      } else if (command == 'help') {
-        window.open('https://zqliang.cn/service/user/about')
       } else if (command == 'logOut') {
         this.$confirm('退出登录？', '提示', {
           confirmButtonText: '确定',
@@ -384,7 +374,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .navbar {
   height: 60px;
   min-height: 60px;
@@ -437,11 +427,11 @@ export default {
 .el-menu {
   overflow: hidden;
 
-  /deep/ .el-submenu__icon-arrow {
+  ::v-deep .el-submenu__icon-arrow {
     display: none;
   }
 
-  /deep/ .el-submenu {
+  ::v-deep .el-submenu {
     .el-submenu__title {
       i {
         color: #5c6075;
@@ -449,7 +439,7 @@ export default {
     }
   }
 
-  /deep/ .el-submenu.is-active {
+  ::v-deep .el-submenu.is-active {
     .el-submenu__title {
       i {
         color: $xr-color-primary;
@@ -462,9 +452,9 @@ export default {
   border-bottom: none;
 }
 
-.el-menu-item {
+.el-menu--horizontal .el-menu-item {
   padding: 0;
-  margin: 0 20px;
+  margin: 0 20px !important;
   font-size: 16px;
   font-weight: 500;
   color: #2a304d;
@@ -540,7 +530,7 @@ export default {
 }
 
 .el-dropdown-menu {
-  /deep/ .popper__arrow {
+  ::v-deep .popper__arrow {
     display: none;
   }
 }

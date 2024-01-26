@@ -8,12 +8,10 @@ import com.lego.system.vo.SysCustomFormSearchVO;
 
 public interface ISysCustomFormDao extends IGenericDao<SysCustomForm> {
 
-	LegoPage<SysCustomForm> findBy(SysCustomFormSearchVO vo);
+    LegoPage<SysCustomForm> findBy(SysCustomFormSearchVO vo);
 
-	SysCustomForm findByPermission(String permissionCode);
+    SysCustomForm findByTable(SysGenTable table);
 
-	SysCustomForm findByTable(SysGenTable table);
-
-	SysCustomForm findByTableCode(String tableCode);
+    SysCustomForm findByTableCode(String tableCode);
 
 }

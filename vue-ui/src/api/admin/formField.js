@@ -8,6 +8,25 @@ export function customFormListAPI(data) {
   })
 }
 
+export function customFormSimpleListAPI() {
+  return request({
+    url: '/back-end/sys-custom-form/list-simple'
+  })
+}
+
+export function customFormGetAPI(code) {
+  return request({
+    url: '/back-end/sys-custom-form/get/' + code
+  })
+}
+
+export function customFormInitGetAPI(tableCode) {
+  return request({
+    url: '/back-end/sys-custom-form/get-init',
+    data: { tableCode: tableCode }
+  })
+}
+
 export function customFormModifyAPI(data) {
   return request({
     url: '/back-end/sys-custom-form/modify',
@@ -74,18 +93,27 @@ export function customFieldModifyAPI(data) {
 /**
  * 表头字段查询
  */
-export function tableHeaderFieldPermissionListAPI(data) {
+export function tableHeaderFieldListAPI(data) {
   return request({
-    url: '/back-end/sys-custom-field/list-table-header?permissionCode=' + data
+    url: '/back-end/sys-custom-field/list-table-header/' + data
   })
 }
 
 /**
- * 表头字段查询
+ * 新增表单字段查询
  */
-export function tableHeaderFieldListAPI(data) {
+export function createFieldListAPI(data) {
   return request({
-    url: '/back-end/sys-custom-field/list-table-header/' + data
+    url: '/back-end/sys-custom-field/list-create/' + data
+  })
+}
+
+/**
+ * 详情表单字段查询
+ */
+export function detailFieldListAPI(data) {
+  return request({
+    url: '/back-end/sys-custom-field/list-detail/' + data
   })
 }
 

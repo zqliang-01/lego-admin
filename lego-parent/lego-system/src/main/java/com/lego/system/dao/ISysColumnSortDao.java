@@ -1,11 +1,11 @@
 package com.lego.system.dao;
 
-import java.util.List;
-
 import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.system.entity.SysColumnSort;
 
+import java.util.List;
+
 public interface ISysColumnSortDao extends IGenericDao<SysColumnSort> {
 
-	List<SysColumnSort> findByPermission(String permissionCode, String employeeCode);
+    List<SysColumnSort> findByForm(String formCode, String employeeCode);
 }

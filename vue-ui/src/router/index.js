@@ -5,7 +5,6 @@ Vue.use(Router)
 
 import homeRouter from './modules/home'
 import userRouter from './modules/user'
-import crmRouter from './modules/crm'
 import adminRouter from './modules/admin'
 
 /**
@@ -58,6 +57,5 @@ export default router
 
 export const asyncRouterMap = [
   { type: 'home', router: homeRouter },
-  { type: 'crm', router: crmRouter },
   { type: 'manage', router: adminRouter }
 ]

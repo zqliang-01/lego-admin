@@ -77,7 +77,7 @@ export default {
   position: absolute;
   right: 4px;
   top: 6px;
-  /deep/ .el-badge__content {
+  ::v-deep .el-badge__content {
     border-width: 0;
   }
 }

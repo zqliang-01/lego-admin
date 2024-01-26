@@ -9,7 +9,6 @@ const app = {
   state: {
     logo: '',
     name: '',
-    lang: localStorage.lang || 'cn',
     sidebar: {
       activeIndex: '', // 目前激活的 行
       collapse: Lockr.get('sideBarCollapse') || false
@@ -38,12 +37,6 @@ const app = {
     },
     SET_APPNAME: (state, name) => {
       state.name = name
-    },
-    SET_LANG: (state, lang) => {
-      state.lang = lang
-      window.app.$i18n.locale = lang
-      localStorage.setItem('lang', lang)
-      window.location.reload()
     },
     SET_IMAGECACHE: (state, value) => {
       state.imageCache = value

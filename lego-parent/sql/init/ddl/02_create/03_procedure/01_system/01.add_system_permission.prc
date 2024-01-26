@@ -4,12 +4,14 @@ CREATE PROCEDURE add_system_permission (
     IN vTypeCode VARCHAR(255),
     IN vParentCode VARCHAR(255),
     IN vIcon VARCHAR(255),
-    IN vSn INT(5)
+    IN vSn INT(5),
+    IN vRouteTypeCode VARCHAR(255)
 )
 BEGIN
     DECLARE vId BIGINT(15);
     DECLARE vParentId BIGINT(15);
     DECLARE vTypeId BIGINT(15);
+    DECLARE vRouteTypeId BIGINT(15);
 
     SET vId = next_id('general');
     IF vParentCode IS NOT NULL THEN
@@ -17,9 +19,13 @@ BEGIN
     END IF;
 	SELECT t.id INTO vTypeId FROM sys_simple_type t WHERE t.code = vTypeCode AND t.class_type = 'SysPermissionType';
 
+    IF vRouteTypeCode IS NOT NULL THEN
+	    SELECT t.id INTO vRouteTypeId FROM sys_simple_type t WHERE t.code = vRouteTypeCode AND t.class_type = 'SysPermissionRouteType';
+    END IF;
+
 	INSERT INTO sys_permission
-	    (ID, CODE, NAME, VERSION, DELETED, CREATE_TIME, TYPE_ID, PARENT_ID, SN, ICON)
+	    (ID, CODE, NAME, VERSION, CREATE_TIME, TYPE_ID, ROUTE_TYPE_ID, PARENT_ID, SN, ICON)
 	VALUES
-	    (vId, vCode, vName, 1, 0, sysdate(), vTypeId, vParentId, vSn, vIcon);
+	    (vId, vCode, vName, 1, sysdate(), vTypeId, vRouteTypeId, vParentId, vSn, vIcon);
 
 END;

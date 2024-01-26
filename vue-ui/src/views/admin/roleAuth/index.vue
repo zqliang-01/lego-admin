@@ -172,7 +172,7 @@ export default {
   padding-top: 10px;
   position: relative;
 }
-.role-authorization /deep/ .el-tree-node__expand-icon {
+.role-authorization ::v-deep .el-tree-node__expand-icon {
   display: none;
 }
 .role-nav-box {

@@ -109,15 +109,15 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .new-dialog-form {
   overflow-y: auto;
   padding: 20px;
 }
-.new-dialog-form /deep/ .el-form-item {
+.new-dialog-form ::v-deep .el-form-item {
   margin: 0;
 }
-.new-dialog-form /deep/ .el-form-item .el-form-item__label {
+.new-dialog-form ::v-deep .el-form-item .el-form-item__label {
   padding: 0;
 }
 </style>
