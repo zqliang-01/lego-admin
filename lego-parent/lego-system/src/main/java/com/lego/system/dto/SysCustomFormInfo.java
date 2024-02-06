@@ -15,6 +15,7 @@ public class SysCustomFormInfo extends DTO {
 
     private String code;
     private String name;
+    private String appCode;
     private boolean enable;
     private String queryApiUrl;
     private String detailApiUrl;

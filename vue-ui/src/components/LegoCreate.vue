@@ -1,7 +1,7 @@
 <template>
   <xr-create
     :loading="loading"
-    :title="title"
+    :title="createTitle"
     @close="close"
     @save="saveClick">
     <create-sections title="基本信息">
@@ -30,7 +30,10 @@ export default {
   name: 'LegoCreate',
   mixins: [CreateMixin],
   computed: {
-    title() {
+    createTitle() {
+      if (this.title) {
+        return this.title
+      }
       return this.action.type === 'update' ? `编辑${this.auth.title}` : `新建${this.auth.title}`
     }
   },
@@ -39,6 +42,14 @@ export default {
       addRequest: {},
       updateRequest: {}
     }
+  },
+  created() {
+    this.initField().then(res => {
+      this.initRequest(res.data.form)
+      this.dataFieldList = res.data.fields
+      this.detailData = this.action.detailData
+      this.initValue()
+    })
   }
 }
 </script>

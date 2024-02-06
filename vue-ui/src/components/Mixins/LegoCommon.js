@@ -13,6 +13,11 @@ export default {
       'navActiveIndex'
     ])
   },
+  data() {
+    return {
+      appCode: ''
+    }
+  },
   methods: {
     setDefaultValue(field, fieldFrom, isCreate) {
       if (isCreate && field.unique && field.codeGenerator && field.codeGenerator.code) {
@@ -24,48 +29,51 @@ export default {
         this.$set(fieldFrom, field.fieldCode, value)
       }
     },
-    initRequest(formApi) {
+    initRequest(form) {
+      this.appCode = form.appCode
       if (this.listRequest) {
         this.listRequest = function doRequest(data) {
-          return postRequest(formApi.queryApiUrl, data)
+          return postRequest(form.queryApiUrl, data)
         }
       }
       if (this.detailRequest) {
         this.detailRequest = function doRequest(data) {
-          return codeGetRequest(formApi.detailApiUrl, data)
+          return codeGetRequest(form.detailApiUrl, data)
         }
       }
       if (this.exportRequest) {
         this.exportRequest = function doRequest(data) {
-          return fileRequest(formApi.exportApiUrl, data)
+          return fileRequest(form.exportApiUrl, data)
         }
       }
       if (this.exportAllRequest) {
         this.exportAllRequest = function doRequest(data) {
-          return fileRequest(formApi.exportAllApiUrl, data)
+          return fileRequest(form.exportAllApiUrl, data)
         }
       }
       if (this.addRequest) {
         this.addRequest = function doRequest(data) {
-          return postRequest(formApi.addApiUrl, data)
+          return postRequest(form.addApiUrl, data)
         }
       }
       if (this.updateRequest) {
         this.updateRequest = function doRequest(data) {
-          return postRequest(formApi.updateApiUrl, data)
+          return postRequest(form.updateApiUrl, data)
         }
       }
       if (this.deleteRequest) {
         this.deleteRequest = function doRequest(data) {
-          return postRequest(formApi.deleteApiUrl, data)
+          return postRequest(form.deleteApiUrl, data)
         }
       }
     },
     initSettingValue(field) {
-      if (this.navActiveIndex &&
-        field.optionDataType === 'dict' &&
+      if (!this.appCode) {
+        this.appCode = this.navActiveIndex
+      }
+      if (field.optionDataType === 'dict' &&
         field.optionDictType) {
-        dictListAPI(this.navActiveIndex, field.optionDictType).then(res => {
+        dictListAPI(this.appCode, field.optionDictType).then(res => {
           field.setting = res.data
         })
       }
@@ -80,13 +88,21 @@ export default {
         })
       }
     },
-    getDisable(field, isUpdate) {
-      let disable = field.unique
-      if (field.formType === 'entity') {
-        const au = getFormAuth(field.relativeForm.code)
-        disable = !au.update
+    getDisable(field, type) {
+      if (field.disabled) {
+        return true
       }
-      return isUpdate && disable
+      if (field.unique && type === 'update') {
+        return true
+      }
+      if (type === 'view') {
+        return true
+      }
+      if (field.formType === 'entity' && field.relativeForm && type === 'update') {
+        const au = getFormAuth(field.relativeForm.code)
+        return !au.update
+      }
+      return false
     }
   }
 }

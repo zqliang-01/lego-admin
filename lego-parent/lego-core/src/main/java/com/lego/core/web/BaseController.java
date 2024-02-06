@@ -1,9 +1,9 @@
 package com.lego.core.web;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
+import com.lego.core.common.Constants;
+import org.springframework.transaction.annotation.Transactional;
 
 @SaCheckLogin
 @Transactional
@@ -19,6 +19,6 @@ public abstract class BaseController {
     }
 
     protected String getLoginCode() {
-    	return StpUtil.getLoginIdAsString();
+        return Constants.loginCode.get();
     }
 }

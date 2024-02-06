@@ -126,10 +126,14 @@ export default {
   },
   inject: ['rootTabs'],
   watch: {
-    detailCode(val) {
-      if (this.fieldList) {
-        this.editCancel()
-      }
+    fieldList: {
+      handler() {
+        if (this.fieldList) {
+          this.editCancel()
+        }
+      },
+      deep: true,
+      immediate: true
     },
     'rootTabs.currentName'(val) {
       if (val === 'LegoEditBaseInfo') {

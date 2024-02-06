@@ -10,71 +10,42 @@
       @search="onSearch"
       @create="onCreate"/>
     <div class="customer-content">
-      <el-table
-        v-loading="loading"
-        :data="dataList"
-        :height="tableHeight"
-        highlight-current-row
-        style="width: 100%">
-        <el-table-column
-          v-for="(item, index) in fieldList"
-          :key="index"
-          :min-width="item.width"
-          :prop="item.fieldCode"
-          :label="item.name"
-          show-overflow-tooltip>
-          <template slot-scope="{ row }">
-            <field-view
-              :props="item"
-              :form-type="item.formType"
-              :value="row[item.fieldCode]">
-            </field-view>
-          </template>
-        </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          width="300">
-          <template slot-scope="scope">
-            <el-button
-              v-if="manage.genTable.update"
-              type="text"
-              size="small"
-              @click="handleTable('edit', scope.row, scope.$index)">编辑</el-button>
-            <el-button
-              v-if="manage.genTable.design"
-              type="text"
-              size="small"
-              icon="el-icon-edit"
-              @click="handleTable('design', scope.row, scope.$index)">设计字段</el-button>
-            <el-button
-              v-if="manage.genTable.update"
-              type="text"
-              size="small"
-              icon="el-icon-view"
-              @click="handleTable('preview', scope.row, scope.$index)">预览代码</el-button>
-            <el-button
-              v-if="manage.genTable.update"
-              type="text"
-              size="small"
-              icon="el-icon-download"
-              @click="handleTable('download', scope.row, scope.$index)">下载代码</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="p-contianer">
-        <el-pagination
-          :current-page="currentPage"
-          :page-sizes="pageSizes"
-          :page-size.sync="pageSize"
-          :total="total"
-          :pager-count="5"
-          class="p-bar"
-          background
-          layout="prev, pager, next, sizes, total, jumper"
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"/>
-      </div>
+      <lego-table
+        :loading="loading"
+        :data-list="dataList"
+        :field-list="fieldList"
+        :edit-button-width="300"
+        :current-page="currentPage"
+        :page-size="pageSize"
+        :total="total"
+        @onList="getList"
+        @onEdit="handleTable">
+        <template slot-scope="scope">
+          <el-button
+            v-if="manage.genTable.update"
+            type="text"
+            size="small"
+            @click="handleTable('edit', scope.row, scope.$index)">编辑</el-button>
+          <el-button
+            v-if="manage.genTable.design"
+            type="text"
+            size="small"
+            icon="el-icon-edit"
+            @click="handleTable('design', scope.row, scope.$index)">设计字段</el-button>
+          <el-button
+            v-if="manage.genTable.update"
+            type="text"
+            size="small"
+            icon="el-icon-view"
+            @click="handleTable('preview', scope.row, scope.$index)">预览代码</el-button>
+          <el-button
+            v-if="manage.genTable.update"
+            type="text"
+            size="small"
+            icon="el-icon-download"
+            @click="handleTable('download', scope.row, scope.$index)">下载代码</el-button>
+        </template>
+      </lego-table>
     </div>
 
     <code-preview
@@ -104,9 +75,9 @@ import {
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import FieldView from '@/components/NewCom/Form/FieldView'
+import LegoTable from '@/components/LegoTable'
 import GenTableCreate from './Create'
 import CodePreview from './CodePreview'
-import LegoTable from '@/components/LegoTable'
 import { downloadFileWithBuffer } from '@/utils'
 
 import 'highlight.js/styles/github-gist.css'
@@ -135,12 +106,10 @@ export default {
       loading: false,
       isCreate: false,
       previewVisible: false,
-      tableHeight: document.documentElement.clientHeight - 165, // 表的高度
       dataList: [],
       tableNameList: [],
       currentPage: 1,
       pageSize: 15,
-      pageSizes: [15, 30, 60, 100],
       total: 0,
       search: '',
       action: {
@@ -149,23 +118,30 @@ export default {
       },
       previewData: [],
       fieldList: [
-        { fieldCode: 'code', name: '表名', formType: 'select', width: '150', unique: true, required: true, xAxis: 0, yAxis: 0 },
-        { fieldCode: 'name', name: '功能名称', formType: 'text', width: '150', required: true, xAxis: 0, yAxis: 1, tipType: 'tooltip', inputTips: '功能菜单名称，对应前台菜单名' },
-        { fieldCode: 'comment', name: '描述', formType: 'text', width: '150', xAxis: 1, yAxis: 0 },
-        { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150', required: true, xAxis: 1, yAxis: 1, tipType: 'tooltip', inputTips: '生成在哪个java包下，例如 com.lego.system' },
-        { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100', required: true, xAxis: 2, yAxis: 0, tipType: 'tooltip', inputTips: '可理解为子系统名，对应前台应用以及后端微服务模块' },
-        { fieldCode: 'permissionCode', name: '权限编码', formType: 'text', width: '100', required: true, xAxis: 2, yAxis: 1, tipType: 'tooltip', inputTips: '权限编码，格式为-模块编码_一级菜单_二级菜单_...' },
-        { fieldCode: 'className', name: '类名', formType: 'text', width: '100', required: true, xAxis: 3, yAxis: 0 },
-        { fieldCode: 'fieldName', name: '属性名称', formType: 'text', width: '100', required: true, xAxis: 3, yAxis: 1, tipType: 'tooltip', inputTips: '属性命名，涉及JAVA类属性命名以及前端路由名等' },
-        { fieldCode: 'urlName', name: '资源名称', formType: 'text', width: '100', required: true, xAxis: 4, yAxis: 0, tipType: 'tooltip', inputTips: 'Url地址路径，前端api以及后端Controller使用' }
-        // { fieldCode: 'path', name: '生成路径', formType: 'text', width: '150', xAxis: 4, yAxis: 1, tipType: 'tooltip', inputTips: '填写磁盘绝对路径，若不填写，则生成到当前Web项目下' }
+        [
+          { fieldCode: 'code', name: '表名', formType: 'select', width: '150', unique: true, required: true },
+          { fieldCode: 'name', name: '功能名称', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: '功能菜单名称，对应前台菜单名' }
+        ],
+        [
+          { fieldCode: 'urlName', name: '资源名称', formType: 'text', width: '100', required: true, xAxis: 4, tipType: 'tooltip', inputTips: 'Url地址路径，前端api以及后端Controller使用' },
+          { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: '生成在哪个java包下，例如 com.lego.system' }
+        ],
+        [
+          { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '可理解为子系统名，对应前台应用以及后端微服务模块' },
+          { fieldCode: 'permissionCode', name: '权限编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '权限编码，格式为-模块编码_一级菜单_二级菜单_...' }
+        ],
+        [
+          { fieldCode: 'className', name: '类名', formType: 'text', width: '100', required: true },
+          { fieldCode: 'fieldName', name: '属性名称', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '属性命名，涉及JAVA类属性命名以及前端路由名等' }
+        ],
+        [
+          { fieldCode: 'comment', name: '描述', formType: 'text', width: '150' }
+          // { fieldCode: 'path', name: '生成路径', formType: 'text', width: '150', tipType: 'tooltip', inputTips: '填写磁盘绝对路径，若不填写，则生成到当前Web项目下' }
+        ]
       ]
     }
   },
   created() {
-    window.onresize = () => {
-      self.tableHeight = document.documentElement.clientHeight - 140
-    }
     this.refresh()
   },
   methods: {
@@ -186,18 +162,9 @@ export default {
         this.total = res.data.totalCount
         this.currentPage = res.data.pageIndex
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    handleSizeChange(val) {
-      this.pageSize = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val
-      this.getList()
     },
     handleTable(type, item, index) {
       if (type === 'design') {

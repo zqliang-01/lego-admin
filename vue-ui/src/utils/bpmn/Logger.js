@@ -28,25 +28,25 @@ export class Logger {
   }
 
   static print(text, type = 'default', back = false) {
-    // if (typeof text === 'object') {
-    //   // 如果是對象則調用打印對象方式
-    //   Logger.isArray(text) ? console.table(text) : console.dir(text)
-    //   return
-    // }
-    // if (back) {
-    //   // 如果是打印帶背景圖的
-    //   console.log(
-    //     `%c ${text} `,
-    //     `background:${Logger.typeColor(type)}; padding: 2px; border-radius: 4px; color: #fff;`
-    //   )
-    // } else {
-    //   console.log(
-    //     `%c ${text} `,
-    //     `border: 1px solid ${Logger.typeColor(type)};
-    //              padding: 2px; border-radius: 4px;
-    //              color: ${Logger.typeColor(type)};`
-    //   )
-    // }
+    if (typeof text === 'object') {
+      // 如果是對象則調用打印對象方式
+      Logger.isArray(text) ? console.table(text) : console.dir(text)
+      return
+    }
+    if (back) {
+      // 如果是打印帶背景圖的
+      console.log(
+        `%c ${text} `,
+        `background:${Logger.typeColor(type)}; padding: 2px; border-radius: 4px; color: #fff;`
+      )
+    } else {
+      console.log(
+        `%c ${text} `,
+        `border: 1px solid ${Logger.typeColor(type)};
+                 padding: 2px; border-radius: 4px;
+                 color: ${Logger.typeColor(type)};`
+      )
+    }
   }
 
   static printBack(text, type = 'primary') {
@@ -54,25 +54,25 @@ export class Logger {
   }
 
   static pretty(type = 'primary', title, text) {
-    // if (typeof text === 'object') {
-    //   console.group('Console Group', title)
-    //   console.log(
-    //     `%c ${title}`,
-    //     `background:${Logger.typeColor(type)};border:1px solid ${Logger.typeColor(type)};
-    //              padding: 1px; border-radius: 4px; color: #fff;`
-    //   )
-    //   Logger.isArray(text) ? console.table(text) : console.dir(text)
-    //   console.groupEnd()
-    //   return
-    // }
-    // console.log(
-    //   `%c ${title} %c ${text} %c`,
-    //   `background:${Logger.typeColor(type)};border:1px solid ${Logger.typeColor(type)};
-    //          padding: 1px; border-radius: 4px 0 0 4px; color: #fff;`,
-    //   `border:1px solid ${Logger.typeColor(type)};
-    //          padding: 1px; border-radius: 0 4px 4px 0; color: ${Logger.typeColor(type)};`,
-    //   'background:transparent'
-    // )
+    if (typeof text === 'object') {
+      console.group('Console Group', title)
+      console.log(
+        `%c ${title}`,
+        `background:${Logger.typeColor(type)};border:1px solid ${Logger.typeColor(type)};
+                 padding: 1px; border-radius: 4px; color: #fff;`
+      )
+      Logger.isArray(text) ? console.table(text) : console.dir(text)
+      console.groupEnd()
+      return
+    }
+    console.log(
+      `%c ${title} %c ${text} %c`,
+      `background:${Logger.typeColor(type)};border:1px solid ${Logger.typeColor(type)};
+             padding: 1px; border-radius: 4px 0 0 4px; color: #fff;`,
+      `border:1px solid ${Logger.typeColor(type)};
+             padding: 1px; border-radius: 0 4px 4px 0; color: ${Logger.typeColor(type)};`,
+      'background:transparent'
+    )
   }
 
   static prettyPrimary(title, ...text) {

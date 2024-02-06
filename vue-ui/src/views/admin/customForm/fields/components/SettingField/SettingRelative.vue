@@ -3,7 +3,6 @@
     <lego-relative-cell
       :value="field.relativeForm"
       :field-list="fieldList"
-      :action="{request: tableListRequest}"
       query-api="/back-end/sys-custom-form/list"
       @value-change="entityChange(field, $event)"/>
   </div>

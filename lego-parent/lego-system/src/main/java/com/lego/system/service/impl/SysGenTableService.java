@@ -42,9 +42,15 @@ public class SysGenTableService extends BusService<ISysGenTableDao, SysGenTableA
     }
 
     @Override
-    public List<SysGenTableInfo> findNotExists() {
+    public List<TypeInfo> findNotExists() {
         List<SysGenTable> tables = dao.findNotExists();
-        return assembler.create(tables);
+        return assembler.createTypeInfo(tables);
+    }
+
+    @Override
+    public List<TypeInfo> findAll() {
+        List<SysGenTable> tables = dao.findAll();
+        return assembler.createTypeInfo(tables);
     }
 
     @Override

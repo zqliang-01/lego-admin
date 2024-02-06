@@ -1,12 +1,11 @@
 package com.lego.system.dao;
 
-import java.util.List;
-
 import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.system.entity.SysGenTable;
 
+import java.util.List;
+
 public interface ISysGenTableDao extends IGenericDao<SysGenTable> {
 
-	List<SysGenTable> findNotExists();
-
+    List<SysGenTable> findNotExists();
 }

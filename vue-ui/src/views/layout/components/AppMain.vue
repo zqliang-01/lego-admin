@@ -16,5 +16,7 @@ export default {
 .app-main {
   position: relative;
   height: 100%;
+  min-width: 900px;
+  min-height: 605px;
 }
 </style>

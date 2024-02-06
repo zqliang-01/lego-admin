@@ -24,16 +24,19 @@
             v-if="manage.customForm.update"
             type="text"
             size="small"
+            icon="el-icon-edit"
             @click="handleTable('edit', scope.row)">编辑</el-button>
           <el-button
             v-if="manage.customForm.design"
             type="text"
             size="small"
+            icon="el-icon-brush"
             @click="handleTable('design', scope.row)">设计表单</el-button>
           <el-button
             v-if="manage.customForm.update"
             type="text"
             size="small"
+            icon="el-icon-delete"
             @click="handleTable('delete', scope.row)">删除</el-button>
         </template>
       </lego-table>
@@ -54,7 +57,7 @@ import {
   customFormListAPI,
   customFormDeleteAPI
 } from '@/api/admin/formField'
-import { genTableNotExistsListAPI } from '@/api/admin/genTable'
+import { genTableAllListAPI } from '@/api/admin/genTable'
 import Create from './Create'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/LegoTable'
@@ -87,27 +90,41 @@ export default {
         }
       },
       fieldList: [
-        { fieldCode: 'table', name: '数据表', formType: 'select', width: '150', required: true, xAxis: 0, yAxis: 0 },
-        { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, xAxis: 0, yAxis: 1 },
-        { fieldCode: 'code', name: '编码', formType: 'text', width: '150', unique: true, required: true, xAxis: 1, yAxis: 0 },
-        { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150', xAxis: 1, yAxis: 1 },
-        { fieldCode: 'queryApiUrl', name: '查询API', formType: 'text', width: '150', xAxis: 2, yAxis: 0 },
-        { fieldCode: 'detailApiUrl', name: '详情API', formType: 'text', width: '150', xAxis: 2, yAxis: 1 },
-        { fieldCode: 'addApiUrl', name: '新增API', formType: 'text', width: '150', xAxis: 3, yAxis: 0 },
-        { fieldCode: 'updateApiUrl', name: '修改API', formType: 'text', width: '150', xAxis: 3, yAxis: 1 },
-        { fieldCode: 'deleteApiUrl', name: '删除API', formType: 'text', width: '150', xAxis: 4, yAxis: 0 },
-        { fieldCode: 'exportApiUrl', name: '部分导出API', formType: 'text', width: '150', xAxis: 4, yAxis: 1 },
-        { fieldCode: 'exportAllApiUrl', name: '全部导出API', formType: 'text', width: '150', xAxis: 5, yAxis: 0 }
+        [
+          { fieldCode: 'table', name: '数据表', formType: 'select', width: '150', required: true },
+          { fieldCode: 'code', name: '编码', formType: 'text', width: '150', unique: true, required: true }
+        ],
+        [
+          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: TextTrackCue },
+          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+        ],
+        [
+          { fieldCode: 'queryApiUrl', name: '查询API', formType: 'text', width: '150' },
+          { fieldCode: 'detailApiUrl', name: '详情API', formType: 'text', width: '150' }
+        ],
+        [
+          { fieldCode: 'addApiUrl', name: '新增API', formType: 'text', width: '150' },
+          { fieldCode: 'updateApiUrl', name: '修改API', formType: 'text', width: '150' }
+        ],
+        [
+          { fieldCode: 'deleteApiUrl', name: '删除API', formType: 'text', width: '150' },
+          { fieldCode: 'exportApiUrl', name: '部分导出API', formType: 'text', width: '150' }
+        ],
+        [
+          { fieldCode: 'exportAllApiUrl', name: '全部导出API', formType: 'text', width: '150' }
+        ]
       ]
     }
   },
   mounted() {
-    this.fieldList.forEach(field => {
-      if (field.fieldCode === 'table') {
-        genTableNotExistsListAPI().then(res => {
-          field.setting = res.data
-        })
-      }
+    this.fieldList.forEach(fields => {
+      fields.map(field => {
+        if (field.fieldCode === 'table') {
+          genTableAllListAPI().then(res => {
+            field.setting = res.data
+          })
+        }
+      })
     })
   },
   methods: {

@@ -60,8 +60,13 @@ public class SysGenTableController extends BaseController {
     }
 
     @GetMapping("/list-not-exists")
-    public JsonResponse<List<SysGenTableInfo>> listNotExists() {
+    public JsonResponse<List<TypeInfo>> listNotExists() {
         return JsonResponse.success(tableService.findNotExists());
+    }
+
+    @GetMapping("/list-all")
+    public JsonResponse<List<TypeInfo>> listAll() {
+        return JsonResponse.success(tableService.findAll());
     }
 
     @GetMapping("/list-name")

@@ -7,45 +7,50 @@
     </template>
     <div class="element-conditional">
       <template v-if="varVisible">
-        <edit-item key="variableName" label="变量名称" :label-width="120">
+        <edit-item key="variableName" label="变量名称" :label-width="80">
           <el-input v-model="variableName" maxlength="32" @change="setElementVariableName" />
         </edit-item>
-        <edit-item v-if="varEventVisible" key="variableEvent" label="变量事件" :label-width="120">
+        <edit-item v-if="varEventVisible" key="variableEvent" label="变量事件" :label-width="80">
           <el-input v-model="variableEvents" @change="setElementVariableEvents" />
         </edit-item>
       </template>
-      <edit-item key="condition" label="条件类型" :label-width="120">
+      <edit-item key="condition" label="条件类型" :label-width="80">
         <el-select
           v-model="conditionData.conditionType"
-          :options="conditionTypeOptions"
-          @change="setElementConditionType"
-        />
+          @change="setElementConditionType">
+          <el-option
+            v-for="item in conditionTypeOptions"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
       </edit-item>
       <edit-item
         v-if="conditionData.conditionType && conditionData.conditionType === 'expression'"
         key="expression"
         label="条件内容"
-        :label-width="120"
+        :label-width="80"
       >
         <el-input v-model="conditionData.expression" @change="setConditionExpression" />
       </edit-item>
       <template v-if="conditionData.conditionType && conditionData.conditionType === 'script'">
-        <edit-item key="scriptType" label="脚本类型" :label-width="120">
+        <edit-item key="scriptType" label="脚本类型" :label-width="80">
           <el-select v-model="conditionData.scriptType" @change="setElementConditionScriptType">
             <el-option v-for="{ label, value } in scriptTypeOptions" :label="label" :value="value" :key="value" />
           </el-select>
         </edit-item>
-        <edit-item key="scriptLanguage" label="脚本语言" :label-width="120">
+        <edit-item key="scriptLanguage" label="脚本语言" :label-width="80">
           <el-input v-model="conditionData.language" @change="setConditionScriptLanguage" />
         </edit-item>
-        <edit-item v-show="conditionData.scriptType === 'inline'" key="scriptBody" label="脚本内容" :label-width="120">
+        <edit-item v-show="conditionData.scriptType === 'inline'" key="scriptBody" label="脚本内容" :label-width="80">
           <el-input v-model="conditionData.body" type="textarea" @change="setConditionScriptBody" />
         </edit-item>
         <edit-item
           v-show="conditionData.scriptType === 'external'"
           key="scriptResource"
           label="资源地址"
-          :label-width="120"
+          :label-width="80"
         >
           <el-input v-model="conditionData.resource" @change="setConditionScriptResource" />
         </edit-item>
@@ -94,18 +99,18 @@ export default {
       }
     },
     getElementConditionType() {
-      this.conditionData.conditionType = CU.getConditionTypeValue(getActive())
+      this.$set(this.conditionData, 'conditionType', CU.getConditionTypeValue(getActive()))
       this.conditionData.conditionType === 'expression' && this.getConditionExpression()
       this.conditionData.conditionType === 'script' && this.getConditionScript()
     },
     getConditionExpression() {
-      this.conditionData.expression = CU.getConditionExpressionValue(getActive())
+      this.$set(this.conditionData, 'expression', CU.getConditionExpressionValue(getActive()))
     },
     getConditionScript() {
-      this.conditionData.language = CU.getConditionScriptLanguageValue(getActive())
-      this.conditionData.scriptType = CU.getConditionScriptTypeValue(getActive())
-      this.conditionData.body = CU.getConditionScriptBodyValue(getActive())
-      this.conditionData.resource = CU.getConditionScriptResourceValue(getActive())
+      this.$set(this.conditionData, 'language', CU.getConditionScriptLanguageValue(getActive()))
+      this.$set(this.conditionData, 'scriptType', CU.getConditionScriptTypeValue(getActive()))
+      this.$set(this.conditionData, 'body', CU.getConditionScriptBodyValue(getActive()))
+      this.$set(this.conditionData, 'resource', CU.getConditionScriptResourceValue(getActive()))
     },
 
     setElementVariableName(value) {

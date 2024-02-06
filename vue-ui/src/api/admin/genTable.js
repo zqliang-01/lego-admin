@@ -14,6 +14,12 @@ export function genTableNotExistsListAPI(data) {
   })
 }
 
+export function genTableAllListAPI(data) {
+  return request({
+    url: '/back-end/sys-gen-table/list-all'
+  })
+}
+
 export function genTableInitGetAPI(code) {
   return request({
     url: `/back-end/sys-gen-table/get-init/${code}`

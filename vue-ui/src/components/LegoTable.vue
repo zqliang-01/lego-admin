@@ -6,24 +6,27 @@
       :height="tableHeight"
       highlight-current-row
       style="width: 100%">
-      <el-table-column
-        v-for="(item, index) in fieldList"
-        :key="index"
-        :min-width="item.width"
-        :prop="item.fieldCode"
-        :label="item.name"
-        show-overflow-tooltip>
-        <template slot-scope="{ row }">
-          <field-view
-            :props="item"
-            :form-type="item.formType"
-            :value="row[item.fieldCode]"/>
-        </template>
-      </el-table-column>
+      <template v-for="(fields, r) in fieldList">
+        <el-table-column
+          v-for="(item, index) in fields"
+          :key="r + '-' + index"
+          :min-width="item.width"
+          :prop="item.fieldCode"
+          :label="item.name"
+          show-overflow-tooltip>
+          <template slot-scope="{ row }">
+            <field-view
+              :props="item"
+              :form-type="item.formType"
+              :value="row[item.fieldCode]"
+              @clickValue="handleField($event, row)" />
+          </template>
+        </el-table-column>
+      </template>
       <el-table-column
         fixed="right"
         label="操作"
-        width="200">
+        :width="editButtonWidth">
         <template slot-scope="scope">
           <slot :row="scope.row" />
         </template>
@@ -60,6 +63,10 @@ export default {
     },
     dataList: Array,
     fieldList: Array,
+    editButtonWidth: {
+      type: Number,
+      default: 200
+    },
     currentPage: {
       type: Number,
       default: 1
@@ -103,6 +110,9 @@ export default {
     },
     handleTable(type, item, index) {
       this.$emit('onEdit', type, item, index)
+    },
+    handleField(data, row) {
+      this.$emit('onClickField', data, row)
     }
   }
 }

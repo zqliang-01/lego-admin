@@ -28,6 +28,7 @@ import { isAsynchronous } from '../../bo-utils/asynchronousContinuationsUtil'
 import { isStartInitializable } from '../../bo-utils/initiatorUtil'
 import { getModeler } from '../../bpmn-utils/BpmnDesignerUtils'
 import ElementUserTask from './components/ElementUserTask'
+import ElementForm from './components/ElementForm'
 import ElementGenerations from './components/ElementGenerations'
 import ElementDocumentations from './components/ElementDocumentations'
 import ElementConditional from './components/ElementConditional'
@@ -116,6 +117,7 @@ export default {
       this.renderComponents.splice(0, this.renderComponents.length) // 清空
       // 重设
       isUserTask(element) && this.renderComponents.push(ElementUserTask)
+      isUserTask(element) && this.renderComponents.push(ElementForm)
       this.renderComponents.push(ElementGenerations)
       this.renderComponents.push(ElementDocumentations)
       isCanbeConditional(element) && this.renderComponents.push(ElementConditional)

@@ -501,10 +501,10 @@ export default {
         this.rejectHandle = false
         this.loading = false
         this.errorMsg = null
+        this.$message.success('初始化成功！')
+      }).catch(() => {
+        this.loading = false
       })
-        .catch(() => {
-          this.loading = false
-        })
     },
     /**
      * 保存

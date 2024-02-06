@@ -7,4 +7,5 @@ public interface ProcessConstants {
     String NAMASPASE = "http://flowable.org/bpmn";
 
     String PROCESS_CUSTOM_DATA_TYPE = "dataType";
+
 }

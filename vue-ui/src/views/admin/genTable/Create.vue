@@ -1,7 +1,7 @@
 <template>
   <xr-create
     :loading="loading"
-    :title="title"
+    :title="createTitle"
     @close="close"
     @save="saveClick">
     <el-form
@@ -42,7 +42,10 @@ export default {
     }
   },
   computed: {
-    title() {
+    createTitle() {
+      if (this.title) {
+        return title
+      }
       return this.action.type === 'update' ? '编辑数据表' : '新建数据表'
     },
     saveRequest() {
@@ -50,24 +53,30 @@ export default {
     }
   },
   created() {
+    this.dataFieldList = this.fieldList
+    this.detailData = this.action.detailData
     if (this.action.detailData) {
-      this.fieldList.map(field => {
-        field.value = this.action.detailData[field.fieldCode]
-        if (field.fieldCode === 'code') {
-          field.setting = this.tableNameList
-        }
+      this.dataFieldList.map(fields => {
+        fields.map(field => {
+          this.$set(field, 'disabled', false)
+          if (field.fieldCode === 'code') {
+            field.setting = this.tableNameList
+          }
+        })
       })
     }
-    this.initField()
+    this.initValue()
   },
   methods: {
     fieldChange(item, index, value, valueList) {
       if (item && item.fieldCode === 'code') {
         genTableInitGetAPI(value).then(res => {
-          this.fieldList.map(field => {
-            if (field.fieldCode !== 'code') {
-              this.$set(this.fieldFrom, field.fieldCode, res.data[field.fieldCode])
-            }
+          this.dataFieldList.map(fields => {
+            fields.map(field => {
+              if (field.fieldCode !== 'code') {
+                this.$set(this.fieldFrom, field.fieldCode, res.data[field.fieldCode])
+              }
+            })
           })
         })
       }

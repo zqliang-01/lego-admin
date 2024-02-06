@@ -27,6 +27,7 @@ export default {
         }
       }
     },
+    title: String,
     menuCode: String,
     formCode: String,
     fieldList: {
@@ -38,7 +39,7 @@ export default {
   },
   watch: {
     formCode() {
-      this.initField()
+      this.initRemoteField()
     }
   },
   computed: {
@@ -58,55 +59,25 @@ export default {
     return {
       loading: false,
       dataFieldList: [],
+      detailData: {},
       fieldFrom: {},
       fieldRules: {}
     }
   },
-  created() {
-    this.initField()
-  },
   methods: {
     initField() {
-      if (this.fieldList.length > 0) {
-        this.initLocalField()
-        return
-      }
-      this.initRemoteField()
+      return createFieldListAPI(this.formCode)
     },
-    initLocalField() {
-      let maxIndex = 0
-      this.dataFieldList = []
-      this.fieldList.forEach(field => {
-        this.initSettingValue(field)
-        maxIndex = field.xAxis > maxIndex ? field.xAxis : maxIndex
-        field.disabled = this.getDisable(field, this.action.type === 'update')
-        this.setDefaultValue(field, this.fieldFrom, this.action.type === 'save')
-        this.fieldRules[field.fieldCode] = this.getRules(field)
-      })
-      for (var i = 0; i < maxIndex + 1; ++i) {
-        const xFieldList = this.fieldList.filter(field => field.xAxis === i).sort(function(a, b) {
-          return a.yAxis - b.yAxis
-        })
-        if (xFieldList) {
-          this.dataFieldList.push(xFieldList)
-        }
-      }
-    },
-    initRemoteField() {
-      if (!this.formCode) {
-        return
-      }
-      createFieldListAPI(this.formCode).then(res => {
-        this.initRequest(res.data.form)
-        this.dataFieldList = res.data.fields
-        this.dataFieldList.forEach(fields => {
-          fields.forEach(field => {
+    initValue() {
+      this.dataFieldList.forEach(fields => {
+        fields.forEach(field => {
+          if (field.show !== false) {
             this.initSettingValue(field)
-            field.value = this.action.detailData[field.fieldCode]
-            field.disabled = this.getDisable(field, this.action.type === 'update')
+            field.value = this.detailData[field.fieldCode]
+            field.disabled = this.getDisable(field, this.action.type)
             this.setDefaultValue(field, this.fieldFrom, this.action.type === 'save')
             this.fieldRules[field.fieldCode] = this.getRules(field)
-          })
+          }
         })
       })
     },
@@ -114,24 +85,24 @@ export default {
      * 保存
      */
     saveClick() {
-      this.loading = true
       const createForm = this.$refs.createForm
       createForm.validate(valid => {
         if (!valid) {
-          this.loading = false
           showFormErrorMessage(createForm)
           return false
         }
-        this.saveRequest(this.fieldFrom)
-          .then(() => {
-            this.loading = false
-            this.close()
-            // 保存成功
-            this.$emit('handle', { type: 'save-success' })
-          })
-          .catch(() => {
-            this.loading = false
-          })
+        if (this.doRequest) {
+          this.doRequest()
+          return
+        }
+        this.loading = true
+        this.saveRequest(this.fieldFrom).then(() => {
+          this.loading = false
+          this.close()
+          this.$emit('handle', { type: 'save-success' })
+        }).catch(() => {
+          this.loading = false
+        })
       })
     },
     /**

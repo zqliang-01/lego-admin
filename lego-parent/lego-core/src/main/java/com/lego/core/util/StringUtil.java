@@ -115,6 +115,10 @@ public class StringUtil {
         }
     }
 
+    public static String encodeBase64(byte[] value) {
+        return new String(Base64.encodeBase64(value));
+    }
+
     public static String encodeBase64(String value) {
         return new String(Base64.encodeBase64(value.getBytes()));
     }

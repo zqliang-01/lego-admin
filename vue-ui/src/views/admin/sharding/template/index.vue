@@ -74,12 +74,20 @@ export default {
         detailData: {}
       },
       fieldList: [
-        { fieldCode: 'code', name: '编码', formType: 'text', width: '150', unique: true, required: true, xAxis: 0, yAxis: 0 },
-        { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, xAxis: 0, yAxis: 1 },
-        { fieldCode: 'description', name: '备注', formType: 'text', width: '150', xAxis: 1, yAxis: 0 },
-        { fieldCode: 'type', name: '类型', formType: 'select', width: '150', required: true, xAxis: 1, yAxis: 1 },
-        { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150', xAxis: 1, yAxis: 1 },
-        { fieldCode: 'json', name: '模板内容', formType: 'jsonEditor', width: '150', xAxis: 2, yAxis: 0, stylePercent: 100 }
+        [
+          { fieldCode: 'code', name: '编码', formType: 'text', width: '150', unique: true, required: true },
+          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true }
+        ],
+        [
+          { fieldCode: 'description', name: '备注', formType: 'text', width: '150' },
+          { fieldCode: 'type', name: '类型', formType: 'select', width: '150', required: true }
+        ],
+        [
+          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+        ],
+        [
+          { fieldCode: 'json', name: '模板内容', formType: 'jsonEditor', width: '150', stylePercent: 100 }
+        ]
       ]
     }
   },

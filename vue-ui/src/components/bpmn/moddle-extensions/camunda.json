@@ -209,6 +209,12 @@
           "name": "formRefVersion",
           "isAttr": true,
           "type": "String"
+        },
+        {
+          "name": "localScope",
+          "isAttr": true,
+          "type": "Boolean",
+          "default": false
         }
       ]
     },

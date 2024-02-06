@@ -6,6 +6,8 @@ import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysGenTable;
 import com.lego.system.vo.SysCustomFormSearchVO;
 
+import java.util.List;
+
 public interface ISysCustomFormDao extends IGenericDao<SysCustomForm> {
 
     LegoPage<SysCustomForm> findBy(SysCustomFormSearchVO vo);
@@ -13,5 +15,7 @@ public interface ISysCustomFormDao extends IGenericDao<SysCustomForm> {
     SysCustomForm findByTable(SysGenTable table);
 
     SysCustomForm findByTableCode(String tableCode);
+
+    List<SysCustomForm> findByName(String name);
 
 }

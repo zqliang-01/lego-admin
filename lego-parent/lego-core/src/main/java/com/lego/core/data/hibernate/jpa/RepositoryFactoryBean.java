@@ -1,11 +1,8 @@
 package com.lego.core.data.hibernate.jpa;
 
-import java.lang.reflect.Constructor;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import javax.persistence.EntityManager;
-
+import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.exception.CoreException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 import org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean;
@@ -14,15 +11,15 @@ import org.springframework.data.repository.core.RepositoryInformation;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.RepositoryFactorySupport;
 
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.exception.CoreException;
-
-import lombok.extern.slf4j.Slf4j;
+import javax.persistence.EntityManager;
+import java.lang.reflect.Constructor;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 public class RepositoryFactoryBean<R extends JpaRepository<T, Long>, T> extends JpaRepositoryFactoryBean<R, T, Long> {
 
-	private static final Map<String, Class<?>> daoClassCache = new  ConcurrentHashMap<String, Class<?>>();
+    private static final Map<String, Class<?>> daoClassCache = new ConcurrentHashMap<String, Class<?>>();
 
     public RepositoryFactoryBean(Class<? extends R> repositoryInterface) {
         super(repositoryInterface);
@@ -41,14 +38,14 @@ public class RepositoryFactoryBean<R extends JpaRepository<T, Long>, T> extends 
             super(em);
         }
 
-		@Override
+        @Override
         @SuppressWarnings("unchecked")
         protected JpaRepositoryImplementation<?, ?> getTargetRepository(RepositoryInformation information, EntityManager entityManager) {
-        	Class<?> repositoryBaseClass = information.getRepositoryBaseClass();
-			GenericDao<T> dao = invokeInstance(repositoryBaseClass);
-        	Class<T> domainType = (Class<T>) information.getDomainType();
-			dao.init(entityManager, domainType);
-			return dao;
+            Class<?> repositoryBaseClass = information.getRepositoryBaseClass();
+            GenericDao<T> dao = invokeInstance(repositoryBaseClass);
+            Class<T> domainType = (Class<T>) information.getDomainType();
+            dao.init(entityManager, domainType);
+            return dao;
         }
 
         @Override
@@ -57,9 +54,9 @@ public class RepositoryFactoryBean<R extends JpaRepository<T, Long>, T> extends 
         }
 
         private synchronized Class<?> getDaoImplClass(String interfaceName) {
-        	if (daoClassCache.containsKey(interfaceName)) {
-        		return daoClassCache.get(interfaceName);
-        	}
+            if (daoClassCache.containsKey(interfaceName)) {
+                return daoClassCache.get(interfaceName);
+            }
             String implName = interfaceName.substring(interfaceName.lastIndexOf(".") + 2);
             implName = interfaceName.substring(0, interfaceName.lastIndexOf(".")) + ".impl." + implName;
             try {
@@ -67,20 +64,17 @@ public class RepositoryFactoryBean<R extends JpaRepository<T, Long>, T> extends 
                 CoreException.check(GenericDao.class.isAssignableFrom(implClass), "Dao实现类[" + implClass + "]没继承GenericDao");
                 daoClassCache.put(interfaceName, implClass);
                 return implClass;
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new CoreException("加载Dao实现类[" + implName + "]出错", e);
             }
         }
 
-        @SuppressWarnings({ "rawtypes", "unchecked" })
+        @SuppressWarnings({"rawtypes", "unchecked"})
         private GenericDao<T> invokeInstance(Class<?> implClass) {
             try {
-            	Constructor c = implClass.getConstructor();
-                log.info("Dao实例创建[{}]", implClass);
+                Constructor c = implClass.getConstructor();
                 return (GenericDao<T>) c.newInstance();
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 throw new CoreException("初始化Dao实现类[" + implClass + "]出错", e);
             }
         }

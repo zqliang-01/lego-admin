@@ -1,8 +1,14 @@
 <template>
   <div class="bpmn-toolbar">
     <el-button-group>
-      <bpmn-import />
-      <bpmn-exports />
+      <el-button type="primary" @click="handleSave">
+        保存
+      </el-button>
+      <el-button type="primary" @click="handleCancel">
+        返回
+      </el-button>
+      <bpmn-import v-if="showImport"/>
+      <bpmn-exports v-if="showExport"/>
       <bpmn-previews />
     </el-button-group>
     <bpmn-aligns />
@@ -22,6 +28,20 @@ import BpmnCommands from './tools/Commands'
 import BpmnExternals from './tools/Externals'
 export default {
   name: 'BpmnToolbar',
-  components: { BpmnExternals, BpmnCommands, BpmnScales, BpmnAligns, BpmnPreviews, BpmnExports, BpmnImport }
+  components: { BpmnExternals, BpmnCommands, BpmnScales, BpmnAligns, BpmnPreviews, BpmnExports, BpmnImport },
+  data() {
+    return {
+      showImport: false,
+      showExport: false
+    }
+  },
+  methods: {
+    handleSave() {
+      this.$emit('save')
+    },
+    handleCancel() {
+      this.$emit('cancel')
+    }
+  }
 }
 </script>

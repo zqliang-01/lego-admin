@@ -43,13 +43,16 @@ export default {
     }
   },
   created() {
+    this.dataFieldList = this.fieldList
+    this.detailData = this.action.detailData
     if (this.action.detailData) {
-      this.fieldList.map(field => {
-        const value = this.action.detailData[field.fieldCode]
-        field.value = value
+      this.dataFieldList.map(fields => {
+        fields.map(field => {
+          this.$set(field, 'disabled', false)
+        })
       })
     }
-    this.initField()
+    this.initValue()
   },
   methods: {
   }

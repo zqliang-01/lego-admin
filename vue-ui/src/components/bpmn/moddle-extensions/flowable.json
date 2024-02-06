@@ -185,6 +185,12 @@
           "isAttr": true,
           "type": "Boolean",
           "default": true
+        },
+        {
+          "name": "localScope",
+          "isAttr": true,
+          "type": "Boolean",
+          "default": false
         }
       ]
     },

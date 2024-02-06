@@ -23,7 +23,10 @@
       v-else-if="formType == 'entity'"
       :class="{'can-check': !isEmpty}"
       @click="handleEntityClick(value)" >{{ getCommonShowValue() }}</span>
-    <span v-else>{{ getCommonShowValue() }}</span>
+    <span
+      :class="{'can-check': props.clickable}"
+      @click="handleClick(value)"
+      v-else>{{ getCommonShowValue() }}</span>
     <map-view
       v-if="mapViewShow"
       :title="value.address"
@@ -102,6 +105,12 @@ export default {
      */
     getCommonShowValue() {
       return getFormFieldShowValue(this.formType, this.value)
+    },
+
+    handleClick(value) {
+      if (this.props.clickable) {
+        this.$emit('clickValue', { field: this.props, value: value })
+      }
     },
 
     handleEntityClick(value) {

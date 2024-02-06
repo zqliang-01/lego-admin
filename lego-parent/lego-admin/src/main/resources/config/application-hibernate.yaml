@@ -1,7 +1,7 @@
 spring:
   jpa:
     database: MYSQL
-    show-sql: true
+    show-sql: false
   hibernate:
     naming:
       implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl

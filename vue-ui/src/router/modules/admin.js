@@ -84,20 +84,6 @@ export default [
   },
   {
     ...layout({
-      permissions: ['manage']
-    }),
-    children: [{
-      name: 'Workflow',
-      path: 'work-flow',
-      component: () => import('@/views/admin/workflow'),
-      meta: {
-        title: '工作流',
-        icon: 'icon-workflow'
-      }
-    }]
-  },
-  {
-    ...layout({
       permissions: ['manage', 'genTable']
     }),
     children: [{
@@ -155,6 +141,60 @@ export default [
         icon: 'icon-des'
       }
     }]
+  },
+  {
+    ...layout({
+      permissions: ['manage', 'workflow'],
+      title: '审批流程管理',
+      icon: 'icon-workflow'
+    }, '/manage/workflow'),
+    children: [
+      {
+        path: 'model',
+        component: () => import('@/views/admin/workflow/model'),
+        meta: {
+          title: '模型管理',
+          requiresAuth: true,
+          permissions: ['manage', 'workflow', 'model']
+        }
+      },
+      {
+        name: 'modelDesign',
+        path: 'model-design/:modelId',
+        component: () => import('@/views/admin/workflow/model/design'),
+        hidden: true,
+        meta: {
+          activeMenu: '/manage/workflow/model'
+        }
+      },
+      {
+        path: 'definition',
+        component: () => import('@/views/admin/workflow/definition'),
+        meta: {
+          title: '部署管理',
+          requiresAuth: true,
+          permissions: ['manage', 'workflow', 'definition']
+        }
+      },
+      {
+        path: 'task-undo',
+        component: () => import('@/views/admin/workflow/task/undo'),
+        meta: {
+          title: '代办任务',
+          requiresAuth: true,
+          permissions: ['manage', 'workflow']
+        }
+      },
+      {
+        path: 'task-completed',
+        component: () => import('@/views/admin/workflow/task/completed'),
+        meta: {
+          title: '已办任务',
+          requiresAuth: true,
+          permissions: ['manage', 'workflow']
+        }
+      }
+    ]
   },
   {
     ...layout({

@@ -72,7 +72,8 @@
 		<module>lego-pay</module>
     	<module>lego-crm</module>
 		<module>lego-admin</module>
-  	</modules>
+        <module>lego-flowable</module>
+    </modules>
 
 	<build>
 		<plugins>

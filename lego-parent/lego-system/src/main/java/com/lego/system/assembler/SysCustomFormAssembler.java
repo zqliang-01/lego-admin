@@ -13,6 +13,9 @@ public class SysCustomFormAssembler extends EntityAssembler<SysCustomFormInfo, S
         SysCustomFormInfo info = new SysCustomFormInfo();
         info.setCode(entity.getCode());
         info.setName(entity.getName());
+        if (entity.getTable() != null) {
+            info.setAppCode(entity.getTable().getAppCode());
+        }
         info.setEnable(entity.isEnable());
         info.setQueryApiUrl(entity.getQueryApiUrl());
         info.setDeleteApiUrl(entity.getDeleteApiUrl());

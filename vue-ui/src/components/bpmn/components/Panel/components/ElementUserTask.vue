@@ -92,8 +92,10 @@ import { depSimpleListAPI } from '@/api/admin/dept'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { roleSimpleListAPI } from '@/api/admin/role'
 import SelectTree from '@/components/NewCom/SelectTree'
+import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil'
+import { debounce } from 'min-dash'
 import { setProperty, setModdleProperty, createElement } from '../../../bo-utils/userTaskUtil'
 
 export default {
@@ -126,9 +128,12 @@ export default {
   },
   mounted() {
     this.init()
+    EventEmitter.on('element-update', () => {
+      this.init()
+    })
   },
   methods: {
-    init() {
+    init: debounce(function() {
       const elementObj = getBusinessObject(getActive())
       const dataType = elementObj.get('dataType')
       this.showMultiFlog = ['ROLES', 'DEPTS'].includes(dataType)
@@ -150,7 +155,6 @@ export default {
           if (this.selectedUser.codes.length > 1) {
             this.showMultiFlog = true
           }
-          this.resetTaskForm(dataType)
         })
       }
       if (dataType === 'ROLES') {
@@ -161,7 +165,6 @@ export default {
             this.selectedRoles = roleCodes.split(',')
           }
           this.showMultiFlog = true
-          this.resetTaskForm(dataType)
         })
       }
       if (dataType === 'DEPTS') {
@@ -169,12 +172,11 @@ export default {
           this.deptOptions = res.data
           this.selectedDept = elementObj.get('candidateGroups') || ''
           this.showMultiFlog = true
-          this.resetTaskForm(dataType)
         })
       }
       this.taskForm.dataType = dataType
       this.setElementLoop()
-    },
+    }, 100),
     setElementLoop() {
       const elementObj = getBusinessObject(getActive())
       if (!elementObj.loopCharacteristics) {
@@ -309,6 +311,7 @@ export default {
 .el-row .el-radio-group {
   .el-radio {
     line-height: 28px;
+    margin-right: 10px;
   }
 }
 .el-tag {

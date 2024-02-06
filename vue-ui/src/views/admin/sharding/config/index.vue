@@ -73,10 +73,14 @@ export default {
         detailData: {}
       },
       fieldList: [
-        { fieldCode: 'code', name: '编码', formType: 'text', width: '150', unique: true, required: true, xAxis: 0, yAxis: 0 },
-        { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, xAxis: 0, yAxis: 1 },
-        { fieldCode: 'description', name: '备注', formType: 'text', width: '150', xAxis: 1, yAxis: 0 },
-        { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150', xAxis: 1, yAxis: 1 }
+        [
+          { fieldCode: 'code', name: '编码', formType: 'text', width: '150', unique: true, required: true },
+          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true }
+        ],
+        [
+          { fieldCode: 'description', name: '备注', formType: 'text', width: '150' },
+          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+        ]
       ]
     }
   },

@@ -9,6 +9,8 @@ import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysGenTable;
 import com.lego.system.vo.SysCustomFormSearchVO;
 
+import java.util.List;
+
 public class SysCustomFormDao extends GenericDao<SysCustomForm> implements ISysCustomFormDao {
 
     @Override
@@ -36,6 +38,13 @@ public class SysCustomFormDao extends GenericDao<SysCustomForm> implements ISysC
         QueryHandler<SysCustomForm> handler = createQueryHandler();
         handler.condition("t.table.code = :tableCode").param("tableCode", tableCode);
         return handler.findFirst();
+    }
+
+    @Override
+    public List<SysCustomForm> findByName(String name) {
+        QueryHandler<SysCustomForm> query = createQueryHandler();
+        query.condition("t.name = :name").param("name", name);
+        return query.findList();
     }
 
 }

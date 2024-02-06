@@ -1,27 +1,29 @@
 .bpmn-panel {
   display: flex;
-  width: 480px;
+  width: 320px;
   height: 100%;
   box-sizing: border-box;
-  padding: 0 8px;
   border-left: 1px solid #eee;
   box-shadow: 0 0 8px #ccc;
   flex-direction: column;
   overflow: hidden;
-  .n-collapse .el-collapse-item {
+  .el-collapse-item {
     border-top: none;
-    margin: 0;
     border-bottom: 1px solid var(--n-divider-color);
     &:first-child {
       border-top: 1px solid var(--n-divider-color);
     }
 
     .el-collapse-item__header {
-      padding: 16px 0;
+      padding: 16px 5px;
     }
 
     .el-collapse-item__content-wrapper .el-collapse-item__content-inner {
       padding:  0 0 16px 0;
+    }
+
+    .el-collapse-item__wrap {
+      padding: 0px 5px;
     }
   }
 
