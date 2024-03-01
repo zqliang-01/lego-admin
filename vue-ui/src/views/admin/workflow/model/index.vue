@@ -17,7 +17,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-        :edit-button-width="300"
+        :edit-button-width="250"
         @onList="getList"
         @onEdit="handleTable"
         @onClickField="handleField">
@@ -57,7 +57,7 @@
       @close="isCreate = false"
     />
     <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
-      <bpmn-viewer :key="modelId" :xml.sync="processXml" :style="{height: '400px'}"/>
+      <bpmn-viewer :key="modelId" :xml.sync="processXml"/>
     </el-dialog>
   </div>
 </template>
@@ -107,13 +107,15 @@ export default {
       },
       fieldList: [
         [
-          { fieldCode: 'id', name: '模型ID', formType: 'text', width: '260', unique: true, show: false },
-          { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true },
-          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true }
+          { fieldCode: 'id', name: '模型ID', formType: 'text', width: '260', unique: true },
+          { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true }
         ],
         [
-          { fieldCode: 'description', name: '备注', formType: 'text', width: '100', required: true },
-          { fieldCode: 'version', name: '版本', formType: 'text', width: '100', required: true, show: false },
+          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true },
+          { fieldCode: 'description', name: '备注', formType: 'text', width: '100' }
+        ],
+        [
+          { fieldCode: 'version', name: '版本', formType: 'text', width: '100', show: false },
           { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150', show: false }
         ]
       ]
@@ -126,12 +128,12 @@ export default {
     refresh() {
       this.getList()
     },
-    getList() {
+    getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
       modelListAPI({
         name: this.search,
-        pageIndex: this.currentPage,
-        pageSize: this.pageSize
+        pageIndex: currentPage,
+        pageSize: pageSize
       }).then(res => {
         this.dataList = res.data.result
         this.total = res.data.totalCount

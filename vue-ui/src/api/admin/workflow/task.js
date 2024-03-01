@@ -44,9 +44,14 @@ export function taskCompleteAPI(data) {
   })
 }
 
-export function taskProcessNodeListAPI(instanceId) {
+export function taskRejectAPI(data) {
   return request({
-    url: '/back-end/flowable-task/list-process-node/' + instanceId
+    url: '/back-end/flowable-task/reject',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 
@@ -56,3 +61,9 @@ export function taskFormDetailGetAPI(id) {
   })
 }
 
+export function taskHistoryListAPI(data) {
+  return request({
+    url: '/back-end/flowable-task/list-his',
+    data: data
+  })
+}

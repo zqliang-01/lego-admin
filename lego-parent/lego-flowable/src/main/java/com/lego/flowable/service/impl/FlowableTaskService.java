@@ -1,28 +1,29 @@
 package com.lego.flowable.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.convert.Convert;
+import com.lego.core.common.Constants;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.flowable.FlowableService;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.assembler.FlowableTaskAssembler;
-import com.lego.flowable.dto.FlowableProcessNodeInfo;
 import com.lego.flowable.dto.FlowableTaskFormDetailInfo;
 import com.lego.flowable.dto.FlowableTaskInfo;
 import com.lego.flowable.service.IFlowableTaskService;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
+import com.lego.flowable.vo.ProcessConstants;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.entity.SysEmployee;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.BpmnModel;
-import org.flowable.engine.ProcessEngineConfiguration;
+import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.history.HistoricActivityInstance;
-import org.flowable.engine.history.HistoricActivityInstanceQuery;
-import org.flowable.engine.history.HistoricProcessInstance;
-import org.flowable.image.ProcessDiagramGenerator;
+import org.flowable.engine.repository.ProcessDefinition;
+import org.flowable.engine.runtime.Execution;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
@@ -30,12 +31,8 @@ import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,6 +41,9 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
     @Autowired
     private ISysEmployeeDao employeeDao;
 
+    @Autowired
+    private FlowableModelAssembler modelAssembler;
+
     @Override
     public LegoPage<FlowableTaskInfo> findUndoBy(String employeeCode, FlowableTaskSearchVO vo) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
@@ -51,9 +51,10 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         candidateGroups.add(EntityUtil.getCode(employee.getDept()));
         TaskQuery taskQuery = taskService.createTaskQuery()
             .active()
-            .taskCandidateOrAssigned(employeeCode)
-            .taskCandidateGroupIn(candidateGroups)
             .orderByTaskCreateTime().desc();
+        if (!employee.containRole(Constants.ADMIN_ROLE)) {
+            taskQuery.taskCandidateOrAssigned(employeeCode).taskCandidateGroupIn(candidateGroups);
+        }
         if (StringUtil.isNotBlank(vo.getInstanceId())) {
             taskQuery.processInstanceId(vo.getInstanceId());
         }
@@ -64,132 +65,130 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
     @Override
     public LegoPage<FlowableTaskInfo> findCompletedBy(String employeeCode, FlowableTaskSearchVO vo) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
-        List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
-        candidateGroups.add(EntityUtil.getCode(employee.getDept()));
         HistoricTaskInstanceQuery taskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
             .finished()
-            .or()
-            .taskAssignee(employeeCode)
-            .taskCandidateGroupIn(candidateGroups)
-            .endOr()
             .orderByHistoricTaskInstanceEndTime()
             .desc();
+        if (!employee.isAdmin()) {
+            List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
+            candidateGroups.add(EntityUtil.getCode(employee.getDept()));
+            taskInstanceQuery.or()
+                .taskAssignee(employeeCode)
+                .taskCandidateGroupIn(candidateGroups)
+                .endOr();
+        }
         if (StringUtil.isNotBlank(vo.getInstanceId())) {
             taskInstanceQuery.processInstanceId(vo.getInstanceId());
         }
         LegoPage<HistoricTaskInstance> page = createPage(taskInstanceQuery, vo, HistoricTaskInstance.class);
-        return assembler.createHisPage(page);
+        return assembler.createHis(page);
     }
 
     @Override
     public void complete(String employeeCode, FlowableTaskCompleteVO vo) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
-        List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
-        candidateGroups.add(EntityUtil.getCode(employee.getDept()));
-        TaskQuery taskQuery = taskService.createTaskQuery()
-            .taskId(vo.getId())
-            .active()
-            .taskCandidateOrAssigned(employeeCode)
-            .taskCandidateGroupIn(candidateGroups)
-            .orderByTaskCreateTime().desc();
+        TaskQuery taskQuery = taskService.createTaskQuery().active().taskId(vo.getId());
+        if (!employee.isAdmin()) {
+            List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
+            candidateGroups.add(EntityUtil.getCode(employee.getDept()));
+            taskQuery.taskCandidateOrAssigned(employeeCode).taskCandidateGroupIn(candidateGroups);
+        }
         Task task = taskQuery.singleResult();
-
         BusinessException.check(task != null, "当前任务审核人非[{0}]，审核失败！", employeeCode);
-        taskService.complete(vo.getId(), vo.getVariables());
-    }
 
-    /**
-     * 查看当前流程图已到达节点(包含路径)
-     */
-    @Override
-    public String getBpmnXml(String instanceId) {
-        HistoricProcessInstance hisInstance = historyService.createHistoricProcessInstanceQuery().processInstanceId(instanceId).singleResult();
-        String definitionId = hisInstance.getProcessDefinitionId();
-        if (definitionId == "") {
-            return null;
+        if (StringUtil.isNotBlank(task.getFormKey())) {
+            BusinessException.check(!vo.getVariables().isEmpty(), "任务完工失败，请填写表单信息！");
         }
-        //获得活动的节点
-        List<HistoricActivityInstance> historyProcess = historyService.createHistoricActivityInstanceQuery().processInstanceId(instanceId).orderByHistoricActivityInstanceStartTime().asc().list();
-        List<String> activityIds = new ArrayList<>();
-        List<String> flows = new ArrayList<>();
-        //获取流程图
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(definitionId);
-        List<String> taskTypes = Arrays.asList("userTask", "exclusiveGateway", "startEvent", "endEvent");
-        for (HistoricActivityInstance hi : historyProcess) {
-            String activityType = hi.getActivityType();
-            if (activityType.equals("sequenceFlow")) {
-                flows.add(hi.getActivityId());
-            } else {
-                activityIds.add(hi.getActivityId());
-            }
+
+        taskService.setAssignee(vo.getId(), employeeCode);
+        if (vo.getVariables().isEmpty()) {
+            taskService.complete(vo.getId());
+            return;
         }
-        List<Task> tasks = taskService.createTaskQuery().processInstanceId(instanceId).list();
-        for (Task runningTask : tasks) {
-            activityIds.add(runningTask.getTaskDefinitionKey());
-        }
-        ProcessEngineConfiguration engConf = processEngine.getProcessEngineConfiguration();
-        engConf.setActivityFontName("宋体");
-        engConf.setLabelFontName("宋体");
-        engConf.setAnnotationFontName("宋体");
-        //定义流程画布生成器
-        ProcessDiagramGenerator processDiagramGenerator = engConf.getProcessDiagramGenerator();
-        InputStream in = processDiagramGenerator.generateDiagram(bpmnModel, "png", activityIds, flows, engConf.getActivityFontName()
-            , engConf.getLabelFontName(), engConf.getAnnotationFontName(), engConf.getClassLoader(), 1.0, true);
-        return StringUtil.encodeBase64(IoUtil.readBytes(in));
+        String code = vo.getStringValue(ProcessConstants.FORM_UNIQUE_KEY);
+        taskService.setVariableLocal(vo.getId(), ProcessConstants.FORM_UNIQUE_KEY, code);
+
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
+        String localScopeValue = modelAssembler.getUserTaskAttributeValue(bpmnModel, task.getTaskDefinitionKey(), ProcessConstants.FORM_LOCAL_SCOPE);
+        boolean localScope = Convert.toBool(localScopeValue, false);
+        taskService.complete(vo.getId(), vo.getVariables(), localScope);
     }
 
     @Override
-    public FlowableProcessNodeInfo findProcessNodeBy(String instanceId) {
-        FlowableProcessNodeInfo nodeInfo = new FlowableProcessNodeInfo();
-        // 构建查询条件
-        HistoricActivityInstanceQuery query = historyService.createHistoricActivityInstanceQuery()
-            .processInstanceId(instanceId);
-        List<HistoricActivityInstance> allActivityInstanceList = query.list();
-        if (CollUtil.isEmpty(allActivityInstanceList)) {
-            return nodeInfo;
-        }
-        // 查询所有已完成的元素
-        List<HistoricActivityInstance> finishedElementList = allActivityInstanceList.stream()
-            .filter(item -> item.getEndTime() != null).collect(Collectors.toList());
-        // 所有已完成的连线
-        Set<String> finishedSequenceFlowSet = new HashSet<>();
-        // 所有已完成的任务节点
-        Set<String> finishedTaskSet = new HashSet<>();
-        finishedElementList.forEach(item -> {
-            if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(item.getActivityType())) {
-                nodeInfo.addFinishedFlow(item.getActivityId());
-            } else {
-                nodeInfo.addFinishedTask(item.getActivityId());
-            }
-        });
-        // 查询所有未结束的节点
-        Set<String> unfinishedTaskSet = allActivityInstanceList.stream()
-            .filter(item -> item.getEndTime() != null)
-            .map(HistoricActivityInstance::getActivityId)
-            .collect(Collectors.toSet());
-        nodeInfo.setUnfinishedTaskSet(unfinishedTaskSet);
-
-        HistoricProcessInstance hisInstnace = historyService.createHistoricProcessInstanceQuery()
-            .processInstanceId(instanceId)
+    public void reject(String employeeCode, FlowableTaskCompleteVO vo) {
+        Task task = taskService.createTaskQuery().taskId(vo.getId()).singleResult();
+        BusinessException.check(task != null, "不存在的任务信息[{0}]，任务拒绝失败！", vo.getId());
+        BusinessException.check(!task.isSuspended(), "任务处于挂起状态，任务拒绝失败！");
+        // 获取流程定义信息
+        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
+            .processDefinitionId(task.getProcessDefinitionId())
             .singleResult();
-        InputStream bpmnBytes = repositoryService.getProcessModel(hisInstnace.getProcessDefinitionId());
-        nodeInfo.setXml(StringUtil.toString(bpmnBytes));
-        return nodeInfo;
+        // 构建查询条件
+        List<HistoricActivityInstance> allActivityInstanceList = historyService.createHistoricActivityInstanceQuery()
+            .processInstanceId(task.getProcessInstanceId())
+            .list();
+        if (CollUtil.isEmpty(allActivityInstanceList)) {
+            return;
+        }
+        List<String> finishedTaskIds = new ArrayList<>();
+        for (HistoricActivityInstance item : allActivityInstanceList) {
+            if (item.getEndTime() == null) {
+                continue;
+            }
+            if (BpmnXMLConstants.ELEMENT_TASK_USER.equals(item.getActivityType())
+                || BpmnXMLConstants.ELEMENT_EVENT_START.equals(item.getActivityType())) {
+                finishedTaskIds.add(item.getActivityId());
+            }
+        }
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
+        UserTask element = modelAssembler.getUserTaskByKey(bpmnModel, task.getTaskDefinitionKey());
+        List<String> taskIds = modelAssembler.getBeforeUserTaskId(element, finishedTaskIds);
+        for (String taskId : taskIds) {
+            // 添加审批意见
+            if (StringUtil.isNotBlank(vo.getComment())) {
+                taskService.addComment(taskId, task.getProcessInstanceId(), vo.getComment());
+            }
+        }
+        if (taskIds.size() == 1) {
+            List<Execution> executions = runtimeService.createExecutionQuery().parentId(task.getProcessInstanceId()).list();
+            List<String> executionIds = executions.stream().map(Execution::getId).collect(Collectors.toList());
+            runtimeService.createChangeActivityStateBuilder()
+                .processInstanceId(task.getProcessInstanceId())
+                .moveExecutionsToSingleActivityId(executionIds, taskIds.get(0))
+                .changeState();
+            return;
+        }
+        runtimeService.createChangeActivityStateBuilder()
+            .processInstanceId(task.getProcessInstanceId())
+            .moveSingleActivityIdToActivityIds(task.getTaskDefinitionKey(), taskIds)
+            .changeState();
     }
 
     @Override
-    public FlowableTaskFormDetailInfo findCodeVariable(String taskId) {
+    public FlowableTaskFormDetailInfo findCodeVariableBy(String taskId) {
         HistoricTaskInstance task = historyService.createHistoricTaskInstanceQuery()
-            .includeProcessVariables()
+            .includeTaskLocalVariables()
             .finished()
             .taskId(taskId)
             .singleResult();
         if (task != null) {
             String formKey = task.getFormKey();
-            String code = (String) task.getProcessVariables().get("code");
-            return new FlowableTaskFormDetailInfo(formKey, code);
+            Object value = task.getTaskLocalVariables().get(ProcessConstants.FORM_UNIQUE_KEY);
+            String code = StringUtil.toString(value);
+            return new FlowableTaskFormDetailInfo(task.getId(), formKey, code);
         }
         return null;
+    }
+
+    @Override
+    public List<FlowableTaskInfo> findBy(String instanceId, String key) {
+        List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery()
+            .processInstanceId(instanceId)
+            .taskDefinitionKey(key)
+            .orderByHistoricTaskInstanceEndTime()
+            .asc()
+            .list();
+        return assembler.createHis(tasks);
     }
 
 }

@@ -1,0 +1,25 @@
+package ${PackageName}.listener;
+
+import com.lego.core.common.Constants;
+import com.lego.core.flowable.FlowableTaskCompletedListener;
+import ${PackageName}.service.I${ClassName}Service;
+import ${PackageName}.vo.${ClassName}CreateVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ${ClassName}CompletedListener extends FlowableTaskCompletedListener<${ClassName}CreateVO> {
+
+    @Autowired
+    private I${ClassName}Service ${FieldName}Service;
+
+    @Override
+    public void doCompleted(${ClassName}CreateVO vo) {
+        ${FieldName}Service.add(Constants.loginCode.get(), vo);
+    }
+
+    @Override
+    public String getTableCode() {
+        return "${TableName}";
+    }
+}

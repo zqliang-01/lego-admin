@@ -177,6 +177,15 @@ export default [
         }
       },
       {
+        path: 'instance',
+        component: () => import('@/views/admin/workflow/instance'),
+        meta: {
+          title: '实例管理',
+          requiresAuth: true,
+          permissions: ['manage', 'workflow']
+        }
+      },
+      {
         path: 'task-undo',
         component: () => import('@/views/admin/workflow/task/undo'),
         meta: {
@@ -249,5 +258,19 @@ export default [
         }
       }
     ]
+  },
+  {
+    ...layout({
+      permissions: ['manage']
+    }),
+    children: [{
+      name: 'Log',
+      path: 'log',
+      component: () => import('@/views/admin/log'),
+      meta: {
+        title: '日志管理',
+        icon: 'task'
+      }
+    }]
   }
 ]

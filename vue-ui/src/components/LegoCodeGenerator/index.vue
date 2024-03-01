@@ -48,6 +48,9 @@ export default {
         return {}
       }
     },
+    fieldCode: {
+      type: String
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -90,6 +93,7 @@ export default {
       if (value && value.code) {
         request = codeGeneratorUpdateAPI
       }
+      value.customFieldCode = this.fieldCode
       request(value).then(res => {
         this.$emit('value-change', res.data)
         this.loading = false

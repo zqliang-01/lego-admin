@@ -13,8 +13,9 @@ public class FlowableProcessNodeInfo extends DTO {
 
     private String xml;
     private Set<String> finishedTaskSet = new HashSet<>();
-    private Set<String> unfinishedTaskSet = new HashSet<>();
     private Set<String> finishedSequenceFlowSet = new HashSet<>();
+    private Set<String> unfinishedTaskSet = new HashSet<>();
+    private Set<String> rejectedTaskSet = new HashSet<>();
 
     public void addFinishedTask(String taskId) {
         finishedTaskSet.add(taskId);

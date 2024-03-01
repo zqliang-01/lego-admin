@@ -40,6 +40,11 @@ export default {
     FieldWrapper
   },
   mixins: [mixins],
+  props: {
+    appCode: {
+      type: String
+    }
+  },
   data() {
     return {
       options: []
@@ -74,8 +79,8 @@ export default {
   methods: {
     getOptions() {
       const field = this.field
-      if (field.appCode && field.optionDataType === 'dict') {
-        dictListAPI(field.appCode, field.optionDictType).then(res => {
+      if (this.appCode && field.optionDataType === 'dict') {
+        dictListAPI(this.appCode, field.optionDictType).then(res => {
           this.options = res.data
         })
       }

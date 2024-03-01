@@ -28,4 +28,6 @@ public interface ISysCustomFormService {
     SysCustomFormInfo findInitByTable(String tableCode);
 
     List<TypeInfo> findSimpleType();
+
+    String findTableCodeBy(String code);
 }

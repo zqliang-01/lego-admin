@@ -1,6 +1,6 @@
 <template>
   <div class="process-viewer">
-    <el-row type="flex" justify="end">
+    <el-row type="flex" justify="end" style="position: absolute; z-index: 10; right: 0px;">
       <el-button-group key="scale-control" size="medium">
         <el-button size="medium" type="default" :plain="true" :disabled="defaultZoom <= 0.3" icon="el-icon-zoom-out" @click="processZoomOut()" />
         <el-button size="medium" type="default" style="width: 90px;">{{ Math.floor(defaultZoom * 10 * 10) + "%" }}</el-button>
@@ -9,24 +9,7 @@
         <slot />
       </el-button-group>
     </el-row>
-    <defs ref="customSuccessDefs">
-      <marker id="sequenceflow-end-white-success" view-box="0 0 20 20" ref-x="11" ref-y="10" marker-width="10" marker-height="10" orient="auto">
-        <path class="success-arrow" d="M 1 5 L 11 10 L 1 15 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;" />
-      </marker>
-      <marker id="conditional-flow-marker-white-success" view-box="0 0 20 20" ref-x="-1" ref-y="10" marker-width="10" marker-height="10" orient="auto">
-        <path class="success-conditional" d="M 0 10 L 8 6 L 16 10 L 8 14 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;" />
-      </marker>
-    </defs>
-    <!-- 自定义箭头样式，用于失败状态下流程连线箭头 -->
-    <defs ref="customFailDefs">
-      <marker id="sequenceflow-end-white-fail" view-box="0 0 20 20" ref-x="11" ref-y="10" marker-width="10" marker-height="10" orient="auto">
-        <path class="fail-arrow" d="M 1 5 L 11 10 L 1 15 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;" />
-      </marker>
-      <marker id="conditional-flow-marker-white-fail" view-box="0 0 20 20" ref-x="-1" ref-y="10" marker-width="10" marker-height="10" orient="auto">
-        <path class="fail-conditional" d="M 0 10 L 8 6 L 16 10 L 8 14 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;" />
-      </marker>
-    </defs>
-    <div id="view" ref="processCanvas" :style="{height: '400px'}" ></div>
+    <div id="view" ref="processCanvas" style="height: 450px;"></div>
   </div>
 </template>
 
@@ -56,6 +39,9 @@ export default {
     this.createDiagram()
   },
   watch: {
+    xml() {
+      this.createDiagram()
+    }
   },
   methods: {
     initBpmnModeler() {
@@ -79,11 +65,8 @@ export default {
       })
     },
     onSelectElement(element) {
-      if (element.type === 'bpmn:UserTask') {
-        const elementObj = getBusinessObject(element)
-        console.log(elementObj)
-        this.$emit('clickElement', elementObj.get('id'))
-      }
+      const elementObj = getBusinessObject(element)
+      this.$emit('clickElement', elementObj.get('id'))
     },
     createDiagram() {
       if (this.xml) {
@@ -94,6 +77,7 @@ export default {
             warnings.forEach(warn => console.warn(warn))
           }
           this.bpmnModerler.get('canvas').zoom('fit-viewport', 'auto')
+          // this.addCustomDefs()
           this.setProcessStatus()
         }).catch(err => {
           console.log(err)
@@ -157,6 +141,14 @@ export default {
           }
         })
       }
+    },
+    addCustomDefs() {
+      const canvas = this.bpmnModerler.get('canvas')
+      const svg = canvas._svg
+      const customSuccessDefs = this.$refs.customSuccessDefs
+      const customFailDefs = this.$refs.customFailDefs
+      svg.appendChild(customSuccessDefs)
+      svg.appendChild(customFailDefs)
     }
   }
 }

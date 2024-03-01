@@ -47,12 +47,12 @@
           </div>
           <el-main>
             <draggable
-              :list="fieldArr"
+              :list="fieldList"
               v-bind="dragListConfig"
               class="field-list"
               @end="dragListEnd">
               <flexbox
-                v-for="(childArr, fatherIndex) in fieldArr"
+                v-for="(childArr, fatherIndex) in fieldList"
                 :key="fatherIndex"
                 align="flex-start"
                 justify="flex-start"
@@ -63,7 +63,8 @@
                   :key="childIndex"
                   :is="field.componentName"
                   :field="field"
-                  :field-arr="fieldArr"
+                  :field-list="fieldList"
+                  :app-code="appCode"
                   :point="[fatherIndex, childIndex]"
                   :active-point="selectedPoint"
                   @action="handleAction"
@@ -80,9 +81,10 @@
         v-if="selectedField"
         :field="selectedField"
         :point="selectedPoint"
-        :field-arr="fieldArr"
+        :field-list="fieldList"
+        :app-code="appCode"
         :column-list="columnList"
-        :crm-dict-type-arr="crmDictTypeArr"
+        :dict-type-list="dictTypeList"
         @update-width="handleUpdateFieldWidth" />
     </flexbox-item>
   </flexbox>
@@ -147,11 +149,11 @@ export default {
         forceFallback: true,
         fallbackClass: 'draggingStyle'
       },
-      fieldArr: [],
+      fieldList: [],
       rejectHandle: true, // 请求未获取前不能操作
       selectedPoint: [null, null],
       selectedField: null,
-      crmDictTypeArr: []
+      dictTypeList: []
     }
   },
   created() {
@@ -168,11 +170,11 @@ export default {
       customFieldListAPI({
         formCode: this.formCode
       }).then(res => {
-        this.fieldArr = res.data.fields || []
+        this.fieldList = res.data.fields || []
         this.appCode = res.data.appCode
         this.columnList = res.data.columns
         this.getDictType()
-        if (this.fieldArr.length > 0) {
+        if (this.fieldList.length > 0) {
           this.handleSelect([0, 0])
         }
         this.rejectHandle = false
@@ -226,7 +228,7 @@ export default {
       } else if (this.selectedPoint[0]) {
         rowNum = this.selectedPoint[0] + 1
       }
-      this.fieldArr.splice(rowNum, 0, [newField])
+      this.fieldList.splice(rowNum, 0, [newField])
       this.handleSelect([rowNum, 0])
     },
 
@@ -269,28 +271,28 @@ export default {
      * @param point {Array} 字段的坐标
      */
     handleActionMoveTop(point) {
-      const row = this.fieldArr[point[0] - 1]
+      const row = this.fieldList[point[0] - 1]
       if (!row || row.length === 4) return
-      const field = this.fieldArr[point[0]][point[1]]
+      const field = this.fieldList[point[0]][point[1]]
       // 给新行追加字段
       row.push(objDeepCopy(field))
       let config = this.getWidth(row.length)
       row.forEach(o => {
         o.stylePercent = config.stylePercent
       })
-      this.$set(this.fieldArr, point[0] - 1, row)
+      this.$set(this.fieldList, point[0] - 1, row)
 
       // 把字段从原来的行中删除
-      const oldRow = this.fieldArr[point[0]]
+      const oldRow = this.fieldList[point[0]]
       oldRow.splice(point[1], 1)
       if (oldRow.length === 0) {
-        this.fieldArr.splice(point[0], 1)
+        this.fieldList.splice(point[0], 1)
       } else {
         config = this.getWidth(oldRow.length)
         oldRow.forEach(o => {
           o.stylePercent = config.stylePercent
         })
-        this.$set(this.fieldArr, point[0], oldRow)
+        this.$set(this.fieldList, point[0], oldRow)
       }
       this.handleSelect([point[0] - 1, row.length - 1])
     },
@@ -300,24 +302,24 @@ export default {
      * @param point {Array} 字段的坐标
      */
     handleActionMoveBottom(point) {
-      const field = this.fieldArr[point[0]][point[1]]
-      const row = this.fieldArr[point[0]]
+      const field = this.fieldList[point[0]][point[1]]
+      const row = this.fieldList[point[0]]
       if (row.length === 1) {
-        [this.fieldArr[point[0] + 1], this.fieldArr[point[0]]] = [this.fieldArr[point[0]], this.fieldArr[point[0] + 1]]
+        [this.fieldList[point[0] + 1], this.fieldList[point[0]]] = [this.fieldList[point[0]], this.fieldList[point[0] + 1]]
         this.handleSelect([point[0] + 1, 0])
         return
       }
       field.stylePercent = 100
       // 把字段放到新行
-      this.fieldArr.splice(point[0] + 1, 0, [field])
+      this.fieldList.splice(point[0] + 1, 0, [field])
       // 把字段从原来的行删除
-      this.fieldArr[point[0]].splice(point[1], 1)
+      this.fieldList[point[0]].splice(point[1], 1)
       // 修改原来行的字段占比
       const config = this.getWidth(row.length)
       row.forEach(o => {
         o.stylePercent = config.stylePercent
       })
-      this.$set(this.fieldArr, point[0], row)
+      this.$set(this.fieldList, point[0], row)
       this.handleSelect([point[0] + 1, 0])
     },
 
@@ -327,8 +329,8 @@ export default {
      * @param step {Number} 1 向右移动 -1 向左移动
      */
     handleActionExchange(point, step) {
-      const row = this.fieldArr[point[0]]
-      const field = this.fieldArr[point[0]][point[1]]
+      const row = this.fieldList[point[0]]
+      const field = this.fieldList[point[0]][point[1]]
       row.splice(point[1], 1)
       row.splice(point[1] + step, 0, field)
       this.handleSelect([point[0], point[1] + step])
@@ -339,7 +341,7 @@ export default {
      * @param point {Array} 字段的坐标
      */
     handleActionCopy(point) {
-      const field = this.fieldArr[point[0]][point[1]]
+      const field = this.fieldList[point[0]][point[1]]
       const copyField = objDeepCopy(field)
       delete copyField.code
       delete copyField.name
@@ -348,7 +350,7 @@ export default {
       if (copyField.formType === 'desc_text') {
         copyField.name = ''
       }
-      this.fieldArr.splice(point[0] + 1, 0, [copyField])
+      this.fieldList.splice(point[0] + 1, 0, [copyField])
       this.handleSelect([point[0] + 1, point[1]])
     },
 
@@ -356,7 +358,7 @@ export default {
      * 修改字段占比
      */
     handleUpdateFieldWidth() {
-      const row = this.fieldArr[this.selectedPoint[0]]
+      const row = this.fieldList[this.selectedPoint[0]]
 
       // 本行占比大于100% 溢出到下一行
       const arr = []
@@ -390,7 +392,7 @@ export default {
       if (arr.length > 1) {
         let rowNum = this.selectedPoint[0] // 行坐标
         let columnNum = this.selectedPoint[1] // 列坐标
-        this.fieldArr.splice(rowNum, 1, ...arr)
+        this.fieldList.splice(rowNum, 1, ...arr)
         let step = 0
         for (let i = 0; i < arr.length; i++) {
           step += arr[i].length
@@ -424,10 +426,10 @@ export default {
           this.selectedPoint = [null, null]
           this.selectedField = null
 
-          this.fieldArr[point[0]].splice([point[1]], 1)
+          this.fieldList[point[0]].splice([point[1]], 1)
           // 如果当前行已经没有元素则删除
-          if (this.fieldArr[point[0]].length === 0) {
-            this.fieldArr.splice(point[0], 1)
+          if (this.fieldList[point[0]].length === 0) {
+            this.fieldList.splice(point[0], 1)
           }
         })
         .catch(() => {})
@@ -440,7 +442,7 @@ export default {
      */
     handleSelect(point, field = null) {
       this.selectedPoint = point
-      this.selectedField = field || this.fieldArr[point[0]][point[1]]
+      this.selectedField = field || this.fieldList[point[0]][point[1]]
     },
 
     checkFormField(arr) {
@@ -491,11 +493,11 @@ export default {
       customFieldInitListAPI({
         formCode: this.formCode
       }).then(res => {
-        this.fieldArr = res.data.fields || []
+        this.fieldList = res.data.fields || []
         this.appCode = res.data.appCode
         this.columnList = res.data.columns
         this.getDictType()
-        if (this.fieldArr.length > 0) {
+        if (this.fieldList.length > 0) {
           this.handleSelect([0, 0])
         }
         this.rejectHandle = false
@@ -513,7 +515,7 @@ export default {
       if (this.rejectHandle) return
       const arr = []
       // 追加坐标
-      objDeepCopy(this.fieldArr).forEach((father, fatherIndex) => {
+      objDeepCopy(this.fieldList).forEach((father, fatherIndex) => {
         father.forEach((child, childIndex) => {
           if (child.relativeForm) {
             child.relativeFormCode = child.relativeForm.code
@@ -550,7 +552,7 @@ export default {
     getDictType() {
       this.loading = true
       dictTypeListAPI(this.appCode).then(res => {
-        this.crmDictTypeArr = res.data
+        this.dictTypeList = res.data
         this.loading = false
       })
         .catch(() => {

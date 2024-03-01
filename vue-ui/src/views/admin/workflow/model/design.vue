@@ -18,8 +18,6 @@ import BpmnDesigner from '@/components/bpmn/components/Designer'
 import BpmnSettings from '@/components/bpmn/components/Settings'
 import BpmnToolbar from '@/components/bpmn/components/Toolbar'
 import BpmnPanel from '@/components/bpmn/components/Panel'
-import 'highlight.js/styles/atom-one-dark-reasonable.css'
-import '@/components/bpmn/theme/index.scss'
 import '@/components/bpmn/bpmn-icons'
 import { mapGetters } from 'vuex'
 import { modelDesignAPI, modelBpmnXmlGetAPI } from '@/api/admin/workflow/model'
@@ -33,7 +31,7 @@ export default {
     return {
       loading: false,
       modelId: '',
-      showSetting: false,
+      showSetting: true,
       xmlString: undefined
     }
   },
@@ -66,7 +64,9 @@ export default {
       modelBpmnXmlGetAPI(this.modelId).then(res => {
         const xmlStr = res.data
         this.xmlString = xmlStr
-        modeler.importXML(xmlStr)
+        if (xmlStr) {
+          modeler.importXML(xmlStr)
+        }
       })
     }, 100),
     handleBack() {

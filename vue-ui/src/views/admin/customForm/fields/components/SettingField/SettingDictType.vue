@@ -5,9 +5,10 @@
         v-model="selectedType"
         filterable
         clearable
-        placeholder="请选择字典类型">
+        placeholder="请选择字典类型"
+        @change="onChangeType">
         <el-option
-          v-for="item in crmDictTypeArr"
+          v-for="item in dictTypeList"
           :key="item.code"
           :label="item.name"
           :value="item.code"/>
@@ -19,14 +20,14 @@
 
 <script>
 export default {
-  name: 'SettingDictOption',
+  name: 'SettingDictType',
   components: { },
   props: {
     field: {
       type: Object,
       required: true
     },
-    crmDictTypeArr: {
+    dictTypeList: {
       type: Array,
       required: true
     }
@@ -46,6 +47,11 @@ export default {
   created() {
     if (this.field && this.field.optionDictType) {
       this.selectedType = this.field.optionDictType
+    }
+  },
+  methods: {
+    onChangeType() {
+      this.$set(this.field, 'defaultValue', '')
     }
   }
 }

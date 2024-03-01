@@ -30,7 +30,7 @@
 </template>
 
 <script type="text/javascript">
-import { operationLogListAPI } from '@/api/common'
+import { operationLogEntityListAPI } from '@/api/common'
 
 export default {
   name: 'RelativeHandle',
@@ -68,7 +68,7 @@ export default {
   methods: {
     getDetail(loading = true) {
       this.loading = loading
-      operationLogListAPI({
+      operationLogEntityListAPI({
         entityCode: this.detailCode,
         permissionCode: this.menuCode
       })

@@ -22,12 +22,8 @@
           </div>
         </div>
       </sidebar>
-      <el-main
-        id="main-container"
-        style="padding: 0;">
-        <app-main>
-          <welcome :app-name="appName"/>
-        </app-main>
+      <el-main id="main-container" style="padding: 0;">
+        <app-main/>
       </el-main>
     </el-container>
     <lego-all-create

@@ -76,7 +76,7 @@ export default {
       type: Object,
       required: true
     },
-    fieldArr: { // 所有字段
+    fieldList: { // 所有字段
       type: Array,
       required: true
     },
@@ -94,7 +94,7 @@ export default {
   computed: {
     fieldLibArr() {
       const arr = []
-      this.fieldArr.forEach((father, fatherIndex) => {
+      this.fieldList.forEach((father, fatherIndex) => {
         father.forEach((child, childIndex) => {
           if (child.code !== this.field.code) {
             arr.push(child)

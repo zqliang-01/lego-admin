@@ -4,7 +4,7 @@
     :visible="visible"
     :close-on-click-modal="false"
     :modal-append-to-body="true"
-    :append-to-body="true"
+    append-to-body
     width="60%"
     @close="handleCancel">
     <el-table
@@ -62,7 +62,7 @@
         @current-change="handleCurrentChange"/>
     </div>
     <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
-      <bpmn-viewer :key="definitionId" :xml.sync="definitionXml" :style="{height: '400px'}"/>
+      <bpmn-viewer :key="definitionId" :xml.sync="definitionXml"/>
     </el-dialog>
   </el-dialog>
 </template>
@@ -102,9 +102,9 @@ export default {
       pageSize: 15,
       pageSizes: [15, 30, 60, 100],
       total: 0,
-      tableHeight: document.documentElement.clientHeight - 300, // 表的高度
+      tableHeight: document.documentElement.clientHeight - 400, // 表的高度
       fieldList: [
-        { fieldCode: 'name', name: '名称', formType: 'text', width: '180', required: true, clickable: true, xAxis: 0, yAxis: 1 },
+        { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true, xAxis: 0, yAxis: 1 },
         { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true, xAxis: 1, yAxis: 0 },
         { fieldCode: 'version', name: '版本', formType: 'text', width: '50', required: true, editable: false },
         { fieldCode: 'active', name: '是否激活', formType: 'boolean_value', width: '100', editable: false }

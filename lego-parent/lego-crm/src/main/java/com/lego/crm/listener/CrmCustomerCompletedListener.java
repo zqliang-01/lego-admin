@@ -19,7 +19,7 @@ public class CrmCustomerCompletedListener extends FlowableTaskCompletedListener<
     }
 
     @Override
-    public String getFormKey() {
-        return "crm_customer_form";
+    public String getTableCode() {
+        return "crm_customer";
     }
 }

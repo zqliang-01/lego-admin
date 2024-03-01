@@ -21,6 +21,7 @@ public abstract class AddAction<E extends BaseEntity, D extends IGenericDao<E>> 
         Map<String, String> snapshot = targetEntity.buildReadableSnapshot();
         this.description = addSnapshot(snapshot, targetEntity);
         entityDao.save(targetEntity);
+        entityDao.flush();
     }
 
     protected final String addSnapshot(Map<String, String> beforeSnapshot, BaseEntity domainObject) {

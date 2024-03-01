@@ -3,6 +3,7 @@ package com.lego.system.service.impl;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.util.EntityUtil;
 import com.lego.system.action.AddSysCustomFormAction;
 import com.lego.system.action.DeleteSysCustomFormAction;
 import com.lego.system.action.ModifySysCustomFormAction;
@@ -66,7 +67,7 @@ public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCusto
         SysGenTable table = tableDao.findByCode(tableCode);
         SysCustomFormInfo info = new SysCustomFormInfo();
         info.setCode(table.getCode() + "_form");
-        info.setName(table.getName() + "表单");
+        info.setName(table.getName());
         info.setTable(assembler.createTypeInfo(table));
         info.setAddApiUrl(table.createApiUrl("add"));
         info.setDeleteApiUrl(table.createApiUrl("delete"));
@@ -82,6 +83,12 @@ public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCusto
     public List<TypeInfo> findSimpleType() {
         List<SysCustomForm> forms = dao.findAll();
         return assembler.createTypeInfo(forms);
+    }
+
+    @Override
+    public String findTableCodeBy(String code) {
+        SysCustomForm form = dao.findByCode(code);
+        return EntityUtil.getCode(form.getTable());
     }
 
 }

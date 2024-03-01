@@ -8,6 +8,7 @@ import com.lego.flowable.assembler.FlowableDefinitionAssembler;
 import com.lego.flowable.dto.FlowableDefinitionInfo;
 import com.lego.flowable.service.IFlowableDefinitionService;
 import com.lego.flowable.vo.FlowableDefinitionSearchVO;
+import com.lego.flowable.vo.ProcessStatus;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.common.engine.impl.db.SuspensionState;
 import org.flowable.engine.repository.ProcessDefinition;
@@ -87,6 +88,7 @@ public class FlowableDefinitionService extends FlowableService<FlowableDefinitio
         variables.put(BpmnXMLConstants.ATTRIBUTE_EVENT_START_INITIATOR, operatorCode);
         // 发起流程实例
         ProcessInstance instance = runtimeService.startProcessInstanceById(definition.getId(), variables);
+        runtimeService.updateBusinessStatus(instance.getId(), ProcessStatus.RUNNING.getCode());
         return instance.getId();
     }
 

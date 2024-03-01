@@ -151,12 +151,12 @@ export default {
         this.tableNameList = res.data
       })
     },
-    getList() {
+    getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
       genTableListAPI({
         code: this.search,
-        pageIndex: this.currentPage,
-        pageSize: this.pageSize
+        pageSize: pageSize,
+        pageIndex: currentPage
       }).then(res => {
         this.dataList = res.data.result
         this.total = res.data.totalCount

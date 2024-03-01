@@ -50,7 +50,6 @@ export default {
       isProcess: false
     }
   },
-
   mounted() {
     this.reloadGenerationData()
     EventEmitter.on('element-update', this.reloadGenerationData)

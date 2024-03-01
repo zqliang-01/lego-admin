@@ -6,7 +6,7 @@
       :create-fun="createClick"
       :title="auth.title"
       placeholder="请输入名称"
-      :main-title="`新建${auth.title}`"
+      :main-title="`新建`"
       @on-handle="listHeadHandle"
       @on-search="commonSearch"
       @on-export="exportInfos" />

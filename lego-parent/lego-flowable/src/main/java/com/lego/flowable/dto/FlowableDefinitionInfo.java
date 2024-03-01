@@ -4,6 +4,8 @@ import com.lego.core.dto.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 public class FlowableDefinitionInfo extends DTO {
@@ -13,6 +15,6 @@ public class FlowableDefinitionInfo extends DTO {
     private String key;
     private String category;
     private String version;
-    private String deploymentId;
+    private Date deploymentTime;
     private Boolean active;
 }

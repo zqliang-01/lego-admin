@@ -2,16 +2,34 @@ package com.lego.core.assembler;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lego.core.data.TreeEntity;
+import com.lego.core.data.hibernate.ICommonService;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TreeInfo;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
+import com.lego.core.vo.CustomFieldTypeEnum;
+import com.lego.core.web.LegoBeanFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseAssembler<D extends DTO, E> {
+
+  protected TypeInfo create(CustomFieldTypeEnum type, String code) {
+    ICommonService actionService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
+    if (actionService == null) {
+      return TypeInfo.NULL;
+    }
+    if (type == CustomFieldTypeEnum.EMPLOYEE) {
+      return actionService.findEmployeeBy(code);
+    }
+    if (type == CustomFieldTypeEnum.DEPT) {
+      return actionService.findDeptBy(code);
+    }
+    return TypeInfo.NULL;
+  }
 
   public List<D> create(List<E> entities) {
     List<D> infos = new ArrayList<D>();

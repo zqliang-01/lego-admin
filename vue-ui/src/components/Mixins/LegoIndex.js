@@ -28,7 +28,7 @@ export default {
   data() {
     return {
       loading: false, // 加载动画
-      tableHeight: document.documentElement.clientHeight - 235, // 表的高度
+      tableHeight: document.documentElement.clientHeight - 215, // 表的高度
       pageList: [],
       pageCodes: [],
       relativeEntity: {

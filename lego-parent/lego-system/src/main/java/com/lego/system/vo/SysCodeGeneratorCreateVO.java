@@ -15,4 +15,5 @@ public class SysCodeGeneratorCreateVO extends VO {
 	private String prefix;
 	private int serialLength;
 	private String datePattern;
+	private String customFieldCode;
 }

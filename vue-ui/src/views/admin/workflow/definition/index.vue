@@ -47,7 +47,7 @@
       @save-success="handleSaveSuccess"
     />
     <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
-      <bpmn-viewer :key="definitionKey" :xml.sync="definitionXml" :style="{height: '400px'}"/>
+      <bpmn-viewer :key="definitionKey" :xml.sync="definitionXml"/>
     </el-dialog>
   </div>
 </template>
@@ -90,12 +90,13 @@ export default {
       search: '',
       fieldList: [
         [
-          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true },
-          { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true }
+          { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150' },
+          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', clickable: true }
         ],
         [
-          { fieldCode: 'version', name: '版本', formType: 'text', width: '100', required: true, editable: false },
-          { fieldCode: 'active', name: '是否激活', formType: 'boolean_value', width: '150', editable: false }
+          { fieldCode: 'deploymentTime', name: '发布时间', formType: 'text', width: '150', editable: false },
+          { fieldCode: 'version', name: '版本', formType: 'text', width: '100', editable: false },
+          { fieldCode: 'active', name: '是否激活', formType: 'boolean_value', width: '100', editable: false }
         ]
       ]
     }
@@ -107,12 +108,12 @@ export default {
     refresh() {
       this.getList()
     },
-    getList() {
+    getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
       definitionListAPI({
         name: this.search,
-        pageIndex: this.currentPage,
-        pageSize: this.pageSize
+        pageIndex: currentPage,
+        pageSize: pageSize
       }).then(res => {
         this.dataList = res.data.result
         this.total = res.data.totalCount

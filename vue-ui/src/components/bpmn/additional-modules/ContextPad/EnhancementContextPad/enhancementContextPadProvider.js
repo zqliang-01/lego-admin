@@ -49,56 +49,47 @@ class EnhancementContextPadProvider extends ContextPadProvider {
     const modeling = this._modeling
     const contextPad = this._contextPad
 
-    // const appendUserTask = (event, element) => {
-    //   const shape = this._elementFactory.createShape({ type: "bpmn:UserTask" });
-    //   this._create.start(event, shape, {
-    //     source: element
-    //   });
-    // };
-    //
-    // const append = this._autoPlace
-    //   ? (event, element) => {
-    //       const shape = this._elementFactory.createShape({ type: "bpmn:UserTask" });
-    //       this._autoPlace.append(element, shape);
-    //     }
-    //   : appendUserTask;
-    //
-    // // 添加创建用户任务按钮
-    // actions["append.append-user-task"] = {
-    //   group: "model",
-    //   className: "bpmn-icon-user-task",
-    //   title: "用户任务",
-    //   action: {
-    //     dragstart: appendUserTask,
-    //     click: append
-    //   }
-    // };
+    if (element.type !== 'bpmn:EndEvent') {
+      const appendUserTask = (event, element) => {
+        const shape = this._elementFactory.createShape({ type: 'bpmn:UserTask' })
+        this._create.start(event, shape, {
+          source: element
+        })
+      }
 
-    // 添加一个与edit一组的按钮
-    actions['enhancement-op-1'] = {
-      group: 'edit',
-      className: 'enhancement-op',
-      title: '扩展操作1',
-      action: {
-        click: function(e) {
-          alert('点击 扩展操作1')
+      const append = this._autoPlace ? (event, element) => {
+        const shape = this._elementFactory.createShape({ type: 'bpmn:UserTask' })
+        this._autoPlace.append(element, shape)
+      } : appendUserTask
+
+      // 添加创建用户任务按钮
+      actions['append.append-user-task'] = {
+        group: 'model',
+        className: 'bpmn-icon-user-task',
+        title: '用户任务',
+        action: {
+          dragstart: appendUserTask,
+          click: append
+        }
+      }
+    }
+
+    if (element.type === 'bpmn:StartEvent' || element.type === 'bpmn:EndEvent') {
+      actions['enhancement-op-remove'] = {
+        group: 'edit',
+        className: 'bpmn-icon-trash',
+        title: '移除',
+        action: {
+          click: function(event, delElement) {
+            modeling.removeElements([...(delElement.incoming || []), ...(delElement.outgoing || []), delElement])
+          }
         }
       }
     }
 
     // 添加一个新分组的自定义按钮
-    actions['enhancement-op'] = {
+    actions['enhancement-op-changeStyle'] = {
       group: 'enhancement',
-      className: 'enhancement-op',
-      title: '扩展删除',
-      action: {
-        click: function(event, delElement) {
-          modeling.removeElements([...(delElement.incoming || []), ...(delElement.outgoing || []), delElement])
-        }
-      }
-    }
-    actions['enhancement-op-1'] = {
-      group: 'edit',
       className: 'enhancement-op',
       title: '切换ContextPad样式',
       action: {
@@ -107,7 +98,6 @@ class EnhancementContextPadProvider extends ContextPadProvider {
         }
       }
     }
-
     return actions
   }
 }

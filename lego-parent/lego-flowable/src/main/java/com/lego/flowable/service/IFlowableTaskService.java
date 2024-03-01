@@ -1,11 +1,12 @@
 package com.lego.flowable.service;
 
 import com.lego.core.dto.LegoPage;
-import com.lego.flowable.dto.FlowableProcessNodeInfo;
 import com.lego.flowable.dto.FlowableTaskFormDetailInfo;
 import com.lego.flowable.dto.FlowableTaskInfo;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
+
+import java.util.List;
 
 public interface IFlowableTaskService {
 
@@ -15,9 +16,9 @@ public interface IFlowableTaskService {
 
     void complete(String employeeCode, FlowableTaskCompleteVO vo);
 
-    String getBpmnXml(String instanceId);
+    void reject(String employeeCode, FlowableTaskCompleteVO vo);
 
-    FlowableProcessNodeInfo findProcessNodeBy(String instanceId);
+    FlowableTaskFormDetailInfo findCodeVariableBy(String taskId);
 
-    FlowableTaskFormDetailInfo findCodeVariable(String taskId);
+    List<FlowableTaskInfo> findBy(String instanceId, String key);
 }

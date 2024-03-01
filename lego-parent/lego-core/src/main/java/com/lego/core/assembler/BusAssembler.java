@@ -21,17 +21,4 @@ public abstract class BusAssembler<D extends BusDTO, E extends BusEntity> extend
         return dto;
     }
 
-    protected TypeInfo create(CustomFieldTypeEnum type, String code) {
-        ICommonService actionService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
-        if (actionService == null) {
-            return TypeInfo.NULL;
-        }
-        if (type == CustomFieldTypeEnum.EMPLOYEE) {
-            return actionService.findEmployeeBy(code);
-        }
-        if (type == CustomFieldTypeEnum.DEPT) {
-            return actionService.findDeptBy(code);
-        }
-        return TypeInfo.NULL;
-    }
 }

@@ -6,7 +6,6 @@ import { showFormErrorMessage } from '../NewCom/Form/utils'
 import GenerateRulesMixin from './GenerateRules'
 import LegoCommonMixin from './LegoCommon'
 import { createFieldListAPI } from '@/api/admin/formField'
-import { getMenuAuth, getFormAuth } from '@/utils/auth'
 
 export default {
   // 新建编辑
@@ -45,14 +44,6 @@ export default {
   computed: {
     saveRequest() {
       return this.action.type === 'update' ? this.updateRequest : this.addRequest
-    },
-    auth() {
-      if (this.menuCode) {
-        const menu = getMenuAuth(this.menuCode)
-        this.$emit('update:formCode', menu.formCode)
-        return menu
-      }
-      return getFormAuth(this.formCode)
     }
   },
   data() {

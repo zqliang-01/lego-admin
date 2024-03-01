@@ -168,7 +168,8 @@ public class VelocityUtil {
         templates.add(new TypeInfo("Modify{0}Action.java", "vm/java/action/ModifyAction.java.vm"));
         templates.add(new TypeInfo("{0}CreateVO.java", "vm/java/vo/CreateVO.java.vm"));
         templates.add(new TypeInfo("{0}ModifyVO.java", "vm/java/vo/ModifyVO.java.vm"));
-        templates.add(new TypeInfo("{0}Info.java", "vm/java/dto/Dto.java.vm"));
+        templates.add(new TypeInfo("{0}Info.java", "vm/java/dto/Dto.java.vm"));;
+        templates.add(new TypeInfo("{0}CompletedListener.java", "vm/java/listener/CompletedListener.java.vm"));
 //        templates.add(new TypeInfo("index.vue", "vm/vue/index.vue.vm"));
 //        templates.add(new TypeInfo("Detail.vue", "vm/vue/Detail.vue.vm"));
 //        templates.add(new TypeInfo("Create.vue", "vm/vue/Create.vue.vm"));
@@ -178,7 +179,15 @@ public class VelocityUtil {
         return templates;
     }
 
-    public static String getFileName(TypeInfo template, SysGenTableInfo table) {
+    public static String buildFilePath(TypeInfo template, SysGenTableInfo table) {
+        String templatePath = template.getName();
+        String fileName = MessageFormat.format(template.getCode(), table.getClassName());
+        templatePath = StringUtil.substringAfter(templatePath, "vm/");
+        templatePath = templatePath.substring(0, templatePath.lastIndexOf("/") + 1);
+        return templatePath + fileName;
+    }
+
+    public static String buildFileAbsolutePath(TypeInfo template, SysGenTableInfo table) {
         String javaPath = "";
         String templatePath = template.getName();
         String fileName = MessageFormat.format(template.getCode(), table.getClassName());

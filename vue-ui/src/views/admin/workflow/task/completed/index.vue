@@ -22,21 +22,20 @@
             type="text"
             size="small"
             icon="el-icon-view"
-            @click="handleTable('view', scope.row, scope.$index)">查看流程图</el-button>
+            @click="handleTable('view', scope.row, scope.$index)">流程图</el-button>
           <el-button
+            v-if="scope.row.formCode !== ''"
             type="text"
             size="small"
             icon="el-icon-view"
-            @click="handleTable('form', scope.row, scope.$index)">查看表单</el-button>
+            @click="handleTable('form', scope.row, scope.$index)">表单</el-button>
         </template>
       </lego-table>
     </div>
     <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
-      <bpmn-viewer
+      <process-viewer
         :key="taskId"
-        :xml.sync="processXml"
-        :process-node-info="processNodeInfo"
-        :style="{height: '400px'}"/>
+        :instance-id="instanceId" />
     </el-dialog>
     <complete-form
       v-if="createShow"
@@ -54,7 +53,6 @@
 <script>
 import {
   taskCompletedListAPI,
-  taskProcessNodeListAPI,
   taskFormDetailGetAPI
 } from '@/api/admin/workflow/task'
 import { mapGetters } from 'vuex'
@@ -62,7 +60,8 @@ import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/LegoTable'
 import FieldView from '@/components/NewCom/Form/FieldView'
 import BpmnViewer from '@/components/bpmn/components/Viewer'
-import CompleteForm from '../CompleteForm.vue'
+import CompleteForm from '../../components/CompleteForm.vue'
+import ProcessViewer from '../../components/ProcessViewer'
 
 export default {
   name: 'WorkflowModel',
@@ -71,7 +70,8 @@ export default {
     FieldView,
     LegoTable,
     BpmnViewer,
-    CompleteForm
+    CompleteForm,
+    ProcessViewer
   },
   computed: {
     ...mapGetters(['manage'])
@@ -80,13 +80,12 @@ export default {
     return {
       loading: false,
       isCreate: false,
-      processXml: '',
-      processNodeInfo: '',
+      taskId: '',
+      instanceId: '',
       processVisible: false,
       createShow: false,
       formCode: '',
       detailCode: '',
-      taskId: '',
       dataList: [],
       currentPage: 1,
       pageSize: 15,
@@ -98,15 +97,16 @@ export default {
       },
       fieldList: [
         [
-          { fieldCode: 'id', name: '任务ID', formType: 'text', width: '260', unique: true },
-          { fieldCode: 'name', name: '名称', formType: 'text', width: '150' }
+          { fieldCode: 'definitionName', name: '流程名称', formType: 'text', width: 150 },
+          { fieldCode: 'startUser', name: '发起人', formType: 'select', width: 150 }
         ],
         [
-          { fieldCode: 'assignee', name: '受理人', formType: 'text', width: '100' },
-          { fieldCode: 'createTime', name: '开始时间', formType: 'text', width: '150' }
+          { fieldCode: 'name', name: '任务节点', formType: 'text', width: 150 },
+          { fieldCode: 'assignee', name: '受理人', formType: 'select', width: 100 }
         ],
         [
-          { fieldCode: 'endTime', name: '完工时间', formType: 'text', width: '150' }
+          { fieldCode: 'createTime', name: '开始时间', formType: 'text', width: 150 },
+          { fieldCode: 'endTime', name: '完工时间', formType: 'text', width: 150 }
         ]
       ]
     }
@@ -118,12 +118,12 @@ export default {
     refresh() {
       this.getList()
     },
-    getList() {
+    getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
       taskCompletedListAPI({
         instanceId: this.search,
-        pageIndex: this.currentPage,
-        pageSize: this.pageSize
+        pageSize: pageSize,
+        pageIndex: currentPage
       }).then(res => {
         this.dataList = res.data.result
         this.total = res.data.totalCount
@@ -143,16 +143,9 @@ export default {
     },
     handleTable(type, item, index) {
       if (type === 'view') {
-        this.loading = true
-        taskProcessNodeListAPI(item.instanceId).then(res => {
-          this.taskId = item.id
-          this.processXml = res.data.xml
-          this.processNodeInfo = res.data
-          this.processVisible = true
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
+        this.instanceId = item.instanceId
+        this.processVisible = true
+        console.log(this.instanceId)
         return
       }
       if (type === 'form') {
@@ -162,6 +155,8 @@ export default {
             this.detailCode = res.data.code
             this.formCode = res.data.formKey
             this.createShow = true
+          } else {
+            this.$message.error('未查询到表单信息！')
           }
         })
         return

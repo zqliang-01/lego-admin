@@ -3,7 +3,7 @@
     <el-table
       v-loading="loading"
       :data="dataList"
-      :height="tableHeight"
+      :height="tableHeight + tableHeighOverly"
       highlight-current-row
       style="width: 100%">
       <template v-for="(fields, r) in fieldList">
@@ -24,6 +24,7 @@
         </el-table-column>
       </template>
       <el-table-column
+        v-if="operational"
         fixed="right"
         label="操作"
         :width="editButtonWidth">
@@ -61,11 +62,19 @@ export default {
       type: Boolean,
       default: false
     },
+    operational: {
+      type: Boolean,
+      default: true
+    },
     dataList: Array,
     fieldList: Array,
     editButtonWidth: {
       type: Number,
       default: 200
+    },
+    tableHeighOverly: {
+      type: Number,
+      default: 0
     },
     currentPage: {
       type: Number,

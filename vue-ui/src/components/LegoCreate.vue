@@ -34,7 +34,7 @@ export default {
       if (this.title) {
         return this.title
       }
-      return this.action.type === 'update' ? `编辑${this.auth.title}` : `新建${this.auth.title}`
+      return this.action.type === 'update' ? `编辑信息` : `新建记录`
     }
   },
   data() {

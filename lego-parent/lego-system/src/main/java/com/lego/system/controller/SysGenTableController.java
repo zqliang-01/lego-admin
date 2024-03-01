@@ -114,7 +114,7 @@ public class SysGenTableController extends BaseController {
             StringWriter sw = new StringWriter();
             Template tpl = Velocity.getTemplate(template.getName(), Constants.DEFAULT_CHARSET_NAME);
             tpl.merge(context, sw);
-            VelocityUtil.addTemplateCode(rootPath, VelocityUtil.getFileName(template, table), sw.toString());
+            VelocityUtil.addTemplateCode(rootPath, VelocityUtil.buildFilePath(template, table), sw.toString());
         }
         return JsonResponse.success(rootPath.getChildrens());
     }
@@ -135,7 +135,7 @@ public class SysGenTableController extends BaseController {
             Template tpl = Velocity.getTemplate(template.getName(), Constants.DEFAULT_CHARSET_NAME);
             tpl.merge(context, sw);
             try {
-                zip.putNextEntry(new ZipEntry(VelocityUtil.getFileName(template, table)));
+                zip.putNextEntry(new ZipEntry(VelocityUtil.buildFileAbsolutePath(template, table)));
                 IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
                 IoUtil.close(sw);
                 zip.flush();

@@ -3,6 +3,7 @@
     <lego-code-generator
       v-if="field.unique"
       :value="field.codeGenerator"
+      :field-code="field.code"
       @value-change="handleCodeGenerator($event)"/>
 
     <el-input
@@ -91,6 +92,9 @@ export default {
     field: {
       type: Object,
       required: true
+    },
+    appCode: {
+      type: String
     }
   },
   data() {
@@ -141,8 +145,8 @@ export default {
   methods: {
     getOptions() {
       const field = this.field
-      if (field.appCode && field.optionDataType === 'dict') {
-        dictListAPI(field.appCode, field.optionDictType).then(res => {
+      if (this.appCode && field.optionDataType === 'dict') {
+        dictListAPI(this.appCode, field.optionDictType).then(res => {
           this.options = res.data
         })
       }

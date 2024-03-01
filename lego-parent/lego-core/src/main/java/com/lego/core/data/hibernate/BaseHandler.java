@@ -1,44 +1,42 @@
-
 package com.lego.core.data.hibernate;
 
+import com.lego.core.exception.CoreException;
+import org.hibernate.query.internal.NativeQueryImpl;
+import org.hibernate.transform.Transformers;
+
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TemporalType;
-
-import org.hibernate.query.internal.NativeQueryImpl;
-import org.hibernate.transform.Transformers;
-
-import com.lego.core.exception.CoreException;
-
 public class BaseHandler<T> {
 
     private EntityManager entityManager;
     private Class<T> domainClass;
 
-    protected BaseHandler() { }
+    protected BaseHandler() {
+    }
 
     public BaseHandler(EntityManager em, Class<T> domainClass) {
         this.entityManager = em;
         this.domainClass = domainClass;
     }
 
-    @SuppressWarnings({ "hiding", "unchecked" })
+    @SuppressWarnings({"hiding", "unchecked"})
     protected <T> T findUnique(String hql, Map<String, ?> values) {
         return (T) uniqueOrNull(findHQL(hql, values));
     }
 
-    @SuppressWarnings({ "unchecked", "hiding" })
+    @SuppressWarnings({"unchecked", "hiding"})
     protected <T> T findUnique(String hql, Object... values) {
         return (T) uniqueOrNull(findHQL(hql, values));
     }
 
-    @SuppressWarnings({ "unchecked", "hiding" })
+    @SuppressWarnings({"unchecked", "hiding"})
     protected <T> T findSqlUnique(String sql, Map<String, Object> values) {
         return (T) uniqueOrNull(findSQL(sql, values, false));
     }
@@ -63,7 +61,7 @@ public class BaseHandler<T> {
 
     @SuppressWarnings("unchecked")
     protected List<T> findSQL(String sql, Map<String, Object> parameters, boolean mapResult) {
-    	Query query = createSqlQuery(sql);
+        Query query = createSqlQuery(sql);
         setParameter(parameters, query);
         if (mapResult) {
             query.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
@@ -71,9 +69,9 @@ public class BaseHandler<T> {
         return query.getResultList();
     }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     protected List<T> findSQL(String sql, Object... values) {
-    	Query query = createSqlQuery(sql);
+        Query query = createSqlQuery(sql);
         if (values != null) {
             for (int i = 0; i < values.length; i++) {
                 query.setParameter(i, values[i]);
@@ -106,7 +104,7 @@ public class BaseHandler<T> {
 
     @SuppressWarnings("unchecked")
     protected List<T> limitedFindSQL(String sql, Map<String, Object> parameters, int firstResult, int maxResults) {
-    	Query query = createSqlQuery(sql);
+        Query query = createSqlQuery(sql);
         setParameter(parameters, query);
         query.setFirstResult(firstResult);
         query.setMaxResults(maxResults);
@@ -115,7 +113,7 @@ public class BaseHandler<T> {
 
     @SuppressWarnings("unchecked")
     protected List<T> limitedFindSQL(String sql, int firstResult, int maxResults, Object... values) {
-    	Query query = createSqlQuery(sql);
+        Query query = createSqlQuery(sql);
         if (values != null) {
             for (int i = 0; i < values.length; i++) {
                 query.setParameter(i, values[i]);
@@ -156,8 +154,7 @@ public class BaseHandler<T> {
                 Object paramValue = entry.getValue();
                 if (paramName.toLowerCase().endsWith("calendar") || paramValue instanceof Calendar) {
                     query.setParameter(paramName, (Calendar) paramValue, TemporalType.TIMESTAMP);
-                }
-                else {
+                } else {
                     query.setParameter(paramName, paramValue);
                 }
             }
@@ -169,9 +166,9 @@ public class BaseHandler<T> {
     }
 
     private Query createSqlQuery(String sql) {
-    	if (BaseEntity.class.isAssignableFrom(domainClass)) {
-    		return entityManager.createNativeQuery(sql, domainClass);
-    	}
-		return entityManager.createNativeQuery(sql);
-	}
+        if (BaseEntity.class.isAssignableFrom(domainClass)) {
+            return entityManager.createNativeQuery(sql, domainClass);
+        }
+        return entityManager.createNativeQuery(sql);
+    }
 }

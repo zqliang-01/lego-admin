@@ -1,11 +1,11 @@
 package com.lego.flowable.action;
 
 import com.lego.core.action.MaintainAction;
-import com.lego.core.common.ProcessConstants;
 import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
+import com.lego.flowable.vo.ProcessConstants;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.RepositoryService;

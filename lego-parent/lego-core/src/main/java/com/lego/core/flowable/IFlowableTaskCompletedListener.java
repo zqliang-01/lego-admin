@@ -6,5 +6,5 @@ interface IFlowableTaskCompletedListener<T> {
 
     Class<T> getClassType();
 
-    String getFormKey();
+    String getTableCode();
 }

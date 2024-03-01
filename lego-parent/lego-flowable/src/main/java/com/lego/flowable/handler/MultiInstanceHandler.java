@@ -2,8 +2,9 @@ package com.lego.flowable.handler;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.lego.core.common.ProcessConstants;
+import com.lego.flowable.vo.ProcessConstants;
 import com.lego.system.mapper.SysEmployeeMapper;
+import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.delegate.DelegateExecution;
@@ -29,7 +30,7 @@ public class MultiInstanceHandler {
         FlowElement flowElement = execution.getCurrentFlowElement();
         if (ObjectUtil.isNotEmpty(flowElement) && flowElement instanceof UserTask) {
             UserTask userTask = (UserTask) flowElement;
-            String dataType = userTask.getAttributeValue(ProcessConstants.NAMASPASE, ProcessConstants.PROCESS_CUSTOM_DATA_TYPE);
+            String dataType = userTask.getAttributeValue(BpmnXMLConstants.FLOWABLE_EXTENSIONS_NAMESPACE, ProcessConstants.CUSTOM_DATA_TYPE);
             if ("USERS".equals(dataType) && CollUtil.isNotEmpty(userTask.getCandidateUsers())) {
                 candidateUserIds.addAll(userTask.getCandidateUsers());
             } else if (CollUtil.isNotEmpty(userTask.getCandidateGroups())) {

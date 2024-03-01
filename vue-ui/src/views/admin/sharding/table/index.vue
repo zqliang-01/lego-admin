@@ -119,7 +119,7 @@ export default {
       tableListAPI({
         search: this.searchValue,
         pageSize: pageSize,
-        currentPage: currentPage
+        pageIndex: currentPage
       }).then(res => {
         this.dataList = res.data.result
         this.total = res.data.totalCount

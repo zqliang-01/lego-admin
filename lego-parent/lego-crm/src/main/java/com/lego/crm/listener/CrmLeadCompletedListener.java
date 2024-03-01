@@ -19,7 +19,7 @@ public class CrmLeadCompletedListener extends FlowableTaskCompletedListener<CrmL
     }
 
     @Override
-    public String getFormKey() {
-        return "crm_lead_form";
+    public String getTableCode() {
+        return "crm_lead";
     }
 }

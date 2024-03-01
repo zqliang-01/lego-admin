@@ -1,11 +1,14 @@
 package com.lego.system.service;
 
-import java.util.List;
-
+import com.lego.core.dto.LegoPage;
 import com.lego.system.dto.SysOperationLogInfo;
+import com.lego.system.vo.SysOperationLogSearchVO;
+
+import java.util.List;
 
 public interface ISysOperationLogService {
 
-	List<SysOperationLogInfo> findBy(String loginCode, String entityCode, String permissionCode);
+    List<SysOperationLogInfo> findBy(String loginCode, String entityCode, String permissionCode);
 
+    LegoPage<SysOperationLogInfo> findBy(SysOperationLogSearchVO vo);
 }

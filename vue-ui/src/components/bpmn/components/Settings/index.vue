@@ -1,6 +1,6 @@
 <template>
   <div class="bpmn-settings" @click.stop>
-    <div class="toggle-button" @click="changeModelVisible">
+    <div class="toggle-button" @click="modelVisible = !modelVisible">
       <lucide-icon name="Settings" :size="40" color="#ffffff" />
     </div>
     <el-drawer :visible.sync="modelVisible" :size="600" title="偏好设置" append-to-body>
@@ -50,7 +50,7 @@
           </el-form-item>
           <el-form-item label="Penal模式">
             <el-radio-group v-model="editorSettings.penalMode">
-              <el-radio label="default">默认</el-radio>
+              <el-radio label="default" disabled>默认</el-radio>
               <el-radio label="rewrite" disabled>重写版</el-radio>
               <el-radio label="custom">自定义</el-radio>
             </el-radio-group>
@@ -167,6 +167,7 @@ export default {
       this.modelVisible = !this.modelVisible
     },
     updateEditorState: debounce(function() {
+      console.log(this.editorSettings)
       this.editorSettings && this.$store.commit('setConfiguration', { ...this.editorSettings })
     }, 100)
   }

@@ -19,13 +19,6 @@
 @import "settings";
 @import "contextmenu";
 
-body,
-html {
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 #bpmn-app {
   box-sizing: border-box;
   position: relative;
@@ -46,8 +39,4 @@ html {
       flex: 1;
     }
   }
-}
-
-* {
-  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
 }

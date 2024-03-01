@@ -16,7 +16,7 @@ spring:
 flowable:
   idm:
     enabled: false
-  database-schema-update: true
+  database-schema-update: false
   async-executor-activate: false
   standalone:
     server:

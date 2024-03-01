@@ -15,6 +15,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
+        :edit-button-width="250"
         @onList="getList"
         @onEdit="handleTable">
         <template slot-scope="scope">
@@ -22,21 +23,24 @@
             type="text"
             size="small"
             icon="el-icon-view"
-            @click="handleTable('view', scope.row, scope.$index)">查看流程进度</el-button>
+            @click="handleTable('view', scope.row, scope.$index)">流程进度</el-button>
           <el-button
             type="text"
             size="small"
             icon="el-icon-edit"
-            @click="handleTable('complete', scope.row, scope.$index)">完工</el-button>
+            @click="handleTable('complete', scope.row, scope.$index)">处理</el-button>
+          <el-button
+            type="text"
+            size="small"
+            icon="el-icon-edit"
+            @click="handleTable('reject', scope.row, scope.$index)">拒绝</el-button>
         </template>
       </lego-table>
     </div>
     <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
-      <bpmn-viewer
+      <process-viewer
         :key="taskId"
-        :xml.sync="processXml"
-        :process-node-info="processNodeInfo"
-        :style="{height: '400px'}"/>
+        :instance-id="instanceId" />
     </el-dialog>
     <complete-form
       v-if="createShow"
@@ -53,14 +57,15 @@
 <script>
 import {
   taskUndoListAPI,
-  taskProcessNodeListAPI
+  taskCompleteAPI,
+  taskRejectAPI
 } from '@/api/admin/workflow/task'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/LegoTable'
 import FieldView from '@/components/NewCom/Form/FieldView'
-import BpmnViewer from '@/components/bpmn/components/Viewer'
-import CompleteForm from '../CompleteForm.vue'
+import ProcessViewer from '../../components/ProcessViewer'
+import CompleteForm from '../../components/CompleteForm.vue'
 
 export default {
   name: 'WorkflowModel',
@@ -68,7 +73,7 @@ export default {
     XrHeader,
     FieldView,
     LegoTable,
-    BpmnViewer,
+    ProcessViewer,
     CompleteForm
   },
   computed: {
@@ -78,12 +83,11 @@ export default {
     return {
       loading: false,
       isCreate: false,
-      processXml: '',
-      processNodeInfo: '',
       processVisible: false,
       createShow: false,
       formCode: '',
       taskId: '',
+      instanceId: '',
       dataList: [],
       currentPage: 1,
       pageSize: 15,
@@ -95,12 +99,16 @@ export default {
       },
       fieldList: [
         [
-          { fieldCode: 'id', name: '任务ID', formType: 'text', width: '260', unique: true, required: true },
-          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true }
+          { fieldCode: 'id', name: '任务ID', formType: 'text', width: '260', unique: true },
+          { fieldCode: 'definitionName', name: '流程名称', formType: 'text', width: 150 }
+        ],
+        [
+          { fieldCode: 'startUser', name: '发起人', formType: 'select', width: 150 },
+          { fieldCode: 'name', name: '任务节点', formType: 'text', width: '150' }
         ],
         [
           { fieldCode: 'createTime', name: '开始时间', formType: 'text', width: '150' },
-          { fieldCode: 'assignee', name: '受理人', formType: 'text', width: '100', required: true }
+          { fieldCode: 'assignee', name: '受理人', formType: 'select', width: '100' }
         ]
       ]
     }
@@ -112,12 +120,12 @@ export default {
     refresh() {
       this.getList()
     },
-    getList() {
+    getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
       taskUndoListAPI({
         instanceId: this.search,
-        pageIndex: this.currentPage,
-        pageSize: this.pageSize
+        pageSize: pageSize,
+        pageIndex: currentPage
       }).then(res => {
         this.dataList = res.data.result
         this.total = res.data.totalCount
@@ -137,22 +145,39 @@ export default {
     },
     handleTable(type, item, index) {
       if (type === 'view') {
-        this.loading = true
-        taskProcessNodeListAPI(item.instanceId).then(res => {
-          this.taskId = item.id
-          this.processXml = res.data.xml
-          this.processNodeInfo = res.data
-          this.processVisible = true
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
+        this.taskId = item.id
+        this.instanceId = item.instanceId
+        this.processVisible = true
         return
       }
       if (type === 'complete') {
+        if (!item.formCode) {
+          this.loading = true
+          taskCompleteAPI({
+            id: item.id
+          }).then(() => {
+            this.loading = false
+            this.actionHandle({ type: 'save-success' })
+          }).catch(() => {
+            this.loading = false
+          })
+          return
+        }
         this.taskId = item.id
         this.formCode = item.formCode
         this.createShow = true
+        return
+      }
+      if (type === 'reject') {
+        taskRejectAPI({
+          id: item.id
+        }).then(() => {
+          this.loading = false
+          this.$message.success('任务已拒绝，流程结束！')
+          this.refresh()
+        }).catch(() => {
+          this.loading = false
+        })
         return
       }
       this.action.type = 'update'

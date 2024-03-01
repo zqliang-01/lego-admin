@@ -6,9 +6,9 @@ export const fileUploadUrl = process.env.VUE_APP_BASE_API + 'back-end/sys-file/u
 /**
  * 操作记录
  */
-export function operationLogListAPI(data) {
+export function operationLogEntityListAPI(data) {
   return request({
-    url: '/back-end/sys-operation-log/list',
+    url: '/back-end/sys-operation-log/list-entity',
     method: 'post',
     data: data
   })

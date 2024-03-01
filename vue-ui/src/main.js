@@ -9,6 +9,8 @@ import '@/permission'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss'
 import 'vue2-animate/dist/vue2-animate.min.css'
+import 'highlight.js/styles/atom-one-dark-reasonable.css'
+import '@/components/bpmn/theme/index.scss'
 
 import config from '@/config'
 window.SystemConfig = config

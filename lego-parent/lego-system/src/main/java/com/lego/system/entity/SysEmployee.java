@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.lego.core.common.Constants;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Fetch;
@@ -78,6 +79,10 @@ public class SysEmployee extends BaseEntity {
     	attributes.put("角色", EntityUtil.toString(roles));
     	attributes.put("头像", EntityUtil.toString(image));
     	attributes.put("状态", enable ? "生效" : "失效");
+    }
+
+    public boolean isAdmin() {
+        return containRole(Constants.ADMIN_ROLE);
     }
 
 	public boolean containRole(String roleCode) {

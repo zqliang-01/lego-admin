@@ -50,11 +50,11 @@
               <el-radio-group
                 v-model="dataResourceRadio"
                 size="small">
-                <!-- <el-radio-button label="custom" border>
-                  手动添加
-                </el-radio-button> -->
                 <el-radio-button label="dict" border>
                   字典表
+                </el-radio-button>
+                <el-radio-button label="custom" border disabled>
+                  手动添加
                 </el-radio-button>
               </el-radio-group>
             </div>
@@ -62,9 +62,9 @@
               v-if="dataResourceRadio == 'custom'"
               :field="field"
               :is-table-child="isTableChild" />
-            <setting-dict-option
+            <setting-dict-type
               v-if="dataResourceRadio == 'dict'"
-              :crm-dict-type-arr="crmDictTypeArr"
+              :dict-type-list="dictTypeList"
               :field="field" />
           </div>
         </template>
@@ -93,7 +93,9 @@
               <i :class="'help wk-help-tips' | iconPre" style="margin-left: 3px;"/>
             </el-tooltip>
           </div>
-          <setting-default :field="field" />
+          <setting-default
+            :field="field"
+            :app-code="appCode" />
         </div>
 
         <div v-if="canNumber || canFloat" class="item-section">
@@ -159,7 +161,7 @@ import SettingFloat from './SettingFloat'
 import SettingPrecisions from './SettingPrecisions'
 import SettingDescText from './SettingDescText'
 import SettingLogicForm from './SettingLogicForm'
-import SettingDictOption from './SettingDictOption'
+import SettingDictType from './SettingDictType'
 import SettingRelative from './SettingRelative'
 
 import FieldTypeLib from '../../fieldTypeLib'
@@ -174,7 +176,7 @@ export default {
     SettingPrecisions,
     SettingDescText,
     SettingLogicForm,
-    SettingDictOption,
+    SettingDictType,
     SettingRelative
   },
   props: {
@@ -182,7 +184,11 @@ export default {
       type: Object,
       required: true
     },
-    fieldArr: { // 所有字段
+    appCode: {
+      type: String,
+      required: true
+    },
+    fieldList: { // 所有字段
       type: Array,
       required: true
     },
@@ -194,7 +200,7 @@ export default {
       type: Array,
       required: true
     },
-    crmDictTypeArr: {
+    dictTypeList: {
       type: Array,
       required: true
     }

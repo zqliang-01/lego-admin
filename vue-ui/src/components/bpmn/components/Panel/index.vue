@@ -115,10 +115,10 @@ export default {
     //
     setCurrentComponents(element) {
       this.renderComponents.splice(0, this.renderComponents.length) // 清空
+      this.renderComponents.push(ElementGenerations)
       // 重设
       isUserTask(element) && this.renderComponents.push(ElementUserTask)
       isUserTask(element) && this.renderComponents.push(ElementForm)
-      this.renderComponents.push(ElementGenerations)
       this.renderComponents.push(ElementDocumentations)
       isCanbeConditional(element) && this.renderComponents.push(ElementConditional)
       isJobExecutable(element) && this.renderComponents.push(ElementJobExecution)
