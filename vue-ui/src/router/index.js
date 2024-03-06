@@ -6,6 +6,7 @@ Vue.use(Router)
 import homeRouter from './modules/home'
 import userRouter from './modules/user'
 import adminRouter from './modules/admin'
+import oaRouter from './modules/oa'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -57,5 +58,6 @@ export default router
 
 export const asyncRouterMap = [
   { type: 'home', router: homeRouter },
-  { type: 'manage', router: adminRouter }
+  { type: 'manage', router: adminRouter },
+  { type: 'oa', router: oaRouter }
 ]

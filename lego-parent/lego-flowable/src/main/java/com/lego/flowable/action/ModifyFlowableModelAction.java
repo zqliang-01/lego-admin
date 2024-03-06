@@ -17,7 +17,7 @@ public class ModifyFlowableModelAction extends MaintainAction {
     private RepositoryService repositoryService = LegoBeanFactory.getBean(RepositoryService.class);
 
     public ModifyFlowableModelAction(String operatorCode, FlowableModelModifyVO vo) {
-        super(SysPermissionCode.manage, operatorCode);
+        super(SysPermissionCode.manageWorkFlowModel, operatorCode);
         this.vo = vo;
     }
 

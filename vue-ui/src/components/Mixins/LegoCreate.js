@@ -57,7 +57,12 @@ export default {
   },
   methods: {
     initField() {
-      return createFieldListAPI(this.formCode)
+      if (this.formCode) {
+        return createFieldListAPI(this.formCode)
+      }
+      return new Promise((resolve, reject) => {
+        resolve()
+      })
     },
     initValue() {
       this.dataFieldList.forEach(fields => {

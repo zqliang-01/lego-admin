@@ -2,27 +2,27 @@ package com.lego.flowable.assembler;
 
 import com.lego.core.assembler.BaseAssembler;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.exception.CoreException;
 import com.lego.flowable.dto.FlowableModelInfo;
-import com.lego.flowable.dto.FlowableProcessNodeInfo;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
-import org.flowable.bpmn.converter.BpmnXMLConverter;
-import org.flowable.bpmn.model.*;
+import org.flowable.bpmn.model.BpmnModel;
+import org.flowable.bpmn.model.EndEvent;
+import org.flowable.bpmn.model.FlowElement;
+import org.flowable.bpmn.model.FlowNode;
 import org.flowable.bpmn.model.Process;
+import org.flowable.bpmn.model.SequenceFlow;
+import org.flowable.bpmn.model.StartEvent;
+import org.flowable.bpmn.model.SubProcess;
+import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.repository.Model;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Component
 public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Model> {
-
-    private final BpmnXMLConverter bpmnXMLConverter = new BpmnXMLConverter();
 
     @Override
     protected FlowableModelInfo doCreate(Model entity) {

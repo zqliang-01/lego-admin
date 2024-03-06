@@ -4,9 +4,9 @@
       :icon-class="'double-gear'"
       :show-search="true"
       icon-color="#1CBAF5"
-      label="模型管理"
+      label="已办任务"
       placeholder="请输入模型名称搜索"
-      @search="onSearch"/>
+      @search="onSearch" />
     <div class="customer-content">
       <lego-table
         :loading="loading"
@@ -15,7 +15,6 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-        :edit-button-width="250"
         @onList="getList"
         @onEdit="handleTable">
         <template slot-scope="scope">
@@ -23,17 +22,13 @@
             type="text"
             size="small"
             icon="el-icon-view"
-            @click="handleTable('view', scope.row, scope.$index)">流程进度</el-button>
+            @click="handleTable('view', scope.row, scope.$index)">流程图</el-button>
           <el-button
+            v-if="scope.row.formCode !== ''"
             type="text"
             size="small"
-            icon="el-icon-edit"
-            @click="handleTable('complete', scope.row, scope.$index)">处理</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-edit"
-            @click="handleTable('reject', scope.row, scope.$index)">拒绝</el-button>
+            icon="el-icon-view"
+            @click="handleTable('form', scope.row, scope.$index)">表单</el-button>
         </template>
       </lego-table>
     </div>
@@ -42,12 +37,13 @@
         :key="taskId"
         :instance-id="instanceId" />
     </el-dialog>
-    <complete-form
+    <task-detail
       v-if="createShow"
       title="任务表单"
       :task-id="taskId"
       :form-code="formCode"
-      :action="{ type: 'save' }"
+      :detail-code="detailCode"
+      :action="{ type: 'view' }"
       @close="createShow = false"
       @handle="actionHandle"
     />
@@ -56,16 +52,16 @@
 
 <script>
 import {
-  taskUndoListAPI,
-  taskCompleteAPI,
-  taskRejectAPI
+  taskCompletedListAPI,
+  taskFormDetailGetAPI
 } from '@/api/admin/workflow/task'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/LegoTable'
 import FieldView from '@/components/NewCom/Form/FieldView'
-import ProcessViewer from '../../components/ProcessViewer'
-import CompleteForm from '../../components/CompleteForm.vue'
+import BpmnViewer from '@/components/bpmn/components/Viewer'
+import TaskDetail from '../components/TaskDetail.vue'
+import ProcessViewer from '../components/ProcessViewer'
 
 export default {
   name: 'WorkflowModel',
@@ -73,8 +69,9 @@ export default {
     XrHeader,
     FieldView,
     LegoTable,
-    ProcessViewer,
-    CompleteForm
+    BpmnViewer,
+    TaskDetail,
+    ProcessViewer
   },
   computed: {
     ...mapGetters(['manage'])
@@ -83,11 +80,12 @@ export default {
     return {
       loading: false,
       isCreate: false,
+      taskId: '',
+      instanceId: '',
       processVisible: false,
       createShow: false,
       formCode: '',
-      taskId: '',
-      instanceId: '',
+      detailCode: '',
       dataList: [],
       currentPage: 1,
       pageSize: 15,
@@ -99,16 +97,16 @@ export default {
       },
       fieldList: [
         [
-          { fieldCode: 'id', name: '任务ID', formType: 'text', width: '260', unique: true },
-          { fieldCode: 'definitionName', name: '流程名称', formType: 'text', width: 150 }
+          { fieldCode: 'definitionName', name: '流程名称', formType: 'text', width: 150 },
+          { fieldCode: 'startUser', name: '发起人', formType: 'select', width: 150 }
         ],
         [
-          { fieldCode: 'startUser', name: '发起人', formType: 'select', width: 150 },
-          { fieldCode: 'name', name: '任务节点', formType: 'text', width: '150' }
+          { fieldCode: 'name', name: '任务节点', formType: 'text', width: 150 },
+          { fieldCode: 'assignee', name: '受理人', formType: 'select', width: 100 }
         ],
         [
-          { fieldCode: 'createTime', name: '开始时间', formType: 'text', width: '150' },
-          { fieldCode: 'assignee', name: '受理人', formType: 'select', width: '100' }
+          { fieldCode: 'createTime', name: '开始时间', formType: 'text', width: 150 },
+          { fieldCode: 'endTime', name: '完工时间', formType: 'text', width: 150 }
         ]
       ]
     }
@@ -122,8 +120,8 @@ export default {
     },
     getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
-      taskUndoListAPI({
-        instanceId: this.search,
+      taskCompletedListAPI({
+        name: this.search,
         pageSize: pageSize,
         pageIndex: currentPage
       }).then(res => {
@@ -145,38 +143,21 @@ export default {
     },
     handleTable(type, item, index) {
       if (type === 'view') {
-        this.taskId = item.id
         this.instanceId = item.instanceId
         this.processVisible = true
+        console.log(this.instanceId)
         return
       }
-      if (type === 'complete') {
-        if (!item.formCode) {
-          this.loading = true
-          taskCompleteAPI({
-            id: item.id
-          }).then(() => {
-            this.loading = false
-            this.actionHandle({ type: 'save-success' })
-          }).catch(() => {
-            this.loading = false
-          })
-          return
-        }
-        this.taskId = item.id
-        this.formCode = item.formCode
-        this.createShow = true
-        return
-      }
-      if (type === 'reject') {
-        taskRejectAPI({
-          id: item.id
-        }).then(() => {
-          this.loading = false
-          this.$message.success('任务已拒绝，流程结束！')
-          this.refresh()
-        }).catch(() => {
-          this.loading = false
+      if (type === 'form') {
+        taskFormDetailGetAPI(item.id).then(res => {
+          if (res.data && res.data.code) {
+            this.taskId = item.id
+            this.detailCode = res.data.code
+            this.formCode = res.data.formKey
+            this.createShow = true
+          } else {
+            this.$message.error('未查询到表单信息！')
+          }
         })
         return
       }
@@ -189,10 +170,8 @@ export default {
       this.getList()
     },
     actionHandle(data) {
-      if (data.type === 'save-success') {
-        this.$message.success('任务已完工完成！')
-        this.refresh()
-      }
+      this.$message.success(data.msg)
+      this.refresh()
     }
   }
 }
@@ -206,4 +185,4 @@ export default {
   border-top: 1px solid $xr-border-line-color;
   border-bottom: 1px solid $xr-border-line-color;
 }
-</style>
+</style>../components/TaskDetail.vue

@@ -15,7 +15,7 @@ public class ResetPasswordAction extends MaintainAction {
 	private ISysEmployeeDao employeeDao = getDao(ISysEmployeeDao.class);
 
 	public ResetPasswordAction(String operatorCode, List<String> codes) {
-		super(SysPermissionCode.manage, operatorCode);
+		super(SysPermissionCode.manageUser, operatorCode);
 		this.codes = codes;
 	}
 

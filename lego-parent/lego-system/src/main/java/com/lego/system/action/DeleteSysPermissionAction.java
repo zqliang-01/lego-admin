@@ -14,7 +14,7 @@ public class DeleteSysPermissionAction extends DeleteAction<SysPermission, ISysP
     private ISysRoleDao roleDao = getDao(ISysRoleDao.class);
 
     public DeleteSysPermissionAction(String operatorCode, String entityCode) {
-        super(SysPermissionCode.manage, operatorCode, entityCode);
+        super(SysPermissionCode.managePermission, operatorCode, entityCode);
     }
 
     @Override

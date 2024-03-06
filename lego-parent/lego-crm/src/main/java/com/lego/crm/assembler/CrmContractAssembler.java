@@ -1,7 +1,6 @@
 package com.lego.crm.assembler;
 
 import com.lego.core.assembler.BusAssembler;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import com.lego.crm.dto.CrmContractInfo;
 import com.lego.crm.entity.CrmContract;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,7 @@ public class CrmContractAssembler extends BusAssembler<CrmContractInfo, CrmContr
         info.setName(entity.getName());
         info.setStartTime(entity.getStartTime());
         info.setEndTime(entity.getEndTime());
-        info.setOwnerCode(create(CustomFieldTypeEnum.EMPLOYEE, entity.getOwnerCode()));
+        info.setOwnerCode(createEmployee(entity.getOwnerCode()));
         info.setAmount(entity.getAmount());
         info.setLead(createTypeInfo(entity.getLead()));
         info.setCustomer(createTypeInfo(entity.getCustomer()));

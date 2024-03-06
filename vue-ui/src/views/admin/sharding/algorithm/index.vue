@@ -113,12 +113,20 @@ export default {
     templateSimpleListAPI({
       typeCode: 'ShardingAlgorithm'
     }).then(res => {
-      const field = this.fieldList.find(field => field.fieldCode == 'template')
-      field.setting = res.data
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'template')
+        if (field) {
+          field.setting = res.data
+        }
+      })
     })
     configSimpleListAPI().then(res => {
-      const field = this.fieldList.find(field => field.fieldCode == 'config')
-      field.setting = res.data
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'config')
+        if (field) {
+          field.setting = res.data
+        }
+      })
     })
   },
   methods: {

@@ -24,7 +24,9 @@ import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.Execution;
+import org.flowable.engine.task.Comment;
 import org.flowable.task.api.Task;
+import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
@@ -33,6 +35,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,8 +58,8 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         if (!employee.containRole(Constants.ADMIN_ROLE)) {
             taskQuery.taskCandidateOrAssigned(employeeCode).taskCandidateGroupIn(candidateGroups);
         }
-        if (StringUtil.isNotBlank(vo.getInstanceId())) {
-            taskQuery.processInstanceId(vo.getInstanceId());
+        if (StringUtil.isNotBlank(vo.getName())) {
+            taskQuery.taskNameLike("%" + vo.getName() + "%");
         }
         LegoPage<Task> page = createPage(taskQuery, vo, Task.class);
         return assembler.create(page);
@@ -70,15 +73,10 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
             .orderByHistoricTaskInstanceEndTime()
             .desc();
         if (!employee.isAdmin()) {
-            List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
-            candidateGroups.add(EntityUtil.getCode(employee.getDept()));
-            taskInstanceQuery.or()
-                .taskAssignee(employeeCode)
-                .taskCandidateGroupIn(candidateGroups)
-                .endOr();
+            taskInstanceQuery.taskAssignee(employeeCode);
         }
-        if (StringUtil.isNotBlank(vo.getInstanceId())) {
-            taskInstanceQuery.processInstanceId(vo.getInstanceId());
+        if (StringUtil.isNotBlank(vo.getName())) {
+            taskInstanceQuery.taskNameLike("%" + vo.getName() + "%");
         }
         LegoPage<HistoricTaskInstance> page = createPage(taskInstanceQuery, vo, HistoricTaskInstance.class);
         return assembler.createHis(page);
@@ -100,6 +98,10 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
             BusinessException.check(!vo.getVariables().isEmpty(), "任务完工失败，请填写表单信息！");
         }
 
+        // 添加审批意见
+        if (StringUtil.isNotBlank(vo.getComment())) {
+            taskService.addComment(vo.getId(), task.getProcessInstanceId(), vo.getComment());
+        }
         taskService.setAssignee(vo.getId(), employeeCode);
         if (vo.getVariables().isEmpty()) {
             taskService.complete(vo.getId());
@@ -130,6 +132,11 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         if (CollUtil.isEmpty(allActivityInstanceList)) {
             return;
         }
+        // 添加审批意见
+        if (StringUtil.isNotBlank(vo.getComment())) {
+            taskService.addComment(vo.getId(), task.getProcessInstanceId(), vo.getComment());
+        }
+        taskService.setAssignee(vo.getId(), employeeCode);
         List<String> finishedTaskIds = new ArrayList<>();
         for (HistoricActivityInstance item : allActivityInstanceList) {
             if (item.getEndTime() == null) {
@@ -143,12 +150,6 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
         UserTask element = modelAssembler.getUserTaskByKey(bpmnModel, task.getTaskDefinitionKey());
         List<String> taskIds = modelAssembler.getBeforeUserTaskId(element, finishedTaskIds);
-        for (String taskId : taskIds) {
-            // 添加审批意见
-            if (StringUtil.isNotBlank(vo.getComment())) {
-                taskService.addComment(taskId, task.getProcessInstanceId(), vo.getComment());
-            }
-        }
         if (taskIds.size() == 1) {
             List<Execution> executions = runtimeService.createExecutionQuery().parentId(task.getProcessInstanceId()).list();
             List<String> executionIds = executions.stream().map(Execution::getId).collect(Collectors.toList());
@@ -166,16 +167,23 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
 
     @Override
     public FlowableTaskFormDetailInfo findCodeVariableBy(String taskId) {
-        HistoricTaskInstance task = historyService.createHistoricTaskInstanceQuery()
+        TaskInfo task = historyService.createHistoricTaskInstanceQuery()
             .includeTaskLocalVariables()
             .finished()
             .taskId(taskId)
             .singleResult();
+        if (task == null) {
+            task = taskService.createTaskQuery()
+                .taskId(taskId)
+                .singleResult();
+        }
         if (task != null) {
             String formKey = task.getFormKey();
             Object value = task.getTaskLocalVariables().get(ProcessConstants.FORM_UNIQUE_KEY);
             String code = StringUtil.toString(value);
-            return new FlowableTaskFormDetailInfo(task.getId(), formKey, code);
+            List<Comment> comments = taskService.getTaskComments(taskId);
+            Optional<String> comment = comments.stream().map(Comment::getFullMessage).reduce((s1, s2) -> s1 + s2);
+            return new FlowableTaskFormDetailInfo(task.getId(), formKey, code, comment.orElse(""));
         }
         return null;
     }

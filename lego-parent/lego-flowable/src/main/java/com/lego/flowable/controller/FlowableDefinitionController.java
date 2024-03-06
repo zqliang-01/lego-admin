@@ -26,7 +26,6 @@ public class FlowableDefinitionController extends BaseController {
     private IFlowableDefinitionService definitionService;
 
     @PostMapping("/list")
-    @SaCheckPermission("manage_workflow_definition")
     public JsonResponse<LegoPage<FlowableDefinitionInfo>> list(@RequestBody FlowableDefinitionSearchVO vo) {
         return JsonResponse.success(definitionService.findBy(vo));
     }
@@ -64,7 +63,6 @@ public class FlowableDefinitionController extends BaseController {
     }
 
     @PostMapping("/start")
-    @SaCheckPermission("workflow_task_start")
     public JsonResponse<String> start(@RequestBody FlowableTaskStartVO vo) {
         String instanceId = definitionService.start(getLoginCode(), vo.getDefinitionId(), vo.getVariables());
         return JsonResponse.success(instanceId);

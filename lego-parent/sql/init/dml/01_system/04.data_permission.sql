@@ -97,3 +97,16 @@ CALL add_system_permission('crm_contract_add', '新增', 'auth', 'crm_contract',
 CALL add_system_permission('crm_contract_delete', '删除', 'auth', 'crm_contract', NULL, 224, NULL);
 CALL add_system_permission('crm_contract_update', '更新', 'auth', 'crm_contract', NULL, 225, NULL);
 CALL add_system_permission('crm_contract_export', '导出', 'auth', 'crm_contract', NULL, 226, NULL);
+
+CALL add_system_permission('oa', '任务审批', 'app', NULL, 'office', 3, NULL);
+CALL add_system_permission('oa_start', '发起审批', 'menu', 'oa', 'top', 30, NULL);
+CALL add_system_permission('oa_start_read', '查看列表', 'auth', 'oa_start', NULL, 301, NULL);
+
+CALL add_system_permission('oa_owner', '我的流程', 'menu', 'oa', 'my-task', 31, NULL);
+CALL add_system_permission('oa_owner_read', '查看列表', 'auth', 'oa_owner', NULL, 311, NULL);
+
+CALL add_system_permission('oa_undo', '代办任务', 'menu', 'oa', 'contract', 32, NULL);
+CALL add_system_permission('oa_undo_read', '查看列表', 'auth', 'oa_undo', NULL, 321, NULL);
+
+CALL add_system_permission('oa_finished', '已办任务', 'menu', 'oa', 'icon-task-state', 33, NULL);
+CALL add_system_permission('oa_finished_read', '查看列表', 'auth', 'oa_finished', NULL, 331, NULL);

@@ -9,57 +9,59 @@ import com.lego.core.dto.TreeInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
-import com.lego.core.vo.CustomFieldTypeEnum;
-import com.lego.core.web.LegoBeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseAssembler<D extends DTO, E> {
 
-  protected TypeInfo create(CustomFieldTypeEnum type, String code) {
-    ICommonService actionService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
-    if (actionService == null) {
-      return TypeInfo.NULL;
+    @Autowired(required = false)
+    private ICommonService actionService;
+
+    protected TypeInfo createEmployee(String code) {
+        if (actionService == null) {
+            return TypeInfo.NULL;
+        }
+        return actionService.findEmployeeBy(code);
     }
-    if (type == CustomFieldTypeEnum.EMPLOYEE) {
-      return actionService.findEmployeeBy(code);
+
+    protected TypeInfo createDept(String code) {
+        if (actionService == null) {
+            return TypeInfo.NULL;
+        }
+        return actionService.findDeptBy(code);
     }
-    if (type == CustomFieldTypeEnum.DEPT) {
-      return actionService.findDeptBy(code);
+
+    public List<D> create(List<E> entities) {
+        List<D> infos = new ArrayList<D>();
+        for (E entity : entities) {
+            infos.add(create(entity));
+        }
+        return infos;
     }
-    return TypeInfo.NULL;
-  }
 
-  public List<D> create(List<E> entities) {
-    List<D> infos = new ArrayList<D>();
-    for (E entity : entities) {
-      infos.add(create(entity));
+    public D create(E entity) {
+        return doCreate(entity);
     }
-    return infos;
-  }
 
-  public D create(E entity) {
-    return doCreate(entity);
-  }
+    protected abstract D doCreate(E entity);
 
-  protected abstract D doCreate(E entity);
+    public LegoPage<D> create(IPage<E> page) {
+        return new LegoPage<D>(create(page.getRecords()), page.getCurrent(), page.getSize(), page.getTotal());
+    }
 
-  public LegoPage<D> create(IPage<E> page) {
-    return new LegoPage<D>(create(page.getRecords()), page.getCurrent(), page.getSize(), page.getTotal());
-  }
+    public LegoPage<D> create(LegoPage<E> page) {
+        return new LegoPage<D>(create(page.getResult()), page.getPageIndex(), page.getPageSize(), page.getTotalCount());
+    }
 
-  public LegoPage<D> create(LegoPage<E> page) {
-    return new LegoPage<D>(create(page.getResult()), page.getPageIndex(), page.getPageSize(), page.getTotalCount());
-  }
+    public List<D> createTree(List<E> entities) {
+        BusinessException.check(false, "未实现createTree！");
+        return null;
+    }
 
-  public List<D> createTree(List<E> entities) {
-    BusinessException.check(false, "未实现createTree！");
-    return null;
-  }
-
-  public List<TreeInfo> createTreeInfo(List<? extends TreeEntity<?>> entities) {
-    CoreException.check(false, "[{0}]未实现createTreeInfo", this.getClass().getSimpleName());
-    return null;
-  }
+    public List<TreeInfo> createTreeInfo(List<? extends TreeEntity<?>> entities) {
+        CoreException.check(false, "[{0}]未实现createTreeInfo", this.getClass().getSimpleName());
+        return null;
+    }
 }

@@ -48,6 +48,9 @@
         </template>
       </lego-table>
     </div>
+    <el-dialog title="详细信息" :visible.sync="showDetail" append-to-body>
+      <p style="white-space: pre-wrap">{{ logDetail.description }}</p>
+    </el-dialog>
   </div>
 </template>
 
@@ -59,13 +62,11 @@ import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/LegoTable'
-import FieldView from '@/components/NewCom/Form/FieldView'
 
 export default {
   name: 'WorkflowModel',
   components: {
     XrHeader,
-    FieldView,
     LegoTable
   },
   computed: {
@@ -74,6 +75,8 @@ export default {
   data() {
     return {
       loading: false,
+      showDetail: false,
+      logDetail: '',
       dateTime: [],
       operatorCode: '',
       employeeList: [],
@@ -142,6 +145,12 @@ export default {
       this.getList()
     },
     handleTable(type, item) {
+      this.showDetail = true
+      this.logDetail = item
+    },
+    handleDetailValue(key) {
+      console.log(key)
+      return this.logDetail[key]
     },
     onSearch(value) {
       this.search = value

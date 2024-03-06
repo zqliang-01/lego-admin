@@ -8,5 +8,5 @@ import lombok.Setter;
 @Setter
 public class FlowableTaskSearchVO extends PageVO {
 
-    private String instanceId;
+    private String name;
 }

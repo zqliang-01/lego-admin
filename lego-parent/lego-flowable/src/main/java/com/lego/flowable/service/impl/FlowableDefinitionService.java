@@ -11,9 +11,11 @@ import com.lego.flowable.vo.FlowableDefinitionSearchVO;
 import com.lego.flowable.vo.ProcessStatus;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.common.engine.impl.db.SuspensionState;
+import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.engine.runtime.ProcessInstanceBuilder;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -84,11 +86,20 @@ public class FlowableDefinitionService extends FlowableService<FlowableDefinitio
         ProcessDefinition definition = processDefinitionQuery.singleResult();
         BusinessException.check(definition != null, "模型[{0}]不存在正常可用的流程定义，启动流程失败！", definitionId);
 
+        Deployment deployment = repositoryService.createDeploymentQuery()
+            .deploymentId(definition.getDeploymentId())
+            .singleResult();
+
         identityService.setAuthenticatedUserId(operatorCode);
         variables.put(BpmnXMLConstants.ATTRIBUTE_EVENT_START_INITIATOR, operatorCode);
-        // 发起流程实例
-        ProcessInstance instance = runtimeService.startProcessInstanceById(definition.getId(), variables);
-        runtimeService.updateBusinessStatus(instance.getId(), ProcessStatus.RUNNING.getCode());
+
+        // 构建发起流程实例
+        ProcessInstanceBuilder processInstanceBuilder = runtimeService.createProcessInstanceBuilder();
+        processInstanceBuilder.name(deployment.getName());
+        processInstanceBuilder.processDefinitionId(definition.getId());
+        processInstanceBuilder.variables(variables);
+        processInstanceBuilder.businessStatus(ProcessStatus.RUNNING.getCode());
+        ProcessInstance instance = processInstanceBuilder.start();
         return instance.getId();
     }
 

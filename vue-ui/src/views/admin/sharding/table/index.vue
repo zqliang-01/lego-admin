@@ -101,16 +101,28 @@ export default {
     templateSimpleListAPI({
       typeCode: 'ShardingStrategy'
     }).then(res => {
-      const field = this.fieldList.find(field => field.fieldCode == 'template')
-      field.setting = res.data
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'template')
+        if (field) {
+          field.setting = res.data
+        }
+      })
     })
     configSimpleListAPI().then(res => {
-      const field = this.fieldList.find(field => field.fieldCode == 'config')
-      field.setting = res.data
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'config')
+        if (field) {
+          field.setting = res.data
+        }
+      })
     })
     algorithmSimpleListAPI().then(res => {
-      const field = this.fieldList.find(field => field.fieldCode == 'algorithm')
-      field.setting = res.data
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'algorithm')
+        if (field) {
+          field.setting = res.data
+        }
+      })
     })
   },
   methods: {
@@ -126,10 +138,9 @@ export default {
         this.pageSize = res.data.pageSize
         this.currentPage = res.data.pageIndex
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-        .catch(() => {
-          this.loading = false
-        })
     },
     handleTable(type, row) {
       if (type === 'edit') {

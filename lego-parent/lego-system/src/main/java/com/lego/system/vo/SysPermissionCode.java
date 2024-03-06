@@ -9,8 +9,10 @@ public interface SysPermissionCode {
     String manageUser = "manage_users";
     String manageRole = "manage_role";
     String manageCustomForm = "manage_customForm";
+    String managePermission = "manage_permission";
     String manageGenTable = "manage_genTable";
     String manageWorkFlow = "manage_workflow";
+    String manageWorkFlowModel = "manage_workflow_model";
 
     List<String> SYSTEM_APP = Arrays.asList("manage");
 }

@@ -30,7 +30,7 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
     private SysPermissionCreateVO vo;
 
     public AddSysPermissionAction(String operatorCode, SysPermissionCreateVO vo) {
-        super(SysPermissionCode.manage, operatorCode);
+        super(SysPermissionCode.managePermission, operatorCode);
         this.vo = vo;
     }
 

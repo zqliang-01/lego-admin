@@ -48,7 +48,7 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
             .orderByProcessInstanceStartTime()
             .desc();
         if (StringUtil.isNotBlank(vo.getName())) {
-            historicProcessInstanceQuery.processDefinitionName(vo.getName());
+            historicProcessInstanceQuery.processInstanceNameLike("%" + vo.getName() + "%");
         }
         LegoPage<HistoricProcessInstance> page = createPage(historicProcessInstanceQuery, vo, HistoricProcessInstance.class);
         return assembler.create(page);

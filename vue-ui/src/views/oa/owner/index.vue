@@ -4,7 +4,7 @@
       :icon-class="'double-gear'"
       :show-search="true"
       icon-color="#1CBAF5"
-      label="流程实例管理"
+      label="我的流程"
       placeholder="请输入实例名称搜索"
       @search="onSearch"/>
     <div class="customer-content">
@@ -74,7 +74,6 @@ export default {
       },
       fieldList: [
         [
-          { fieldCode: 'id', name: '实例ID', formType: 'text', width: '210' },
           { fieldCode: 'name', name: '流程名称', formType: 'text', width: '150', clickable: true }
         ],
         [

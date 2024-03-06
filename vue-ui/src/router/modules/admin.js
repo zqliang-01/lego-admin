@@ -175,33 +175,6 @@ export default [
           requiresAuth: true,
           permissions: ['manage', 'workflow', 'definition']
         }
-      },
-      {
-        path: 'instance',
-        component: () => import('@/views/admin/workflow/instance'),
-        meta: {
-          title: '实例管理',
-          requiresAuth: true,
-          permissions: ['manage', 'workflow']
-        }
-      },
-      {
-        path: 'task-undo',
-        component: () => import('@/views/admin/workflow/task/undo'),
-        meta: {
-          title: '代办任务',
-          requiresAuth: true,
-          permissions: ['manage', 'workflow']
-        }
-      },
-      {
-        path: 'task-completed',
-        component: () => import('@/views/admin/workflow/task/completed'),
-        meta: {
-          title: '已办任务',
-          requiresAuth: true,
-          permissions: ['manage', 'workflow']
-        }
       }
     ]
   },

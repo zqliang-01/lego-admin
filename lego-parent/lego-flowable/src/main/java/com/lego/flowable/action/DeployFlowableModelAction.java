@@ -23,7 +23,7 @@ public class DeployFlowableModelAction extends MaintainAction {
     private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
 
     public DeployFlowableModelAction(String operatorCode, String id) {
-        super(SysPermissionCode.manage, operatorCode);
+        super(SysPermissionCode.manageWorkFlowModel, operatorCode);
         this.id = id;
     }
 

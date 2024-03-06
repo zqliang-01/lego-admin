@@ -1,19 +1,18 @@
 package com.lego.core.util;
 
+import cn.hutool.core.date.BetweenFormatter;
+import com.lego.core.exception.CoreException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-
-import com.lego.core.exception.CoreException;
-
-import cn.hutool.core.date.BetweenFormatter;
-
 public class DateUtil {
+
     private static final Date MAX_DATE_TIME = new GregorianCalendar(9999, Calendar.DECEMBER, 30, 23, 59, 59).getTime();
 
     /**
@@ -49,7 +48,7 @@ public class DateUtil {
     }
 
     public static String formatString(long time) {
-		return new BetweenFormatter(time, BetweenFormatter.Level.MILLISECOND).format();
+        return new BetweenFormatter(time, BetweenFormatter.Level.MILLISECOND).format();
     }
 
     public static String toDateString(Date date, String pattern) {
@@ -84,8 +83,7 @@ public class DateUtil {
     public static Date formatDate(String datePattern, String dateStr) {
         try {
             return new SimpleDateFormat(datePattern).parse(dateStr);
-        }
-        catch (ParseException e) {
+        } catch (ParseException e) {
             throw new CoreException("格式装换日期出错", e);
         }
     }
@@ -192,7 +190,7 @@ public class DateUtil {
         return smallDate.before(bigDate) || equalDate(bigDate, smallDate);
     }
 
-	public static String getDatePoor(Date endDate, Date nowDate) {
+    public static String getDatePoor(Date endDate, Date nowDate) {
         long nd = 1000 * 24 * 60 * 60;
         long nh = 1000 * 60 * 60;
         long nm = 1000 * 60;
@@ -204,6 +202,9 @@ public class DateUtil {
         long hour = diff % nd / nh;
         // 计算差多少分钟
         long min = diff % nd % nh / nm;
+        if (day == 0) {
+            return hour + "小时" + min + "分钟";
+        }
         // 计算差多少秒//输出结果
         return day + "天" + hour + "小时" + min + "分钟";
     }

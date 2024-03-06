@@ -16,7 +16,7 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
     private SysPermissionModifyVO vo;
 
     public ModifySysPermissionAction(String operatorCode, SysPermissionModifyVO vo) {
-        super(SysPermissionCode.manage, operatorCode, vo.getCode());
+        super(SysPermissionCode.managePermission, operatorCode, vo.getCode());
         this.vo = vo;
     }
 

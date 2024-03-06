@@ -1,7 +1,6 @@
 package com.lego.crm.assembler;
 
 import com.lego.core.assembler.BusAssembler;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import com.lego.crm.dto.CrmLeadInfo;
 import com.lego.crm.entity.CrmLead;
 import org.springframework.stereotype.Component;
@@ -22,8 +21,8 @@ public class CrmLeadAssembler extends BusAssembler<CrmLeadInfo, CrmLead> {
         info.setSize(entity.getSize());
         info.setStatus(entity.isStatus());
         info.setEmail(entity.getEmail());
-        info.setEmployee(create(CustomFieldTypeEnum.EMPLOYEE, entity.getEmployee()));
-        info.setDept(create(CustomFieldTypeEnum.DEPT, entity.getDept()));
+        info.setEmployee(createEmployee(entity.getEmployee()));
+        info.setDept(createDept(entity.getDept()));
         info.setSource(createTypeInfo(entity.getSource()));
         info.setCustomer(createTypeInfo(entity.getCustomer()));
         return info;

@@ -93,8 +93,12 @@ export default {
   },
   mounted() {
     templateTypeListAPI().then(res => {
-      const field = this.fieldList.find(field => field.fieldCode == 'type')
-      field.setting = res.data
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'type')
+        if (field) {
+          field.setting = res.data
+        }
+      })
     })
   },
   methods: {

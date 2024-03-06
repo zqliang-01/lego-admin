@@ -31,11 +31,6 @@ import CreateMixin from '@/components/Mixins/LegoCreate'
 export default {
   name: 'ShardingDataSourceCreate',
   mixins: [CreateMixin],
-  computed: {
-    title() {
-      return this.action.type === 'update' ? '编辑数据源' : '新建数据源'
-    }
-  },
   data() {
     return {
       addRequest: dataSourceAddAPI,

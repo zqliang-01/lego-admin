@@ -40,6 +40,7 @@
       v-if="isCreate"
       :field-list="fieldList"
       :action="action"
+      :title="action.type === 'update' ? '编辑数据源' : '新建数据源'"
       @handle="actionHandle"
       @close="isCreate = false"
     />
@@ -113,8 +114,12 @@ export default {
     templateSimpleListAPI({
       typeCode: 'DataSource'
     }).then(res => {
-      const field = this.fieldList.find(field => field.fieldCode == 'template')
-      field.setting = res.data
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'template')
+        if (field) {
+          field.setting = res.data
+        }
+      })
     })
   },
   methods: {

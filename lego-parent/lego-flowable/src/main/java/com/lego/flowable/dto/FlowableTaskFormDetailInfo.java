@@ -13,4 +13,5 @@ public class FlowableTaskFormDetailInfo extends DTO {
     private String id;
     private String formKey;
     private String code;
+    private String comment;
 }

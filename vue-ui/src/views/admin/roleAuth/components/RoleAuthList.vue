@@ -33,7 +33,7 @@
                 :class="data.type.code == 'menu' ? 'node-label node-menu': 'node-auth'">
                 {{ node.label }}
                 <el-button
-                  v-if="data.type.code == 'menu' && item.code != 'manage'"
+                  v-if="data.type.code == 'menu' && data.form.code !== ''"
                   :icon="'manage' | iconPre"
                   type="text"
                   @click="fieldSetClick(node)" >
