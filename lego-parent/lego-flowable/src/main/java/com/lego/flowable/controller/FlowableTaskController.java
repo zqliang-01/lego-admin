@@ -6,8 +6,12 @@ import com.lego.core.web.BaseController;
 import com.lego.flowable.dto.FlowableTaskFormDetailInfo;
 import com.lego.flowable.dto.FlowableTaskInfo;
 import com.lego.flowable.service.IFlowableTaskService;
+import com.lego.flowable.vo.FLowbaleTaskClaimVO;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
+import com.lego.flowable.vo.FlowableTaskDelegateVO;
+import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
+import com.lego.flowable.vo.FlowableTaskTransferVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +41,12 @@ public class FlowableTaskController extends BaseController {
         return JsonResponse.success(tasks);
     }
 
+    @PostMapping("/list-claim")
+    public JsonResponse<LegoPage<FlowableTaskInfo>> findClaim(@RequestBody FlowableTaskSearchVO vo) {
+        LegoPage<FlowableTaskInfo> tasks = taskService.findClaimdBy(getLoginCode(), vo);
+        return JsonResponse.success(tasks);
+    }
+
     @GetMapping("/list-his")
     public JsonResponse<List<FlowableTaskInfo>> findHis(String instanceId, String key) {
         List<FlowableTaskInfo> tasks = taskService.findBy(instanceId, key);
@@ -49,9 +59,39 @@ public class FlowableTaskController extends BaseController {
         return JsonResponse.success();
     }
 
+    @PostMapping("/save")
+    public JsonResponse<Object> save(@RequestBody FlowableTaskCompleteVO vo) {
+        taskService.save(getLoginCode(), vo);
+        return JsonResponse.success();
+    }
+
     @PostMapping("/reject")
-    public JsonResponse<Object> reject(@RequestBody FlowableTaskCompleteVO vo) {
+    public JsonResponse<Object> reject(@RequestBody FlowableTaskRejectVO vo) {
         taskService.reject(getLoginCode(), vo);
+        return JsonResponse.success();
+    }
+
+    @PostMapping("/delegate")
+    public JsonResponse<Object> delegate(@RequestBody FlowableTaskDelegateVO vo) {
+        taskService.delegate(getLoginCode(), vo);
+        return JsonResponse.success();
+    }
+
+    @PostMapping("/transfer")
+    public JsonResponse<Object> transfer(@RequestBody FlowableTaskTransferVO vo) {
+        taskService.transfer(getLoginCode(), vo);
+        return JsonResponse.success();
+    }
+
+    @PostMapping("/claim")
+    public JsonResponse<Object> claim(@RequestBody FLowbaleTaskClaimVO vo) {
+        taskService.claim(getLoginCode(), vo);
+        return JsonResponse.success();
+    }
+
+    @PostMapping("/unClaim")
+    public JsonResponse<Object> unClaim(@RequestBody FLowbaleTaskClaimVO vo) {
+        taskService.unClaim(getLoginCode(), vo);
         return JsonResponse.success();
     }
 

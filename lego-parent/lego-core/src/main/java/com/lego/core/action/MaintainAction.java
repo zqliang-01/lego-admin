@@ -5,6 +5,7 @@ import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.data.hibernate.ICommonDao;
 import com.lego.core.data.hibernate.ICommonService;
 import com.lego.core.data.hibernate.IGenericDao;
+import com.lego.core.util.StringUtil;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.web.LegoBeanFactory;
 
@@ -16,8 +17,8 @@ public abstract class MaintainAction {
     protected ICommonDao commonDao = LegoBeanFactory.getBean(ICommonDao.class);
 
     protected MaintainAction(String permissionCode, String operatorCode) {
-    	this.operatorCode = operatorCode;
-    	this.permissionCode = permissionCode;
+        this.operatorCode = operatorCode;
+        this.permissionCode = permissionCode;
     }
 
     public final String run() {
@@ -29,36 +30,38 @@ public abstract class MaintainAction {
     }
 
     protected void createLog() {
-    	ICommonService actionService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
-    	if (actionService != null) {
-    		ActionVO actionVO = new ActionVO();
-    		actionVO.setEntityCode(getEntityCode());
-    		actionVO.setActionType(getActionType());
-    		actionVO.setDescription(description);
-    		actionVO.setOperatorCode(operatorCode);
-    		actionVO.setPermissionCode(permissionCode);
-			actionService.save(actionVO);
-    	}
-	}
+        ICommonService actionService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
+        if (StringUtil.isNotBlank(description) && actionService != null) {
+            ActionVO actionVO = new ActionVO();
+            actionVO.setEntityCode(getEntityCode());
+            actionVO.setActionType(getActionType());
+            actionVO.setDescription(description);
+            actionVO.setOperatorCode(operatorCode);
+            actionVO.setPermissionCode(permissionCode);
+            actionService.save(actionVO);
+        }
+    }
 
-	protected String getEntityCode() {
-		return null;
-	}
+    protected String getEntityCode() {
+        return null;
+    }
 
-	protected abstract void doRun();
+    protected abstract void doRun();
 
-    protected void preprocess() { }
+    protected void preprocess() {
+    }
 
-    protected void postprocess() { }
+    protected void postprocess() {
+    }
 
     protected abstract ActionType getActionType();
 
     protected <T extends BaseEntity> T findByCode(Class<T> clazz, String code) {
-    	return commonDao.findByCode(clazz, code);
+        return commonDao.findByCode(clazz, code);
     }
 
     protected <T extends BaseEntity> T findByUnsureCode(Class<T> clazz, String code) {
-    	return commonDao.findByUnsureCode(clazz, code);
+        return commonDao.findByUnsureCode(clazz, code);
     }
 
     protected <D extends IGenericDao<?>> D getDao(Class<D> clazz) {

@@ -1,11 +1,11 @@
 <template>
   <div class="system-customer">
     <xr-header
-      :icon-class="'double-gear'"
       :show-search="true"
+      icon-class="my-task"
       icon-color="#1CBAF5"
       label="我的流程"
-      placeholder="请输入实例名称搜索"
+      placeholder="请输入流程名称搜索"
       @search="onSearch"/>
     <div class="customer-content">
       <lego-table
@@ -130,13 +130,17 @@ export default {
     },
     handleTable(type, item) {
       if (type === 'stop') {
-        this.loading = true
-        instanceStopAPI(item.id).then(() => {
-          this.$message.success('流程终止成功！')
-          this.loading = false
-          this.getList()
-        }).catch(() => {
-          this.loading = false
+        this.$confirm('此操作将取消流程【' + item.name + '】，是否继续?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.loading = true
+          instanceStopAPI(item.id).then(() => {
+            this.$message.success('流程终止成功！')
+            this.loading = false
+            this.getList()
+          }).catch(() => {
+            this.loading = false
+          })
         })
       }
     },

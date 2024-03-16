@@ -34,6 +34,7 @@ public class ModifySysCustomFormAction extends ModifyAction<SysCustomForm, ISysC
         entity.setTable(tableDao.findByCode(vo.getTable()));
         entity.setQueryApiUrl(vo.getQueryApiUrl());
         entity.setDetailApiUrl(vo.getDetailApiUrl());
+        entity.setSimpleApiUrl(vo.getSimpleApiUrl());
         entity.setAddApiUrl(vo.getAddApiUrl());
         entity.setUpdateApiUrl(vo.getUpdateApiUrl());
         entity.setDeleteApiUrl(vo.getDeleteApiUrl());

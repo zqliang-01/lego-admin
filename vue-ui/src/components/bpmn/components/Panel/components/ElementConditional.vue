@@ -61,12 +61,20 @@
 
 <script>
 import * as CU from '../../../bo-utils/conditionUtil'
+import EditItem from '../../common/EditItem'
+import LucideIcon from '../../common/LucideIcon'
+import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { scriptTypeOptions } from '../../../preset-configuration/enumsOption'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 
 export default {
   name: 'ElementConditional',
+  components: {
+    CollapseTitle,
+    LucideIcon,
+    EditItem
+  },
   data() {
     return {
       varVisible: false,

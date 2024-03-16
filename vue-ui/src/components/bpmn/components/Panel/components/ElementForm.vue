@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import LucideIcon from '../../common/LucideIcon'
+import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil'
@@ -39,6 +41,8 @@ import { debounce } from 'min-dash'
 export default {
   name: 'ElementForm',
   components: {
+    CollapseTitle,
+    LucideIcon
   },
   data() {
     return {

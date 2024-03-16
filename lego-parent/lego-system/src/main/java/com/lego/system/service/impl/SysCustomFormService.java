@@ -74,6 +74,7 @@ public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCusto
         info.setUpdateApiUrl(table.createApiUrl("update"));
         info.setQueryApiUrl(table.createApiUrl("list"));
         info.setDetailApiUrl(table.createApiUrl("get"));
+        info.setSimpleApiUrl(table.createApiUrl("get-simple"));
         info.setExportAllApiUrl(table.createApiUrl("export-all"));
         info.setExportApiUrl(table.createApiUrl("export"));
         return info;

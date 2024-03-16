@@ -19,10 +19,18 @@
 
 <script>
 import { mapGetters } from 'vuex'
-
+import LucideIcon from '../../common/LucideIcon'
+import ResetPopover from '@/utils/bpmn/resetPopover'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
+
 export default {
   name: 'BpmnScales',
+  components: {
+    LucideIcon
+  },
+  directives: {
+    'r-popover': ResetPopover
+  },
   data() {
     return {
       currentScale: 1

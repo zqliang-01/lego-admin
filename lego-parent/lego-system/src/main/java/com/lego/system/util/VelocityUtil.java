@@ -168,13 +168,13 @@ public class VelocityUtil {
         templates.add(new TypeInfo("Modify{0}Action.java", "vm/java/action/ModifyAction.java.vm"));
         templates.add(new TypeInfo("{0}CreateVO.java", "vm/java/vo/CreateVO.java.vm"));
         templates.add(new TypeInfo("{0}ModifyVO.java", "vm/java/vo/ModifyVO.java.vm"));
-        templates.add(new TypeInfo("{0}Info.java", "vm/java/dto/Dto.java.vm"));;
+        templates.add(new TypeInfo("{0}Info.java", "vm/java/dto/Dto.java.vm"));
         templates.add(new TypeInfo("{0}CompletedListener.java", "vm/java/listener/CompletedListener.java.vm"));
-//        templates.add(new TypeInfo("index.vue", "vm/vue/index.vue.vm"));
-//        templates.add(new TypeInfo("Detail.vue", "vm/vue/Detail.vue.vm"));
-//        templates.add(new TypeInfo("Create.vue", "vm/vue/Create.vue.vm"));
-//        templates.add(new TypeInfo("{0}.js", "vm/js/api.js.vm"));
-//        templates.add(new TypeInfo("router.js", "vm/js/router.js.vm"));
+        templates.add(new TypeInfo("index.vue", "vm/vue/index.vue.vm"));
+        templates.add(new TypeInfo("Detail.vue", "vm/vue/Detail.vue.vm"));
+        templates.add(new TypeInfo("Create.vue", "vm/vue/Create.vue.vm"));
+        templates.add(new TypeInfo("{0}.js", "vm/js/api.js.vm"));
+        templates.add(new TypeInfo("router.js", "vm/js/router.js.vm"));
         templates.add(new TypeInfo("{0}.sql", "vm/sql/permission.sql.vm"));
         return templates;
     }

@@ -42,12 +42,12 @@ public interface GenConstants {
     /**
      * 忽略创建的字段名
      */
-    List<String> COLUMNNAME_IGNORE_GEN = Arrays.asList("id", "version", "create_time", "creator_code", "update_time");
+    List<String> COLUMNNAME_IGNORE_GEN = Arrays.asList("id", "version", "create_time", "creator_code", "update_time", "check_status");
 
     /**
      * 实体忽略的字段名
      */
-    List<String> COLUMNNAME_IGNORE_ENTITY = Arrays.asList("id", "code", "name", "version", "create_time", "creator_code", "update_time");
+    List<String> COLUMNNAME_IGNORE_ENTITY = Arrays.asList("id", "code", "name", "version", "create_time", "creator_code", "update_time", "check_status");
 
     List<String> NULL = Arrays.asList();
 }

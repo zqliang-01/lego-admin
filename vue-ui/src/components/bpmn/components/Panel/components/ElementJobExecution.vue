@@ -17,6 +17,9 @@
 </template>
 
 <script>
+import EditItem from '../../common/EditItem'
+import LucideIcon from '../../common/LucideIcon'
+import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import {
   getExternalTaskValue,
@@ -30,6 +33,11 @@ import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 
 export default {
   name: 'ElementJobExecution',
+  components: {
+    CollapseTitle,
+    LucideIcon,
+    EditItem
+  },
   data() {
     return {
       retryTimeCycle: undefined,

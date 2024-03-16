@@ -91,7 +91,7 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
 
     public void iteratorFindRejects(FlowElement source, Set<String> finishedTaskSet, Set<String> finishedSequenceFlowSet, Set<String> rejectedSet) {
         List<SequenceFlow> sequenceFlows = getElementOutgoingFlows(source);
-        for (SequenceFlow sequenceFlow: sequenceFlows) {
+        for (SequenceFlow sequenceFlow : sequenceFlows) {
             FlowElement targetElement = sequenceFlow.getTargetFlowElement();
             if (finishedTaskSet.contains(targetElement.getId())) {
                 rejectedSet.add(targetElement.getId());
@@ -110,6 +110,7 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
             iteratorFindRejects(targetElement, finishedTaskSet, finishedSequenceFlowSet, rejectedSet);
         }
     }
+
     public List<SequenceFlow> getElementOutgoingFlows(FlowElement source) {
         List<SequenceFlow> sequenceFlows = new ArrayList<>();
         if (source instanceof FlowNode) {
@@ -117,6 +118,7 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
         }
         return sequenceFlows;
     }
+
     public List<SequenceFlow> getElementIncomingFlows(FlowElement source) {
         List<SequenceFlow> sequenceFlows = new ArrayList<>();
         if (source instanceof FlowNode) {

@@ -1,21 +1,40 @@
 package ${PackageName}.listener;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.lego.core.common.Constants;
-import com.lego.core.flowable.FlowableTaskCompletedListener;
+import com.lego.core.flowable.FlowableCheckStatus;
+import com.lego.core.flowable.FlowableProcessConstants;
+import com.lego.core.flowable.IFlowableTaskCompletedListener;
+import com.lego.core.util.StringUtil;
 import ${PackageName}.service.I${ClassName}Service;
 import ${PackageName}.vo.${ClassName}CreateVO;
+import ${PackageName}.vo.${ClassName}ModifyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import java.util.Map;
 
 @Component
-public class ${ClassName}CompletedListener extends FlowableTaskCompletedListener<${ClassName}CreateVO> {
+public class ${ClassName}CompletedListener implements IFlowableTaskCompletedListener {
 
     @Autowired
     private I${ClassName}Service ${FieldName}Service;
 
     @Override
-    public void doCompleted(${ClassName}CreateVO vo) {
+    public void completed(boolean isSave, Map<String, Object> variables) {
+        String code = StringUtil.toString(variables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
+        if (${FieldName}Service.exists(code)) {
+            ${ClassName}ModifyVO vo = BeanUtil.toBean(variables, ${ClassName}ModifyVO.class);
+            vo.setCheckDiff(isSave);
+            ${FieldName}Service.update(Constants.loginCode.get(), vo);
+            return;
+        }
+        ${ClassName}CreateVO vo = BeanUtil.toBean(variables, ${ClassName}CreateVO.class);
         ${FieldName}Service.add(Constants.loginCode.get(), vo);
+    }
+
+    @Override
+    public void processCompleted(String code) {
+        ${FieldName}Service.updateCheckStatus(code, FlowableCheckStatus.completed);
     }
 
     @Override

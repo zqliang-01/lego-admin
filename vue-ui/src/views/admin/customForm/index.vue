@@ -108,9 +108,10 @@ export default {
         ],
         [
           { fieldCode: 'deleteApiUrl', name: '删除API', formType: 'text', width: '150' },
-          { fieldCode: 'exportApiUrl', name: '部分导出API', formType: 'text', width: '150' }
+          { fieldCode: 'simpleApiUrl', name: '简讯API', formType: 'text', width: '150' }
         ],
         [
+          { fieldCode: 'exportApiUrl', name: '部分导出API', formType: 'text', width: '150' },
           { fieldCode: 'exportAllApiUrl', name: '全部导出API', formType: 'text', width: '150' }
         ]
       ]

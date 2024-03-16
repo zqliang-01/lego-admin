@@ -2,7 +2,6 @@ package com.lego.crm.vo;
 
 
 import com.lego.core.vo.VO;
-
 import lombok.Getter;
 import lombok.Setter;
 

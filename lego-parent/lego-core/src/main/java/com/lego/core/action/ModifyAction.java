@@ -1,19 +1,19 @@
 package com.lego.core.action;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import com.lego.core.data.ActionType;
 import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 public abstract class ModifyAction<T extends BaseEntity, D extends IGenericDao<T>> extends EntityAction<T, D> {
 
-	private boolean checkDiff = true;
+    private boolean checkDiff = true;
 
     public ModifyAction(String permissionCode, String operatorCode, String entityCode) {
         super(permissionCode, operatorCode);
@@ -56,8 +56,8 @@ public abstract class ModifyAction<T extends BaseEntity, D extends IGenericDao<T
         return ActionType.MODIFY;
     }
 
-    protected void noCheckDiff() {
-    	this.checkDiff = false;
+    protected void setCheckDiff(boolean checkDiff) {
+        this.checkDiff = checkDiff;
     }
 
     protected abstract void doModify(T entity);

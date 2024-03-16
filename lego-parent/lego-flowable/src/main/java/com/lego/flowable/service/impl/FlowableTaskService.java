@@ -1,29 +1,28 @@
 package com.lego.flowable.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.convert.Convert;
-import com.lego.core.common.Constants;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.flowable.FlowableService;
+import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.flowable.action.CompleteFlowableTaskAction;
+import com.lego.flowable.action.DelegateFlowableTaskAction;
+import com.lego.flowable.action.RejectFlowableTaskAction;
+import com.lego.flowable.action.SaveFlowableTaskAction;
+import com.lego.flowable.action.TransferFlowableTaskAction;
 import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.assembler.FlowableTaskAssembler;
 import com.lego.flowable.dto.FlowableTaskFormDetailInfo;
 import com.lego.flowable.dto.FlowableTaskInfo;
 import com.lego.flowable.service.IFlowableTaskService;
+import com.lego.flowable.vo.FLowbaleTaskClaimVO;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
+import com.lego.flowable.vo.FlowableTaskDelegateVO;
+import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
-import com.lego.flowable.vo.ProcessConstants;
+import com.lego.flowable.vo.FlowableTaskTransferVO;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.entity.SysEmployee;
-import org.flowable.bpmn.constants.BpmnXMLConstants;
-import org.flowable.bpmn.model.BpmnModel;
-import org.flowable.bpmn.model.UserTask;
-import org.flowable.engine.history.HistoricActivityInstance;
-import org.flowable.engine.repository.ProcessDefinition;
-import org.flowable.engine.runtime.Execution;
 import org.flowable.engine.task.Comment;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
@@ -33,10 +32,8 @@ import org.flowable.task.api.history.HistoricTaskInstanceQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 @Service
 public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> implements IFlowableTaskService {
@@ -54,10 +51,9 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         candidateGroups.add(EntityUtil.getCode(employee.getDept()));
         TaskQuery taskQuery = taskService.createTaskQuery()
             .active()
+            .taskCandidateOrAssigned(employeeCode)
+            .taskCandidateGroupIn(candidateGroups)
             .orderByTaskCreateTime().desc();
-        if (!employee.containRole(Constants.ADMIN_ROLE)) {
-            taskQuery.taskCandidateOrAssigned(employeeCode).taskCandidateGroupIn(candidateGroups);
-        }
         if (StringUtil.isNotBlank(vo.getName())) {
             taskQuery.taskNameLike("%" + vo.getName() + "%");
         }
@@ -70,11 +66,8 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         SysEmployee employee = employeeDao.findByCode(employeeCode);
         HistoricTaskInstanceQuery taskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
             .finished()
-            .orderByHistoricTaskInstanceEndTime()
-            .desc();
-        if (!employee.isAdmin()) {
-            taskInstanceQuery.taskAssignee(employeeCode);
-        }
+            .taskAssignee(employeeCode)
+            .orderByHistoricTaskInstanceEndTime().desc();
         if (StringUtil.isNotBlank(vo.getName())) {
             taskInstanceQuery.taskNameLike("%" + vo.getName() + "%");
         }
@@ -83,86 +76,20 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
     }
 
     @Override
-    public void complete(String employeeCode, FlowableTaskCompleteVO vo) {
+    public LegoPage<FlowableTaskInfo> findClaimdBy(String employeeCode, FlowableTaskSearchVO vo) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
-        TaskQuery taskQuery = taskService.createTaskQuery().active().taskId(vo.getId());
-        if (!employee.isAdmin()) {
-            List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
-            candidateGroups.add(EntityUtil.getCode(employee.getDept()));
-            taskQuery.taskCandidateOrAssigned(employeeCode).taskCandidateGroupIn(candidateGroups);
+        List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
+        candidateGroups.add(EntityUtil.getCode(employee.getDept()));
+        TaskQuery taskQuery = taskService.createTaskQuery()
+            .active()
+            .taskCandidateUser(employeeCode)
+            .taskCandidateGroupIn(candidateGroups)
+            .orderByTaskCreateTime().desc();
+        if (StringUtil.isNotBlank(vo.getName())) {
+            taskQuery.taskNameLike("%" + vo.getName() + "%");
         }
-        Task task = taskQuery.singleResult();
-        BusinessException.check(task != null, "当前任务审核人非[{0}]，审核失败！", employeeCode);
-
-        if (StringUtil.isNotBlank(task.getFormKey())) {
-            BusinessException.check(!vo.getVariables().isEmpty(), "任务完工失败，请填写表单信息！");
-        }
-
-        // 添加审批意见
-        if (StringUtil.isNotBlank(vo.getComment())) {
-            taskService.addComment(vo.getId(), task.getProcessInstanceId(), vo.getComment());
-        }
-        taskService.setAssignee(vo.getId(), employeeCode);
-        if (vo.getVariables().isEmpty()) {
-            taskService.complete(vo.getId());
-            return;
-        }
-        String code = vo.getStringValue(ProcessConstants.FORM_UNIQUE_KEY);
-        taskService.setVariableLocal(vo.getId(), ProcessConstants.FORM_UNIQUE_KEY, code);
-
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
-        String localScopeValue = modelAssembler.getUserTaskAttributeValue(bpmnModel, task.getTaskDefinitionKey(), ProcessConstants.FORM_LOCAL_SCOPE);
-        boolean localScope = Convert.toBool(localScopeValue, false);
-        taskService.complete(vo.getId(), vo.getVariables(), localScope);
-    }
-
-    @Override
-    public void reject(String employeeCode, FlowableTaskCompleteVO vo) {
-        Task task = taskService.createTaskQuery().taskId(vo.getId()).singleResult();
-        BusinessException.check(task != null, "不存在的任务信息[{0}]，任务拒绝失败！", vo.getId());
-        BusinessException.check(!task.isSuspended(), "任务处于挂起状态，任务拒绝失败！");
-        // 获取流程定义信息
-        ProcessDefinition processDefinition = repositoryService.createProcessDefinitionQuery()
-            .processDefinitionId(task.getProcessDefinitionId())
-            .singleResult();
-        // 构建查询条件
-        List<HistoricActivityInstance> allActivityInstanceList = historyService.createHistoricActivityInstanceQuery()
-            .processInstanceId(task.getProcessInstanceId())
-            .list();
-        if (CollUtil.isEmpty(allActivityInstanceList)) {
-            return;
-        }
-        // 添加审批意见
-        if (StringUtil.isNotBlank(vo.getComment())) {
-            taskService.addComment(vo.getId(), task.getProcessInstanceId(), vo.getComment());
-        }
-        taskService.setAssignee(vo.getId(), employeeCode);
-        List<String> finishedTaskIds = new ArrayList<>();
-        for (HistoricActivityInstance item : allActivityInstanceList) {
-            if (item.getEndTime() == null) {
-                continue;
-            }
-            if (BpmnXMLConstants.ELEMENT_TASK_USER.equals(item.getActivityType())
-                || BpmnXMLConstants.ELEMENT_EVENT_START.equals(item.getActivityType())) {
-                finishedTaskIds.add(item.getActivityId());
-            }
-        }
-        BpmnModel bpmnModel = repositoryService.getBpmnModel(processDefinition.getId());
-        UserTask element = modelAssembler.getUserTaskByKey(bpmnModel, task.getTaskDefinitionKey());
-        List<String> taskIds = modelAssembler.getBeforeUserTaskId(element, finishedTaskIds);
-        if (taskIds.size() == 1) {
-            List<Execution> executions = runtimeService.createExecutionQuery().parentId(task.getProcessInstanceId()).list();
-            List<String> executionIds = executions.stream().map(Execution::getId).collect(Collectors.toList());
-            runtimeService.createChangeActivityStateBuilder()
-                .processInstanceId(task.getProcessInstanceId())
-                .moveExecutionsToSingleActivityId(executionIds, taskIds.get(0))
-                .changeState();
-            return;
-        }
-        runtimeService.createChangeActivityStateBuilder()
-            .processInstanceId(task.getProcessInstanceId())
-            .moveSingleActivityIdToActivityIds(task.getTaskDefinitionKey(), taskIds)
-            .changeState();
+        LegoPage<Task> page = createPage(taskQuery, vo, Task.class);
+        return assembler.create(page);
     }
 
     @Override
@@ -174,18 +101,21 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
             .singleResult();
         if (task == null) {
             task = taskService.createTaskQuery()
+                .includeTaskLocalVariables()
                 .taskId(taskId)
                 .singleResult();
         }
-        if (task != null) {
-            String formKey = task.getFormKey();
-            Object value = task.getTaskLocalVariables().get(ProcessConstants.FORM_UNIQUE_KEY);
-            String code = StringUtil.toString(value);
-            List<Comment> comments = taskService.getTaskComments(taskId);
-            Optional<String> comment = comments.stream().map(Comment::getFullMessage).reduce((s1, s2) -> s1 + s2);
-            return new FlowableTaskFormDetailInfo(task.getId(), formKey, code, comment.orElse(""));
-        }
-        return null;
+        BusinessException.check(task != null, "不存在的任务ID[{0}]，查询任务明细失败！", taskId);
+
+        String formKey = task.getFormKey();
+        Map<String, Object> taskLocalVariables = task.getTaskLocalVariables();
+        String code = StringUtil.toString(taskLocalVariables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
+        List<Comment> comments = taskService.getTaskComments(taskId);
+        String commentMsg = comments.stream()
+            .map(Comment::getFullMessage)
+            .reduce((s1, s2) -> s1 + " " + s2)
+            .orElse("");
+        return new FlowableTaskFormDetailInfo(task.getId(), task.getName(), formKey, code, commentMsg, taskLocalVariables);
     }
 
     @Override
@@ -193,10 +123,45 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery()
             .processInstanceId(instanceId)
             .taskDefinitionKey(key)
-            .orderByHistoricTaskInstanceEndTime()
+            .orderByHistoricTaskInstanceStartTime()
             .asc()
             .list();
         return assembler.createHis(tasks);
+    }
+
+    @Override
+    public void complete(String employeeCode, FlowableTaskCompleteVO vo) {
+        new CompleteFlowableTaskAction(employeeCode, vo).run();
+    }
+
+    @Override
+    public void save(String employeeCode, FlowableTaskCompleteVO vo) {
+        new SaveFlowableTaskAction(employeeCode, vo).run();
+    }
+
+    @Override
+    public void reject(String employeeCode, FlowableTaskRejectVO vo) {
+        new RejectFlowableTaskAction(employeeCode, vo).run();
+    }
+
+    @Override
+    public void delegate(String employeeCode, FlowableTaskDelegateVO vo) {
+        new DelegateFlowableTaskAction(employeeCode, vo).run();
+    }
+
+    @Override
+    public void claim(String loginCode, FLowbaleTaskClaimVO vo) {
+        taskService.claim(vo.getId(), loginCode);
+    }
+
+    @Override
+    public void unClaim(String loginCode, FLowbaleTaskClaimVO vo) {
+        taskService.unclaim(vo.getId());
+    }
+
+    @Override
+    public void transfer(String loginCode, FlowableTaskTransferVO vo) {
+        new TransferFlowableTaskAction(loginCode, vo).run();
     }
 
 }

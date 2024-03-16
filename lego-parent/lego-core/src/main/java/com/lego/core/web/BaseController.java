@@ -6,7 +6,7 @@ import com.lego.core.common.Constants;
 import org.springframework.transaction.annotation.Transactional;
 
 @SaCheckLogin
-@Transactional
+@Transactional(rollbackFor = Throwable.class)
 public abstract class BaseController {
 
     @SuppressWarnings("unchecked")

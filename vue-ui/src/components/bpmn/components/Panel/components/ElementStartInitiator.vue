@@ -15,17 +15,24 @@
 
 <script>
 import { getInitiatorValue, setInitiatorValue } from '../../../bo-utils/initiatorUtil'
-import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
+import CollapseTitle from '../../common/CollapseTitle'
+import EventEmitter from '@/utils/bpmn/EventEmitter'
+import LucideIcon from '../../common/LucideIcon'
+import EditItem from '../../common/EditItem'
 
 export default {
   name: 'ElementStartInitiator',
+  components: {
+    CollapseTitle,
+    LucideIcon,
+    EditItem
+  },
   data() {
     return {
       initiator: ''
     }
   },
-
   mounted() {
     this.getElementInitiator()
 

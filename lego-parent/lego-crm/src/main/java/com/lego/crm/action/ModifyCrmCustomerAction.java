@@ -14,6 +14,7 @@ public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCusto
 
     public ModifyCrmCustomerAction(String operatorCode, CrmCustomerModifyVO vo) {
         super("crm_customer", operatorCode, vo.getCode());
+        this.setCheckDiff(vo.isCheckDiff());
         this.vo = vo;
     }
 
@@ -21,7 +22,6 @@ public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCusto
     protected void preprocess() {
         BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，客户修改失败！");
         BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，客户修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getMobile()), "手机号不能为空，客户修改失败！");
     }
 
     @Override

@@ -19,13 +19,21 @@
 </template>
 
 <script>
+import EditItem from '../../common/EditItem'
+import LucideIcon from '../../common/LucideIcon'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
+import CollapseTitle from '../../common/CollapseTitle'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 import { createModdleElement } from '../../../bpmn-utils/BpmnExtensionElements'
 import { getModeler } from '../../../bpmn-utils/BpmnDesignerUtils'
 
 export default {
   name: 'ElementExtensionField',
+  components: {
+    CollapseTitle,
+    LucideIcon,
+    EditItem
+  },
   data() {
     return {
       field: {}

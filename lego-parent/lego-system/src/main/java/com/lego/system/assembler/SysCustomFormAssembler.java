@@ -21,6 +21,7 @@ public class SysCustomFormAssembler extends EntityAssembler<SysCustomFormInfo, S
         info.setDeleteApiUrl(entity.getDeleteApiUrl());
         info.setUpdateApiUrl(entity.getUpdateApiUrl());
         info.setDetailApiUrl(entity.getDetailApiUrl());
+        info.setSimpleApiUrl(entity.getSimpleApiUrl());
         info.setAddApiUrl(entity.getAddApiUrl());
         info.setExportAllApiUrl(entity.getExportAllApiUrl());
         info.setExportApiUrl(entity.getExportApiUrl());

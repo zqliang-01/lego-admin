@@ -26,11 +26,19 @@ import {
   setACBefore,
   setACExclusive
 } from '../../../bo-utils/asynchronousContinuationsUtil'
+import CollapseTitle from '../../common/CollapseTitle'
+import LucideIcon from '../../common/LucideIcon'
+import EditItem from '../../common/EditItem'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 
 export default {
   name: 'ElementAsyncContinuations',
+  components: {
+    CollapseTitle,
+    LucideIcon,
+    EditItem
+  },
   data() {
     return {
       acBefore: false,

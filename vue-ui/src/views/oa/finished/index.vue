@@ -1,11 +1,11 @@
 <template>
   <div class="system-customer">
     <xr-header
-      :icon-class="'double-gear'"
       :show-search="true"
+      icon-class="icon-task-state"
       icon-color="#1CBAF5"
       label="已办任务"
-      placeholder="请输入模型名称搜索"
+      placeholder="请输入任务名称搜索"
       @search="onSearch" />
     <div class="customer-content">
       <lego-table
@@ -41,8 +41,6 @@
       v-if="createShow"
       title="任务表单"
       :task-id="taskId"
-      :form-code="formCode"
-      :detail-code="detailCode"
       :action="{ type: 'view' }"
       @close="createShow = false"
       @handle="actionHandle"
@@ -52,8 +50,7 @@
 
 <script>
 import {
-  taskCompletedListAPI,
-  taskFormDetailGetAPI
+  taskCompletedListAPI
 } from '@/api/admin/workflow/task'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
@@ -143,22 +140,14 @@ export default {
     },
     handleTable(type, item, index) {
       if (type === 'view') {
+        this.taskId = item.id
         this.instanceId = item.instanceId
         this.processVisible = true
-        console.log(this.instanceId)
         return
       }
       if (type === 'form') {
-        taskFormDetailGetAPI(item.id).then(res => {
-          if (res.data && res.data.code) {
-            this.taskId = item.id
-            this.detailCode = res.data.code
-            this.formCode = res.data.formKey
-            this.createShow = true
-          } else {
-            this.$message.error('未查询到表单信息！')
-          }
-        })
+        this.taskId = item.id
+        this.createShow = true
         return
       }
       this.action.type = 'update'

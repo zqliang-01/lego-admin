@@ -1,33 +1,40 @@
 <template>
   <el-button-group>
-    <template v-for="(btn, index) in buttons">
-      <el-button
-        v-r-popover:popover="index"
-        class="el-button__no-padding"
-        :key="btn.key"
-        @click="alignElements(btn.key)"
-      >
-        <lucide-icon :name="btn.icon" :size="16" />
-        <el-popover
-          ref="popover"
-          placement="bottom"
-          trigger="hover"
-          popper-class="button-popover"
-          :content="btn.name"
-        />
-      </el-button>
-    </template>
+    <el-button
+      v-r-popover:popover="index"
+      class="el-button__no-padding"
+      v-for="(btn, index) in buttons"
+      :key="btn.key"
+      @click="alignElements(btn.key)"
+    >
+      <lucide-icon :name="btn.icon" :size="16" />
+      <el-popover
+        ref="popover"
+        placement="bottom"
+        trigger="hover"
+        popper-class="button-popover"
+        :content="btn.name"
+      />
+    </el-button>
   </el-button-group>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import LucideIcon from '../../common/LucideIcon'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
+import ResetPopover from '@/utils/bpmn/resetPopover'
 
 export default {
   name: 'BpmnAligns',
+  components: {
+    LucideIcon
+  },
   computed: {
     ...mapGetters(['getModeler'])
+  },
+  directives: {
+    'r-popover': ResetPopover
   },
   data() {
     return {

@@ -1,9 +1,8 @@
 <template>
   <div class="system-customer">
     <xr-header
-      :icon-class="'double-gear'"
       :show-search="true"
-      :show-save="false"
+      icon-class="top"
       icon-color="#1CBAF5"
       label="发起审批"
       placeholder="请输入部署名称搜索"
@@ -25,7 +24,7 @@
             type="text"
             size="small"
             icon="el-icon-video-play"
-            @click="handleTable('start', scope.row, scope.$index)">启动</el-button>
+            @click="handleTable('start', scope.row, scope.$index)">发起</el-button>
         </template>
       </lego-table>
     </div>

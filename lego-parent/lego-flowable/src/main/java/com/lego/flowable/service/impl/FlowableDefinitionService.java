@@ -2,7 +2,6 @@ package com.lego.flowable.service.impl;
 
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.flowable.FlowableService;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.assembler.FlowableDefinitionAssembler;
 import com.lego.flowable.dto.FlowableDefinitionInfo;
@@ -29,7 +28,7 @@ public class FlowableDefinitionService extends FlowableService<FlowableDefinitio
         ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery()
             .latestVersion()
             .orderByProcessDefinitionKey()
-            .asc();
+            .desc();
         if (StringUtil.isNotBlank(vo.getName())) {
             query.processDefinitionNameLike("%" + vo.getName() + "%");
         }

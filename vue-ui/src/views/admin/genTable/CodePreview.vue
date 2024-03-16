@@ -11,8 +11,9 @@
     <div slot="title">
       <h2>代码预览</h2>
     </div>
-    <div class="nav">
-      <el-tree
+    <sash-form-layout height="510px">
+      <template v-slot:left>
+        <el-tree
         :props="treeProps"
         :expand-on-click-node="false"
         :default-expanded-keys="expandeKeys"
@@ -21,37 +22,37 @@
         highlight-current
         class="code-tree"
         @node-click="changeCodeClick">
-        <flexbox slot-scope="{ node }" :class="{ 'is-current': node.isCurrent}" class="node-data">
-          <i
-            v-if="node.childNodes && node.childNodes.length"
-            :class="'department' | iconPre"/>
-          <span v-else class="node-data__mark" />
-          <div class="node-data__label text-one-line ">{{ node.label }}</div>
-        </flexbox>
-      </el-tree>
-    </div>
-    <div class="content-box">
-      <div class="copy-button">
-        <span>{{ currentFileName }}</span>
-        <el-link v-clipboard:copy="currentValue" v-clipboard:success="clipboardSuccess" :underline="false" icon="el-icon-document-copy">复制</el-link>
-      </div>
-      <pre class="code-content"><code v-html="highlightedCode"/></pre>
-    </div>
+          <flexbox slot-scope="{ node }" :class="{ 'is-current': node.isCurrent}" class="node-data">
+            <i
+              v-if="node.childNodes && node.childNodes.length"
+              :class="'department' | iconPre"/>
+            <span v-else class="node-data__mark" />
+            <div class="node-data__label text-one-line ">{{ node.label }}</div>
+          </flexbox>
+        </el-tree>
+      </template>
+      <template v-slot:right>
+        <div class="content-box">
+          <div class="copy-button">
+            <span>{{ currentFileName }}</span>
+            <el-link v-clipboard:copy="currentValue" v-clipboard:success="clipboardSuccess" :underline="false" icon="el-icon-document-copy">复制</el-link>
+          </div>
+          <pre class="code-content"><code v-html="highlightedCode"/></pre>
+        </div>
+      </template>
+    </sash-form-layout>
   </el-dialog>
 </template>
 
 <script>
-import 'highlight.js/styles/github-gist.css'
-const hljs = require('highlight.js/lib/core')
-hljs.registerLanguage('java', require('highlight.js/lib/languages/java'))
-hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'))
-hljs.registerLanguage('html', require('highlight.js/lib/languages/xml'))
-hljs.registerLanguage('vue', require('highlight.js/lib/languages/xml'))
-hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'))
-hljs.registerLanguage('sql', require('highlight.js/lib/languages/sql'))
+import hljs from '@/components/highlight'
+import SashFormLayout from '@/components/layout/SashFormLayout'
 
 export default {
   name: 'CustomField',
+  components: {
+    SashFormLayout
+  },
   props: {
     visible: {
       type: Boolean,
@@ -63,6 +64,7 @@ export default {
   data() {
     return {
       isFull: false,
+      codeLanguage: '',
       expandeKeys: [],
       currentValue: '',
       currentFileName: '',
@@ -112,20 +114,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.nav {
-  width: 280px;
-  position: absolute;
-  left: 0;
-  height: 515px;
-  overflow: auto;
-}
 .content-box {
   background: #fff;
-  margin-left: 265px;
-  position: relative;
   padding: 5px;
   border-radius: 5px;
-  background: #faebd7;
   .copy-button {
     text-align: right;
     padding-right: 10px;
@@ -134,9 +126,5 @@ export default {
       margin-left: 10px;
     }
   }
-  .code-content {
-    overflow: auto;
-    height: 500px;
-  }
 }
-</style>
+</style>@/components/highlight

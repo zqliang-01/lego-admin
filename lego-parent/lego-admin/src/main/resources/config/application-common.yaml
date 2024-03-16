@@ -14,6 +14,10 @@ spring:
     static-locations: file:public/
 
 flowable:
+  #enable-history-cleaning: true
+  #history-cleaning-cycle: 0/1 * * * * ?
+  #history-cleaning-after: 365
+  #history-cleaning-batchSize: 100
   idm:
     enabled: false
   database-schema-update: false
@@ -26,7 +30,7 @@ flowable:
 lego:
   file:
     config: local
-    local: 
+    local:
       uploadPath: /upload
     oss:
       endpoint:

@@ -33,6 +33,17 @@ export function taskCompletedListAPI(data) {
   })
 }
 
+export function taskClaimListAPI(data) {
+  return request({
+    url: '/back-end/flowable-task/list-claim',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
 export function taskCompleteAPI(data) {
   return request({
     url: '/back-end/flowable-task/complete',
@@ -44,9 +55,9 @@ export function taskCompleteAPI(data) {
   })
 }
 
-export function taskRejectAPI(data) {
+export function taskSaveAPI(data) {
   return request({
-    url: '/back-end/flowable-task/reject',
+    url: '/back-end/flowable-task/save',
     method: 'post',
     data: data,
     headers: {
@@ -65,5 +76,60 @@ export function taskHistoryListAPI(data) {
   return request({
     url: '/back-end/flowable-task/list-his',
     data: data
+  })
+}
+
+export function taskRejectAPI(data) {
+  return request({
+    url: '/back-end/flowable-task/reject',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+export function taskDelegateAPI(data) {
+  return request({
+    url: '/back-end/flowable-task/delegate',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+export function taskTransferAPI(data) {
+  return request({
+    url: '/back-end/flowable-task/transfer',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+export function taskClaimAPI(data) {
+  return request({
+    url: '/back-end/flowable-task/claim',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}
+
+export function taskUnClaimAPI(data) {
+  return request({
+    url: '/back-end/flowable-task/unClaim',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }

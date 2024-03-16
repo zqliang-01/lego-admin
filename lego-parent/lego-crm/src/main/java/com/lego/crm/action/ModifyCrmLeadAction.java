@@ -15,6 +15,7 @@ public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
 
     public ModifyCrmLeadAction(String operatorCode, CrmLeadModifyVO vo) {
         super("crm_lead", operatorCode, vo.getCode());
+        this.setCheckDiff(vo.isCheckDiff());
         this.vo = vo;
     }
 

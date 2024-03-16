@@ -68,31 +68,45 @@ export default {
     value: {
       handler(newVal, oldVal) {
         this.valueId = this.value
-        this.initHandle()
+        this.$nextTick(function() {
+          this.initHandle()
+        })
       },
+      immediate: true
+    },
+    options: {
+      handler(newVal, oldVal) {
+        this.valueId = this.value
+        this.$nextTick(function() {
+          this.initHandle()
+        })
+      },
+      deep: true,
       immediate: true
     }
   },
   mounted() {
     this.valueId = this.value,
-    this.initHandle()
+    this.$nextTick(function() {
+      this.initHandle()
+    })
   },
   methods: {
     // 初始化值
     initHandle() {
-      if (this.valueId) {
-        this.$nextTick(() => {
+      this.$nextTick(function() {
+        if (this.valueId) {
           const node = this.$refs.selectTree.getNode(this.valueId)
           if (node) {
             this.valueTitle = node.data[this.props.label] // 初始化显示
           }
           this.$refs.selectTree.setCurrentKey(this.valueId) // 设置默认选中
           this.defaultExpandedKey = [this.valueId] // 设置默认展开
-        })
-      } else {
-        this.valueTitle = ''
-      }
-      this.initScroll()
+        } else {
+          this.valueTitle = ''
+        }
+        this.initScroll()
+      })
     },
 
     // 初始化滚动条

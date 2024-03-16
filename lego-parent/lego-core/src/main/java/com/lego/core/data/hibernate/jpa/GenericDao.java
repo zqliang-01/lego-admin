@@ -1,25 +1,25 @@
 package com.lego.core.data.hibernate.jpa;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.BusEntity;
+import com.lego.core.data.hibernate.IGenericDao;
+import com.lego.core.data.hibernate.QueryHandler;
+import com.lego.core.dto.LegoPage;
+import com.lego.core.exception.CoreException;
+import com.lego.core.flowable.FlowableCheckStatus;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
+import com.lego.core.vo.GenericConditionItemVO;
+import com.lego.core.vo.GenericConditionVO;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.springframework.transaction.annotation.Transactional;
-
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.data.hibernate.IGenericDao;
-import com.lego.core.data.hibernate.QueryHandler;
-import com.lego.core.dto.LegoPage;
-import com.lego.core.exception.CoreException;
-import com.lego.core.util.EntityUtil;
-import com.lego.core.util.StringUtil;
-import com.lego.core.vo.GenericConditionItemVO;
-import com.lego.core.vo.GenericConditionVO;
+import java.util.ArrayList;
+import java.util.List;
 
 @Transactional(readOnly = true)
 public class GenericDao<T extends BaseEntity> extends LegoJpaRepository<T, Long> implements IGenericDao<T> {
@@ -27,11 +27,11 @@ public class GenericDao<T extends BaseEntity> extends LegoJpaRepository<T, Long>
     private Class<T> domainClass;
     private EntityManager entityManager;
 
-	protected void init(EntityManager entityManager, Class<T> domainType) {
-		this.entityManager = entityManager;
-		this.domainClass = domainType;
-		this.initJpaRepository(entityManager, domainType);
-	}
+    protected void init(EntityManager entityManager, Class<T> domainType) {
+        this.entityManager = entityManager;
+        this.domainClass = domainType;
+        this.initJpaRepository(entityManager, domainType);
+    }
 
     protected QueryHandler<T> createQueryHandler() {
         return new QueryHandler<T>("FROM {0} t", this.entityManager, this.domainClass);
@@ -82,37 +82,51 @@ public class GenericDao<T extends BaseEntity> extends LegoJpaRepository<T, Long>
 
     @Override
     public LegoPage<T> findPageBy(GenericConditionVO vo) {
-		QueryHandler<T> query = createQueryHandler();
-		setGenericParam(vo, query);
-		query.order("t.createTime DESC");
-		return query.findPage(vo);
+        QueryHandler<T> query = createQueryHandler();
+        setGenericParam(vo, query);
+        query.order("t.createTime DESC");
+        return query.findPage(vo);
     }
 
-	@Override
-	public List<T> findBy(GenericConditionVO vo) {
-		QueryHandler<T> query = createQueryHandler();
-		setGenericParam(vo, query);
-		query.order("t.createTime DESC");
-		return query.findList();
-	}
+    @Override
+    public List<T> findBy(GenericConditionVO vo) {
+        QueryHandler<T> query = createQueryHandler();
+        setGenericParam(vo, query);
+        query.order("t.createTime DESC");
+        return query.findList();
+    }
 
-	@Override
-	public long findCountBy(GenericConditionVO vo) {
-		QueryHandler<T> query = createQueryHandler();
-		setGenericParam(vo, query);
-		return query.findCount();
-	}
+    @Override
+    public long findCountBy(GenericConditionVO vo) {
+        QueryHandler<T> query = createQueryHandler();
+        setGenericParam(vo, query);
+        return query.findCount();
+    }
 
-	private void setGenericParam(GenericConditionVO vo, QueryHandler<?> query) {
-		for (GenericConditionItemVO item : vo.getItems()) {
-			query.condition(item.getCondition());
-			if (item.isNeedValue()) {
-				query.param(item.getParamKey(), item.getValue());
-			}
-		}
-		if (StringUtil.isNotBlank(vo.getOrderType())) {
-			query.order(vo.getOrderType());
-		}
-	}
+    @Override
+    public boolean exists(String code) {
+        CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+        Root<T> root = criteriaQuery.from(domainClass);
+        criteriaQuery.select(criteriaBuilder.count(root));
+        criteriaQuery.where(criteriaBuilder.equal(root.get("code"), code));
+        Long result = entityManager.createQuery(criteriaQuery).getSingleResult();
+        return result != null && result > 0;
+    }
+
+    private void setGenericParam(GenericConditionVO vo, QueryHandler<?> query) {
+        if (BusEntity.class.isAssignableFrom(domainClass)) {
+            vo.addItem(GenericConditionItemVO.createEqual("checkStatus", FlowableCheckStatus.completed));
+        }
+        for (GenericConditionItemVO item : vo.getItems()) {
+            query.condition(item.getCondition());
+            if (item.isNeedValue()) {
+                query.param(item.getParamKey(), item.getValue());
+            }
+        }
+        if (StringUtil.isNotBlank(vo.getOrderType())) {
+            query.order(vo.getOrderType());
+        }
+    }
 
 }

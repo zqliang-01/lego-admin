@@ -105,11 +105,19 @@ import {
   updateExecutionListener
 } from '../../../bo-utils/executionListenersUtil'
 import { getScriptType } from '../../../bo-utils/scriptUtil'
-import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
+import NumberTag from '../../common/NumberTag'
+import LucideIcon from '../../common/LucideIcon'
+import CollapseTitle from '../../common/CollapseTitle'
+import EventEmitter from '@/utils/bpmn/EventEmitter'
 
 export default {
   name: 'ElementExecutionListeners',
+  components: {
+    CollapseTitle,
+    NumberTag,
+    LucideIcon
+  },
   data() {
     return {
       modelVisible: false,

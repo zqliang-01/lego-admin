@@ -38,7 +38,7 @@ export default {
   },
   watch: {
     formCode() {
-      this.initRemoteField()
+      this.initField()
     }
   },
   computed: {
@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       loading: false,
+      actionType: this.action.type,
       dataFieldList: [],
       detailData: {},
       fieldFrom: {},
@@ -57,6 +58,7 @@ export default {
   },
   methods: {
     initField() {
+      this.actionType = this.action.type
       if (this.formCode) {
         return createFieldListAPI(this.formCode)
       }
@@ -70,8 +72,8 @@ export default {
           if (field.show !== false) {
             this.initSettingValue(field)
             field.value = this.detailData[field.fieldCode]
-            field.disabled = this.getDisable(field, this.action.type)
-            this.setDefaultValue(field, this.fieldFrom, this.action.type === 'save')
+            field.disabled = this.getDisable(field, this.actionType)
+            this.setDefaultValue(field, this.fieldFrom, this.actionType === 'save')
             this.fieldRules[field.fieldCode] = this.getRules(field)
           }
         })
@@ -82,23 +84,31 @@ export default {
      */
     saveClick() {
       const createForm = this.$refs.createForm
-      createForm.validate(valid => {
-        if (!valid) {
-          showFormErrorMessage(createForm)
-          return false
-        }
-        if (this.doRequest) {
-          this.doRequest()
-          return
-        }
-        this.loading = true
-        this.saveRequest(this.fieldFrom).then(() => {
-          this.loading = false
-          this.close()
-          this.$emit('handle', { type: 'save-success' })
-        }).catch(() => {
-          this.loading = false
+      if (createForm) {
+        createForm.validate(valid => {
+          if (!valid) {
+            showFormErrorMessage(createForm)
+            return false
+          }
+          this.handleRequest()
         })
+      } else if (this.doRequest) {
+        this.doRequest()
+        return
+      }
+    },
+    handleRequest() {
+      if (this.doRequest) {
+        this.doRequest()
+        return
+      }
+      this.loading = true
+      this.saveRequest(this.fieldFrom).then(() => {
+        this.loading = false
+        this.close()
+        this.$emit('handle', { type: 'save-success' })
+      }).catch(() => {
+        this.loading = false
       })
     },
     /**

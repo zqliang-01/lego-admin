@@ -16,6 +16,7 @@ public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${Clas
 
     public Modify${ClassName}Action(String operatorCode, ${ClassName}ModifyVO vo) {
         super("${PermissionCode}", operatorCode, vo.getCode());
+        this.setCheckDiff(vo.isCheckDiff());
         this.vo = vo;
     }
 

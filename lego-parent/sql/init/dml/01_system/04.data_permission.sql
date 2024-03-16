@@ -105,8 +105,11 @@ CALL add_system_permission('oa_start_read', '查看列表', 'auth', 'oa_start', 
 CALL add_system_permission('oa_owner', '我的流程', 'menu', 'oa', 'my-task', 31, NULL);
 CALL add_system_permission('oa_owner_read', '查看列表', 'auth', 'oa_owner', NULL, 311, NULL);
 
-CALL add_system_permission('oa_undo', '代办任务', 'menu', 'oa', 'contract', 32, NULL);
+CALL add_system_permission('oa_undo', '待办任务', 'menu', 'oa', 'contract', 32, NULL);
 CALL add_system_permission('oa_undo_read', '查看列表', 'auth', 'oa_undo', NULL, 321, NULL);
 
-CALL add_system_permission('oa_finished', '已办任务', 'menu', 'oa', 'icon-task-state', 33, NULL);
-CALL add_system_permission('oa_finished_read', '查看列表', 'auth', 'oa_finished', NULL, 331, NULL);
+CALL add_system_permission('oa_unclaimed', '待签任务', 'menu', 'oa', 'icon-related-tasks', 33, NULL);
+CALL add_system_permission('oa_unclaimed_read', '查看列表', 'auth', 'oa_unclaimed', NULL, 331, NULL);
+
+CALL add_system_permission('oa_finished', '已办任务', 'menu', 'oa', 'icon-task-state', 34, NULL);
+CALL add_system_permission('oa_finished_read', '查看列表', 'auth', 'oa_finished', NULL, 341, NULL);

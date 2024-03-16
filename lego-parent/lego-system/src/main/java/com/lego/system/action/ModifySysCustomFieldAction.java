@@ -13,49 +13,50 @@ import com.lego.system.vo.SysPermissionCode;
 
 public class ModifySysCustomFieldAction extends ModifyAction<SysCustomField, ISysCustomFieldDao> {
 
-	private SysCustomFieldModifyVO vo;
+    private SysCustomFieldModifyVO vo;
 
-	private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
-	private ISysCodeGeneratorDao generatorDao = getDao(ISysCodeGeneratorDao.class);
+    private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
+    private ISysCodeGeneratorDao generatorDao = getDao(ISysCodeGeneratorDao.class);
 
-	public ModifySysCustomFieldAction(String operatorCode, SysCustomFieldModifyVO vo) {
-		super(SysPermissionCode.manageCustomForm, operatorCode, vo.getCode());
-		this.vo = vo;
-	}
+    public ModifySysCustomFieldAction(String operatorCode, SysCustomFieldModifyVO vo) {
+        super(SysPermissionCode.manageCustomForm, operatorCode, vo.getCode());
+        this.vo = vo;
+    }
 
-	@Override
-	protected void preprocess() {
-		BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "表单项编码不能为空！");
-		BusinessException.check(StringUtil.isNotBlank(vo.getName()), "表单项名称不能为空！");
-		BusinessException.check(StringUtil.isNotBlank(vo.getFormType()), "表单项类型不能为空！");
-		noCheckDiff();
-	}
+    @Override
+    protected void preprocess() {
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "表单项编码不能为空！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "表单项名称不能为空！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getFormType()), "表单项类型不能为空！");
+        this.setCheckDiff(false);
+    }
 
-	@Override
-	protected void doModify(SysCustomField entity) {
-		entity.setFieldCode(vo.getFieldCode());
-		entity.setName(vo.getName());
-		entity.setComponentName(vo.getComponentName());
-		entity.setDefaultValue(JSON.toJSONString(vo.getDefaultValue()));
-		entity.setFormPosition(vo.getFormPosition());
-		entity.setFormType(vo.getFormType());
-		entity.setHidden(vo.isHidden());
-		entity.setInputTips(vo.getInputTips());
-		entity.setRequired(vo.isRequired());
-		entity.setOptionDataType(vo.getOptionDataType());
-		entity.setOptionDictType(vo.getOptionDictType());
-		entity.setPrecisions(vo.getPrecisions());
-		entity.setMaxNumRestrict(vo.getMaxNumRestrict());
-		entity.setMinNumRestrict(vo.getMinNumRestrict());
-		entity.setSetting(vo.getSetting());
-		entity.setStylePercent(vo.getStylePercent());
-		entity.setUniqueness(vo.isUnique());
-		entity.setXAxis(vo.getXAxis());
-		entity.setYAxis(vo.getYAxis());
-		entity.setRelativeForm(formDao.findByUnsureCode(vo.getRelativeFormCode()));
-		entity.setCodeGenerator(generatorDao.findByUnsureCode(vo.getGeneratorCode()));
-	}
+    @Override
+    protected void doModify(SysCustomField entity) {
+        entity.setFieldCode(vo.getFieldCode());
+        entity.setName(vo.getName());
+        entity.setComponentName(vo.getComponentName());
+        entity.setDefaultValue(JSON.toJSONString(vo.getDefaultValue()));
+        entity.setFormPosition(vo.getFormPosition());
+        entity.setFormType(vo.getFormType());
+        entity.setHidden(vo.isHidden());
+        entity.setInputTips(vo.getInputTips());
+        entity.setRequired(vo.isRequired());
+        entity.setOptionDataType(vo.getOptionDataType());
+        entity.setOptionDictType(vo.getOptionDictType());
+        entity.setPrecisions(vo.getPrecisions());
+        entity.setMaxNumRestrict(vo.getMaxNumRestrict());
+        entity.setMinNumRestrict(vo.getMinNumRestrict());
+        entity.setSetting(vo.getSetting());
+        entity.setStylePercent(vo.getStylePercent());
+        entity.setUniqueness(vo.isUnique());
+        entity.setXAxis(vo.getXAxis());
+        entity.setYAxis(vo.getYAxis());
+        entity.setRelativeForm(formDao.findByUnsureCode(vo.getRelativeFormCode()));
+        entity.setCodeGenerator(generatorDao.findByUnsureCode(vo.getGeneratorCode()));
+    }
 
-	@Override
-	protected void createLog() { }
+    @Override
+    protected void createLog() {
+    }
 }

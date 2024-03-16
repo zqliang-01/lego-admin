@@ -18,6 +18,12 @@
             <artifactId>lego-system</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--flowable工作流 -->
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-spring-boot-starter-process</artifactId>
+            <version>6.8.0</version>
+        </dependency>
     </dependencies>
 
 </project>

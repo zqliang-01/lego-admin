@@ -1,10 +1,12 @@
 package com.lego.core.flowable;
 
-interface IFlowableTaskCompletedListener<T> {
+import java.util.Map;
 
-    void doCompleted(T vo);
+public interface IFlowableTaskCompletedListener {
 
-    Class<T> getClassType();
+    void completed(boolean isSave, Map<String, Object> variables);
+
+    void processCompleted(String code);
 
     String getTableCode();
 }

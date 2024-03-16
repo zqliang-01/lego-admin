@@ -2,6 +2,7 @@ package com.lego.crm.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.ExcelUtil;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.core.vo.JsonResponse;
@@ -59,6 +60,12 @@ public class CrmContractController extends BaseController {
     @SaCheckPermission("crm_contract_detail")
     public JsonResponse<CrmContractInfo> getByCode(@PathVariable String code) {
         return JsonResponse.success(contractService.findBy(code));
+    }
+
+    @GetMapping("/get-simple/{code}")
+    @SaCheckPermission("crm_contract_detail")
+    public JsonResponse<TypeInfo> getSimpleByCode(@PathVariable String code) {
+        return JsonResponse.success(contractService.findSimpleBy(code));
     }
 
     @PostMapping("/export")

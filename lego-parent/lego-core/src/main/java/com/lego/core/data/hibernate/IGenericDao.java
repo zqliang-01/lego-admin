@@ -1,11 +1,10 @@
 package com.lego.core.data.hibernate;
 
-import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.GenericConditionVO;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
 
 public interface IGenericDao<T extends BaseEntity> extends JpaRepository<T, Long> {
 
@@ -22,4 +21,6 @@ public interface IGenericDao<T extends BaseEntity> extends JpaRepository<T, Long
     List<T> findBy(GenericConditionVO vo);
 
     long findCountBy(GenericConditionVO vo);
+
+    boolean exists(String code);
 }

@@ -29,11 +29,7 @@
       @clickElement="handleElementClick"/>
     <task-detail
       v-if="createShow"
-      :title="taskName"
       :task-id="taskId"
-      :form-code="formCode"
-      :detail-code="detailCode"
-      :comment="comment"
       :action="{ type: 'view' }"
       @close="createShow = false"
     />
@@ -45,8 +41,7 @@ import {
   instanceProcessNodeListAPI
 } from '@/api/admin/workflow/instance'
 import {
-  taskHistoryListAPI,
-  taskFormDetailGetAPI
+  taskHistoryListAPI
 } from '@/api/admin/workflow/task'
 import BpmnViewer from '@/components/bpmn/components/Viewer'
 import TaskDetail from './TaskDetail.vue'
@@ -68,11 +63,7 @@ export default {
       processNodeInfo: {},
       createShow: false,
       detailShow: false,
-      taskId: '',
-      taskName: '',
-      formCode: '',
-      detailCode: '',
-      comment: ''
+      taskId: ''
     }
   },
   mounted() {
@@ -107,16 +98,8 @@ export default {
     },
     handleTable(type, row) {
       if (type === 'viewDetail') {
-        taskFormDetailGetAPI(row.id).then(res => {
-          this.taskId = row.id
-          this.taskName = row.name
-          if (res.data) {
-            this.detailCode = res.data.code
-            this.formCode = res.data.formKey
-            this.comment = res.data.comment
-          }
-          this.createShow = true
-        })
+        this.taskId = row.id
+        this.createShow = true
       }
     }
   }

@@ -46,11 +46,19 @@ import {
   getExtensionProperties,
   removeExtensionProperty
 } from '../../../bo-utils/extensionPropertiesUtil'
-import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
+import LucideIcon from '../../common/LucideIcon'
+import NumberTag from '../../common/NumberTag'
+import CollapseTitle from '../../common/CollapseTitle'
+import EventEmitter from '@/utils/bpmn/EventEmitter'
 
 export default {
   name: 'ElementExtensionProperties',
+  components: {
+    CollapseTitle,
+    NumberTag,
+    LucideIcon
+  },
   data() {
     return {
       extensions: [],

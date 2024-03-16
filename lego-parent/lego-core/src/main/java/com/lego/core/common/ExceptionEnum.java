@@ -3,7 +3,7 @@ package com.lego.core.common;
 public enum ExceptionEnum {
     SUCCESS(200, "成功"),
     UNKNOW_ERROR(9999, "未知异常！"),
-    SQL_ERROR(6000, "数据库脚本异常！"),
+    SQL_ERROR(6000, "数据脚本异常！"),
     BUSINESS_INVALID(3000, "业务异常！"),
     TOKEN_INVALID(4000, "Token校验不通过！"),
     AUTHORIZATION_INVALID(5000, "功能未授权！"),

@@ -20,7 +20,7 @@ import java.util.Map;
 public class SysCustomForm extends BaseEntity {
 
     private boolean enable;
-    private String definitionId;
+    private String simpleApiUrl;
     private String queryApiUrl;
     private String detailApiUrl;
     private String addApiUrl;
@@ -48,6 +48,7 @@ public class SysCustomForm extends BaseEntity {
         attributes.put("数据表", EntityUtil.toString(table));
         attributes.put("查询Api", StringUtil.toString(queryApiUrl));
         attributes.put("详情Api", StringUtil.toString(detailApiUrl));
+        attributes.put("简讯Api", StringUtil.toString(simpleApiUrl));
         attributes.put("新增Api", StringUtil.toString(addApiUrl));
         attributes.put("修改Api", StringUtil.toString(updateApiUrl));
         attributes.put("删除Api", StringUtil.toString(deleteApiUrl));

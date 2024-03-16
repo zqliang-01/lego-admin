@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericSearchVO;
 import ${PackageName}.action.Add${ClassName}Action;
 import ${PackageName}.action.Delete${ClassName}Action;
@@ -19,7 +20,7 @@ import ${PackageName}.vo.${ClassName}CreateVO;
 import ${PackageName}.vo.${ClassName}ModifyVO;
 
 @Service
-public class ${ClassName}Service extends BusiService<I${ClassName}Dao, ${ClassName}Assembler> implements I${ClassName}Service {
+public class ${ClassName}Service extends BusService<I${ClassName}Dao, ${ClassName}Assembler> implements I${ClassName}Service {
 
     @Override
     public LegoPage<${ClassName}Info> findPageBy(GenericSearchVO vo) {
@@ -31,6 +32,12 @@ public class ${ClassName}Service extends BusiService<I${ClassName}Dao, ${ClassNa
     public ${ClassName}Info findBy(String code) {
         ${ClassName} ${FieldName} = dao.findByCode(code);
         return assembler.create(${FieldName});
+    }
+
+    @Override
+    public TypeInfo findSimpleBy(String code) {
+        ${ClassName} ${FieldName} = dao.findByCode(code);
+        return assembler.createTypeInfo(${FieldName});
     }
 
     @Override
@@ -60,5 +67,12 @@ public class ${ClassName}Service extends BusiService<I${ClassName}Dao, ${ClassNa
         for (String code : codes) {
             new Delete${ClassName}Action(operatorCode, code).run();
         }
+    }
+
+    @Override
+    public void updateCheckStatus(String code, String checkStatus) {
+        ${ClassName} ${FieldName} = dao.findByCode(code);
+        ${FieldName}.updateCheckStatus(checkStatus);
+        dao.save(${FieldName});
     }
 }

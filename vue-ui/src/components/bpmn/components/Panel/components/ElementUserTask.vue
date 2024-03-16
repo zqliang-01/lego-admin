@@ -88,11 +88,13 @@
 </template>
 
 <script>
+import LucideIcon from '../../common/LucideIcon'
+import CollapseTitle from '../../common/CollapseTitle'
+import SelectTree from '@/components/NewCom/SelectTree'
+import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { depSimpleListAPI } from '@/api/admin/dept'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { roleSimpleListAPI } from '@/api/admin/role'
-import SelectTree from '@/components/NewCom/SelectTree'
-import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil'
 import { debounce } from 'min-dash'
@@ -101,7 +103,9 @@ import { setProperty, setModdleProperty, createElement } from '../../../bo-utils
 export default {
   name: 'ElementUserTask',
   components: {
-    SelectTree
+    SelectTree,
+    CollapseTitle,
+    LucideIcon
   },
   data() {
     return {
@@ -193,6 +197,10 @@ export default {
       }
     },
     changeDataType(dataType) {
+      if (this.multiLoopType !== 'Null') {
+        this.multiLoopType = 'Null'
+        this.changeMultiLoopType()
+      }
       if (dataType === 'USERS') {
         employeeSimpleListAPI().then(res => {
           this.userOptions = res.data

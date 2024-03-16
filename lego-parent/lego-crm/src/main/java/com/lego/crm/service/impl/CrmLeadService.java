@@ -2,6 +2,7 @@ package com.lego.crm.service.impl;
 
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.crm.action.AddCrmLeadAction;
 import com.lego.crm.action.DeleteCrmLeadAction;
@@ -33,6 +34,12 @@ public class CrmLeadService extends BusService<ICrmLeadDao, CrmLeadAssembler> im
     }
 
     @Override
+    public TypeInfo findSimpleBy(String code) {
+        CrmLead lead = dao.findByCode(code);
+        return assembler.createTypeInfo(lead);
+    }
+
+    @Override
     public List<CrmLeadInfo> findBy(GenericSearchVO vo) {
         List<CrmLead> leads = dao.findBy(buildCondition(vo));
         return assembler.create(leads);
@@ -59,5 +66,12 @@ public class CrmLeadService extends BusService<ICrmLeadDao, CrmLeadAssembler> im
         for (String code : codes) {
             new DeleteCrmLeadAction(operatorCode, code).run();
         }
+    }
+
+    @Override
+    public void updateCheckStatus(String code, String checkStatus) {
+        CrmLead lead = dao.findByCode(code);
+        lead.updateCheckStatus(checkStatus);
+        dao.save(lead);
     }
 }

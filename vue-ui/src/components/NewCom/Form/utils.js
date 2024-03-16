@@ -14,10 +14,10 @@ export function getFormFieldShowValue(formType, value, placeholder = '--') {
   } else if (formType === 'percent') {
     return isEmpty(value) ? placeholder : `${value}%`
   } else if (['select', 'user', 'structure', 'entity'].includes(formType)) {
-    if (!isObject(value)) {
-      return isEmpty(value) ? placeholder : value
+    if (isObject(value)) {
+      return isEmpty(value) ? placeholder : value.name
     }
-    return isEmpty(value) ? placeholder : value.name
+    return isEmpty(value) ? placeholder : value
   } else if (formType === 'checkbox') {
     return isArray(value) ? value.map(item => item.name).join() : placeholder
   }

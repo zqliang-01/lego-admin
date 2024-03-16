@@ -119,19 +119,19 @@ export default {
       previewData: [],
       fieldList: [
         [
-          { fieldCode: 'code', name: '表名', formType: 'select', width: '150', unique: true, required: true },
+          { fieldCode: 'code', name: '表名', formType: 'select', filterable: true, width: '150', unique: true, required: true, tipType: 'tooltip', inputTips: '数据库表名，会自动读取数据库表' },
           { fieldCode: 'name', name: '功能名称', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: '功能菜单名称，对应前台菜单名' }
         ],
         [
           { fieldCode: 'urlName', name: '资源名称', formType: 'text', width: '100', required: true, xAxis: 4, tipType: 'tooltip', inputTips: 'Url地址路径，前端api以及后端Controller使用' },
-          { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: '生成在哪个java包下，例如 com.lego.system' }
+          { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: 'JAVA文件包名，例如 com.lego.system' }
         ],
         [
           { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '可理解为子系统名，对应前台应用以及后端微服务模块' },
           { fieldCode: 'permissionCode', name: '权限编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '权限编码，格式为-模块编码_一级菜单_二级菜单_...' }
         ],
         [
-          { fieldCode: 'className', name: '类名', formType: 'text', width: '100', required: true },
+          { fieldCode: 'className', name: '类名', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: 'JAVA类名' },
           { fieldCode: 'fieldName', name: '属性名称', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '属性命名，涉及JAVA类属性命名以及前端路由名等' }
         ],
         [

@@ -32,11 +32,6 @@
             size="small"
             icon="el-icon-delete"
             @click="handleTable('delete', scope.row, scope.$index)">删除</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-video-play"
-            @click="handleTable('start', scope.row, scope.$index)">启动</el-button>
         </template>
       </lego-table>
     </div>

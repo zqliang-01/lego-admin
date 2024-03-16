@@ -31,8 +31,8 @@
         </flexbox>
         <flexbox class="info-cell">
           <i :class="'tie' | iconPre" />
-          <div class="info-cell__label">岗位</div>
-          <div class="info-cell__value text-one-line">{{ userData.post }}</div>
+          <div class="info-cell__label">状态</div>
+          <div class="info-cell__value text-one-line">{{ userData.enable ? '在网' : '离网' }}</div>
         </flexbox>
         <flexbox class="info-cell">
           <i :class="'b-mobile' | iconPre" />

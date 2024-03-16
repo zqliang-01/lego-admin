@@ -9,7 +9,6 @@ import '@/permission'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss'
 import 'vue2-animate/dist/vue2-animate.min.css'
-import 'highlight.js/styles/atom-one-dark-reasonable.css'
 import '@/components/bpmn/theme/index.scss'
 
 import config from '@/config'
@@ -22,8 +21,6 @@ cache.loadingCache()
 // 加载基础组件
 import ElementUI from 'element-ui'
 Vue.use(ElementUI)
-import { vuePlugin } from '@/components/bpmn/highlight'
-Vue.use(vuePlugin)
 import VueBus from 'vue-bus'
 Vue.use(VueBus)
 import FileUpload from '@/components/FileUpload/index.js'
@@ -32,8 +29,6 @@ import FileSelect from '@/components/NewCom/File/Select/main.js'
 Vue.use(FileSelect)
 import PreviewFile from '@/components/PreviewFile/main.js'
 Vue.use(PreviewFile)
-import Common from '@/components/bpmn/components/common'
-Vue.use(Common)
 // 限制数据数值
 import inputLimit from './directives/inputLimit'
 Vue.use(inputLimit)
@@ -56,8 +51,6 @@ Vue.component('LegoAllDetail', LegoAllDetail)
 import LegoAllCreate from '@/components/LegoAllCreate'
 Vue.component('LegoAllCreate', LegoAllCreate)
 
-import ResetPopover from './utils/bpmn/resetPopover'
-Vue.directive('r-popover', ResetPopover)
 /** 懒加载图片 */
 import VueSrc from './directives/src'
 Vue.directive('src', VueSrc)

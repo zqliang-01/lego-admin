@@ -1,14 +1,13 @@
 package com.lego.crm.vo;
 
 
-import com.lego.core.vo.VO;
-
+import com.lego.core.vo.ModifyVO;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CrmCustomerModifyVO extends VO {
+public class CrmCustomerModifyVO extends ModifyVO {
 
     private static final long serialVersionUID = 1L;
 

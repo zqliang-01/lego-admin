@@ -35,11 +35,11 @@ public abstract class EntityAction<E extends BaseEntity, D extends IGenericDao<E
         CoreException.check(targetObject != null, "targetEntity is null");
         this.targetEntity = targetObject;
         if (targetEntity instanceof BusEntity) {
-            BusEntity busiEntity = (BusEntity) targetEntity;
+            BusEntity busEntity = (BusEntity) targetEntity;
             if (ActionType.ADD == getActionType()) {
-                busiEntity.setCreatorCode(operatorCode);
+                busEntity.setCreatorCode(operatorCode);
             }
-            busiEntity.setUpdateTime(DateUtil.currentDateTime());
+            busEntity.setUpdateTime(DateUtil.currentDateTime());
         }
     }
 

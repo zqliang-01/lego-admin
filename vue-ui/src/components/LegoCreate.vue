@@ -7,6 +7,7 @@
     <create-sections title="基本信息">
       <el-form
         ref="createForm"
+        v-if="!loading"
         :model="fieldFrom"
         :rules="fieldRules"
         :validate-on-rule-change="false"
@@ -43,7 +44,7 @@ export default {
       updateRequest: {}
     }
   },
-  created() {
+  mounted() {
     this.initField().then(res => {
       this.initRequest(res.data.form)
       this.dataFieldList = res.data.fields

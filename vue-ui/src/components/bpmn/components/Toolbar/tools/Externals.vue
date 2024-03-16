@@ -117,9 +117,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import LucideIcon from '../../common/LucideIcon'
+import ResetPopover from '@/utils/bpmn/resetPopover'
 
 export default {
   name: 'BpmnExternals',
+  components: {
+    LucideIcon
+  },
+  directives: {
+    'r-popover': ResetPopover
+  },
   data() {
     return {
       listenerFilter: '',

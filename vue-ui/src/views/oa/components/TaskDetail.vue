@@ -1,8 +1,9 @@
 <template>
   <xr-create
     :loading="loading"
-    :title="createTitle"
+    :title="taskName"
     confirm-button-text="通过"
+    :showCancel="isView"
     :showConfirm="!isView"
     @close="close"
     @save="saveClick">
@@ -57,29 +58,38 @@
         type="danger"
         icon="el-icon-circle-close"
         @click.native="handleButton('reject')">拒绝</el-button>
+      <el-button
+        type="primary"
+        icon="el-icon-paperclip"
+        @click.native="handleSave">保存</el-button>
     </template>
+    <user-select
+      :visible.sync="showSelectEmployee"
+      @selected="handleEmployeeSelect"/>
   </xr-create>
 </template>
 
 <script>
 import {
   taskCompleteAPI,
-  taskRejectAPI
+  taskSaveAPI,
+  taskRejectAPI,
+  taskDelegateAPI,
+  taskTransferAPI,
+  taskFormDetailGetAPI
 } from '@/api/admin/workflow/task'
+import { createFieldListAPI } from '@/api/admin/formField'
 import CreateMixin from '@/components/Mixins/LegoCreate'
+import UserSelect from '@/components/NewCom/UserSelect'
 
 export default {
-  name: 'TaskCompleteForm',
+  name: 'TaskDetail',
   mixins: [CreateMixin],
+  components: { UserSelect },
   props: {
-    taskId: String,
-    detailCode: String,
-    comment: String
+    taskId: String
   },
   computed: {
-    createTitle() {
-      return this.title
-    },
     isView() {
       return this.action.type === 'view'
     }
@@ -91,6 +101,9 @@ export default {
   },
   data() {
     return {
+      taskName: '',
+      selectUser: [],
+      showSelectEmployee: false,
       otherFieldFrom: {},
       otherFieldRules: {
         comment: [{ required: true, message: '审批意见不能为空', trigger: 'blur' }]
@@ -100,6 +113,7 @@ export default {
           { fieldCode: 'comment', name: '审批意见', formType: 'textarea', required: true, stylePercent: 100 }
         ]
       ],
+      handleType: '',
       addRequest: {},
       updateRequest: {},
       detailRequest: {}
@@ -110,20 +124,24 @@ export default {
   },
   methods: {
     init() {
-      this.initField().then(fieldResponse => {
-        this.$set(this.otherFieldFrom, 'comment', this.comment)
-        if (fieldResponse && fieldResponse.data) {
-          this.initRequest(fieldResponse.data.form)
-          if (this.detailCode) {
-            this.detailRequest(this.detailCode).then(res => {
-              this.dataFieldList = fieldResponse.data.fields
-              this.detailData = res.data
+      taskFormDetailGetAPI(this.taskId).then(taskResponse => {
+        const task = taskResponse.data
+        this.taskName = task.name
+        this.$set(this.otherFieldFrom, 'comment', task.comment)
+        if (task.formKey) {
+          createFieldListAPI(task.formKey).then(res => {
+            this.dataFieldList = res.data.fields
+            this.initRequest(res.data.form)
+            if (task.code) {
+              this.detailRequest(task.code).then(res => {
+                this.actionType = 'update'
+                this.detailData = res.data
+                this.initValue()
+              })
+            } else if (!this.isView) {
               this.initValue()
-            })
-          } else {
-            this.dataFieldList = fieldResponse.data.fields
-            this.initValue()
-          }
+            }
+          })
         }
       })
     },
@@ -144,25 +162,80 @@ export default {
         })
       })
     },
+    handleSave() {
+      this.$refs.createForm.validate(valid => {
+        if (!valid) {
+          return
+        }
+        this.$refs.otherFrom.validate(validOther => {
+          if (!validOther) {
+            return
+          }
+          this.loading = true
+          this.otherFieldFrom.id = this.taskId
+          this.otherFieldFrom.variables = this.fieldFrom
+          taskSaveAPI(this.otherFieldFrom).then(() => {
+            this.loading = false
+            this.actionType = 'update'
+            this.$emit('handle', { type: 'save-success', msg: '任务保存！' })
+          }).catch(() => {
+            this.loading = false
+          })
+        })
+      })
+    },
     handleButton(type) {
       this.$refs.otherFrom.validate(valid => {
         if (!valid) {
           return
         }
         if (type !== 'reject') {
-          this.$message.error('暂未实现该操作！')
+          this.showSelectEmployee = true
+          this.handleType = type
           return
         }
+        this.$confirm('此操作将拒绝任务【' + this.taskName + '】并回退到上一审批节点，是否继续?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.loading = true
+          this.otherFieldFrom.id = this.taskId
+          taskRejectAPI(this.otherFieldFrom).then(() => {
+            this.loading = false
+            this.$emit('handle', { type: 'reject-success', msg: '拒绝成功，任务回退到上一节点！' })
+            this.close()
+          }).catch(() => {
+            this.loading = false
+          })
+        })
+      })
+    },
+    handleEmployeeSelect(val) {
+      if (this.handleType === 'delegate') {
         this.loading = true
         this.otherFieldFrom.id = this.taskId
-        taskRejectAPI(this.otherFieldFrom).then(() => {
+        this.otherFieldFrom.employeeCode = val
+        taskDelegateAPI(this.otherFieldFrom).then(() => {
           this.loading = false
-          this.$emit('handle', { type: 'reject-success', msg: '拒绝成功，任务回退到上一节点！' })
+          this.$emit('handle', { type: 'delegate-success', msg: '任务委派成功！' })
           this.close()
         }).catch(() => {
           this.loading = false
         })
-      })
+        return
+      }
+      if (this.handleType === 'transfer') {
+        this.loading = true
+        this.otherFieldFrom.id = this.taskId
+        this.otherFieldFrom.employeeCode = val
+        taskTransferAPI(this.otherFieldFrom).then(() => {
+          this.loading = false
+          this.$emit('handle', { type: 'delegate-success', msg: '任务转办成功！' })
+          this.close()
+        }).catch(() => {
+          this.loading = false
+        })
+        return
+      }
     }
   }
 }

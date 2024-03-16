@@ -4,14 +4,14 @@ package ${PackageName}.vo;
 import ${import};
 #end
 
-import com.lego.core.vo.VO;
+import com.lego.core.vo.ModifyVO;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class ${ClassName}ModifyVO extends VO {
+public class ${ClassName}ModifyVO extends ModifyVO {
 
     private static final long serialVersionUID = 1L;
 

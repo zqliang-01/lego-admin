@@ -50,8 +50,22 @@ export default [
       path: 'undo',
       component: () => import('@/views/oa/undo'),
       meta: {
-        title: '代办任务',
+        title: '待办任务',
         icon: 'contract'
+      }
+    }]
+  },
+  {
+    ...layout({
+      permissions: ['oa', 'unclaimed']
+    }),
+    children: [{
+      name: 'claim',
+      path: 'claim',
+      component: () => import('@/views/oa/claim'),
+      meta: {
+        title: '待签任务',
+        icon: 'icon-related-tasks'
       }
     }]
   },

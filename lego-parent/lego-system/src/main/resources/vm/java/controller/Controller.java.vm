@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.ExcelUtil;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.core.vo.JsonResponse;
@@ -62,6 +63,12 @@ public class ${ClassName}Controller extends BaseController {
     @SaCheckPermission("${PermissionCode}_detail")
     public JsonResponse<${ClassName}Info> getByCode(@PathVariable String code) {
         return JsonResponse.success(${FieldName}Service.findBy(code));
+    }
+
+    @GetMapping("/get-simple/{code}")
+    @SaCheckPermission("crm_contract_detail")
+    public JsonResponse<TypeInfo> getSimpleByCode(@PathVariable String code) {
+        return JsonResponse.success(${FieldName}Service.findSimpleBy(code));
     }
 
     @PostMapping("/export")

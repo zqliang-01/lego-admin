@@ -577,7 +577,7 @@ export default {
   &.body {
     position: relative;
     width: 100%;
-    height: calc(100% + 15px);
+    height: 100%;
     user-select: none;
     overflow: hidden;
 

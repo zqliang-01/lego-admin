@@ -16,6 +16,7 @@ public class ModifyCrmContractAction extends ModifyAction<CrmContract, ICrmContr
 
     public ModifyCrmContractAction(String operatorCode, CrmContractModifyVO vo) {
         super("crm_contract", operatorCode, vo.getCode());
+        this.setCheckDiff(vo.isCheckDiff());
         this.vo = vo;
     }
 

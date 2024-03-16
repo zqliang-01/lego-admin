@@ -4,7 +4,6 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.flowable.FlowableService;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.assembler.FlowableInstanceAssembler;
 import com.lego.flowable.assembler.FlowableModelAssembler;
@@ -30,7 +29,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

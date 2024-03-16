@@ -2,6 +2,7 @@ package com.lego.crm.service.impl;
 
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.crm.action.AddCrmCustomerAction;
 import com.lego.crm.action.DeleteCrmCustomerAction;
@@ -33,6 +34,12 @@ public class CrmCustomerService extends BusService<ICrmCustomerDao, CrmCustomerA
     }
 
     @Override
+    public TypeInfo findSimpleBy(String code) {
+        CrmCustomer customer = dao.findByCode(code);
+        return assembler.createTypeInfo(customer);
+    }
+
+    @Override
     public List<CrmCustomerInfo> findBy(GenericSearchVO vo) {
         List<CrmCustomer> customers = dao.findBy(buildCondition(vo));
         return assembler.create(customers);
@@ -59,5 +66,12 @@ public class CrmCustomerService extends BusService<ICrmCustomerDao, CrmCustomerA
         for (String code : codes) {
             new DeleteCrmCustomerAction(operatorCode, code).run();
         }
+    }
+
+    @Override
+    public void updateCheckStatus(String code, String checkStatus) {
+        CrmCustomer customer = dao.findByCode(code);
+        customer.updateCheckStatus(checkStatus);
+        dao.save(customer);
     }
 }

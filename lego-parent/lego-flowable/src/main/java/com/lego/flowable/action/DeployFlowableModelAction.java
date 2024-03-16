@@ -3,9 +3,9 @@ package com.lego.flowable.action;
 import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
+import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
-import com.lego.flowable.vo.ProcessConstants;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.RepositoryService;
@@ -41,7 +41,7 @@ public class DeployFlowableModelAction extends MaintainAction {
 
         byte[] bpmnBytes = repositoryService.getModelEditorSource(model.getId());
         BusinessException.check(bpmnBytes != null, "模型[{0}]尚未设计流程，部署失败！", id);
-        String processName = model.getName() + ProcessConstants.SUFFIX;
+        String processName = model.getName() + FlowableProcessConstants.SUFFIX;
         // 部署流程
         Deployment deployment = repositoryService.createDeployment()
             .name(model.getName())

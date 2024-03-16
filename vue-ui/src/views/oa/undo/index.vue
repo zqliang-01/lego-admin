@@ -1,11 +1,11 @@
 <template>
   <div class="system-customer">
     <xr-header
-      :icon-class="'double-gear'"
       :show-search="true"
+      icon-class="contract"
       icon-color="#1CBAF5"
-      label="代办任务"
-      placeholder="请输入模型名称搜索"
+      label="待办任务"
+      placeholder="请输入任务名称搜索"
       @search="onSearch"/>
     <div class="customer-content">
       <lego-table
@@ -44,9 +44,7 @@
     </el-dialog>
     <task-detail
       v-if="createShow"
-      title="任务表单"
       :task-id="taskId"
-      :form-code="formCode"
       :action="{ type: 'save' }"
       @close="createShow = false"
       @handle="actionHandle"
@@ -150,20 +148,23 @@ export default {
       }
       if (type === 'complete') {
         this.taskId = item.id
-        this.formCode = item.formCode
         this.createShow = true
         return
       }
       if (type === 'reject') {
-        this.loading = true
-        taskRejectAPI({
-          id: item.id
+        this.$confirm('此操作将拒绝任务【' + item.name + '】并回退到上一审批节点，是否继续?', '提示', {
+          type: 'warning'
         }).then(() => {
-          this.loading = false
-          this.$message.success('任务已拒绝，流程已回退到上一节点！')
-          this.refresh()
-        }).catch(() => {
-          this.loading = false
+          this.loading = true
+          taskRejectAPI({
+            id: item.id
+          }).then(() => {
+            this.loading = false
+            this.$message.success('任务已拒绝，流程已回退到上一节点！')
+            this.refresh()
+          }).catch(() => {
+            this.loading = false
+          })
         })
         return
       }

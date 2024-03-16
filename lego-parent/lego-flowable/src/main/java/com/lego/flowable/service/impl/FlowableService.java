@@ -1,4 +1,4 @@
-package com.lego.core.flowable;
+package com.lego.flowable.service.impl;
 
 import com.lego.core.assembler.BaseAssembler;
 import com.lego.core.dto.LegoPage;

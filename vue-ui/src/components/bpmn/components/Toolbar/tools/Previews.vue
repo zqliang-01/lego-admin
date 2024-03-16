@@ -10,7 +10,7 @@
 
     <el-dialog :title="modelTitle" :visible.sync="codeModelVisible" width="72vw" append-to-body destroy-on-close>
       <div class="preview-model">
-        <highlightjs :code="codeString" :language="codeLanguage" />
+        <pre class="code-content"><code v-html="highlightedCode"/></pre>
       </div>
     </el-dialog>
   </el-button>
@@ -19,6 +19,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { catchError } from '@/utils/bpmn/printCatch'
+import hljs from '@/components/highlight'
 
 export default {
   name: 'BpmnPreviews',
@@ -26,6 +27,13 @@ export default {
     ...mapGetters(['getModeler']),
     modelTitle() {
       return this.codeLanguage === 'xml' ? '预览 XML' : '预览 JSON'
+    },
+    highlightedCode() {
+      if (!this.codeString) {
+        return ''
+      }
+      const result = hljs.highlight(this.codeLanguage, this.codeString || '', true)
+      return result.value || '&nbsp;'
     }
   },
   data() {
@@ -61,4 +69,4 @@ export default {
     }
   }
 }
-</script>
+</script>@/components/highlight

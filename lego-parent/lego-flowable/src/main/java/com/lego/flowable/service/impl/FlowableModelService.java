@@ -1,9 +1,9 @@
 package com.lego.flowable.service.impl;
 
 import com.lego.core.dto.LegoPage;
-import com.lego.core.flowable.FlowableService;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.action.AddFlowableModelAction;
+import com.lego.flowable.action.DeleteFlowableModelAction;
 import com.lego.flowable.action.DeployFlowableModelAction;
 import com.lego.flowable.action.DesignFlowableModelAction;
 import com.lego.flowable.action.ModifyFlowableModelAction;
@@ -15,7 +15,6 @@ import com.lego.flowable.vo.FlowableModelCreateVO;
 import com.lego.flowable.vo.FlowableModelDesignVO;
 import com.lego.flowable.vo.FlowableModelModifyVO;
 import com.lego.flowable.vo.FlowableModelSearchVO;
-import com.lego.system.action.DeleteSysFlowableModelAction;
 import org.flowable.engine.repository.Model;
 import org.flowable.engine.repository.ModelQuery;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +75,7 @@ public class FlowableModelService extends FlowableService<FlowableModelAssembler
 
     @Override
     public void delete(String operatorCode, String id) {
-        new DeleteSysFlowableModelAction(operatorCode, id).run();
+        new DeleteFlowableModelAction(operatorCode, id).run();
     }
 
     @Override

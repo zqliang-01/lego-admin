@@ -2,6 +2,7 @@ package com.lego.crm.service.impl;
 
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.crm.action.AddCrmContractAction;
 import com.lego.crm.action.DeleteCrmContractAction;
@@ -33,6 +34,12 @@ public class CrmContractService extends BusService<ICrmContractDao, CrmContractA
     }
 
     @Override
+    public TypeInfo findSimpleBy(String code) {
+        CrmContract contract = dao.findByCode(code);
+        return assembler.createTypeInfo(contract);
+    }
+
+    @Override
     public List<CrmContractInfo> findBy(GenericSearchVO vo) {
         List<CrmContract> contracts = dao.findBy(buildCondition(vo));
         return assembler.create(contracts);
@@ -59,5 +66,12 @@ public class CrmContractService extends BusService<ICrmContractDao, CrmContractA
         for (String code : codes) {
             new DeleteCrmContractAction(operatorCode, code).run();
         }
+    }
+
+    @Override
+    public void updateCheckStatus(String code, String checkStatus) {
+        CrmContract contract = dao.findByCode(code);
+        contract.updateCheckStatus(checkStatus);
+        dao.save(contract);
     }
 }

@@ -13,11 +13,19 @@
 
 <script>
 import { getDocumentValue, setDocumentValue } from '../../../bo-utils/documentationUtil'
+import EditItem from '../../common/EditItem'
+import LucideIcon from '../../common/LucideIcon'
+import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 
 export default {
   name: 'ElementDocumentations',
+  components: {
+    CollapseTitle,
+    LucideIcon,
+    EditItem
+  },
   data() {
     return {
       elementDoc: ''

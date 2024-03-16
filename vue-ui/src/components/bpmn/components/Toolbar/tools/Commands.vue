@@ -18,11 +18,19 @@
 <script>
 import { mapGetters } from 'vuex'
 import { createNewDiagram } from '@/utils/bpmn/xml'
+import LucideIcon from '../../common/LucideIcon'
+import ResetPopover from '@/utils/bpmn/resetPopover'
 
 export default {
   name: 'BpmnCommands',
+  components: {
+    LucideIcon
+  },
   computed: {
     ...mapGetters(['getModeler'])
+  },
+  directives: {
+    'r-popover': ResetPopover
   },
   methods: {
     getCommand() {

@@ -1,12 +1,12 @@
-package com.lego.flowable.vo;
+package com.lego.core.flowable;
 
-public interface ProcessConstants {
+public interface FlowableProcessConstants {
 
     String SUFFIX = ".bpmn";
 
-    String CUSTOM_DATA_TYPE = "dataType";
-
     String FORM_UNIQUE_KEY = "code";
+
+    String CUSTOM_DATA_TYPE = "dataType";
 
     String FORM_LOCAL_SCOPE = "localScope";
 }
