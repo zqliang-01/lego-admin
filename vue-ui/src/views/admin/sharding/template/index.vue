@@ -17,6 +17,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
+        :edit-button-width="100"
         @onList="getList"
         @onEdit="handleTable">
         <template slot-scope="scope">

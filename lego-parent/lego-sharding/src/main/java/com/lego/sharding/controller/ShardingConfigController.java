@@ -3,10 +3,13 @@ package com.lego.sharding.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.exception.BusinessException;
 import com.lego.core.util.ExcelUtil;
+import com.lego.core.util.StringUtil;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
+import com.lego.sharding.config.ShardingDataSourceConfig;
 import com.lego.sharding.dto.ShardingConfigInfo;
 import com.lego.sharding.service.IShardingConfigService;
 import com.lego.sharding.vo.ShardingConfigCreateVO;
@@ -28,6 +31,9 @@ public class ShardingConfigController extends BaseController {
 
     @Autowired
     private IShardingConfigService configService;
+
+    @Autowired
+    private ShardingDataSourceConfig shardingDataSourceConfig;
 
     @PostMapping("/add")
     @SaCheckPermission("manage_sharding_config_add")
@@ -80,6 +86,13 @@ public class ShardingConfigController extends BaseController {
     public void exportAll(@RequestBody GenericSearchVO vo, HttpServletResponse response) {
         List<ShardingConfigInfo> datas = configService.findBy(vo);
         ExcelUtil.exportExcel(datas, "分片规则数据", ShardingConfigInfo.class, response);
+    }
+
+    @PostMapping("/test/{id}")
+    @SaCheckPermission("manage_sharding_config_update")
+    public JsonResponse<List> test(@PathVariable Long id, String sql) throws Exception {
+        BusinessException.check(StringUtil.isNotBlank(sql), "执行SQL不能为空！");
+        return JsonResponse.success(shardingDataSourceConfig.test(id, sql));
     }
 
 }

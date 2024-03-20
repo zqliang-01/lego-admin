@@ -44,7 +44,7 @@ public class SysCustomFormController extends BaseController {
     }
 
     @GetMapping("/get-init")
-    @SaCheckPermission("manage_customForm_add")
+    @SaCheckPermission("manage_customForm_update")
     public JsonResponse<SysCustomFormInfo> getInit(String tableCode) {
         return JsonResponse.success(customFormService.findInitByTable(tableCode));
     }

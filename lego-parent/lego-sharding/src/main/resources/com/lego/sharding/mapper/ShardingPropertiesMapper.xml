@@ -5,11 +5,19 @@
     <select id="selectValidBy" resultType="com.lego.core.dto.TypeInfo">
 		SELECT t.CODE, t.NAME
 		FROM sharding_properties t
-		JOIN sharding_template tmp ON tmp.ID = t.TEMPLATE_ID
-		JOIN sharding_config rc ON rc.ID = t.CONFIG_ID
-		WHERE t.ENABLE = 1
-		    AND t.ENTITY_CODE = #{entityCode}
-			AND tmp.CODE = #{templateCode}
-			AND rc.CODE = #{configCode}
+		LEFT JOIN sharding_template tmp ON tmp.ID = t.TEMPLATE_ID
+		LEFT JOIN sharding_config rc ON rc.ID = t.CONFIG_ID
+		<where>
+			t.ENABLE = 1
+			<if test="entityId != null">
+				AND t.ENTITY_ID = #{entityId}
+			</if>
+			<if test="templateCode != null">
+				AND tmp.CODE = #{templateCode}
+			</if>
+			<if test="configCode != null">
+				AND rc.CODE = #{configCode}
+			</if>
+		</where>
 	</select>
 </mapper>

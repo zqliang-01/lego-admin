@@ -29,7 +29,7 @@
         :icon="'screening' | iconPre"
         type="primary"
         class="filter-button"
-        @click="showFilterClick">高级筛选</el-button>
+        @click="showFilter = true">高级筛选</el-button>
       <el-button
         v-if="sortData && sortData.order && sortData.column"
         type="primary"
@@ -170,10 +170,6 @@ export default {
     }
   },
   methods: {
-    /** 展示高级筛选 */
-    showFilterClick() {
-      this.showFilter = true
-    },
     /** 高级筛选选择 */
     handleFilter(data) {
       this.filterObj = data

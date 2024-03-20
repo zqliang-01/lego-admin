@@ -1,12 +1,10 @@
 package com.lego.sharding.mapper;
 
-import java.util.List;
+import com.lego.sharding.dto.config.ShardingMetaDataSourceInfo;
 
-import com.lego.core.dto.TypeInfo;
+import java.util.List;
 
 public interface ShardingDataSourceMapper {
 
-	List<TypeInfo> selectValid();
-
-	List<TypeInfo> selectValidPropertiesBy(String code);
+    List<ShardingMetaDataSourceInfo> selectValid();
 }

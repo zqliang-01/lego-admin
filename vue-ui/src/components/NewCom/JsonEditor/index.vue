@@ -2,9 +2,8 @@
   <div class="code-json-editor">
     <vue-json-editor
       v-model="jsonContent"
-      :show-btns="false"
       :expanded-on-start="true"
-      mode="code"
+      mode="text"
       lang="zh"
       @json-change="onJsonChange"
       @json-save="onJsonSave"

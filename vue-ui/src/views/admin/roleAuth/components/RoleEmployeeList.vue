@@ -104,7 +104,7 @@ export default {
       pageSize: 15,
       currentPage: 1,
       pageSizes: [15, 30, 45, 60],
-      tableHeight: document.documentElement.clientHeight - 305, // 表的高度
+      tableHeight: document.documentElement.clientHeight - 280, // 表的高度
       tableList: [
         { fieldCode: 'code', name: '工号', formType: 'text' },
         { fieldCode: 'name', name: '姓名', formType: 'text' },
@@ -236,6 +236,7 @@ export default {
   display: inline-block;
   width: 6px;
   height: 6px;
+  margin-right: 5px;
   border-radius: 3px;
 }
 </style>

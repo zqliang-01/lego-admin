@@ -151,8 +151,7 @@ export default {
         this.$router.push({
           name: 'customField',
           params: {
-            formCode: row.code,
-            tableName: row.table.name
+            formCode: row.code
           }
         })
         return

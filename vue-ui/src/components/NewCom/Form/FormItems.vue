@@ -10,7 +10,7 @@
       :prop-prefix="propPrefix"
       :item="item"
       :index="index"
-      :field-from="fieldFrom"
+      :field-form="fieldForm"
       :disabled="disabled"
       @change="fieldChange"
     >
@@ -38,7 +38,7 @@ export default {
       type: String,
       default: ''
     },
-    fieldFrom: {
+    fieldForm: {
       type: Object,
       default: () => {
         return {}

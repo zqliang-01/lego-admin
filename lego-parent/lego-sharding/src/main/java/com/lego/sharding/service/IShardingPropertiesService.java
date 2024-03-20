@@ -1,13 +1,13 @@
 package com.lego.sharding.service;
 
-import java.util.List;
-
 import com.lego.core.dto.TypeInfo;
 import com.lego.sharding.vo.ShardingPropertiesCreateVO;
 
+import java.util.List;
+
 public interface IShardingPropertiesService {
 
-	List<TypeInfo> findBy(String entityCode, String templateCode, String configCode);
+    List<TypeInfo> findBy(Long entityId);
 
-	void add(String operatorCode, ShardingPropertiesCreateVO vo);
+    void add(String operatorCode, ShardingPropertiesCreateVO vo);
 }

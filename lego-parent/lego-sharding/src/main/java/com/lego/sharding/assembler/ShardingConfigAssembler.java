@@ -11,6 +11,7 @@ public class ShardingConfigAssembler extends EntityAssembler<ShardingConfigInfo,
     @Override
     protected ShardingConfigInfo doCreate(ShardingConfig entity) {
         ShardingConfigInfo info = new ShardingConfigInfo();
+        info.setId(entity.getId());
         info.setCode(entity.getCode());
         info.setName(entity.getName());
         info.setEnable(entity.isEnable());

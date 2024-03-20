@@ -65,7 +65,7 @@ public class SaTokenInterceptor extends SaInterceptor implements ILegoIntercepto
                 return;
             }
 
-            if (StpUtil.hasRole(Constants.ADMIN_ROLE)) {
+            if (StpUtil.hasRole(Constants.ADMIN_ROLE_CODE)) {
                 return;
             }
 

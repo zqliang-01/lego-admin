@@ -20,11 +20,11 @@ flowable:
   #history-cleaning-batchSize: 100
   idm:
     enabled: false
+  label-font-name: 宋体
+  activity-font-name: 宋体
+  annotation-font-name: 宋体
   database-schema-update: false
   async-executor-activate: false
-  standalone:
-    server:
-      enabled: false
 
 # 文件上传配置:local 本地存储、aliOss 阿里云对象存储
 lego:

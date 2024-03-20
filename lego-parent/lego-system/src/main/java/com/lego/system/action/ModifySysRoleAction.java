@@ -10,20 +10,20 @@ import com.lego.system.vo.SysRoleModifyVO;
 
 public class ModifySysRoleAction extends ModifyAction<SysRole, ISysRoleDao> {
 
-	private String name;
+    private String name;
 
-	public ModifySysRoleAction(String operatorCode, SysRoleModifyVO vo) {
-		super(SysPermissionCode.manageRole, operatorCode, vo.getCode());
-		this.name = vo.getName();
-	}
+    public ModifySysRoleAction(String operatorCode, SysRoleModifyVO vo) {
+        super(SysPermissionCode.manageRole, operatorCode, vo.getCode());
+        this.name = vo.getName();
+    }
 
-	@Override
-	protected void preprocess() {
-		BusinessException.check(!Constants.ADMIN_ROLE.equals(targetEntity.getCode()), "超级管理员角色不允许进行信息修改！");
-	}
+    @Override
+    protected void preprocess() {
+        BusinessException.check(!Constants.ADMIN_ROLE_CODE.equals(targetEntity.getCode()), "超级管理员角色不允许进行信息修改！");
+    }
 
-	@Override
-	protected void doModify(SysRole entity) {
-		entity.setName(name);
-	}
+    @Override
+    protected void doModify(SysRole entity) {
+        entity.setName(name);
+    }
 }

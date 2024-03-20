@@ -43,6 +43,15 @@ export function dataSourceListAPI(data) {
 }
 
 /**
+ * 列表
+ */
+export function dataSourceSimpleListAPI() {
+  return request({
+    url: '/back-end/sharding-data-source/list-simple'
+  })
+}
+
+/**
  * 删除
  */
 export function dataSourceDeleteAPI(data) {

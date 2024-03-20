@@ -11,22 +11,22 @@ import com.lego.system.vo.SysPermissionCode;
 
 public class AuthRoleAction extends ModifyAction<SysRole, ISysRoleDao> {
 
-	private SysPermissionAuthVO vo;
+    private SysPermissionAuthVO vo;
 
-	private ISysPermissionDao permissionDao = getDao(ISysPermissionDao.class);
+    private ISysPermissionDao permissionDao = getDao(ISysPermissionDao.class);
 
-	public AuthRoleAction(String operatorCode, SysPermissionAuthVO vo) {
-		super(SysPermissionCode.manageRole, operatorCode, vo.getRoleCode());
-		this.vo = vo;
-	}
+    public AuthRoleAction(String operatorCode, SysPermissionAuthVO vo) {
+        super(SysPermissionCode.manageRole, operatorCode, vo.getRoleCode());
+        this.vo = vo;
+    }
 
-	@Override
-	protected void preprocess() {
-		BusinessException.check(!Constants.ADMIN_ROLE.equals(vo.getRoleCode()), "超级管理员角色不允许进行授权变更！");
-	}
+    @Override
+    protected void preprocess() {
+        BusinessException.check(!Constants.ADMIN_ROLE_CODE.equals(vo.getRoleCode()), "超级管理员角色不允许进行授权变更！");
+    }
 
-	@Override
-	protected void doModify(SysRole entity) {
-		entity.setPermissions(permissionDao.findByCodes(vo.getPermissionCodes()));
-	}
+    @Override
+    protected void doModify(SysRole entity) {
+        entity.setPermissions(permissionDao.findByCodes(vo.getPermissionCodes()));
+    }
 }

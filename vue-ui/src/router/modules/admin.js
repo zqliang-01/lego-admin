@@ -186,6 +186,15 @@ export default [
     }, '/manage/sharding'),
     children: [
       {
+        path: 'config',
+        component: () => import('@/views/admin/sharding/config'),
+        meta: {
+          title: '分片规则配置',
+          requiresAuth: true,
+          permissions: ['manage', 'sharding', 'config']
+        }
+      },
+      {
         path: 'dataSource',
         component: () => import('@/views/admin/sharding/dataSource'),
         meta: {
@@ -195,21 +204,12 @@ export default [
         }
       },
       {
-        path: 'template',
-        component: () => import('@/views/admin/sharding/template/index'),
+        path: 'table',
+        component: () => import('@/views/admin/sharding/table'),
         meta: {
-          title: '分片模板配置',
+          title: '分片表配置',
           requiresAuth: true,
-          permissions: ['manage', 'sharding', 'template']
-        }
-      },
-      {
-        path: 'config',
-        component: () => import('@/views/admin/sharding/config'),
-        meta: {
-          title: '分片规则配置',
-          requiresAuth: true,
-          permissions: ['manage', 'sharding', 'config']
+          permissions: ['manage', 'sharding', 'table']
         }
       },
       {
@@ -222,12 +222,12 @@ export default [
         }
       },
       {
-        path: 'table',
-        component: () => import('@/views/admin/sharding/table'),
+        path: 'template',
+        component: () => import('@/views/admin/sharding/template/index'),
         meta: {
-          title: '分片表配置',
+          title: '分片模板配置',
           requiresAuth: true,
-          permissions: ['manage', 'sharding', 'table']
+          permissions: ['manage', 'sharding', 'template']
         }
       }
     ]

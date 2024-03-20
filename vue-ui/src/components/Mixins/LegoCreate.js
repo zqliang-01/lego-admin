@@ -52,7 +52,7 @@ export default {
       actionType: this.action.type,
       dataFieldList: [],
       detailData: {},
-      fieldFrom: {},
+      fieldForm: {},
       fieldRules: {}
     }
   },
@@ -73,7 +73,7 @@ export default {
             this.initSettingValue(field)
             field.value = this.detailData[field.fieldCode]
             field.disabled = this.getDisable(field, this.actionType)
-            this.setDefaultValue(field, this.fieldFrom, this.actionType === 'save')
+            this.setDefaultValue(field, this.fieldForm, this.actionType === 'save')
             this.fieldRules[field.fieldCode] = this.getRules(field)
           }
         })
@@ -103,7 +103,7 @@ export default {
         return
       }
       this.loading = true
-      this.saveRequest(this.fieldFrom).then(() => {
+      this.saveRequest(this.fieldForm).then(() => {
         this.loading = false
         this.close()
         this.$emit('handle', { type: 'save-success' })

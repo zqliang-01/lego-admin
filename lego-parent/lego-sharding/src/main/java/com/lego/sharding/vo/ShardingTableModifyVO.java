@@ -2,7 +2,6 @@ package com.lego.sharding.vo;
 
 
 import com.lego.core.vo.VO;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +19,7 @@ public class ShardingTableModifyVO extends VO {
     private String actualDataNodes;
     private String shardingColumn;
     private String algorithm;
+    private String dataSource;
     private String template;
     private String config;
 }

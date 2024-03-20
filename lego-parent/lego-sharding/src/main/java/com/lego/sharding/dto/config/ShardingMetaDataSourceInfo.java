@@ -6,12 +6,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ShardingMetaAlgorithmInfo extends DTO {
-
-    private static final long serialVersionUID = 1L;
+public class ShardingMetaDataSourceInfo extends DTO {
 
     private Long id;
     private String code;
-    private String configCode;
-    private String templateCode;
+    private String name;
 }

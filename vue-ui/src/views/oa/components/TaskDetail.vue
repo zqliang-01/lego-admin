@@ -12,7 +12,7 @@
       title="基本信息">
       <el-form
         ref="createForm"
-        :model="fieldFrom"
+        :model="fieldForm"
         :rules="fieldRules"
         :validate-on-rule-change="false"
         class="form"
@@ -20,7 +20,7 @@
         <form-items
           v-for="(children, index) in dataFieldList"
           :key="index"
-          :field-from="fieldFrom"
+          :field-form="fieldForm"
           :field-list="children"
           :disabled="isView"
         />
@@ -29,7 +29,7 @@
     <create-sections title="审批信息">
       <el-form
         ref="otherFrom"
-        :model="otherFieldFrom"
+        :model="otherFieldForm"
         :rules="otherFieldRules"
         :validate-on-rule-change="false"
         class="form"
@@ -37,7 +37,7 @@
         <form-items
           v-for="(children, index) in otherFieldList"
           :key="index"
-          :field-from="otherFieldFrom"
+          :field-form="otherFieldForm"
           :field-list="children"
           :disabled="isView"
         />
@@ -104,7 +104,7 @@ export default {
       taskName: '',
       selectUser: [],
       showSelectEmployee: false,
-      otherFieldFrom: {},
+      otherFieldForm: {},
       otherFieldRules: {
         comment: [{ required: true, message: '审批意见不能为空', trigger: 'blur' }]
       },
@@ -127,7 +127,7 @@ export default {
       taskFormDetailGetAPI(this.taskId).then(taskResponse => {
         const task = taskResponse.data
         this.taskName = task.name
-        this.$set(this.otherFieldFrom, 'comment', task.comment)
+        this.$set(this.otherFieldForm, 'comment', task.comment)
         if (task.formKey) {
           createFieldListAPI(task.formKey).then(res => {
             this.dataFieldList = res.data.fields
@@ -151,9 +151,9 @@ export default {
           return
         }
         this.loading = true
-        this.otherFieldFrom.id = this.taskId
-        this.otherFieldFrom.variables = this.fieldFrom
-        taskCompleteAPI(this.otherFieldFrom).then(() => {
+        this.otherFieldForm.id = this.taskId
+        this.otherFieldForm.variables = this.fieldForm
+        taskCompleteAPI(this.otherFieldForm).then(() => {
           this.loading = false
           this.$emit('handle', { type: 'save-success', msg: '任务已完工完成！' })
           this.close()
@@ -172,9 +172,9 @@ export default {
             return
           }
           this.loading = true
-          this.otherFieldFrom.id = this.taskId
-          this.otherFieldFrom.variables = this.fieldFrom
-          taskSaveAPI(this.otherFieldFrom).then(() => {
+          this.otherFieldForm.id = this.taskId
+          this.otherFieldForm.variables = this.fieldForm
+          taskSaveAPI(this.otherFieldForm).then(() => {
             this.loading = false
             this.actionType = 'update'
             this.$emit('handle', { type: 'save-success', msg: '任务保存！' })
@@ -198,8 +198,8 @@ export default {
           type: 'warning'
         }).then(() => {
           this.loading = true
-          this.otherFieldFrom.id = this.taskId
-          taskRejectAPI(this.otherFieldFrom).then(() => {
+          this.otherFieldForm.id = this.taskId
+          taskRejectAPI(this.otherFieldForm).then(() => {
             this.loading = false
             this.$emit('handle', { type: 'reject-success', msg: '拒绝成功，任务回退到上一节点！' })
             this.close()
@@ -212,9 +212,9 @@ export default {
     handleEmployeeSelect(val) {
       if (this.handleType === 'delegate') {
         this.loading = true
-        this.otherFieldFrom.id = this.taskId
-        this.otherFieldFrom.employeeCode = val
-        taskDelegateAPI(this.otherFieldFrom).then(() => {
+        this.otherFieldForm.id = this.taskId
+        this.otherFieldForm.employeeCode = val
+        taskDelegateAPI(this.otherFieldForm).then(() => {
           this.loading = false
           this.$emit('handle', { type: 'delegate-success', msg: '任务委派成功！' })
           this.close()
@@ -225,9 +225,9 @@ export default {
       }
       if (this.handleType === 'transfer') {
         this.loading = true
-        this.otherFieldFrom.id = this.taskId
-        this.otherFieldFrom.employeeCode = val
-        taskTransferAPI(this.otherFieldFrom).then(() => {
+        this.otherFieldForm.id = this.taskId
+        this.otherFieldForm.employeeCode = val
+        taskTransferAPI(this.otherFieldForm).then(() => {
           this.loading = false
           this.$emit('handle', { type: 'delegate-success', msg: '任务转办成功！' })
           this.close()

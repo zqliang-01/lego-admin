@@ -17,6 +17,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
+        :edit-button-width="150"
         @onList="getList"
         @onEdit="handleTable">
         <template slot-scope="scope">
@@ -26,6 +27,12 @@
             size="small"
             icon="el-icon-edit"
             @click="handleTable('edit', scope.row)">编辑</el-button>
+          <el-button
+            v-if="manage.sharding.config.update"
+            type="text"
+            size="small"
+            icon="el-icon-edit"
+            @click="handleTable('test', scope.row)">测试</el-button>
         </template>
       </lego-table>
     </div>
@@ -42,7 +49,8 @@
 
 <script>
 import {
-  configListAPI
+  configListAPI,
+  configTestAPI
 } from '@/api/admin/sharding/config'
 import Create from './Create'
 import XrHeader from '@/components/XrHeader'
@@ -97,16 +105,27 @@ export default {
         this.pageSize = res.data.pageSize
         this.currentPage = res.data.pageIndex
         this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-        .catch(() => {
-          this.loading = false
-        })
     },
     handleTable(type, row) {
       if (type === 'edit') {
         this.action.type = 'update'
         this.action.detailData = row
         this.isCreate = true
+        return
+      }
+      if (type === 'test') {
+        this.$prompt('执行SQL:', '输入测试脚本').then(({ value }) => {
+          this.loading = true
+          configTestAPI(row.id, { sql: value }).then(res => {
+            this.loading = false
+            this.$confirm('测试分片数据源成功：' + JSON.stringify(res.data))
+          }).catch(() => {
+            this.loading = false
+          })
+        })
       }
     },
     onSearch(value) {

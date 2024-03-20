@@ -6,7 +6,7 @@
     @save="saveClick">
     <el-form
       ref="createForm"
-      :model="fieldFrom"
+      :model="fieldForm"
       :rules="fieldRules"
       :validate-on-rule-change="false"
       class="form"
@@ -14,7 +14,7 @@
       <form-items
         v-for="(children, index) in dataFieldList"
         :key="index"
-        :field-from="fieldFrom"
+        :field-form="fieldForm"
         :field-list="children"
         @change="handleFieldChange"
       />
@@ -69,10 +69,10 @@ export default {
           this.fieldList.map(fields => {
             fields.map(field => {
               if (field.fieldCode !== 'table') {
-                this.$set(this.fieldFrom, field.fieldCode, res.data[field.fieldCode])
+                this.$set(this.fieldForm, field.fieldCode, res.data[field.fieldCode])
               }
               if (field.fieldCode === 'enable') {
-                this.$set(this.fieldFrom, field.fieldCode, true)
+                this.$set(this.fieldForm, field.fieldCode, true)
               }
             })
           })

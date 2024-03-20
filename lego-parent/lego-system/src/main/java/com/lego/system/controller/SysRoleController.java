@@ -50,7 +50,7 @@ public class SysRoleController extends BaseController {
 
     @GetMapping("/list-simple")
     public JsonResponse<List<TypeInfo>> listSimpleType() {
-        return JsonResponse.success(roleService.findSimpleType());
+        return JsonResponse.success(roleService.findSimpleType(getLoginCode()));
     }
 
     @GetMapping("/list")

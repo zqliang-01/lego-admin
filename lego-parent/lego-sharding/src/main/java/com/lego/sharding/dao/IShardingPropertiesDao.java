@@ -1,11 +1,11 @@
 package com.lego.sharding.dao;
 
-import java.util.List;
-
 import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.sharding.entity.ShardingProperties;
 
+import java.util.List;
+
 public interface IShardingPropertiesDao extends IGenericDao<ShardingProperties> {
 
-	List<ShardingProperties> findBy(String entityCode, String templateCode, String configCode);
+    List<ShardingProperties> findBy(Long entityId);
 }

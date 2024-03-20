@@ -6,7 +6,7 @@
     @save="saveClick">
     <el-form
       ref="createForm"
-      :model="fieldFrom"
+      :model="fieldForm"
       :rules="fieldRules"
       :validate-on-rule-change="false"
       class="form"
@@ -14,7 +14,7 @@
       <form-items
         v-for="(children, index) in dataFieldList"
         :key="index"
-        :field-from="fieldFrom"
+        :field-form="fieldForm"
         :field-list="children"
       />
     </el-form>

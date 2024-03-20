@@ -19,6 +19,7 @@ public class ShardingTableAssembler extends EntityAssembler<ShardingTableInfo, S
         info.setActualDataNodes(entity.getActualDataNodes());
         info.setShardingColumn(entity.getShardingColumn());
         info.setAlgorithm(createTypeInfo(entity.getAlgorithm()));
+        info.setDataSource(createTypeInfo(entity.getDataSource()));
         info.setTemplate(createTypeInfo(entity.getTemplate()));
         info.setConfig(createTypeInfo(entity.getConfig()));
         return info;

@@ -1,12 +1,12 @@
 <template>
   <xr-create
     :loading="loading"
-    :title="title"
+    :title="createTitle"
     @close="close"
     @save="saveClick">
     <el-form
       ref="createForm"
-      :model="fieldFrom"
+      :model="fieldForm"
       :rules="fieldRules"
       :validate-on-rule-change="false"
       class="form"
@@ -14,7 +14,7 @@
       <form-items
         v-for="(children, index) in dataFieldList"
         :key="index"
-        :field-from="fieldFrom"
+        :field-form="fieldForm"
         :field-list="children"
       />
     </el-form>
@@ -32,7 +32,7 @@ export default {
   name: 'ShardingTemplateCreate',
   mixins: [CreateMixin],
   computed: {
-    title() {
+    createTitle() {
       return this.action.type === 'update' ? '编辑模板' : '新建模板'
     }
   },

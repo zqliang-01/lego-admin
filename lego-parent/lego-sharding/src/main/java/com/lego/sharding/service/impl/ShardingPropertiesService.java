@@ -16,8 +16,8 @@ import java.util.List;
 public class ShardingPropertiesService extends BusService<IShardingPropertiesDao, ShardingPropertiesAssembler> implements IShardingPropertiesService {
 
     @Override
-    public List<TypeInfo> findBy(String entityCode, String templateCode, String configCode) {
-        List<ShardingProperties> properties = dao.findBy(entityCode, templateCode, configCode);
+    public List<TypeInfo> findBy(Long entityId) {
+        List<ShardingProperties> properties = dao.findBy(entityId);
         return assembler.createTypeInfo(properties);
     }
 

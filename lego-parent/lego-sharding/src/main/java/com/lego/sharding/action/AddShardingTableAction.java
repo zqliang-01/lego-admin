@@ -6,6 +6,7 @@ import com.lego.core.util.StringUtil;
 import com.lego.sharding.dao.IShardingTableDao;
 import com.lego.sharding.entity.ShardingAlgorithm;
 import com.lego.sharding.entity.ShardingConfig;
+import com.lego.sharding.entity.ShardingDataSource;
 import com.lego.sharding.entity.ShardingTable;
 import com.lego.sharding.entity.ShardingTemplate;
 import com.lego.sharding.vo.ShardingPermissionCode;
@@ -37,6 +38,7 @@ public class AddShardingTableAction extends AddAction<ShardingTable, IShardingTa
         entity.setActualDataNodes(vo.getActualDataNodes());
         entity.setShardingColumn(vo.getShardingColumn());
         entity.setAlgorithm(findByUnsureCode(ShardingAlgorithm.class, vo.getAlgorithm()));
+        entity.setDataSource(findByUnsureCode(ShardingDataSource.class, vo.getDataSource()));
         entity.setTemplate(findByCode(ShardingTemplate.class, vo.getTemplate()));
         entity.setConfig(findByCode(ShardingConfig.class, vo.getConfig()));
         return entity;

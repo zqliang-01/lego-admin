@@ -41,7 +41,6 @@ export default {
       'allAuth'
     ]),
     currentRouters() {
-      console.log(this.menuRouters)
       return this.menuRouters.oa
     },
     quickAddOffset() {

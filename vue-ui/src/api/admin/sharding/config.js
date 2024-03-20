@@ -100,3 +100,14 @@ export function configExcelAllExportAPI(data) {
     }
   })
 }
+
+/**
+ * 测试
+ */
+export function configTestAPI(id, data) {
+  return request({
+    url: '/back-end/sharding-config/test/' + id,
+    method: 'post',
+    data: data
+  })
+}

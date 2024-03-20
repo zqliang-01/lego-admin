@@ -32,8 +32,8 @@ public class SysEmployeeController extends BaseController {
 
     @GetMapping("/list")
     public JsonResponse<LegoPage<SysEmployeeInfo>> list(SysEmployeeSearchVO vo) {
-        LegoPage<SysEmployeeInfo> depts = employeeService.findBy(vo);
-        return JsonResponse.success(depts);
+        LegoPage<SysEmployeeInfo> employees = employeeService.findBy(vo);
+        return JsonResponse.success(employees);
     }
 
     @GetMapping("/list-simple")

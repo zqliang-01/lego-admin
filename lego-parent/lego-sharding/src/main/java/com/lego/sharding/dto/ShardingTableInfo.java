@@ -31,6 +31,8 @@ public class ShardingTableInfo extends BusDTO {
     private String shardingColumn;
     @ExcelProperty(value = "算法", converter = TypeInfoConverter.class)
     private TypeInfo algorithm;
+    @ExcelProperty(value = "数据源", converter = TypeInfoConverter.class)
+    private TypeInfo dataSource;
     @ExcelProperty(value = "模板", converter = TypeInfoConverter.class)
     private TypeInfo template;
     @ExcelProperty(value = "规则", converter = TypeInfoConverter.class)

@@ -8,10 +8,12 @@
 			t.ACTUAL_DATA_NODES actualDataNodes,
 		    t.SHARDING_COLUMN shardingColumn,
 		    al.CODE algorithmCode,
+			ds.code dataSourceCode,
 		    tmp.CODE templateCode
 		FROM sharding_table t
 		JOIN sharding_template tmp ON tmp.ID = t.TEMPLATE_ID
-		JOIN sharding_algorithms al ON al.id = t.ALGORITHM_ID
+		LEFT JOIN sharding_algorithms al ON al.id = t.ALGORITHM_ID
+		LEFT JOIN sharding_data_source ds ON ds.id = t.data_source_id
 		WHERE t.ENABLE = 1
 		    AND t.CONFIG_ID = #{configId}
 	</select>

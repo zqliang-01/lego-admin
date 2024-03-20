@@ -2,6 +2,7 @@ package com.lego.sharding.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.ExcelUtil;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.core.vo.JsonResponse;
@@ -53,6 +54,11 @@ public class ShardingDataSourceController extends BaseController {
     @SaCheckPermission("manage_sharding_dataSource_read")
     public JsonResponse<LegoPage<ShardingDataSourceInfo>> list(@RequestBody GenericSearchVO vo) {
         return JsonResponse.success(dataSourceService.findPageBy(vo));
+    }
+
+    @GetMapping("/list-simple")
+    public JsonResponse<List<TypeInfo>> listSimple() {
+        return JsonResponse.success(dataSourceService.findSimpleType());
     }
 
     @GetMapping("/get/{code}")

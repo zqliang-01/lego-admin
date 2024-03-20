@@ -23,7 +23,7 @@
     <field
       :item="item"
       :index="index"
-      :field-from="fieldFrom"
+      :field-form="fieldForm"
       :disabled="disabled"
       @change="fieldChange"
     >
@@ -57,7 +57,7 @@ export default {
     },
     item: Object,
     index: Number,
-    fieldFrom: {
+    fieldForm: {
       type: Object,
       default: () => {
         return {}

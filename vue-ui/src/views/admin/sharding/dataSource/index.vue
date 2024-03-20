@@ -47,7 +47,7 @@
 
     <properties-dialog
       :visible.sync="dialogVisible"
-      :entity-code="action.detailData.code"
+      :entity-id="action.detailData.id"
       :template-code="action.detailData.template.code"
       @onSuccess="dialogVisible = false"
     />
@@ -142,6 +142,7 @@ export default {
     },
     handleTable(type, row) {
       this.action.detailData = row
+      console.log(this.action.detailData)
       if (type === 'edit') {
         this.action.type = 'update'
         this.isCreate = true

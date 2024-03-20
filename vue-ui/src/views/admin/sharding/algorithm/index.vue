@@ -46,7 +46,8 @@
 
     <properties-dialog
       :visible.sync="dialogVisible"
-      :entity-code="action.detailData.code"
+      :entity-id="action.detailData.id"
+      :config-code="action.detailData.config.code"
       :template-code="action.detailData.template.code"
       @onSuccess="dialogVisible = false"
     />
@@ -89,6 +90,9 @@ export default {
         detailData: {
           code: '',
           template: {
+            code: ''
+          },
+          config: {
             code: ''
           }
         }
@@ -167,6 +171,9 @@ export default {
       this.action.detailData = {
         code: '',
         template: {
+          code: ''
+        },
+        config: {
           code: ''
         }
       }

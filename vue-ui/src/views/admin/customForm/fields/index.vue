@@ -100,10 +100,9 @@ import { dictTypeListAPI } from '@/api/crm/common'
 import { isEmpty } from '@/utils/types'
 import { objDeepCopy } from '@/utils/index'
 
-import SettingField from './components/SettingField'
 import draggable from 'vuedraggable'
-import Field from './field'
 import FieldTypeLib from './fieldTypeLib'
+import SettingField from './components/SettingField'
 
 const allFields = require.context('./components/FieldItem', true, /\.vue$/)
 const fieldComponent = {}
@@ -157,7 +156,6 @@ export default {
     }
   },
   created() {
-    this.tableName = this.$route.params.tableName
     this.formCode = this.$route.params.formCode
     this.getFieldList()
   },
@@ -172,6 +170,7 @@ export default {
       }).then(res => {
         this.fieldList = res.data.fields || []
         this.appCode = res.data.appCode
+        this.tableName = res.data.tableName
         this.columnList = res.data.columns
         this.getDictType()
         if (this.fieldList.length > 0) {
@@ -495,6 +494,7 @@ export default {
       }).then(res => {
         this.fieldList = res.data.fields || []
         this.appCode = res.data.appCode
+        this.tableName = res.data.tableName
         this.columnList = res.data.columns
         this.getDictType()
         if (this.fieldList.length > 0) {

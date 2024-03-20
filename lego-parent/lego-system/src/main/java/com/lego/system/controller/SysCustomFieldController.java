@@ -62,10 +62,12 @@ public class SysCustomFieldController extends BaseController {
             results.add(m.stream().sorted(Comparator.comparing(SysCustomFieldInfo::getYAxis)).collect(Collectors.toList()));
         });
 
-        String tableCode = formInfo.getTable().getCode();
+        TypeInfo table = formInfo.getTable();
+        String tableCode = table.getCode();
+        String tableName = table.getName();
         SysGenTableInfo tableInfo = tableService.findByCode(tableCode);
         List<TypeInfo> columnInfos = tableColumnService.findSimpleTypeBy(tableCode);
-        return JsonResponse.success(new SysCustomFormFieldInfo(tableInfo.getAppCode(), columnInfos, results));
+        return JsonResponse.success(new SysCustomFormFieldInfo(tableInfo.getAppCode(), tableName, columnInfos, results));
     }
 
     @GetMapping("/list-table-header/{formCode}")
@@ -102,11 +104,13 @@ public class SysCustomFieldController extends BaseController {
         SysCustomFormInfo formInfo = customFormService.findBy(formCode);
         BusinessException.check(formInfo.getTable() != null, "表单未关联数据表！");
 
-        String tableCode = formInfo.getTable().getCode();
+        TypeInfo table = formInfo.getTable();
+        String tableCode = table.getCode();
+        String tableName = table.getName();
         SysGenTableInfo tableInfo = tableService.findByCode(tableCode);
         List<TypeInfo> columnInfos = tableColumnService.findSimpleTypeBy(tableCode);
         List<List<SysCustomFieldInfo>> results = customFieldService.findInit(formInfo.getTable().getCode());
-        return JsonResponse.success(new SysCustomFormFieldInfo(tableInfo.getAppCode(), columnInfos, results));
+        return JsonResponse.success(new SysCustomFormFieldInfo(tableInfo.getAppCode(), tableName, columnInfos, results));
     }
 
     @GetMapping("/list-type")

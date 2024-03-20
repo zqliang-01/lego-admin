@@ -1,6 +1,5 @@
 package com.lego.flowable.vo;
 
-import com.lego.core.data.SimpleType;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.StringUtil;
 import lombok.AllArgsConstructor;
@@ -28,6 +27,9 @@ public enum ProcessStatus {
 
     public static TypeInfo getTypeInfo(String code) {
         ProcessStatus status = get(code);
+        if (status == null) {
+            return TypeInfo.NULL;
+        }
         return new TypeInfo(status.getCode(), status.getName());
     }
 

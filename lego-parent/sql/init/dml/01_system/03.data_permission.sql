@@ -70,6 +70,11 @@ CALL add_system_permission('manage_sharding_algorithm_read', '查看', 'auth', '
 CALL add_system_permission('manage_sharding_algorithm_add', '新增', 'auth', 'manage_sharding_algorithm', NULL, 1841, NULL);
 CALL add_system_permission('manage_sharding_algorithm_update', '更新', 'auth', 'manage_sharding_algorithm', NULL, 1842, NULL);
 
+CALL add_system_permission('manage_sharding_table', '分片表配置', 'menu', 'manage_sharding', NULL, 185, NULL);
+CALL add_system_permission('manage_sharding_table_read', '查看', 'auth', 'manage_sharding_table', NULL, 1850, NULL);
+CALL add_system_permission('manage_sharding_table_add', '新增', 'auth', 'manage_sharding_table', NULL, 1851, NULL);
+CALL add_system_permission('manage_sharding_table_update', '更新', 'auth', 'manage_sharding_table', NULL, 1852, NULL);
+
 CALL add_system_permission('manage_log', '日志管理', 'menu', 'manage', 'task', 19, NULL);
 CALL add_system_permission('manage_log_read', '查看', 'auth', 'manage_log', NULL, 191, NULL);
 
@@ -90,7 +95,7 @@ CALL add_system_permission('crm_lead_delete', '删除', 'auth', 'crm_lead', NULL
 CALL add_system_permission('crm_lead_update', '更新', 'auth', 'crm_lead', NULL, 214, NULL);
 CALL add_system_permission('crm_lead_export', '导出', 'auth', 'crm_lead', NULL, 216, NULL);
 
-CALL add_system_permission('crm_contract', '合同管理', 'menu', 'crm', 'icon-contract', 22, NULL);
+CALL add_system_permission('crm_contract', '合同管理', 'menu', 'crm', 'contract', 22, NULL);
 CALL add_system_permission('crm_contract_read', '查看列表', 'auth', 'crm_contract', NULL, 221, NULL);
 CALL add_system_permission('crm_contract_detail', '查看明细', 'auth', 'crm_contract', NULL, 222, NULL);
 CALL add_system_permission('crm_contract_add', '新增', 'auth', 'crm_contract', NULL, 223, NULL);

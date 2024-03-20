@@ -28,7 +28,7 @@
                 AND t.table_schema = #{dbName}
             </if>
             AND NOT EXISTS (
-            SELECT 1 FROM sys_gen_table gt WHERE gt.code = t.table_name
+                SELECT 1 FROM sys_gen_table gt WHERE gt.code = t.table_name
             )
             AND t.table_name NOT LIKE 'sys_%'
             AND t.table_name NOT LIKE 'sharding_%'

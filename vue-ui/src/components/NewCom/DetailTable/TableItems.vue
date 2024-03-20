@@ -1,6 +1,6 @@
 <template>
   <el-table
-    :data="fieldFrom"
+    :data="fieldForm"
     :row-key="Date.now().toString()"
     class="table-items"
     style="width: 100%">
@@ -27,7 +27,7 @@
           :prop-prefix="`${propPrefix || ''}[${$index}].`"
           :item="fieldList[index]"
           :index="$index"
-          :field-from="fieldFrom[$index]"
+          :field-form="fieldForm[$index]"
           :disabled="disabled"
           @change="fieldChange"
         >
@@ -67,7 +67,7 @@ export default {
       type: String,
       default: ''
     },
-    fieldFrom: {
+    fieldForm: {
       type: Array,
       default: () => {
         return []

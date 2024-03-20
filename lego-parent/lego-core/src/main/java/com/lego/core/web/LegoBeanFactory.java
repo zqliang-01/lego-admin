@@ -51,4 +51,8 @@ public class LegoBeanFactory implements BeanFactoryPostProcessor {
         }
         return beanFactory.createBean(clazz);
     }
+
+    public static void destroyBean(Object bean) {
+        beanFactory.destroyBean(bean);
+    }
 }

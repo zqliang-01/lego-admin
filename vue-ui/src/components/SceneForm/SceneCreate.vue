@@ -59,7 +59,7 @@
                 <field
                   :item="formItem"
                   :index="index"
-                  :field-from="formItem.fieldForm"
+                  :field-form="formItem.fieldForm"
                   @change="handleFieldChange" />
               </template>
             </el-col>

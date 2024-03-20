@@ -4,7 +4,6 @@ package com.lego.sharding.dto;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.lego.core.common.BooleanConverter;
 import com.lego.core.dto.DTO;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,6 +13,7 @@ public class ShardingConfigInfo extends DTO {
 
     private static final long serialVersionUID = 1L;
 
+    private Long id;
     @ExcelProperty(value = "编码")
     private String code;
     @ExcelProperty(value = "名称")

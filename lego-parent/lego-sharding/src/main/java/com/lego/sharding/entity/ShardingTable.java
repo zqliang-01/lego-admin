@@ -1,19 +1,17 @@
 package com.lego.sharding.entity;
 
-import java.util.Map;
+import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.util.EntityUtil;
-import com.lego.core.util.StringUtil;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Map;
 
 @Setter
 @Getter
@@ -32,6 +30,10 @@ public class ShardingTable extends BaseEntity {
     private ShardingAlgorithm algorithm;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "data_source_id")
+    private ShardingDataSource dataSource;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "template_id")
     private ShardingTemplate template;
 
@@ -39,7 +41,8 @@ public class ShardingTable extends BaseEntity {
     @JoinColumn(name = "config_id")
     private ShardingConfig config;
 
-    protected ShardingTable() { }
+    protected ShardingTable() {
+    }
 
     public ShardingTable(String code, String name) {
         super(code, name);
@@ -57,5 +60,6 @@ public class ShardingTable extends BaseEntity {
         attributes.put("算法", EntityUtil.toString(algorithm));
         attributes.put("模板", EntityUtil.toString(template));
         attributes.put("规则", EntityUtil.toString(config));
+        attributes.put("数据源", EntityUtil.toString(dataSource));
     }
 }

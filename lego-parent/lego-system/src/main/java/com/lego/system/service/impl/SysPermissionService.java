@@ -51,7 +51,7 @@ public class SysPermissionService extends BusService<ISysPermissionDao, SysPermi
     @Override
     public List<SysPermissionInfo> findByEmployee(String employeeCode) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
-        if (employee.containRole(Constants.ADMIN_ROLE)) {
+        if (employee.containRole(Constants.ADMIN_ROLE_CODE)) {
             return assembler.createTree(dao.findAll());
         }
         List<SysPermission> permissions = dao.findByEmployee(employeeCode);
@@ -86,7 +86,7 @@ public class SysPermissionService extends BusService<ISysPermissionDao, SysPermi
     @Override
     public List<SysAppInfo> findAppBy(String employeeCode) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
-        if (employee.containRole(Constants.ADMIN_ROLE)) {
+        if (employee.containRole(Constants.ADMIN_ROLE_CODE)) {
             return findAllApp();
         }
         List<SysPermission> permissions = dao.findBy(employeeCode, SysPermissionTypeCode.APP);
@@ -100,7 +100,7 @@ public class SysPermissionService extends BusService<ISysPermissionDao, SysPermi
 
     @Override
     public List<String> findCodeBy(String roleCode) {
-        if (Constants.ADMIN_ROLE.equals(roleCode)) {
+        if (Constants.ADMIN_ROLE_CODE.equals(roleCode)) {
             return dao.findAllCode();
         }
         return dao.findCodeByRole(roleCode);

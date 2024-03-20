@@ -19,14 +19,14 @@ export default {
     }
   },
   methods: {
-    setDefaultValue(field, fieldFrom, isCreate) {
+    setDefaultValue(field, fieldForm, isCreate) {
       if (isCreate && field.unique && field.codeGenerator && field.codeGenerator.code) {
         codeGeneratorGenerateAPI(field.codeGenerator.code).then(res => {
-          this.$set(fieldFrom, field.fieldCode, res.data)
+          this.$set(fieldForm, field.fieldCode, res.data)
         })
       } else {
         const value = getFormFieldValue(field, isCreate)
-        this.$set(fieldFrom, field.fieldCode, value)
+        this.$set(fieldForm, field.fieldCode, value)
       }
     },
     initRequest(form) {

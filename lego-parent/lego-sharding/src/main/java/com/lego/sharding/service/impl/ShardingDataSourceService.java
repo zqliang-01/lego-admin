@@ -2,6 +2,9 @@ package com.lego.sharding.service.impl;
 
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
+import com.lego.core.vo.GenericConditionItemVO;
+import com.lego.core.vo.GenericConditionVO;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.sharding.action.AddShardingDataSourceAction;
 import com.lego.sharding.action.DeleteShardingDataSourceAction;
@@ -30,6 +33,14 @@ public class ShardingDataSourceService extends BusService<IShardingDataSourceDao
     public ShardingDataSourceInfo findBy(String code) {
         ShardingDataSource dataSource = dao.findByCode(code);
         return assembler.create(dataSource);
+    }
+
+    @Override
+    public List<TypeInfo> findSimpleType() {
+        GenericConditionVO vo = GenericConditionVO.create()
+            .addItem(GenericConditionItemVO.createEqual("enable", true));
+        List<ShardingDataSource> dataSources = dao.findBy(vo);
+        return assembler.createTypeInfo(dataSources);
     }
 
     @Override

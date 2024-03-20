@@ -131,7 +131,7 @@ export default {
       deptCreateDialog: false,
       currentEmployee: {},
       selectionList: [],
-      tableHeight: document.documentElement.clientHeight - 240, // 表的高度
+      tableHeight: document.documentElement.clientHeight - 220, // 表的高度
       currentPage: 1,
       pageSize: 15,
       pageSizes: [15, 30, 45, 60],
@@ -174,12 +174,6 @@ export default {
     name() {
       this.currentPage = 1
       this.listEmployee()
-    }
-  },
-  mounted() {
-    var self = this
-    window.onresize = function() {
-      self.tableHeight = document.documentElement.clientHeight - 240
     }
   },
   methods: {
@@ -392,6 +386,7 @@ export default {
     display: inline-block;
     width: 6px;
     height: 6px;
+    margin-right: 5px;
     border-radius: 3px;
   }
   color: $xr-color-primary;

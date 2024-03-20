@@ -83,8 +83,8 @@ export default {
       codeUrl: '',
       captchaCode: '',
       form: {
-        username: '',
-        password: '',
+        username: 'test',
+        password: 'test123',
         code: ''
       },
       errorInfo: null,

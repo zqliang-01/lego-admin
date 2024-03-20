@@ -16,7 +16,20 @@
 	</properties>
 	
     <dependencies>
-    	<dependency>
+		<!-- ShardingSphere分表 -->
+		<dependency>
+			<groupId>org.apache.shardingsphere</groupId>
+			<artifactId>shardingsphere-jdbc-core</artifactId>
+			<version>${shardingsphere.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.shardingsphere</groupId>
+					<artifactId>shardingsphere-logging-core</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
     		<groupId>com.lego</groupId>
     		<artifactId>lego-core</artifactId>
     		<version>1.0.0</version>

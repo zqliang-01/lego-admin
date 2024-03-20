@@ -15,6 +15,7 @@ public class ShardingAlgorithmInfo extends BusDTO {
 
     private static final long serialVersionUID = 1L;
 
+    private Long id;
     @ExcelProperty(value = "编码")
     private String code;
     @ExcelProperty(value = "名称")

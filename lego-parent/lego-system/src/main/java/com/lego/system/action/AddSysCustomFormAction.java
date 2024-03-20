@@ -41,6 +41,7 @@ public class AddSysCustomFormAction extends AddAction<SysCustomForm, ISysCustomF
         form.setTable(tableDao.findByCode(vo.getTable()));
         form.setQueryApiUrl(vo.getQueryApiUrl());
         form.setDetailApiUrl(vo.getDetailApiUrl());
+        form.setSimpleApiUrl(vo.getSimpleApiUrl());
         form.setAddApiUrl(vo.getAddApiUrl());
         form.setUpdateApiUrl(vo.getUpdateApiUrl());
         form.setDeleteApiUrl(vo.getDeleteApiUrl());

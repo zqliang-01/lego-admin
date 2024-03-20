@@ -33,7 +33,7 @@
     <div class="jurisdiction-content">
       <el-form
         ref="createForm"
-        :model="fieldFrom"
+        :model="fieldForm"
         :rules="fieldRule"
         :validate-on-rule-change="false"
         class="form"
@@ -42,7 +42,7 @@
           <form-items
             v-for="(children, index) in baseFieldList"
             :key="index"
-            :field-from="fieldFrom"
+            :field-form="fieldForm"
             :field-list="children"
             @change="handleChangeValue"
           />
@@ -130,7 +130,7 @@ export default {
           { fieldCode: 'sn', name: '序号', formType: 'number' }
         ]
       ],
-      fieldFrom: {},
+      fieldForm: {},
       fieldRule: {}
     }
   },
@@ -160,6 +160,7 @@ export default {
   methods: {
     resetForm() {
       this.menuType = this.menuData.type ? this.menuData.type.code : ''
+      this.formCode = this.menuData.form ? this.menuData.form.code : ''
       this.operationType = 'update'
       this.baseFieldList.forEach(fields => {
         fields.forEach(field => {
@@ -181,10 +182,9 @@ export default {
           }
           this.fieldRule[field.fieldCode] = this.getRules(field)
           field.value = this.menuData[field.fieldCode]
-          this.$set(this.fieldFrom, field.fieldCode, getFormFieldValue(field, false))
+          this.$set(this.fieldForm, field.fieldCode, getFormFieldValue(field, false))
         })
       })
-      this.formCode = this.menuData.form ? this.menuData.form.code : ''
     },
     handleChangeValue(field, index, value) {
       if (field.fieldCode === 'type') {
@@ -202,7 +202,7 @@ export default {
           showFormErrorMessage(createForm)
           return false
         }
-        this.requestAPI(this.fieldFrom).then(() => {
+        this.requestAPI(this.fieldForm).then(() => {
           this.loading = false
           this.$message.success('提交成功！')
           this.$emit('success')
@@ -218,13 +218,13 @@ export default {
         fields.forEach(field => {
           if (field.fieldCode === 'parentCode') {
             field.value = this.menuData.code
-            this.$set(this.fieldFrom, field.fieldCode, this.menuData.code)
+            this.$set(this.fieldForm, field.fieldCode, this.menuData.code)
           } else {
             if (field.fieldCode === 'code') {
               field.disabled = false
             }
             field.value = ''
-            this.$set(this.fieldFrom, field.fieldCode, '')
+            this.$set(this.fieldForm, field.fieldCode, '')
           }
         })
       })

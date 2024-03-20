@@ -11,6 +11,7 @@ public class ShardingAlgorithmAssembler extends EntityAssembler<ShardingAlgorith
     @Override
     protected ShardingAlgorithmInfo doCreate(ShardingAlgorithm entity) {
         ShardingAlgorithmInfo info = new ShardingAlgorithmInfo();
+        info.setId(entity.getId());
         info.setCode(entity.getCode());
         info.setName(entity.getName());
         info.setEnable(entity.isEnable());

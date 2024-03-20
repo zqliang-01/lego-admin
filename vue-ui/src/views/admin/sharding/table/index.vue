@@ -17,6 +17,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
+        :edit-button-width="100"
         @onList="getList"
         @onEdit="handleTable">
         <template slot-scope="scope">
@@ -41,6 +42,7 @@
 </template>
 
 <script>
+import { dataSourceSimpleListAPI } from '@/api/admin/sharding/dataSource'
 import { templateSimpleListAPI } from '@/api/admin/sharding/template'
 import { algorithmSimpleListAPI } from '@/api/admin/sharding/algorithm'
 import { configSimpleListAPI } from '@/api/admin/sharding/config'
@@ -79,19 +81,22 @@ export default {
           { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true }
         ],
         [
-          { fieldCode: 'logicTableName', name: '逻辑表名', formType: 'text', width: '150', required: true },
-          { fieldCode: 'actualDataNodes', name: '物理表规则', formType: 'text', width: '150', required: true }
-        ],
-        [
-          { fieldCode: 'shardingColumn', name: '本片字段', formType: 'text', width: '150', required: true },
-          { fieldCode: 'algorithm', name: '算法', formType: 'select', width: '150', required: true }
-        ],
-        [
           { fieldCode: 'template', name: '模板', formType: 'select', width: '150', required: true },
           { fieldCode: 'config', name: '配置', formType: 'select', width: '150', required: true }
         ],
         [
-          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' },
+          { fieldCode: 'logicTableName', name: '逻辑表名', formType: 'text', width: '150', required: true },
+          { fieldCode: 'actualDataNodes', name: '物理表规则', formType: 'text', width: '150', required: true }
+        ],
+        [
+          { fieldCode: 'shardingColumn', name: '本片字段', formType: 'text', width: '150' },
+          { fieldCode: 'algorithm', name: '算法', formType: 'select', width: '150', clearable: true }
+        ],
+        [
+          { fieldCode: 'dataSource', name: '数据源', formType: 'select', width: '150', clearable: true },
+          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+        ],
+        [
           { fieldCode: 'description', name: '备注', formType: 'text', width: '150' }
         ]
       ]
@@ -103,6 +108,14 @@ export default {
     }).then(res => {
       this.fieldList.forEach(element => {
         const field = element.find(field => field.fieldCode == 'template')
+        if (field) {
+          field.setting = res.data
+        }
+      })
+    })
+    dataSourceSimpleListAPI().then(res => {
+      this.fieldList.forEach(element => {
+        const field = element.find(field => field.fieldCode == 'dataSource')
         if (field) {
           field.setting = res.data
         }

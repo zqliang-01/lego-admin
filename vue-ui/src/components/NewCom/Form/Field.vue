@@ -1,7 +1,7 @@
 <template>
   <el-input
     v-if="item.formType == 'text'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     :maxlength="100"
     :placeholder="item.placeholder"
@@ -9,7 +9,7 @@
     @input="commonChange(item, index, $event)"/>
   <el-input
     v-else-if="isTrimInput(item.formType)"
-    v-model.trim="fieldFrom[item.fieldCode]"
+    v-model.trim="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     :prefix-icon="getInputIcon(item.formType) | iconPre"
     :maxlength="getInputMaxlength(item.formType)"
@@ -18,33 +18,33 @@
     @input="commonChange(item, index, $event)"/>
   <json-editor
     v-else-if="item.formType == 'jsonEditor'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     @input="commonChange(item, index, $event)"/>
   <el-input-number
     v-else-if="item.formType == 'number'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :placeholder="item.placeholder"
     :disabled="item.disabled || disabled"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <el-input-number
     v-else-if="item.formType == 'floatnumber'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :placeholder="item.placeholder"
     :disabled="item.disabled || disabled"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <percent-input
     v-else-if="item.formType == 'percent'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :placeholder="item.placeholder"
     :disabled="item.disabled || disabled"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <el-input
     v-else-if="item.formType == 'textarea'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     :rows="3"
     :autosize="{ minRows: 3}"
@@ -55,7 +55,7 @@
     @input="commonChange(item, index, $event)" />
   <lego-select
     v-else-if="['select', 'user'].includes(item.formType)"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :item="item"
     :disabled="item.disabled || disabled"
     :clearable="item.clearable"
@@ -66,14 +66,14 @@
     @change="commonChange(item, index, $event)"/>
   <select-tree
     v-else-if="['structure'].includes(item.formType)"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :options="item.setting"
     :disabled="item.disabled || disabled"
     filterable
   />
   <lego-checkbox
     v-else-if="['checkbox'].includes(item.formType)"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     :clearable="item.clearable"
     :placeholder="item.placeholder"
@@ -83,7 +83,7 @@
     @change="commonChange(item, index, $event)"/>
   <el-date-picker
     v-else-if="item.formType == 'date'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     :picker-options="pickerOptions"
     clearable
@@ -94,7 +94,7 @@
     @change="commonChange(item, index, $event)"/>
   <el-date-picker
     v-else-if="item.formType == 'datetime'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     clearable
     style="width: 100%;"
@@ -104,21 +104,21 @@
     @change="commonChange(item, index, $event)"/>
   <el-switch
     v-else-if="item.formType == 'boolean_value'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     @change="commonChange(item, index, $event)"/>
   <select-icon
     v-else-if="item.formType == 'icon'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"
     @change="commonChange(item, index, $event)"/>
   <signature-pad
     v-else-if="item.formType == 'handwriting_sign'"
-    v-model="fieldFrom[item.fieldCode]"
+    v-model="fieldForm[item.fieldCode]"
     :disabled="item.disabled || disabled"/>
   <desc-text
     v-else-if="item.formType == 'desc_text'"
-    :value="fieldFrom[item.fieldCode]"/>
+    :value="fieldForm[item.fieldCode]"/>
   <lego-relative-cell
     v-else-if="item.formType == 'entity'"
     :value="item.value"
@@ -162,7 +162,7 @@ export default {
   props: {
     item: Object,
     index: Number,
-    fieldFrom: {
+    fieldForm: {
       type: Object,
       default: () => {
         return {}
@@ -191,7 +191,7 @@ export default {
   methods: {
     entityChange(item, index, value) {
       const result = value ? value.code : ''
-      this.$set(this.fieldFrom, item.fieldCode, result)
+      this.$set(this.fieldForm, item.fieldCode, result)
       this.commonChange(item, index, value)
     }
   }

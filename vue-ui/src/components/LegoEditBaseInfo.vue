@@ -28,7 +28,7 @@
             v-if="item.isEdit"
             :item="item"
             :index="index"
-            :field-from="editForm" />
+            :field-form="editForm" />
           <flexbox
             v-else
             align="stretch"

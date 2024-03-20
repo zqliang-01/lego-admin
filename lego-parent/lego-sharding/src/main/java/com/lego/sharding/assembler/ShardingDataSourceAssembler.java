@@ -11,6 +11,7 @@ public class ShardingDataSourceAssembler extends EntityAssembler<ShardingDataSou
     @Override
     protected ShardingDataSourceInfo doCreate(ShardingDataSource entity) {
         ShardingDataSourceInfo info = new ShardingDataSourceInfo();
+        info.setId(entity.getId());
         info.setCode(entity.getCode());
         info.setName(entity.getName());
         info.setEnable(entity.isEnable());

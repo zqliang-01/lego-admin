@@ -46,7 +46,7 @@ export default {
       type: Boolean,
       default: false
     },
-    entityCode: String,
+    entityId: String,
     templateCode: String,
     configCode: String,
     labelPosition: {
@@ -78,9 +78,9 @@ export default {
           }
         })
         propertiesListAPI({
-          entityCode: this.entityCode,
-          templateCode: this.templateCode
+          entityId: this.entityId
         }).then(res => {
+          this.properties = {}
           res.data.forEach(value => {
             this.$set(this.properties, value.code, value.name)
           })
@@ -93,8 +93,8 @@ export default {
     saveProperties() {
       this.loading = true
       propertiesAddAPI({
+        entityId: this.entityId,
         configCode: this.configCode,
-        entityCode: this.entityCode,
         templateCode: this.templateCode,
         properties: this.properties
       }).then(() => {

@@ -12,7 +12,7 @@
             :icon="'icon-bin' | iconPre" type="text" @click="deleteClick(index)"/>
         </flexbox>
         <form-items
-          :field-from="fieldForm[index]"
+          :field-form="fieldForm[index]"
           :field-list="children"
           :prop-prefix="`${propPrefix || ''}[${index}].`"
           :disabled="disabled"
@@ -30,7 +30,7 @@
       v-else-if="showType === 'table'"
       class="detail-item">
       <table-items
-        :field-from="fieldForm"
+        :field-form="fieldForm"
         :field-list="addFieldList"
         :prop-prefix="propPrefix"
         :disabled="disabled"
