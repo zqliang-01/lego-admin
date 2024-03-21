@@ -17,7 +17,10 @@
 		<start-class>com.lego.LegoAdminApplication</start-class>
         <skipTests>true</skipTests>
 		<mysql.version>8.0.22</mysql.version>
+		<hutool.version>5.8.26</hutool.version>
 		<snakeyaml.version>1.33</snakeyaml.version>
+		<sa-token.version>1.34.0</sa-token.version>
+		<fastjson.version>2.0.47</fastjson.version>
 		<mybatis-plus.version>3.4.2</mybatis-plus.version>
 		<shardingsphere.version>5.4.1</shardingsphere.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

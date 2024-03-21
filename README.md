@@ -1,16 +1,30 @@
-# lego-admin
+# LegoAdmin
 
 ### 介绍
 
-一款属于后端开发人员的前后端分离的新一代低代码框架LegoAdmin
-演示地址：(https://admin.zqliang.cn)  
-帐号：test 密码：test123
+* 一款彻底开源的前后端分离的低代码开发框架
+* 演示地址：https://admin.zqliang.cn
+* 帐号：test 密码：test123
+
+### 技术栈
+| 技术                                                          | 说明        | 版本     |
+|-------------------------------------------------------------|-----------|--------|
+| [SpringBoot](https://spring.io/projects/spring-boot)        | Java框架    | 2.7.11 |
+| [mybatis-plus](https://mybatis.plus)                        | 数据持久化框架   | 3.4.2  |
+| [flowable](https://www.flowable.com)                        | 流程引擎      | 6.8.0  |
+| [ShardingSphere](https://shardingsphere.apache.org)         | 分库分表框架    | 5.4.1  |
+| [sa-token](https://sa-token.cc)                             | 权限认证框架    | 2.12.0 |
+| [openfeign](https://cloud.spring.io/spring-cloud-openfeign) | 远程调用框架    | 3.1.7  |
+| [hutool](https://hutool.mydoc.io)                           | 工具类库      | 5.8.26 |
+| [easyexcel](https://easyexcel.opensource.alibaba.com)       | excel操作框架 | 3.2.1  |
+| [velocity](https://velocity-technology.com)                 | 模板引擎      | 2.3    |
+| [hibernate](https://hibernate.org)                          | 数据持久化框架   | 2.7.11 |
 
 ### 软件架构
 
 前端基于vue element-ui框架分模块设计，后端使用SpringBoot2框架，持久层同时支持mybatis-plus3（业务查询）、hibernate5（事务业务受理）。
 支持微服务模块化开发部署，数据源可彻底隔离，基于ShardingSphere5定制开发多模型分库分片表数据源。
-一键代码生成，自定义表单设计等，属于后端开发人员的新一代低代码开发平台LegoAdmin
+一键代码生成，自定义表单设计，flowable工作流设计等，一款开箱即用的新一代低代码开发框架LegoAdmin
 
 ### 安装教程
 
@@ -34,8 +48,8 @@
 #### 访问路径
 
 * 项目默认端口8443
-* 管理台路径http://localhost:8443
-* 默认账号密码admin/hello@1234
+* 管理台路径：http://localhost:8443
+* 默认账号密码 admin/hello@1234
 
 ### 系统展示
 
