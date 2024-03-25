@@ -14,13 +14,9 @@ public interface ISysPermissionService {
 
     List<SysPermissionInfo> findBy(String routeType);
 
-    List<SysPermissionInfo> findByEmployee(String employeeCode);
-
-    List<SysPermissionInfo> findDynamicByEmployee(String employeeCode);
+    List<SysPermissionInfo> findByEmployee(String employeeCode, String routeType);
 
     SysPermissionInfo findByCode(String code);
-
-    List<SysPermissionInfo> findAllMenu();
 
     List<SysAppInfo> findAllApp();
 

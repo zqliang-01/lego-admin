@@ -38,4 +38,8 @@ public class SysPermissionInfo extends TreeDTO<SysPermissionInfo> {
     public boolean isApp() {
         return type != null && SysPermissionTypeCode.APP.equals(type.getCode());
     }
+
+    public boolean isMenu() {
+        return type != null && SysPermissionTypeCode.MENU.equals(type.getCode());
+    }
 }

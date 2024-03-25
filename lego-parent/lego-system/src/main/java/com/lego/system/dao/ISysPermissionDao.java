@@ -9,7 +9,7 @@ public interface ISysPermissionDao extends IGenericDao<SysPermission> {
 
     List<String> findAllCode();
 
-    List<SysPermission> findByEmployee(String employeeCode);
+    List<SysPermission> findByEmployee(String employeeCode, String routeType);
 
     List<SysPermission> findByType(String... types);
 
@@ -24,4 +24,7 @@ public interface ISysPermissionDao extends IGenericDao<SysPermission> {
     int findMaxSn(String appCode);
 
     List<SysPermission> findByParent(SysPermission parent);
+
+    List<SysPermission> findByRouteType(String typeCode);
+
 }

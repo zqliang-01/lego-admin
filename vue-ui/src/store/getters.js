@@ -16,6 +16,7 @@ const getters = {
   // 权限
   allAuth: state => state.user.allAuth,
   manage: state => state.user.manage,
+  authList: state => state.user.authList,
 
   // 路由
   allRouters: state => state.permission.allRouters,

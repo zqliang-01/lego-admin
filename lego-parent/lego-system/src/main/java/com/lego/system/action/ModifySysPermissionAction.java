@@ -10,6 +10,7 @@ import com.lego.system.entity.simpletype.SysPermissionRouteType;
 import com.lego.system.entity.simpletype.SysPermissionType;
 import com.lego.system.vo.SysPermissionCode;
 import com.lego.system.vo.SysPermissionModifyVO;
+import com.lego.system.vo.SysPermissionRouteTypeCode;
 
 public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysPermissionDao> {
 
@@ -35,5 +36,21 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
         entity.setSn(vo.getSn());
         entity.setForm(findByUnsureCode(SysCustomForm.class, vo.getForm()));
         entity.setParent(findByUnsureCode(SysPermission.class, vo.getParentCode()));
+    }
+
+    @Override
+    protected void postprocess() {
+        if (SysPermissionRouteTypeCode.DYNAMIC.equals(vo.getRouteType())) {
+            SysPermissionRouteType dynamicRouterType = findByUnsureCode(SysPermissionRouteType.class, SysPermissionRouteTypeCode.DYNAMIC);
+            updateParentRouteType(targetEntity.getParent(), dynamicRouterType);
+        }
+    }
+
+    private void updateParentRouteType(SysPermission parent, SysPermissionRouteType dynamicRouterType) {
+        if (parent != null) {
+            parent.setRouteType(dynamicRouterType);
+            entityDao.save(parent);
+            updateParentRouteType(parent.getParent(), dynamicRouterType);
+        }
     }
 }

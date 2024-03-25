@@ -175,7 +175,7 @@ export default {
           }
           if (field.fieldCode === 'routeType') {
             field.setting = this.permissionRouteTypes
-            this.$set(field, 'disabled', this.menuType !== 'app')
+            this.$set(field, 'disabled', this.menuType !== 'menu')
           }
           if (field.fieldCode === 'code' && this.operationType !== 'add') {
             field.disabled = true

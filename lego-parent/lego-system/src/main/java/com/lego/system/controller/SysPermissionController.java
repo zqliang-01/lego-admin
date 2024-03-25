@@ -12,6 +12,7 @@ import com.lego.system.service.ISysPermissionService;
 import com.lego.system.vo.SysConfigCode;
 import com.lego.system.vo.SysPermissionCreateVO;
 import com.lego.system.vo.SysPermissionModifyVO;
+import com.lego.system.vo.SysPermissionTypeCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -76,24 +77,25 @@ public class SysPermissionController extends BaseController {
         return JsonResponse.success(permissionService.findByCode(code));
     }
 
-    @GetMapping("/list-dynamic-current")
-    public JsonResponse<List<SysPermissionInfo>> listDynamicCurrent() {
-        return JsonResponse.success(permissionService.findDynamicByEmployee(getLoginCode()));
+    @GetMapping("/list-current")
+    public JsonResponse<List<SysPermissionInfo>> listCurrent(String routeType) {
+        return JsonResponse.success(permissionService.findByEmployee(getLoginCode(), routeType));
     }
 
     @GetMapping("/current")
     public JsonResponse<JSONObject> current() {
         List<String> validApps = configService.findListBy(SysConfigCode.APP_VALID_LIST);
-        List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode());
+        List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode(), null);
         JSONObject auth = permissionAssembler.createAuth(permissions, validApps);
-        auth.put("home", "index");
+        JSONObject homeAuth = new JSONObject();
+        homeAuth.put("code", "home");
+        homeAuth.put("title", "首页");
+        homeAuth.put("icon", "customer");
+        homeAuth.put("isDynamicRoute", "false");
+        homeAuth.put("hasMenuChildren", "false");
+        homeAuth.put("type", SysPermissionTypeCode.APP);
+        auth.put("home", homeAuth);
         return JsonResponse.success(auth);
-    }
-
-    @GetMapping("/list-menu")
-    public JsonResponse<List<SysPermissionInfo>> listMenu() {
-        List<SysPermissionInfo> permissions = permissionService.findAllMenu();
-        return JsonResponse.success(permissions);
     }
 
     @GetMapping("/list-role-auth")

@@ -52,14 +52,15 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
             List<SysPermissionInfo> childrens = permission.getChildrens();
             if (!childrens.isEmpty()) {
                 JSONObject value = createAuth(childrens, validApps);
+                value.put("sn", permission.getSn());
                 value.put("code", permission.getCode());
+                value.put("title", permission.getName());
+                value.put("type", permission.getType().getCode());
+                value.put("isDynamicRoute", permission.isDynamicRoute());
+                value.put("hasMenuChildren", hasMenuChildren(childrens));
                 if (StringUtil.isNotBlank(permission.getIcon())) {
                     value.put("icon", permission.getIcon());
                 }
-                value.put("sn", permission.getSn());
-                value.put("type", permission.getType().getCode());
-                value.put("routeType", permission.getRouteType().getCode());
-                value.put("title", permission.getName());
                 if (StringUtil.isNotBlank(permission.getForm().getCode())) {
                     value.put("formCode", permission.getForm().getCode());
                 }
@@ -69,5 +70,14 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
             auth.put(permission.getRealm(), true);
         }
         return auth;
+    }
+
+    private boolean hasMenuChildren(List<SysPermissionInfo> childrens) {
+        for (SysPermissionInfo children : childrens) {
+            if (children.isMenu()) {
+                return true;
+            }
+        }
+        return false;
     }
 }

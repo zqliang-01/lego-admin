@@ -100,6 +100,7 @@ import { dictTypeListAPI } from '@/api/crm/common'
 import { isEmpty } from '@/utils/types'
 import { objDeepCopy } from '@/utils/index'
 
+import Field from './field'
 import draggable from 'vuedraggable'
 import FieldTypeLib from './fieldTypeLib'
 import SettingField from './components/SettingField'
@@ -215,7 +216,6 @@ export default {
         formType: this.movedField.formType,
         componentName: this.movedField.componentName
       })
-      newField.appCode = this.appCode
       newField.stylePercent = 100
       newField.optionDataType = 'dict'
       if (this.movedField.formType === 'desc_text') {

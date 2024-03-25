@@ -9,6 +9,7 @@ const user = {
   state: {
     userInfo: null, // 用户信息
     allAuth: null, // 总权限信息 默认空 调整动态路由
+    authList: null,
     manage: {} // 管理后台权限信息
   },
 
@@ -19,6 +20,9 @@ const user = {
     },
     SET_ALLAUTH: (state, allAuth) => {
       state.allAuth = allAuth
+    },
+    SET_AUTHLIST: (state, authList) => {
+      state.authList = authList
     },
     SET_MANAGE: (state, manage) => {
       state.manage = manage

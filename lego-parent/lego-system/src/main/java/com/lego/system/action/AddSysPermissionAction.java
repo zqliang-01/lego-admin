@@ -10,6 +10,7 @@ import com.lego.system.entity.simpletype.SysPermissionRouteType;
 import com.lego.system.entity.simpletype.SysPermissionType;
 import com.lego.system.vo.SysPermissionCode;
 import com.lego.system.vo.SysPermissionCreateVO;
+import com.lego.system.vo.SysPermissionRouteTypeCode;
 import com.lego.system.vo.SysPermissionTypeCode;
 
 import java.util.Map;
@@ -73,6 +74,10 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
 
     @Override
     protected void postprocess() {
+        if (SysPermissionRouteTypeCode.DYNAMIC.equals(vo.getRouteType())) {
+            SysPermissionRouteType dynamicRouterType = findByUnsureCode(SysPermissionRouteType.class, SysPermissionRouteTypeCode.DYNAMIC);
+            updateParentRouteType(targetEntity.getParent(), dynamicRouterType);
+        }
         if (this.targetEntity.isMenu()) {
             int sn = targetEntity.getSn() * 10;
             for (Map.Entry<String, String> entry : authList.entrySet()) {
@@ -84,6 +89,14 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
                 addVO.setSn(++sn);
                 new AddSysPermissionAction(operatorCode, addVO).run();
             }
+        }
+    }
+
+    private void updateParentRouteType(SysPermission parent, SysPermissionRouteType dynamicRouterType) {
+        if (parent != null) {
+            parent.setRouteType(dynamicRouterType);
+            entityDao.save(parent);
+            updateParentRouteType(parent.getParent(), dynamicRouterType);
         }
     }
 }

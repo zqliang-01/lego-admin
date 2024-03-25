@@ -43,7 +43,9 @@ public class SysAppSortController extends BaseController {
             Optional<SysAppInfo> app = allApps.stream()
                 .filter(a -> sortAppCode.equals(a.getCode()) && validCodes.contains(a.getCode()))
                 .findFirst();
-            validList.add(app.get());
+            if (app.isPresent()) {
+                validList.add(app.get());
+            }
         }
         validList.addAll(allApps.stream()
             .filter(a -> !validList.contains(a)
@@ -63,7 +65,9 @@ public class SysAppSortController extends BaseController {
             Optional<SysAppInfo> app = allApps.stream()
                 .filter(a -> sortAppCode.equals(a.getCode()) && validCodes.contains(a.getCode()))
                 .findFirst();
-            validList.add(app.get());
+            if (app.isPresent()) {
+                validList.add(app.get());
+            }
         }
         return JsonResponse.success(validList);
     }

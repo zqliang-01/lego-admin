@@ -1,101 +1,95 @@
 /** 系统管理路由 */
 import Layout from '@/views/layout/AdminLayout'
 
-const layout = function(meta = {}, path = '/manage', requiresAuth = true) {
+const layout = function(menu, requiresAuth = true) {
+  menu.meta.isMenu = true
+  menu.meta.requiresAuth = requiresAuth
   return {
-    path: path,
+    path: '/manage',
     component: Layout,
     meta: {
-      requiresAuth: requiresAuth,
-      ...meta
-    }
+      requiresAuth: true,
+      permissions: ['manage']
+    },
+    children: [
+      menu
+    ]
   }
 }
 
 export default [
   {
     ...layout({
-      permissions: ['manage', 'system']
-    }),
-    children: [{
       name: 'systemconfig',
       path: 'systemconfig', // 企业首页
       component: () => import('@/views/admin/config'),
       meta: {
         title: '企业首页',
-        icon: 'enterprise'
+        icon: 'enterprise',
+        permissions: ['manage_system']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['manage', 'configSet']
-    }),
-    children: [{
       name: 'application',
       path: 'application', // 应用管理
       component: () => import('@/views/admin/application'),
       meta: {
         title: '应用管理',
-        icon: 'all'
+        icon: 'all',
+        permissions: ['manage_configSet']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['manage']
-    }),
-    children: [{
       path: 'icon',
       component: () => import('@/views/admin/icon'),
       meta: {
         title: '图标',
         icon: 'icon-edition'
       }
-    }]
+    }, false)
   },
   {
     ...layout({
-      permissions: ['manage', 'users']
-    }),
-    children: [{
       name: 'EmployeeDept',
       path: 'employee-dept',
       component: () => import('@/views/admin/employee'),
       meta: {
         title: '员工与部门管理',
-        icon: 's-seas'
+        icon: 's-seas',
+        permissions: ['manage_users']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['manage', 'role']
-    }),
-    children: [{
       name: 'RoleAuth',
       path: 'role-auth',
       component: () => import('@/views/admin/roleAuth'),
       meta: {
         title: '角色权限管理',
-        icon: 'user'
+        icon: 'user',
+        permissions: ['manage_role']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['manage', 'genTable']
-    }),
-    children: [{
       name: 'genTableList',
       path: 'gen-table-list',
       component: () => import('@/views/admin/genTable'),
       meta: {
         title: '代码生成',
-        icon: 'double-gear'
+        icon: 'double-gear',
+        permissions: ['manage_genTable']
       }
-    },
-    {
+    })
+  },
+  {
+    ...layout({
       name: 'genTableColumn',
       path: 'gen-table-column/:tableCode',
       component: () => import('@/views/admin/genTableColumn'),
@@ -103,22 +97,22 @@ export default [
       meta: {
         activeMenu: '/manage/gen-table-list'
       }
-    }]
+    }, false)
   },
   {
     ...layout({
-      permissions: ['manage', 'customForm']
-    }),
-    children: [{
       name: 'customForm',
       path: 'custom-form',
       component: () => import('@/views/admin/customForm'),
       meta: {
         title: '自定义表单',
-        icon: 'icon-full-setting'
+        icon: 'icon-full-setting',
+        permissions: ['manage_customForm']
       }
-    },
-    {
+    })
+  },
+  {
+    ...layout({
       name: 'customField',
       path: 'custom-field/:formCode',
       component: () => import('@/views/admin/customForm/fields'),
@@ -126,124 +120,126 @@ export default [
       meta: {
         activeMenu: '/manage/custom-form'
       }
-    }]
+    }, false)
   },
   {
     ...layout({
-      permissions: ['manage', 'role']
-    }),
-    children: [{
       name: 'Menu',
       path: 'menu',
       component: () => import('@/views/admin/menu'),
       meta: {
         title: '菜单管理',
-        icon: 'icon-des'
+        icon: 'icon-des',
+        permissions: ['manage_permission']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['manage', 'workflow'],
-      title: '审批流程管理',
-      icon: 'icon-workflow'
-    }, '/manage/workflow'),
-    children: [
-      {
-        path: 'model',
-        component: () => import('@/views/admin/workflow/model'),
-        meta: {
-          title: '模型管理',
-          requiresAuth: true,
-          permissions: ['manage', 'workflow', 'model']
-        }
+      path: 'workflow',
+      meta: {
+        title: '审批流程管理',
+        icon: 'icon-workflow',
+        permissions: ['manage_workflow']
       },
-      {
-        name: 'modelDesign',
-        path: 'model-design/:modelId',
-        component: () => import('@/views/admin/workflow/model/design'),
-        hidden: true,
-        meta: {
-          activeMenu: '/manage/workflow/model'
+      children: [
+        {
+          path: 'model',
+          component: () => import('@/views/admin/workflow/model'),
+          meta: {
+            title: '模型管理',
+            requiresAuth: true,
+            permissions: ['manage_workflow_model']
+          }
+        },
+        {
+          name: 'modelDesign',
+          path: 'model-design/:modelId',
+          component: () => import('@/views/admin/workflow/model/design'),
+          hidden: true,
+          meta: {
+            activeMenu: '/manage/workflow/model'
+          }
+        },
+        {
+          path: 'definition',
+          component: () => import('@/views/admin/workflow/definition'),
+          meta: {
+            title: '部署管理',
+            requiresAuth: true,
+            permissions: ['manage_workflow_definition']
+          }
         }
-      },
-      {
-        path: 'definition',
-        component: () => import('@/views/admin/workflow/definition'),
-        meta: {
-          title: '部署管理',
-          requiresAuth: true,
-          permissions: ['manage', 'workflow', 'definition']
-        }
-      }
-    ]
+      ]
+    })
   },
   {
     ...layout({
-      permissions: ['manage', 'sharding'],
-      title: '分表管理',
-      icon: 'icon-category-note'
-    }, '/manage/sharding'),
-    children: [
-      {
-        path: 'config',
-        component: () => import('@/views/admin/sharding/config'),
-        meta: {
-          title: '分片规则配置',
-          requiresAuth: true,
-          permissions: ['manage', 'sharding', 'config']
-        }
+      path: 'sharding',
+      meta: {
+        title: '分表管理',
+        icon: 'icon-category-note',
+        permissions: ['manage_sharding']
       },
-      {
-        path: 'dataSource',
-        component: () => import('@/views/admin/sharding/dataSource'),
-        meta: {
-          title: '分片数据源配置',
-          requiresAuth: true,
-          permissions: ['manage', 'sharding', 'dataSource']
+      children: [
+        {
+          path: 'config',
+          component: () => import('@/views/admin/sharding/config'),
+          meta: {
+            title: '分片规则配置',
+            requiresAuth: true,
+            permissions: ['manage_sharding_config']
+          }
+        },
+        {
+          path: 'dataSource',
+          component: () => import('@/views/admin/sharding/dataSource'),
+          meta: {
+            title: '分片数据源配置',
+            requiresAuth: true,
+            permissions: ['manage_sharding_dataSource']
+          }
+        },
+        {
+          path: 'table',
+          component: () => import('@/views/admin/sharding/table'),
+          meta: {
+            title: '分片表配置',
+            requiresAuth: true,
+            permissions: ['manage_sharding_table']
+          }
+        },
+        {
+          path: 'algorithm',
+          component: () => import('@/views/admin/sharding/algorithm'),
+          meta: {
+            title: '分片算法配置',
+            requiresAuth: true,
+            permissions: ['manage_sharding_algorithm']
+          }
+        },
+        {
+          path: 'template',
+          component: () => import('@/views/admin/sharding/template/index'),
+          meta: {
+            title: '分片模板配置',
+            requiresAuth: true,
+            permissions: ['manage_sharding_template']
+          }
         }
-      },
-      {
-        path: 'table',
-        component: () => import('@/views/admin/sharding/table'),
-        meta: {
-          title: '分片表配置',
-          requiresAuth: true,
-          permissions: ['manage', 'sharding', 'table']
-        }
-      },
-      {
-        path: 'algorithm',
-        component: () => import('@/views/admin/sharding/algorithm'),
-        meta: {
-          title: '分片算法配置',
-          requiresAuth: true,
-          permissions: ['manage', 'sharding', 'algorithm']
-        }
-      },
-      {
-        path: 'template',
-        component: () => import('@/views/admin/sharding/template/index'),
-        meta: {
-          title: '分片模板配置',
-          requiresAuth: true,
-          permissions: ['manage', 'sharding', 'template']
-        }
-      }
-    ]
+      ]
+    })
   },
   {
     ...layout({
-      permissions: ['manage']
-    }),
-    children: [{
       name: 'Log',
       path: 'log',
       component: () => import('@/views/admin/log'),
       meta: {
         title: '日志管理',
-        icon: 'task'
+        icon: 'task',
+        permissions: ['manage_log']
       }
-    }]
+    })
   }
 ]

@@ -1,82 +1,77 @@
 package com.lego.core.data.hibernate;
 
+import com.lego.core.dto.LegoPage;
+import com.lego.core.vo.PageVO;
+
+import javax.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
-
-import com.lego.core.dto.LegoPage;
-import com.lego.core.vo.PageVO;
-
 public class QueryHandler<T> extends BaseHandler<T> {
+
     boolean whereFlag = true;
     boolean orderFlag = true;
     boolean groupFlag = true;
-    private StringBuilder sqlBuilder;
+    private String selectSql;
+    private StringBuilder joinSqlBuilder;
+    private StringBuilder conditionSqlBuilder;
+    private StringBuilder orderSqlBuilder;
     private Map<String, Object> params;
 
     public QueryHandler(String sql, EntityManager em, Class<T> resultClass) {
-        super(em, resultClass);
-        this.sqlBuilder = new StringBuilder(" ");
-        this.sqlBuilder.append(format(sql, new Object[] { resultClass.getName() }));
+        this(sql, em, resultClass, resultClass);
     }
 
     public QueryHandler(String sql, EntityManager em, Class<T> resultClass, Class<?>... domainClasses) {
         super(em, resultClass);
-        this.sqlBuilder = new StringBuilder(" ");
         Object[] classNames = new Object[domainClasses.length];
         for (int i = 0; i < domainClasses.length; ++i) {
             classNames[i] = domainClasses[i].getName();
         }
-        this.sqlBuilder.append(format(sql, classNames));
+        this.selectSql = " " + format(sql, classNames);
+        this.conditionSqlBuilder = new StringBuilder(" ");
+        this.joinSqlBuilder = new StringBuilder(" ");
+        this.orderSqlBuilder = new StringBuilder(" ");
     }
 
     public QueryHandler<T> join(String condition) {
-        this.sqlBuilder.append(" JOIN ");
-        this.sqlBuilder.append(condition);
+        this.joinSqlBuilder.append(" JOIN ");
+        this.joinSqlBuilder.append(condition);
+        return this;
+    }
+
+    public QueryHandler<T> leftJoin(String condition) {
+        this.joinSqlBuilder.append(" LEFT JOIN ");
+        this.joinSqlBuilder.append(condition);
         return this;
     }
 
     public QueryHandler<T> condition(String condition) {
         if (this.whereFlag) {
             this.whereFlag = false;
-            this.sqlBuilder.append(" WHERE ");
+            this.conditionSqlBuilder.append(" WHERE ");
+        } else {
+            this.conditionSqlBuilder.append(" AND ");
         }
-        else {
-            this.sqlBuilder.append(" AND ");
-        }
-        this.sqlBuilder.append(condition);
+        this.conditionSqlBuilder.append(condition);
         return this;
     }
 
     public QueryHandler<T> order(String sqlString) {
         if (this.orderFlag) {
             this.orderFlag = false;
-            append(" ORDER BY ");
+            this.orderSqlBuilder.append(" ORDER BY ");
+        } else {
+            this.orderSqlBuilder.append(",");
         }
-        else {
-            this.sqlBuilder.append(",");
-        }
-        this.sqlBuilder.append(sqlString);
-        return this;
-    }
-
-    public QueryHandler<T> group(String sqlString) {
-        if (this.groupFlag) {
-            this.groupFlag = false;
-            this.sqlBuilder.append(" GROUP BY ");
-        }
-        else {
-            this.sqlBuilder.append(",");
-        }
-        this.sqlBuilder.append(sqlString);
+        this.orderSqlBuilder.append(sqlString);
         return this;
     }
 
     public QueryHandler<T> append(String sqlString) {
-        this.sqlBuilder.append(" ");
-        this.sqlBuilder.append(sqlString);
+        this.conditionSqlBuilder.append(" ");
+        this.conditionSqlBuilder.append(sqlString);
         return this;
     }
 
@@ -89,7 +84,7 @@ public class QueryHandler<T> extends BaseHandler<T> {
     }
 
     public T findFirst() {
-        List<T> list = limitedFindHQL(this.sqlBuilder.toString(), this.params, 0, 1);
+        List<T> list = limitedFindHQL(this.getSql(), this.params, 0, 1);
         if (list.size() > 0) {
             return list.get(0);
         }
@@ -97,23 +92,23 @@ public class QueryHandler<T> extends BaseHandler<T> {
     }
 
     public List<T> findList() {
-        return findHQL(this.sqlBuilder.toString(), this.params);
+        return findHQL(getSql(), this.params);
     }
 
     public List<T> findSqlList() {
-        return findSQL(this.sqlBuilder.toString(), this.params, false);
+        return findSQL(getSql(), this.params, false);
     }
 
     public List<T> findMap() {
-        return findSQL(this.sqlBuilder.toString(), this.params, true);
+        return findSQL(getSql(), this.params, true);
     }
 
     public T findUnique() {
-        return findUnique(this.sqlBuilder.toString(), this.params);
+        return findUnique(getSql(), this.params);
     }
 
     public T findSqlUnique() {
-        return findSqlUnique(this.sqlBuilder.toString(), this.params);
+        return findSqlUnique(getSql(), this.params);
     }
 
     public LegoPage<T> findPage(PageVO vo) {
@@ -122,16 +117,9 @@ public class QueryHandler<T> extends BaseHandler<T> {
 
     public LegoPage<T> findPage(int pageIndex, int pageSize) {
         int firstResult = (pageIndex - 1) * pageSize;
-        List<T> result = limitedFindHQL(this.sqlBuilder.toString(), this.params, firstResult, pageSize);
+        List<T> result = limitedFindHQL(getSql(), this.params, firstResult, pageSize);
         long count = findCount(buildCountString(), this.params);
         return new LegoPage<T>(result, pageIndex, pageSize, count);
-    }
-
-    public LegoPage<T> findSqlPage(PageVO vo) {
-        int firstResult = (vo.getPageIndex() - 1) * vo.getPageSize();
-        List<T> result = limitedFindSQL(this.sqlBuilder.toString(), this.params, firstResult, vo.getPageSize());
-        long count = findSqlCount(buildSubCountString(), this.params);
-        return new LegoPage<T>(result, vo.getPageIndex(), vo.getPageSize(), count);
     }
 
     public long findCount() {
@@ -139,22 +127,16 @@ public class QueryHandler<T> extends BaseHandler<T> {
     }
 
     private String buildCountString() {
-        String sql = this.sqlBuilder.toString();
+        String sql = this.getCountSql();
         sql = sql.substring(sql.toUpperCase().indexOf(" FROM "));
-        int orderIndex = sql.toUpperCase().indexOf(" ORDER BY ");
-        if (-1 != orderIndex) {
-            sql = sql.substring(0, orderIndex);
-        }
         return "SELECT COUNT(1) " + sql;
     }
 
-    private String buildSubCountString() {
-        String sql = this.sqlBuilder.toString();
-        int orderIndex = sql.toUpperCase().indexOf(" ORDER BY ");
-        if (-1 != orderIndex) {
-            sql = sql.substring(0, orderIndex);
-        }
-        return "SELECT COUNT(1) FROM (" + sql + ")";
+    public String getSql() {
+        return this.selectSql + this.joinSqlBuilder.toString() + this.conditionSqlBuilder.toString() + this.orderSqlBuilder.toString();
     }
 
+    public String getCountSql() {
+        return this.selectSql + this.joinSqlBuilder.toString() + this.conditionSqlBuilder.toString();
+    }
 }

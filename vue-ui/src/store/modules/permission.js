@@ -1,28 +1,17 @@
 import { asyncRouterMap } from '@/router'
-import { permissionListAPI } from '@/api/admin/permission'
+import { permissionCurrentListAPI } from '@/api/admin/permission'
 import Layout from '@/views/layout/TableFormLayout'
 import LegoIndex from '@/components/LegoIndex'
 
-function checkAuth(router, authInfo) {
+function checkAuth(router, authList) {
   // 判断当前路由在权限数组中是否存在
   if (router.meta) {
     const metaInfo = router.meta
     if (!metaInfo.requiresAuth) {
       return true
-    } else {
-      if (metaInfo.permissions) {
-        authInfo = { ...authInfo }
-        return forCheckPermission(metaInfo.permissions, authInfo)
-      } else if (metaInfo.permissionList) { // 一个路由受多个权限判断
-        for (let index = 0; index < metaInfo.permissionList.length; index++) {
-          authInfo = { ...authInfo }
-          const permission = forCheckPermission(metaInfo.permissionList[index], authInfo)
-          if (permission) {
-            return true
-          }
-        }
-        return false
-      }
+    }
+    if (metaInfo.permissions) {
+      return authList.some(auth => forCheckPermission(router, metaInfo.permissions, auth))
     }
   }
   return true
@@ -31,32 +20,38 @@ function checkAuth(router, authInfo) {
 /**
  * 循环关键字检查权限
  */
-const forCheckPermission = function(permissions, authInfo) {
-  for (let index = 0; index < permissions.length; index++) {
-    const key = permissions[index]
-    authInfo = authInfo[key]
-    if (!authInfo) {
-      return false
-    } else if (permissions.length - 1 === index) {
-      return true
+const forCheckPermission = function(router, permissions, auth) {
+  if (permissions.some(permission => permission === auth.code)) {
+    router.meta.isMenu = auth.menu
+    router.meta.sn = auth.sn
+    router.meta.title = auth.name
+    if (auth.icon) {
+      router.meta.icon = auth.icon
     }
+    return true
   }
+  if (auth.childrens.some(children => forCheckPermission(router, permissions, children))) {
+    return true
+  }
+  return false
 }
 
-const filterAsyncRouter = function(routers, authInfo) {
+const filterAsyncRouter = function(routers, authList) {
   const res = []
   routers.forEach(router => {
     const tmp = {
       ...router
     }
-    if (checkAuth(tmp, authInfo)) {
+    if (checkAuth(tmp, authList)) {
       if (tmp.children) {
-        tmp.children = filterAsyncRouter(tmp.children, authInfo)
+        tmp.children = filterAsyncRouter(tmp.children, authList)
       }
       res.push(tmp)
     }
   })
-  return res
+  return res.sort((a, b) => {
+    return a.meta.sn - b.meta.sn
+  })
 }
 
 
@@ -97,17 +92,16 @@ const setRouterRedirect = function(redirect, accessedRouters) {
 }
 
 /**
- * 合并静态路由 + 动态路由，取第一个可视路由作为模块首页跳转
+ * 合并静态路由 + 动态路由，取第一个可视路由作为模块首页重定向路由，设置默认打开应用重定向路由
  */
-const initRouter = function(authInfo, dynamicRouters) {
+const initRouter = function(authList, newAsyncRouterMap) {
   const routerObj = {}
   let addRouter = []
   let redirect = ''
   let topRedirect = '' // 置顶的第一个路由
-  const allRouters = asyncRouterMap.concat(dynamicRouters)
-  for (let index = 0; index < allRouters.length; index++) {
-    const mainRouter = allRouters[index]
-    const accessedRouters = filterAsyncRouter(mainRouter.router, authInfo)
+  for (let index = 0; index < newAsyncRouterMap.length; index++) {
+    const mainRouter = newAsyncRouterMap[index]
+    const accessedRouters = mainRouter.router
     for (let childIndex = 0; childIndex < accessedRouters.length; childIndex++) {
       const element = accessedRouters[childIndex]
       if (element.children && element.children.length > 0) {
@@ -128,8 +122,8 @@ const initRouter = function(authInfo, dynamicRouters) {
           redirect = element.redirect
         }
 
-        if (authInfo.firstModel && !topRedirect) {
-          if (authInfo.firstModel == mainRouter.type) {
+        if (authList.firstModel && !topRedirect) {
+          if (authList.firstModel == mainRouter.type) {
             topRedirect = element.redirect
           }
         }
@@ -149,6 +143,16 @@ const initRouter = function(authInfo, dynamicRouters) {
     addRouter = addRouter.concat(filterIgnoreRouter(accessedRouters))
   }
 
+  addRouter.forEach(router => {
+    let childrens = []
+    if (router.children && router.children.length > 0) {
+      router.children.forEach(children => {
+        childrens = childrens.concat(rebuildChildren(children, undefined))
+      })
+      router.children = childrens
+    }
+  })
+
   if (redirect || topRedirect) {
     addRouter.push({
       path: '/',
@@ -160,11 +164,44 @@ const initRouter = function(authInfo, dynamicRouters) {
 }
 
 /**
+ * 重建子节点，所有多级路由合并为二级路由
+ */
+const rebuildChildren = function(router, basePath = '') {
+  let result = []
+  if (router.children && router.children.length > 0) {
+    router.children.forEach(children => {
+      var tmpBasePath = router.path
+      if (basePath) {
+        tmpBasePath = basePath + '/' + router.path
+      }
+      result = result.concat(rebuildChildren(children, tmpBasePath))
+    })
+    return result
+  }
+  if (basePath) {
+    router.path = basePath + '/' + router.path
+  }
+  result.push(router)
+  return result
+}
+
+const filterAsyncRouterMap = function(authList) {
+  const newAsyncRouterMap = []
+  asyncRouterMap.forEach(asyncRouter => {
+    newAsyncRouterMap.push({
+      type: asyncRouter.type,
+      router: filterAsyncRouter(asyncRouter.router, authList)
+    })
+  })
+  return newAsyncRouterMap
+}
+
+/**
  * 路由重定向和角色路由完善
  */
 const perfectRouter = function(authInfo, result) {
   const dynamicRouters = []
-  permissionListAPI({ routeType: 'Dynamic' }).then(res => {
+  permissionCurrentListAPI({ routeType: 'Dynamic' }).then(res => {
     res.data.forEach(router => {
       if (router.childrens.length > 0) {
         const modelRouters = [{
@@ -188,7 +225,8 @@ const perfectRouter = function(authInfo, result) {
               path: `${encodeURI(item.code)}`,
               meta: {
                 title: item.name,
-                icon: item.icon
+                icon: item.icon,
+                isMenu: item.menu
               }
             }]
           })
@@ -197,7 +235,10 @@ const perfectRouter = function(authInfo, result) {
       }
     })
     if (result) {
-      result(initRouter(authInfo, dynamicRouters))
+      permissionCurrentListAPI().then(res => {
+        const newAsyncRouterMap = filterAsyncRouterMap(res.data)
+        result(initRouter(res.data, newAsyncRouterMap.concat(dynamicRouters)))
+      })
     }
   })
 }
@@ -219,7 +260,7 @@ const permission = {
     GenerateRoutes({
       commit,
       state
-    }, data) {
+    }, data, authList) {
       return new Promise(resolve => {
         // 路由完善
         perfectRouter(data, (routers) => {

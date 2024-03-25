@@ -2,6 +2,7 @@ package com.lego.system.dao.impl;
 
 import com.lego.core.data.hibernate.QueryHandler;
 import com.lego.core.data.hibernate.jpa.GenericDao;
+import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.entity.SysPermission;
 
@@ -25,11 +26,15 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
     }
 
     @Override
-    public List<SysPermission> findByEmployee(String employeeCode) {
+    public List<SysPermission> findByEmployee(String employeeCode, String routeType) {
         QueryHandler<SysPermission> query = createQueryHandler("SELECT p.* FROM sys_permission p");
         query.join("sys_role_permission rp ON rp.permission_id = p.id");
         query.join("sys_employee_role er ON er.role_id = rp.role_id");
         query.join("sys_employee e ON e.id = er.employee_id");
+        if (StringUtil.isNotBlank(routeType)) {
+            query.join("sys_simple_type rt ON p.route_type_id = rt.id");
+            query.condition("rt.code = :routeType").param("routeType", routeType);
+        }
         query.condition("e.code = :employeeCode").param("employeeCode", employeeCode);
         query.order("p.sn");
         return query.findSqlList();
@@ -94,6 +99,7 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
     public int findMaxSn(String appCode) {
         QueryHandler<Integer> query = createQueryHandler("SELECT max(p.SN) sn FROM sys_permission p", Integer.class);
         query.condition("p.code LIKE :appCode").param("appCode", appCode + "%");
+        query.order("p.sn");
         return query.findSqlUnique();
     }
 
@@ -101,6 +107,16 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
     public List<SysPermission> findByParent(SysPermission parent) {
         QueryHandler<SysPermission> query = createQueryHandler();
         query.condition("t.parent = :parent").param("parent", parent);
+        return query.findList();
+    }
+
+    @Override
+    public List<SysPermission> findByRouteType(String typeCode) {
+        QueryHandler<SysPermission> query = createQueryHandler();
+        if (StringUtil.isNotBlank(typeCode)) {
+            query.condition("t.routeType.code = :typeCode").param("typeCode", typeCode);
+        }
+        query.order("t.sn");
         return query.findList();
     }
 

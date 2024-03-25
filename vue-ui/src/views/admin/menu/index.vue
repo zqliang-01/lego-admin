@@ -28,7 +28,6 @@
                 :props="menuTreeProps"
                 :expand-on-click-node="false"
                 :data="menuList"
-                :default-expanded-keys="defaultExpandedKeys"
                 node-key="code"
                 highlight-current
                 @node-click="changeMenuClick">
@@ -118,7 +117,7 @@ export default {
       this.listMenu()
     },
     deleteSuccess() {
-      this.menuData = {}
+      this.currentMenu = {}
       this.listMenu()
     }
   }

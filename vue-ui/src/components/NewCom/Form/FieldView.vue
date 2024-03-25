@@ -24,7 +24,7 @@
       :class="{'can-check': !isEmpty}"
       @click="handleEntityClick(value)" >{{ getCommonShowValue() }}</span>
     <span
-      :class="{'can-check': props.clickable}"
+      :class="[{'can-check': props.clickable}, {'can-visit--bold': props.clickable}]"
       @click="handleClick(value)"
       v-else>{{ getCommonShowValue() }}</span>
     <map-view

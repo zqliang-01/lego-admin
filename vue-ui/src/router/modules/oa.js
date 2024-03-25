@@ -1,86 +1,82 @@
 /** 系统管理路由 */
 import Layout from '@/views/layout/OaLayout'
 
-const layout = function(meta = {}, path = '/oa', requiresAuth = true) {
+const layout = function(menu, requiresAuth = true) {
+  if (menu.meta) {
+    menu.meta.requiresAuth = requiresAuth
+  }
   return {
-    path: path,
+    path: '/oa',
     component: Layout,
     meta: {
-      requiresAuth: requiresAuth,
-      ...meta
-    }
+      requiresAuth: true,
+      permissions: ['oa']
+    },
+    children: [
+      menu
+    ]
   }
 }
 
 export default [
   {
     ...layout({
-      permissions: ['oa', 'start']
-    }),
-    children: [{
       name: 'start',
       path: 'start',
       component: () => import('@/views/oa/start'),
       meta: {
         title: '发起审批',
-        icon: 'top'
+        icon: 'top',
+        permissions: ['oa_start']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['oa', 'owner']
-    }),
-    children: [{
       name: 'owner',
       path: 'owner',
       component: () => import('@/views/oa/owner'),
       meta: {
         title: '我的流程',
-        icon: 'my-task'
+        icon: 'my-task',
+        permissions: ['oa_owner']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['oa', 'undo']
-    }),
-    children: [{
       name: 'undo',
       path: 'undo',
       component: () => import('@/views/oa/undo'),
       meta: {
         title: '待办任务',
-        icon: 'contract'
+        icon: 'contract',
+        permissions: ['oa_undo']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['oa', 'unclaimed']
-    }),
-    children: [{
       name: 'claim',
       path: 'claim',
       component: () => import('@/views/oa/claim'),
       meta: {
         title: '待签任务',
-        icon: 'icon-related-tasks'
+        icon: 'icon-related-tasks',
+        permissions: ['oa_unclaimed']
       }
-    }]
+    })
   },
   {
     ...layout({
-      permissions: ['oa', 'finished']
-    }),
-    children: [{
       name: 'finished',
       path: 'finished',
       component: () => import('@/views/oa/finished'),
       meta: {
         title: '已办任务',
-        icon: 'icon-task-state'
+        icon: 'icon-task-state',
+        permissions: ['oa_finished']
       }
-    }]
+    })
   }
 ]

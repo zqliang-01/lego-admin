@@ -35,9 +35,15 @@ export function permissionGetAPI(data) {
   })
 }
 
-export function permissionCurrentGetAPI(data) {
+export function permissionCurrentGetAPI() {
   return request({
-    url: '/back-end/sys-permission/current',
+    url: '/back-end/sys-permission/current'
+  })
+}
+
+export function permissionCurrentListAPI(data) {
+  return request({
+    url: '/back-end/sys-permission/list-current',
     data: data
   })
 }
@@ -49,25 +55,10 @@ export function permissionListAPI(data) {
   })
 }
 
-export function permissionDynamicListAPI(data) {
-  return request({
-    url: '/back-end/sys-permission/list-dynamic-current'
-  })
-}
-
 export function permissionAuthListAPI(data) {
   return request({
     url: '/back-end/sys-permission/list-role-auth',
     data: data
-  })
-}
-
-/**
- * 查询菜单列表
- */
-export function permissionMenuListAPI(data) {
-  return request({
-    url: '/back-end/sys-permission/list-menu'
   })
 }
 

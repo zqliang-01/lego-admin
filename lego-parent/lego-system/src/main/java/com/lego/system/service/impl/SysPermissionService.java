@@ -3,7 +3,6 @@ package com.lego.system.service.impl;
 import com.lego.core.common.Constants;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.TypeInfo;
-import com.lego.core.util.StringUtil;
 import com.lego.system.action.AddSysPermissionAction;
 import com.lego.system.action.DeleteSysPermissionAction;
 import com.lego.system.action.ModifySysPermissionAction;
@@ -17,7 +16,6 @@ import com.lego.system.entity.SysPermission;
 import com.lego.system.entity.simpletype.SysPermissionRouteType;
 import com.lego.system.entity.simpletype.SysPermissionType;
 import com.lego.system.service.ISysPermissionService;
-import com.lego.system.vo.SysPermissionCode;
 import com.lego.system.vo.SysPermissionCreateVO;
 import com.lego.system.vo.SysPermissionModifyVO;
 import com.lego.system.vo.SysPermissionTypeCode;
@@ -25,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SysPermissionService extends BusService<ISysPermissionDao, SysPermissionAssembler> implements ISysPermissionService {
@@ -40,41 +37,24 @@ public class SysPermissionService extends BusService<ISysPermissionDao, SysPermi
 
     @Override
     public List<SysPermissionInfo> findBy(String routeType) {
-        List<SysPermission> permissions = dao.findAll();
-        List<SysPermissionInfo> infos = assembler.createTree(permissions);
-        if (StringUtil.isBlank(routeType)) {
-            return infos;
-        }
-        return infos.stream().filter(info -> routeType.equals(info.getRouteType().getCode())).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<SysPermissionInfo> findByEmployee(String employeeCode) {
-        SysEmployee employee = employeeDao.findByCode(employeeCode);
-        if (employee.containRole(Constants.ADMIN_ROLE_CODE)) {
-            return assembler.createTree(dao.findAll());
-        }
-        List<SysPermission> permissions = dao.findByEmployee(employeeCode);
+        List<SysPermission> permissions = dao.findByRouteType(routeType);
         return assembler.createTree(permissions);
     }
 
     @Override
-    public List<SysPermissionInfo> findDynamicByEmployee(String employeeCode) {
-        List<SysPermissionInfo> infos = findByEmployee(employeeCode);
-        return infos.stream().filter(info -> info.isDynamicRoute()).collect(Collectors.toList());
+    public List<SysPermissionInfo> findByEmployee(String employeeCode, String routeType) {
+        SysEmployee employee = employeeDao.findByCode(employeeCode);
+        if (employee.isAdmin()) {
+            return assembler.createTree(dao.findByRouteType(routeType));
+        }
+        List<SysPermission> permissions = dao.findByEmployee(employeeCode, routeType);
+        return assembler.createTree(permissions);
     }
 
     @Override
     public SysPermissionInfo findByCode(String code) {
         SysPermission permission = dao.findByCode(code);
         return assembler.create(permission);
-    }
-
-    @Override
-    public List<SysPermissionInfo> findAllMenu() {
-        List<SysPermission> permissions = dao.findByType(SysPermissionTypeCode.APP, SysPermissionTypeCode.MENU);
-        permissions = permissions.stream().filter(p -> !p.getCode().startsWith(SysPermissionCode.manage)).collect(Collectors.toList());
-        return assembler.createTree(permissions);
     }
 
     @Override
@@ -86,7 +66,7 @@ public class SysPermissionService extends BusService<ISysPermissionDao, SysPermi
     @Override
     public List<SysAppInfo> findAppBy(String employeeCode) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
-        if (employee.containRole(Constants.ADMIN_ROLE_CODE)) {
+        if (employee.isAdmin()) {
             return findAllApp();
         }
         List<SysPermission> permissions = dao.findBy(employeeCode, SysPermissionTypeCode.APP);
