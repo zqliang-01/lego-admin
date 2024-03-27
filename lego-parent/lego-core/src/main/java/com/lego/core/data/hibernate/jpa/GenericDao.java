@@ -34,19 +34,19 @@ public class GenericDao<T extends BaseEntity> extends LegoJpaRepository<T, Long>
     }
 
     protected QueryHandler<T> createQueryHandler() {
-        return new QueryHandler<T>("FROM {0} t", this.entityManager, this.domainClass);
+        return createQueryHandler("FROM {0} t");
     }
 
     protected QueryHandler<T> createQueryHandler(String sql) {
-        return new QueryHandler<T>(sql, this.entityManager, this.domainClass);
-    }
-
-    protected QueryHandler<T> createQueryHandler(String sql, Class<T> resultClass, Class<?>... domainClass) {
-        return new QueryHandler<T>(sql, this.entityManager, resultClass, domainClass);
+        return createQueryHandler(sql, this.domainClass);
     }
 
     protected <D> QueryHandler<D> createQueryHandler(String sql, Class<D> resultClass) {
         return new QueryHandler<D>(sql, this.entityManager, resultClass);
+    }
+
+    protected QueryHandler<T> createQueryHandler(String sql, Class<T> resultClass, Class<?>... domainClass) {
+        return new QueryHandler<T>(sql, this.entityManager, resultClass, domainClass);
     }
 
     @Override

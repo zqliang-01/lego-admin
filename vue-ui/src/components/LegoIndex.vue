@@ -122,8 +122,6 @@ import IndexMixin from './Mixins/LegoIndex'
 export default {
   name: 'LegoIndex',
   mixins: [IndexMixin],
-  components: {
-  },
   data() {
     return {
       createShow: false,

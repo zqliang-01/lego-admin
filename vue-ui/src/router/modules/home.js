@@ -17,7 +17,10 @@ const homeRouter = [
     ...layout(),
     children: [{
       path: 'index',
-      component: () => import('@/views/home')
+      component: () => import('@/views/home'),
+      meta: {
+        requiresAuth: false
+      }
     }]
   }
 ]

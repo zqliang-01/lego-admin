@@ -196,19 +196,37 @@ export default {
     },
     handleSubmit() {
       this.loading = true
-      this.$refs.createForm.validate(valid => {
+      const createForm = this.$refs.createForm
+      createForm.validate(valid => {
         if (!valid) {
           this.loading = false
           showFormErrorMessage(createForm)
           return false
         }
-        this.requestAPI(this.fieldForm).then(() => {
-          this.loading = false
-          this.$message.success('提交成功！')
-          this.$emit('success')
-        }).catch(() => {
-          this.loading = false
-        })
+        this.fieldForm.createAuth = false
+        if (this.fieldForm.type === 'menu' && this.operationType === 'add') {
+          this.$confirm('是否需要自动创建按钮权限（如：新增、修改、删除等）?', '提示', {
+            confirmButtonText: '需要',
+            cancelButtonText: '不需要',
+            type: 'info'
+          }).then(() => {
+            this.fieldForm.createAuth = true
+            this.submitRequest()
+          }).catch(() => {
+            this.submitRequest()
+          })
+          return
+        }
+        this.submitRequest()
+      })
+    },
+    submitRequest() {
+      this.requestAPI(this.fieldForm).then(() => {
+        this.loading = false
+        this.$message.success('提交成功！')
+        this.$emit('success')
+      }).catch(() => {
+        this.loading = false
       })
     },
     handleAdd() {
@@ -216,6 +234,9 @@ export default {
       this.operationType = 'add'
       this.baseFieldList.forEach(fields => {
         fields.forEach(field => {
+          if (field.fieldCode === 'routeType' && this.menuData.code) {
+            this.$set(field, 'disabled', false)
+          }
           if (field.fieldCode === 'parentCode') {
             field.value = this.menuData.code
             this.$set(this.fieldForm, field.fieldCode, this.menuData.code)

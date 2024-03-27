@@ -14,7 +14,7 @@ public interface ISysPermissionService {
 
     List<SysPermissionInfo> findBy(String routeType);
 
-    List<SysPermissionInfo> findByEmployee(String employeeCode, String routeType);
+    List<SysPermissionInfo> findByEmployee(String employeeCode, String... types);
 
     SysPermissionInfo findByCode(String code);
 

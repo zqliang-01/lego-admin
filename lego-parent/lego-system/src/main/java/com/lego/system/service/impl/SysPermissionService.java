@@ -42,12 +42,12 @@ public class SysPermissionService extends BusService<ISysPermissionDao, SysPermi
     }
 
     @Override
-    public List<SysPermissionInfo> findByEmployee(String employeeCode, String routeType) {
+    public List<SysPermissionInfo> findByEmployee(String employeeCode, String... types) {
         SysEmployee employee = employeeDao.findByCode(employeeCode);
         if (employee.isAdmin()) {
-            return assembler.createTree(dao.findByRouteType(routeType));
+            return assembler.createTree(dao.findByType(types));
         }
-        List<SysPermission> permissions = dao.findByEmployee(employeeCode, routeType);
+        List<SysPermission> permissions = dao.findBy(employeeCode, types);
         return assembler.createTree(permissions);
     }
 

@@ -9,8 +9,6 @@ public interface ISysPermissionDao extends IGenericDao<SysPermission> {
 
     List<String> findAllCode();
 
-    List<SysPermission> findByEmployee(String employeeCode, String routeType);
-
     List<SysPermission> findByType(String... types);
 
     List<SysPermission> findBy(String employeeCode, String... types);

@@ -16,6 +16,7 @@ public class SysPermissionCreateVO extends VO {
     private String type;
     private String routeType;
     private String parentCode;
+    private boolean createAuth;
     private int sn;
     private String form;
 }

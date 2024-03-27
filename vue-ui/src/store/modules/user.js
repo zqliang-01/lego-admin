@@ -12,7 +12,6 @@ const user = {
     authList: null,
     manage: {} // 管理后台权限信息
   },
-
   mutations: {
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = userInfo

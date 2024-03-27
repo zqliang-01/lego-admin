@@ -4,6 +4,6 @@ public interface SysPermissionRouteTypeCode {
 
     String LOCAL = "local";
 
-    String DYNAMIC = "Dynamic";
+    String DYNAMIC = "dynamic";
 
 }

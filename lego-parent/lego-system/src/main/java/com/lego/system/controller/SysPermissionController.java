@@ -78,22 +78,20 @@ public class SysPermissionController extends BaseController {
     }
 
     @GetMapping("/list-current")
-    public JsonResponse<List<SysPermissionInfo>> listCurrent(String routeType) {
-        return JsonResponse.success(permissionService.findByEmployee(getLoginCode(), routeType));
+    public JsonResponse<List<SysPermissionInfo>> listCurrent() {
+        List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode(), SysPermissionTypeCode.MENU_TYPES);
+        return JsonResponse.success(permissions);
     }
 
     @GetMapping("/current")
     public JsonResponse<JSONObject> current() {
         List<String> validApps = configService.findListBy(SysConfigCode.APP_VALID_LIST);
-        List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode(), null);
+        List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode());
         JSONObject auth = permissionAssembler.createAuth(permissions, validApps);
         JSONObject homeAuth = new JSONObject();
         homeAuth.put("code", "home");
         homeAuth.put("title", "首页");
         homeAuth.put("icon", "customer");
-        homeAuth.put("isDynamicRoute", "false");
-        homeAuth.put("hasMenuChildren", "false");
-        homeAuth.put("type", SysPermissionTypeCode.APP);
         auth.put("home", homeAuth);
         return JsonResponse.success(auth);
     }

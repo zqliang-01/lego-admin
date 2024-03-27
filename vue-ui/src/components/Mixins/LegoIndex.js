@@ -58,6 +58,7 @@ export default {
   },
   watch: {
     $route: function(val) {
+      this.formCode = ''
       this.menuCode = this.$route.params.menuCode
       this.getFieldList(true)
     }

@@ -81,6 +81,7 @@ import {
 import { createFieldListAPI } from '@/api/admin/formField'
 import CreateMixin from '@/components/Mixins/LegoCreate'
 import UserSelect from '@/components/NewCom/UserSelect'
+import { showFormErrorMessage } from '@/components/NewCom/Form/utils'
 
 export default {
   name: 'TaskDetail',
@@ -148,6 +149,7 @@ export default {
     doRequest() {
       this.$refs.otherFrom.validate(valid => {
         if (!valid) {
+          showFormErrorMessage(this.$refs.otherFrom)
           return
         }
         this.loading = true
@@ -165,10 +167,12 @@ export default {
     handleSave() {
       this.$refs.createForm.validate(valid => {
         if (!valid) {
+          showFormErrorMessage(this.$refs.createForm)
           return
         }
         this.$refs.otherFrom.validate(validOther => {
           if (!validOther) {
+            showFormErrorMessage(this.$refs.otherFrom)
             return
           }
           this.loading = true
@@ -187,6 +191,7 @@ export default {
     handleButton(type) {
       this.$refs.otherFrom.validate(valid => {
         if (!valid) {
+          showFormErrorMessage(this.$refs.otherFrom)
           return
         }
         if (type !== 'reject') {

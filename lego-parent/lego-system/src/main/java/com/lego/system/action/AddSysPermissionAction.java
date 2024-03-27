@@ -78,7 +78,7 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
             SysPermissionRouteType dynamicRouterType = findByUnsureCode(SysPermissionRouteType.class, SysPermissionRouteTypeCode.DYNAMIC);
             updateParentRouteType(targetEntity.getParent(), dynamicRouterType);
         }
-        if (this.targetEntity.isMenu()) {
+        if (this.targetEntity.isMenu() && vo.isCreateAuth()) {
             int sn = targetEntity.getSn() * 10;
             for (Map.Entry<String, String> entry : authList.entrySet()) {
                 SysPermissionCreateVO addVO = new SysPermissionCreateVO();

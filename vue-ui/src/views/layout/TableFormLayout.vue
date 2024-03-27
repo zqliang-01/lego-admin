@@ -5,10 +5,10 @@
     </el-header>
     <el-container>
       <sidebar
+        :main-router="appCode"
         :items="currentRouters"
         :add-offset="quickAddOffset"
-        create-button-title="快速创建"
-        main-router="crm">
+        create-button-title="快速创建">
         <div
           v-if="quickAddList.length > 0"
           slot="add"

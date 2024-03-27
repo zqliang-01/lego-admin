@@ -155,15 +155,25 @@ export default {
         this.$confirm('此操作将拒绝任务【' + item.name + '】并回退到上一审批节点，是否继续?', '提示', {
           type: 'warning'
         }).then(() => {
-          this.loading = true
-          taskRejectAPI({
-            id: item.id
-          }).then(() => {
-            this.loading = false
-            this.$message.success('任务已拒绝，流程已回退到上一节点！')
-            this.refresh()
-          }).catch(() => {
-            this.loading = false
+          this.$prompt('', '审批意见', {
+            inputErrorMessage: "请填写审批意见！",
+            inputValidator: value => {
+              if (!value) {
+                return "请填写审批意见！";
+              }
+            }
+          }).then(({ value }) => {
+            this.loading = true
+            taskRejectAPI({
+              id: item.id,
+              comment: value
+            }).then(() => {
+              this.loading = false
+              this.$message.success('任务已拒绝，流程已回退到上一节点！')
+              this.refresh()
+            }).catch(() => {
+              this.loading = false
+            })
           })
         })
         return

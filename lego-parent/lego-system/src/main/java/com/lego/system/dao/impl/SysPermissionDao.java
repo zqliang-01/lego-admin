@@ -26,24 +26,11 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
     }
 
     @Override
-    public List<SysPermission> findByEmployee(String employeeCode, String routeType) {
-        QueryHandler<SysPermission> query = createQueryHandler("SELECT p.* FROM sys_permission p");
-        query.join("sys_role_permission rp ON rp.permission_id = p.id");
-        query.join("sys_employee_role er ON er.role_id = rp.role_id");
-        query.join("sys_employee e ON e.id = er.employee_id");
-        if (StringUtil.isNotBlank(routeType)) {
-            query.join("sys_simple_type rt ON p.route_type_id = rt.id");
-            query.condition("rt.code = :routeType").param("routeType", routeType);
-        }
-        query.condition("e.code = :employeeCode").param("employeeCode", employeeCode);
-        query.order("p.sn");
-        return query.findSqlList();
-    }
-
-    @Override
     public List<SysPermission> findByType(String... types) {
         QueryHandler<SysPermission> query = createQueryHandler();
-        query.condition("t.type.code IN (:types)").param("types", Arrays.asList(types));
+        if (types != null && types.length > 0) {
+            query.condition("t.type.code IN (:types)").param("types", Arrays.asList(types));
+        }
         query.order("t.sn");
         return query.findList();
     }
@@ -68,7 +55,9 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
         query.join("sys_employee_role er ON er.role_id = rp.role_id");
         query.join("sys_employee e ON e.id = er.employee_id");
         query.condition("e.code = :employeeCode").param("employeeCode", employeeCode);
-        query.condition("pt.code IN (:typeCode)").param("typeCode", Arrays.asList(types));
+        if (types != null && types.length > 0) {
+            query.condition("pt.code IN (:typeCode)").param("typeCode", Arrays.asList(types));
+        }
         query.order("p.sn");
         return query.findSqlList();
     }

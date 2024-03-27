@@ -3,7 +3,6 @@ package com.lego.system.assembler;
 import com.alibaba.fastjson.JSONObject;
 import com.lego.core.assembler.TreeAssembler;
 import com.lego.core.util.EntityUtil;
-import com.lego.core.util.StringUtil;
 import com.lego.system.dto.SysAppInfo;
 import com.lego.system.dto.SysPermissionInfo;
 import com.lego.system.entity.SysPermission;
@@ -55,15 +54,8 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
                 value.put("sn", permission.getSn());
                 value.put("code", permission.getCode());
                 value.put("title", permission.getName());
-                value.put("type", permission.getType().getCode());
-                value.put("isDynamicRoute", permission.isDynamicRoute());
-                value.put("hasMenuChildren", hasMenuChildren(childrens));
-                if (StringUtil.isNotBlank(permission.getIcon())) {
-                    value.put("icon", permission.getIcon());
-                }
-                if (StringUtil.isNotBlank(permission.getForm().getCode())) {
-                    value.put("formCode", permission.getForm().getCode());
-                }
+                value.put("icon", permission.getIcon());
+                value.put("formCode", permission.getForm().getCode());
                 auth.put(permission.getRealm(), value);
                 continue;
             }
