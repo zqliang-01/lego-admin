@@ -14,7 +14,7 @@
             class="nav-section__content"
             wrap="wrap">
             <div
-              v-for="(item, index) in headerModule"
+              v-for="(item, index) in allModule"
               :key="index"
               class="nav-section-item"
               @click="selectClick(item)">
@@ -22,7 +22,10 @@
                 <i :class="item.icon | iconPre" />
               </div>
               <div class="nav-section-item__label">{{ item.name }}</div>
-              <i v-if="isEdit && topList.length < 8 && !item.future && !isHasSelect(item.code)" class="el-icon-circle-plus is-handle" @click.stop="moduleTopClick(item, index)" />
+              <i
+                v-if="isEdit && topList.length < 8 && !item.future && !hasSelect(item.code)"
+                class="el-icon-circle-plus is-handle"
+                @click.stop="moduleTopClick(item, index)" />
               <span v-if="item.future" class="span-future">{{ item.futureLabel }}</span>
             </div>
           </flexbox>
@@ -71,8 +74,7 @@ export default {
     Draggable
   },
   props: {
-    collapse: Boolean,
-    topModule: Array
+    collapse: Boolean
   },
   data() {
     return {
@@ -86,6 +88,7 @@ export default {
   computed: {
     ...mapGetters([
       'allAuth',
+      'allModule',
       'headerModule'
     ]),
     containerLeft() {
@@ -93,19 +96,12 @@ export default {
         return '79px'
       }
       return '215px'
-    },
-    topModules() {
-      return this.topList.map(item => {
-        if (item.code != 'home') {
-          return item.code
-        }
-      })
     }
   },
   watch: {
-    topModule: {
+    headerModule: {
       handler() {
-        this.topList = objDeepCopy(this.topModule).filter(item => item.code != 'home')
+        this.topList = objDeepCopy(this.headerModule)
       },
       deep: true,
       immediate: true
@@ -119,10 +115,12 @@ export default {
       this.loading = true
       const codes = this.topList.map(item => item.code)
       headerModelModifyAPI(codes).then(res => {
+        this.$store.dispatch('GetHeaderModule').then(res => {
+          this.$emit('change')
+        })
         this.isEdit = false
         this.$message.success('操作成功')
         this.loading = false
-        this.$emit('change')
       }).catch(() => {
         this.loading = false
       })
@@ -131,8 +129,8 @@ export default {
     /**
      * 判断是否有选择
      */
-    isHasSelect(module) {
-      return this.topModules.includes(module)
+    hasSelect(module) {
+      return this.topList.some(top => top.code === module)
     },
 
     /**
@@ -148,7 +146,7 @@ export default {
      * 模块添加
      */
     moduleTopClick(item, index) {
-      if (this.topList.length < 8) {
+      if (this.topList.length < 8 && !this.topList.some(top => top.code === item.code)) {
         this.topList.push(item)
       }
     },

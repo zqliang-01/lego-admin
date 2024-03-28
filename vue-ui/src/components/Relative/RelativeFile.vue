@@ -186,7 +186,6 @@ export default {
         this.$confirm('您确定要删除该文件吗?', '提示', { type: 'warning' }).then(() => {
           fileDeleteAPI(item.row.code).then(res => {
             this.list.splice(item.$index, 1)
-            this.$bus.emit('crm-tab-num-update')
             this.$message.success('操作成功')
           })
         })

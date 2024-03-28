@@ -59,7 +59,7 @@ import {
 } from '@/api/admin/workflow/task'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/LegoTable'
+import LegoTable from '@/components/lego/LegoTable'
 import FieldView from '@/components/NewCom/Form/FieldView'
 import ProcessViewer from '../components/ProcessViewer'
 import TaskDetail from '../components/TaskDetail.vue'
@@ -156,10 +156,10 @@ export default {
           type: 'warning'
         }).then(() => {
           this.$prompt('', '审批意见', {
-            inputErrorMessage: "请填写审批意见！",
+            inputErrorMessage: '请填写审批意见！',
             inputValidator: value => {
               if (!value) {
-                return "请填写审批意见！";
+                return '请填写审批意见！'
               }
             }
           }).then(({ value }) => {

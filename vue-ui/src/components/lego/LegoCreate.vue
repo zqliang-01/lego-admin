@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import CreateMixin from '@/components/Mixins/LegoCreate'
+import CreateMixin from './mixins/LegoCreate'
 
 export default {
   name: 'LegoCreate',

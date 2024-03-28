@@ -78,7 +78,8 @@ const user = {
           // 邮件信息 走之前的逻辑
           commit('SET_USERINFO', response.data)
           dispatch('SystemLogoAndName')
-          dispatch('HeaderModule')
+          dispatch('GetAllModule')
+          dispatch('GetHeaderModule')
           resolve(response)
         }).catch(error => {
           reject(error)

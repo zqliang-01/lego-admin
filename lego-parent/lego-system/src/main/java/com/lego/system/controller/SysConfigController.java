@@ -64,7 +64,7 @@ public class SysConfigController extends BaseController {
     }
 
     @PostMapping("/set-app")
-    @SaCheckPermission("manage_configSet_updated")
+    @SaCheckPermission("manage_configSet_update")
     public JsonResponse<Object> setApp(String code, boolean enable) {
         List<String> validList = configService.findListBy(SysConfigCode.APP_VALID_LIST);
         if (enable) {

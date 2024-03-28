@@ -45,7 +45,7 @@
 import { employeeListAPI } from '@/api/admin/employee'
 import SashFormLayout from '@/components/layout/SashFormLayout'
 import FieldView from '@/components/NewCom/Form/FieldView'
-import LegoTable from '@/components/LegoTable'
+import LegoTable from '@/components/lego/LegoTable'
 
 export default {
   name: 'UserSelect',

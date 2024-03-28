@@ -5,9 +5,9 @@ import { tableHeaderFieldListAPI } from '@/api/admin/formField'
 import LegoCommonMixin from './LegoCommon'
 import LegoListHead from '../LegoListHead'
 import LegoTableHead from '../LegoTableHead'
-import Empty from '../Empty'
-import FieldSet from '../FieldSet'
-import FieldView from '../NewCom/Form/FieldView'
+import Empty from '@/components/Empty'
+import FieldSet from '@/components/FieldSet'
+import FieldView from '@/components/NewCom/Form/FieldView'
 
 import { mapGetters } from 'vuex'
 import Lockr from 'lockr'
@@ -109,7 +109,9 @@ export default {
         }
 
         this.$nextTick(() => {
-          document.querySelector('.el-table__body-wrapper').scrollTop = 1
+          if (document.querySelector('.el-table__body-wrapper')) {
+            document.querySelector('.el-table__body-wrapper').scrollTop = 1
+          }
         })
       }).catch(() => {
         this.loading = false

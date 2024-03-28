@@ -1,5 +1,5 @@
 import Layout from '@/views/layout/TableFormLayout'
-import LegoIndex from '@/components/LegoIndex'
+import LegoIndex from '@/components/lego/LegoIndex'
 
 // 添加需要注册的动态路由（后期按模板适配）
 export function addDynamicRouter(routers) {
@@ -59,7 +59,6 @@ const addDynamicMenu = function(auth, routers) {
 export function mergeDynamicRouter(authList, allRouters) {
   authList.forEach(auth => {
     if (auth.dynamicRoute) {
-      console.log(auth)
       let asyncRouter = allRouters.find(asyncRouter => asyncRouter.type === auth.code)
       if (!asyncRouter) {
         asyncRouter = { type: auth.code, router: [] }

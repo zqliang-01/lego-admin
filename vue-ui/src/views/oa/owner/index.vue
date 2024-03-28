@@ -43,7 +43,7 @@ import {
 } from '@/api/admin/workflow/instance'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/LegoTable'
+import LegoTable from '@/components/lego/LegoTable'
 import FieldView from '@/components/NewCom/Form/FieldView'
 import ProcessViewer from '../components/ProcessViewer'
 

@@ -1,6 +1,6 @@
 import { mapGetters } from 'vuex'
 
-import { getFormFieldValue } from '../NewCom/Form/utils'
+import { getFormFieldValue } from '@/components/NewCom/Form/utils'
 import { codeGeneratorGenerateAPI } from '@/api/admin/codeGenerator'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { depSimpleListAPI } from '@/api/admin/dept'

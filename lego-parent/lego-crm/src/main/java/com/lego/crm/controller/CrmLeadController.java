@@ -3,6 +3,7 @@ package com.lego.crm.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.flowable.FlowableCheckStatus;
 import com.lego.core.util.ExcelUtil;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.core.vo.JsonResponse;
@@ -33,6 +34,7 @@ public class CrmLeadController extends BaseController {
     @SaCheckPermission("crm_lead_add")
     public JsonResponse<Object> add(@RequestBody CrmLeadCreateVO vo) {
         leadService.add(getLoginCode(), vo);
+        leadService.updateCheckStatus(vo.getCode(), FlowableCheckStatus.completed);
         return JsonResponse.success();
     }
 

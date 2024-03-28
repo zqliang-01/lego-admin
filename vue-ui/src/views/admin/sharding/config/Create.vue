@@ -26,7 +26,7 @@ import {
   configAddAPI,
   configUpdateAPI
 } from '@/api/admin/sharding/config'
-import CreateMixin from '@/components/Mixins/LegoCreate'
+import CreateMixin from '@/components/lego/mixins/LegoCreate'
 
 export default {
   name: 'ShardingConfigCreate',

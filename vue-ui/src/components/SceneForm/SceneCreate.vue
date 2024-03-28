@@ -186,7 +186,7 @@ export default {
         code: this.edit_id,
         enable: true,
         name: this.saveName,
-        formCode: this.filterFormCode,
+        formCode: this.formCode,
         data: JSON.stringify(sceneList)
       }).then(res => {
         this.$message.success('操作成功')

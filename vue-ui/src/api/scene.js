@@ -49,6 +49,16 @@ export function crmSceneModifyAPI(data) {
 }
 
 /**
+ * 场景删除
+ */
+export function crmSceneDeleteAPI(data) {
+  return request({
+    url: '/back-end/sys-scene/delete/' + data,
+    method: 'post'
+  })
+}
+
+/**
  * 场景排序
  */
 export function crmSceneVisibleModifyAPI(data) {

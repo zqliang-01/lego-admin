@@ -70,7 +70,7 @@
 </template>
 <script type="text/javascript">
 import { mapGetters } from 'vuex'
-import FieldView from './NewCom/Form/FieldView'
+import FieldView from '../NewCom/Form/FieldView'
 import { getMenuAuth, getFormAuth } from '@/utils/auth'
 
 export default {

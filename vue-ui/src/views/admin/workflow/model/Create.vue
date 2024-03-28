@@ -26,7 +26,7 @@ import {
   modelAddAPI,
   modelUpdateAPI
 } from '@/api/admin/workflow/model'
-import CreateMixin from '@/components/Mixins/LegoCreate'
+import CreateMixin from '@/components/lego/mixins/LegoCreate'
 
 export default {
   name: 'GenTableCreate',

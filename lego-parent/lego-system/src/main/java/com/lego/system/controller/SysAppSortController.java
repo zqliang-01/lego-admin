@@ -7,7 +7,6 @@ import com.lego.system.service.ISysAppSortService;
 import com.lego.system.service.ISysConfigService;
 import com.lego.system.service.ISysPermissionService;
 import com.lego.system.vo.SysConfigCode;
-import com.lego.system.vo.SysPermissionCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,32 +34,20 @@ public class SysAppSortController extends BaseController {
 
     @GetMapping("/list-all")
     public JsonResponse<List<SysAppInfo>> listAll() {
-        List<SysAppInfo> validList = new ArrayList<SysAppInfo>();
         List<SysAppInfo> allApps = permissionService.findAppBy(getLoginCode());
-        List<String> sortAppCodes = permissionService.findSortAppBy(getLoginCode());
         List<String> validCodes = configService.findListBy(SysConfigCode.APP_VALID_LIST);
-        for (String sortAppCode : sortAppCodes) {
-            Optional<SysAppInfo> app = allApps.stream()
-                .filter(a -> sortAppCode.equals(a.getCode()) && validCodes.contains(a.getCode()))
-                .findFirst();
-            if (app.isPresent()) {
-                validList.add(app.get());
-            }
-        }
-        validList.addAll(allApps.stream()
-            .filter(a -> !validList.contains(a)
-                && validCodes.contains(a.getCode())
-                && !SysPermissionCode.manage.equals(a.getCode()))
-            .collect(Collectors.toList()));
+        List<SysAppInfo> validList = allApps.stream()
+            .filter(a -> validCodes.contains(a.getCode()))
+            .collect(Collectors.toList());
         return JsonResponse.success(validList);
     }
 
     @GetMapping("/list-header")
     public JsonResponse<List<SysAppInfo>> listHeader() {
         List<SysAppInfo> validList = new ArrayList<SysAppInfo>();
+        List<SysAppInfo> allApps = permissionService.findAppBy(getLoginCode());
         List<String> sortAppCodes = permissionService.findSortAppBy(getLoginCode());
         List<String> validCodes = configService.findListBy(SysConfigCode.APP_VALID_LIST);
-        List<SysAppInfo> allApps = permissionService.findAppBy(getLoginCode());
         for (String sortAppCode : sortAppCodes) {
             Optional<SysAppInfo> app = allApps.stream()
                 .filter(a -> sortAppCode.equals(a.getCode()) && validCodes.contains(a.getCode()))

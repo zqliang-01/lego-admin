@@ -26,7 +26,7 @@ import {
   tableAddAPI,
   tableUpdateAPI
 } from '@/api/admin/sharding/table'
-import CreateMixin from '@/components/Mixins/LegoCreate'
+import CreateMixin from '@/components/lego/mixins/LegoCreate'
 
 export default {
   name: 'ShardingTableCreate',

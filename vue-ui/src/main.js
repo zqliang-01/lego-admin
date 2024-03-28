@@ -46,9 +46,9 @@ Vue.component('flexbox', Flexbox)
 Vue.component('flexbox-item', FlexboxItem)
 import XrAvatar from '@/components/XrAvatar'
 Vue.component('xr-avatar', XrAvatar)
-import LegoAllDetail from '@/components/LegoAllDetail'
+import LegoAllDetail from '@/components/lego/LegoAllDetail'
 Vue.component('LegoAllDetail', LegoAllDetail)
-import LegoAllCreate from '@/components/LegoAllCreate'
+import LegoAllCreate from '@/components/lego/LegoAllCreate'
 Vue.component('LegoAllCreate', LegoAllCreate)
 
 /** 懒加载图片 */

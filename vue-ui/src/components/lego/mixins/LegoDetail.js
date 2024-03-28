@@ -5,10 +5,10 @@ import { detailFieldListAPI } from '@/api/admin/formField'
 import { getMenuAuth, getFormAuth } from '@/utils/auth'
 
 import LegoCommonMixin from './LegoCommon'
-import ImportInfo from '../ImportInfo'
-import SlideView from '../SlideView'
-import LegoDetailHead from '../LegoDetailHead'
-import LegoEditBaseInfo from '../LegoEditBaseInfo'
+import ImportInfo from '@/components/ImportInfo'
+import SlideView from '@/components/SlideView'
+import LegoDetailHead from '@/components/lego/LegoDetailHead'
+import LegoEditBaseInfo from '@/components/lego/LegoEditBaseInfo'
 
 export default {
   components: {
@@ -114,7 +114,6 @@ export default {
   },
 
   beforeDestroy() {
-    this.$bus.off('crm-tab-num-update', this.debouncedGetTabsNum)
   },
 
   methods: {
@@ -193,7 +192,6 @@ export default {
       if (this.auth.detail) {
         this.getDetial()
         this.getTabsNum()
-        this.$bus.on('crm-tab-num-update', this.debouncedGetTabsNum)
       }
     },
 

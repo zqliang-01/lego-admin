@@ -28,7 +28,7 @@ import {
   genTableModifyAPI,
   genTableInitGetAPI
 } from '@/api/admin/genTable'
-import CreateMixin from '@/components/Mixins/LegoCreate'
+import CreateMixin from '@/components/lego/mixins/LegoCreate'
 
 export default {
   name: 'GenTableCreate',

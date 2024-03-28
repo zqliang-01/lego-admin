@@ -60,7 +60,7 @@ import { configSimpleListAPI } from '@/api/admin/sharding/config'
 import { algorithmListAPI } from '@/api/admin/sharding/algorithm'
 import Create from './Create'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/LegoTable'
+import LegoTable from '@/components/lego/LegoTable'
 import PropertiesDialog from '../PropertiesDialog'
 import { mapGetters } from 'vuex'
 

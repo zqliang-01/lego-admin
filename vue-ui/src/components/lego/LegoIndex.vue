@@ -117,7 +117,7 @@
 </template>
 
 <script>
-import IndexMixin from './Mixins/LegoIndex'
+import IndexMixin from './mixins/LegoIndex'
 
 export default {
   name: 'LegoIndex',

@@ -72,7 +72,7 @@ import {
 import { mapGetters } from 'vuex'
 import Create from './Create'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/LegoTable'
+import LegoTable from '@/components/lego/LegoTable'
 import FieldView from '@/components/NewCom/Form/FieldView'
 import BpmnViewer from '@/components/bpmn/components/Viewer'
 

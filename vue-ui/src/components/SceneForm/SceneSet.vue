@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    v-loading="loading"
     :visible.sync="visible"
     :append-to-body="true"
     :close-on-click-modal="false"
@@ -41,6 +42,9 @@
                   <i
                     class="el-icon-edit"
                     @click="itemHandle('edit', item, index)"/>
+                  <i
+                    class="el-icon-delete"
+                    @click="itemHandle('delete', item, index)"/>
                 </div>
               </template>
             </flexbox>
@@ -122,6 +126,7 @@
 <script type="text/javascript">
 import {
   crmSceneListAPI,
+  crmSceneDeleteAPI,
   crmSceneVisibleModifyAPI
 } from '@/api/scene'
 import draggable from 'vuedraggable'
@@ -153,7 +158,8 @@ export default {
   },
   data() {
     return {
-      visible: false, // 控制展示
+      loading: false,
+      visible: false,
       isleftIndeterminate: false, // 标注头部是多选框效果
       checkleftAll: false, // 关联全选操作多选框
 
@@ -216,23 +222,36 @@ export default {
      * 确定选择
      */
     handleConfirm() {
+      this.loading = true
       crmSceneVisibleModifyAPI({
         codes: this.checkedLeftData.map(item => item.code),
         hiddenCodes: this.checkedRightData.map(item => item.code)
       }).then(res => {
-        this.$message({
-          type: 'success',
-          message: '操作成功'
-        })
+        this.loading = false
+        this.$message.success('更新成功！')
         this.handleCancel()
         this.$emit('save-success')
+      }).catch(() => {
+        this.loading = false
       })
-        .catch(() => {})
     },
     /** 事项操作 */
     itemHandle(type, item, index) {
-      if (type == 'edit') {
+      if (type === 'edit') {
         this.addAndEditScene('edit', item)
+      }
+      if (type === 'delete') {
+        this.$confirm('确定删除场景[' + item.name + ']?', '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.loading = true
+          crmSceneDeleteAPI(item.code).then(() => {
+            this.$message.success('删除成功！')
+            this.loading = false
+          }).catch(() => {
+            this.loading = false
+          })
+        })
       }
     },
     /** 添加编辑场景 */
@@ -500,7 +519,7 @@ export default {
   .handle-bar-add {
     cursor: pointer;
     color: #2362FB;
-    padding: 20px 10px 0;
+    padding: 10px;
   }
   .handle-bar-save {
     position: relative;

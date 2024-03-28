@@ -26,7 +26,7 @@ import {
   algorithmAddAPI,
   algorithmUpdateAPI
 } from '@/api/admin/sharding/algorithm'
-import CreateMixin from '@/components/Mixins/LegoCreate'
+import CreateMixin from '@/components/lego/mixins/LegoCreate'
 
 export default {
   name: 'ShardingAlgorithmCreate',

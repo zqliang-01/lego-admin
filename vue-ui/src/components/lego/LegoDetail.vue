@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import DetailMixin from '@/components/Mixins/LegoDetail'
+import DetailMixin from './mixins//LegoDetail'
 import RelativeHandle from '@/components/Relative/RelativeHandle'
 import RelativeFile from '@/components/Relative/RelativeFile'
 
@@ -105,8 +105,6 @@ export default {
     RelativeFile
   },
   mixins: [DetailMixin],
-  props: {
-  },
   data() {
     return {
       isCreate: false,

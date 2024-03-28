@@ -1,7 +1,7 @@
 import {
   systemInfoGetAPI
 } from '@/api/admin/config'
-import { headerModelAllListAPI } from '@/api/config'
+import { headerModelListAPI, headerModelAllListAPI } from '@/api/config'
 import Lockr from 'lockr'
 
 /** 记录 侧边索引 */
@@ -18,7 +18,8 @@ const app = {
     },
     // 图片缓存
     imageCache: {},
-    headerModule: null // 置顶模块
+    headerModule: null, // 置顶模块
+    allModule: null
   },
 
   mutations: {
@@ -61,14 +62,21 @@ const app = {
         })
       })
     },
-
-    // 置顶应用
-    HeaderModule({
-      commit,
-      state
-    }) {
+    // 所有可选应用
+    GetAllModule({ commit, state }) {
       return new Promise((resolve, reject) => {
         headerModelAllListAPI().then(response => {
+          state.allModule = response.data
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 置顶应用
+    GetHeaderModule({ commit, state }) {
+      return new Promise((resolve, reject) => {
+        headerModelListAPI().then(response => {
           state.headerModule = response.data
           resolve(response)
         }).catch(error => {

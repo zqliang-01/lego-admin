@@ -82,11 +82,11 @@
 import { mapGetters } from 'vuex'
 import { crmSceneAddAPI } from '@/api/scene'
 
-import FilterForm from './FilterForm'
-import FilterContent from './FilterForm/FilterContent'
-import SceneList from './SceneForm/SceneList'
-import SceneSet from './SceneForm/SceneSet'
-import SceneCreate from './SceneForm/SceneCreate'
+import FilterForm from '../FilterForm'
+import FilterContent from '../FilterForm/FilterContent'
+import SceneList from '../SceneForm/SceneList'
+import SceneSet from '../SceneForm/SceneSet'
+import SceneCreate from '../SceneForm/SceneCreate'
 import { Loading } from 'element-ui'
 import { isArray } from '@/utils/types'
 

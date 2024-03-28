@@ -79,14 +79,14 @@
 </template>
 
 <script>
-import Sections from './Sections'
-import FieldView from './NewCom/Form/FieldView'
-import Field from './NewCom/Form/Field'
+import Sections from '../Sections'
+import FieldView from '../NewCom/Form/FieldView'
+import Field from '../NewCom/Form/Field'
 import { mapGetters } from 'vuex'
 import { objDeepCopy } from '@/utils'
 import { getMenuAuth, getFormAuth } from '@/utils/auth'
-import { getFormFieldValue } from './NewCom/Form/utils'
-import GenerateRulesMixin from './Mixins/GenerateRules'
+import { getFormFieldValue } from '../NewCom/Form/utils'
+import GenerateRulesMixin from '../Mixins/GenerateRules'
 
 export default {
   name: 'LegoditBaseInfo',

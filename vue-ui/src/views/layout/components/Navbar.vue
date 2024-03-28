@@ -88,7 +88,6 @@
       v-if="navManagerShow"
       ref="navManager"
       :collapse="collapse"
-      :top-module="items"
       @change="getTopHeaderModule"
       @select="navManagerSelect" />
   </div>
@@ -96,7 +95,6 @@
 
 <script>
 import { filePreviewUrl, systemMessageUnreadCountAPI } from '@/api/common'
-import { headerModelListAPI } from '@/api/config'
 import SystemMessage from './SystemMessage'
 import NavManager from './NavManager'
 
@@ -186,6 +184,9 @@ export default {
       if (val == false) {
         this.changeNavIndex()
       }
+    },
+    navIndex() {
+      this.changeNavIndex()
     }
   },
   mounted() {
@@ -218,13 +219,18 @@ export default {
      * 获取置顶头
      */
     getTopHeaderModule() {
-      headerModelListAPI().then(res => {
-        this.items = res.data
+      if (!this.headerModule) {
+        this.$store.dispatch('GetHeaderModule').then(res => {
+          this.items = [...res.data]
+          this.items.unshift(this.homePage)
+          this.changeMenu(document.documentElement.clientWidth)
+        })
+      } else {
+        this.items = [...this.headerModule]
         this.items.unshift(this.homePage)
         this.changeMenu(document.documentElement.clientWidth)
-      })
+      }
     },
-
     changeMenu(clintWidth) {
       this.showItems = []
       this.hiddenItems = []
@@ -238,41 +244,34 @@ export default {
       }
       this.changeNavIndex()
     },
-
     changeNavIndex() {
-      let isHidden = true
-      this.showItems.forEach(item => {
-        if (this.navIndex === item.code) {
-          isHidden = false
-        }
-      })
-      if (this.navActiveIndex !== this.navIndex) {
+      if (this.navIndex && this.navActiveIndex !== this.navIndex) {
         this.$store.commit('SET_NAVACTIVEINDEX', this.navIndex)
-        if (isHidden) {
+        if (!this.showItems.some(item => item.code === this.navIndex)) {
           this.navItemsClick(this.navIndex)
         }
       }
     },
 
     navItemsClick(code) {
+      if (!code || code === '') {
+        return
+      }
       if (code === 'other') {
         this.navManagerShow = !this.navManagerShow
       } else if (code === 'user') {
-        this.navManagerShow = false
         code = 'other'
+        this.navManagerShow = false
       } else {
         this.navManagerShow = false
-        this.$router.push('/' + code)
+        this.$router.push('/' + code, () => {})
       }
       this.$store.commit('SET_NAVACTIVEINDEX', code)
       this.$emit('nav-items-click', code)
     },
     enterSystemSet() {
-      this.$router.push({
-        name: 'manage'
-      })
+      this.$router.push({ name: 'manage' })
     },
-
     /**
      * 获取系统未读消息数
      */
@@ -288,7 +287,6 @@ export default {
         }, 600000)
       }
     },
-
     sendSystemUnreadNum() {
       systemMessageUnreadCountAPI()
         .then(res => {
@@ -301,44 +299,34 @@ export default {
           }
         })
     },
-
     /**
      * 有客户权限点击logo 进入仪表盘
      */
     enterMainPage() {
       this.$router.push('/')
     },
-
     moreMenuClick(command) {
       if (command == 'baseInfo') {
-        this.$router.push({
-          name: 'person'
-        })
+        this.$router.push({ name: 'person' })
       } else if (command == 'logOut') {
         this.$confirm('退出登录？', '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
-        })
-          .then(() => {
-            var loading = Loading.service({
-              target: document.getElementById('#app')
-            })
-            this.$store
-              .dispatch('LogOut')
-              .then(() => {
-                location.reload()
-                loading.close()
-              })
-              .catch(() => {
-                location.reload()
-                loading.close()
-              })
+        }).then(() => {
+          var loading = Loading.service({
+            target: document.getElementById('#app')
           })
-          .catch(() => {})
+          this.$store.dispatch('LogOut').then(() => {
+            location.reload()
+            loading.close()
+          }).catch(() => {
+            location.reload()
+            loading.close()
+          })
+        })
       }
     },
-
     /**
      * 控制导航管理隐藏
      */
@@ -351,7 +339,6 @@ export default {
       }
       this.navManagerShow = false
     },
-
     navManagerSelect({ path, code }) {
       this.navManagerShow = false
       this.$router.push(path)
@@ -362,7 +349,6 @@ export default {
       }
       this.$store.commit('SET_NAVACTIVEINDEX', navActiveIndex)
     },
-
     /**
      * 查看消息详情
      */

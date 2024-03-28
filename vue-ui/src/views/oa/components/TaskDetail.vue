@@ -79,7 +79,7 @@ import {
   taskFormDetailGetAPI
 } from '@/api/admin/workflow/task'
 import { createFieldListAPI } from '@/api/admin/formField'
-import CreateMixin from '@/components/Mixins/LegoCreate'
+import CreateMixin from '@/components/lego/mixins/LegoCreate'
 import UserSelect from '@/components/NewCom/UserSelect'
 import { showFormErrorMessage } from '@/components/NewCom/Form/utils'
 

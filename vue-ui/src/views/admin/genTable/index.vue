@@ -75,7 +75,7 @@ import {
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import FieldView from '@/components/NewCom/Form/FieldView'
-import LegoTable from '@/components/LegoTable'
+import LegoTable from '@/components/lego/LegoTable'
 import GenTableCreate from './Create'
 import CodePreview from './CodePreview'
 import { downloadFileWithBuffer } from '@/utils'

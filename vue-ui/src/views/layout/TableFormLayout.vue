@@ -79,14 +79,24 @@ export default {
       return Math.round(this.quickAddList.length / 2) * 25
     }
   },
+  watch: {
+    $route(to, from) {
+      this.init()
+    }
+  },
   mounted() {
-    this.appCode = this.$route.params.model
-    this.addQuickAddMenu(this.allAuth[this.appCode])
-    this.quickAddList.sort(function(a, b) {
-      return a.sn - b.sn
-    })
+    this.init()
   },
   methods: {
+    init() {
+      this.appCode = this.$route.params.model
+      if (this.appCode) {
+        this.addQuickAddMenu(this.allAuth[this.appCode])
+        this.quickAddList.sort(function(a, b) {
+          return a.sn - b.sn
+        })
+      }
+    },
     addSkip(item) {
       this.formCode = item.formCode
       this.menuCode = item.menuCode

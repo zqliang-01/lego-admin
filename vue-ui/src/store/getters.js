@@ -12,6 +12,7 @@ const getters = {
   collapse: state => state.app.sidebar.collapse,
   activeIndex: state => state.app.sidebar.activeIndex,
   navActiveIndex: state => state.app.navbar.activeIndex,
+  allModule: state => state.app.allModule,
   headerModule: state => state.app.headerModule,
   // 权限
   allAuth: state => state.user.allAuth,

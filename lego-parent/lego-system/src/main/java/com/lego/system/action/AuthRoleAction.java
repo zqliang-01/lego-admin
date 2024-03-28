@@ -5,9 +5,12 @@ import com.lego.core.common.Constants;
 import com.lego.core.exception.BusinessException;
 import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.dao.ISysRoleDao;
+import com.lego.system.entity.SysPermission;
 import com.lego.system.entity.SysRole;
 import com.lego.system.vo.SysPermissionAuthVO;
 import com.lego.system.vo.SysPermissionCode;
+
+import java.util.List;
 
 public class AuthRoleAction extends ModifyAction<SysRole, ISysRoleDao> {
 
@@ -27,6 +30,7 @@ public class AuthRoleAction extends ModifyAction<SysRole, ISysRoleDao> {
 
     @Override
     protected void doModify(SysRole entity) {
-        entity.setPermissions(permissionDao.findByCodes(vo.getPermissionCodes()));
+        List<SysPermission> permissions = permissionDao.findByCodes(vo.getPermissionCodes());
+        entity.setPermissions(permissions);
     }
 }

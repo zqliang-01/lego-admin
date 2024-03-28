@@ -1,10 +1,10 @@
-import XrCreate from '../XrCreate'
-import CreateSections from '../CreateSections'
-import FormItems from '../NewCom/Form/FormItems'
+import XrCreate from '@/components/XrCreate'
+import CreateSections from '@/components/CreateSections'
+import FormItems from '@/components/NewCom/Form/FormItems'
 
-import { showFormErrorMessage } from '../NewCom/Form/utils'
-import GenerateRulesMixin from './GenerateRules'
 import LegoCommonMixin from './LegoCommon'
+import { showFormErrorMessage } from '@/components/NewCom/Form/utils'
+import GenerateRulesMixin from '@/components/Mixins/GenerateRules'
 import { createFieldListAPI } from '@/api/admin/formField'
 
 export default {

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.flowable.FlowableCheckStatus;
 import com.lego.core.util.ExcelUtil;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.core.vo.JsonResponse;
@@ -36,6 +37,7 @@ public class ${ClassName}Controller extends BaseController {
     @SaCheckPermission("${PermissionCode}_add")
     public JsonResponse<Object> add(@RequestBody ${ClassName}CreateVO vo) {
         ${FieldName}Service.add(getLoginCode(), vo);
+        ${FieldName}Service.updateCheckStatus(vo.getCode(), FlowableCheckStatus.completed);
         return JsonResponse.success();
     }
 

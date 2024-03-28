@@ -2,6 +2,7 @@ package com.lego.system.service.impl;
 
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.system.action.AddSysSceneAction;
+import com.lego.system.action.DeleteSysSceneAction;
 import com.lego.system.action.ModifySysSceneAction;
 import com.lego.system.action.ModifySysSceneVisibleAction;
 import com.lego.system.assembler.SysSceneAssembler;
@@ -44,6 +45,11 @@ public class SysSceneService extends BusService<ISysSceneDao, SysSceneAssembler>
     @Override
     public void modifyVisible(String operatorCode, SysSceneVisibleVO vo) {
         new ModifySysSceneVisibleAction(operatorCode, vo).run();
+    }
+
+    @Override
+    public void delete(String operatorCode, String code) {
+        new DeleteSysSceneAction(operatorCode, code).run();
     }
 
 }
