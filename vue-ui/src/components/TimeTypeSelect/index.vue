@@ -56,7 +56,7 @@
 import { isObject } from '@/utils/types'
 
 export default {
-  name: 'TimeTypeSelect',
+  name: 'TimeTypeSelect', // 时间类型选择
   props: {
     defaultType: [String, Object],
     // 容器宽度，默认200px

@@ -256,7 +256,7 @@ export default {
      */
     getSpanColorClass() {
       const color = ['customer', 'contacts', 'business', 'contract', 'receivables', 'product', 'supplier'].includes(this.activeTab) ? this.activeTab : 'common'
-      return `wk-tiny-color--${color}`
+      return `lego-tiny-color--${color}`
     },
 
     /** 顶部操作 */
@@ -321,7 +321,7 @@ export default {
         statusbar: false,
         // extended_valid_elements: 'span[class|title|wktag|style|contenteditable]',
         content_style: 'p { margin: 5px 0; line-height: 1.5;}',
-        content_css: ['./static/tinymce/css/tiny-wk-colors.css', './static/tinymce/css/tiny-wk-word.css'],
+        content_css: ['./static/tinymce/css/tiny-colors.css', './static/tinymce/css/tiny-word.css'],
         table_advtab: false,
         table_cell_advtab: false,
         table_row_advtab: false,

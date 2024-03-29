@@ -10,7 +10,6 @@
 
     <tinymce
       :value="field.defaultValue"
-      :disabled="1"
       :toolbar="[]"
       :init="{
         menubar: false,

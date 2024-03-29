@@ -138,7 +138,6 @@ import PercentInput from '@/components/NewCom/PercentInput'
 import LegoSelect from '@/components/NewCom/Select'
 import LegoCheckbox from '@/components/NewCom/Checkbox'
 import JsonEditor from '@/components/NewCom/JsonEditor'
-import VDistpicker from '@/components/VDistpicker'
 import SelectTree from '@/components/NewCom/SelectTree'
 import SelectIcon from '@/components/NewCom/SelectIcon'
 
@@ -153,7 +152,6 @@ export default {
     LegoSelect,
     LegoCheckbox,
     JsonEditor,
-    VDistpicker,
     SelectTree,
     SelectIcon,
     LegoRelativeCell

@@ -44,8 +44,8 @@ Vue.use(debounce)
 import { Flexbox, FlexboxItem } from '@/components/Flexbox'
 Vue.component('flexbox', Flexbox)
 Vue.component('flexbox-item', FlexboxItem)
-import XrAvatar from '@/components/XrAvatar'
-Vue.component('xr-avatar', XrAvatar)
+import Avatar from '@/components/Avatar'
+Vue.component('xr-avatar', Avatar)
 import LegoAllDetail from '@/components/lego/LegoAllDetail'
 Vue.component('LegoAllDetail', LegoAllDetail)
 import LegoAllCreate from '@/components/lego/LegoAllCreate'

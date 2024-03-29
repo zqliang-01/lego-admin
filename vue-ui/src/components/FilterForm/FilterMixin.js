@@ -1,10 +1,8 @@
-import VDistpicker from '../VDistpicker'
-import Field from '../NewCom/Form/Field'
-import FilterConditionMixin from '../Mixins/FilterConditionMixin'
+import Field from '@/components/NewCom/Form/Field'
+import FilterConditionMixin from '@/components/Mixins/FilterConditionMixin'
 export default {
   name: 'Index',
   components: {
-    VDistpicker,
     Field
   },
   mixins: [FilterConditionMixin],

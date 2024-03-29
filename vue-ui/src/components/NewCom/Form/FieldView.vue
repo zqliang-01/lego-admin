@@ -40,7 +40,7 @@
 <script>
 import SignatureImage from '@/components/NewCom/SignaturePad/Image'
 import DescText from '@/components/NewCom/DescText'
-import MapView from '@/components/MapView' // 地图详情
+import MapView from '@/components/NewCom/MapView' // 地图详情
 
 import merge from '@/utils/merge'
 import { isObject, isEmpty } from '@/utils/types'

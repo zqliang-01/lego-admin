@@ -78,7 +78,7 @@
 
 <script>
 import { dictListAPI } from '@/api/crm/common'
-import LegoCodeGenerator from '@/components/LegoCodeGenerator'
+import LegoCodeGenerator from '@/components/lego/LegoCodeGenerator'
 
 import { isEmpty } from '@/utils/types'
 import { regexIsMobile, regexIsEmail } from '@/utils'

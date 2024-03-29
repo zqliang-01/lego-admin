@@ -2,7 +2,7 @@
   <div class="desc-text">
     <tinymce
       v-bind="$attrs"
-      :disabled="1" :toolbar="[]" :init="{
+      :toolbar="[]" :init="{
         statusbar: false,
         placeholder: '描述文字内容',
         content_style: ' * {color: #262626; margin: 0;} body { font-size: 14px; }',

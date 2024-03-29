@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import DISTRICTS from '../../VDistpicker/districts'
+import DISTRICTS from './districts'
 import { valueEquals } from 'element-ui/lib/utils/util'
 import { isObject } from '@/utils/types'
 

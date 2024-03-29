@@ -33,15 +33,11 @@
   </el-dialog>
 </template>
 <script type="text/javascript">
-import VDistpicker from '@/components/VDistpicker'
 import { getBaiduMap } from '@/utils'
 import { isEmpty } from '@/utils/types'
 
 export default {
   name: 'LocationPointDialog',
-  components: {
-    VDistpicker
-  },
   props: {
     visible: {
       type: Boolean,
