@@ -24,6 +24,9 @@ const filterIgnoreRouter = function(routers) {
   return res
 }
 
+/**
+ * 获取首个显示的菜单URL用于模块重定向地址
+ */
 const getRedirectPath = function(routers, basePath = '') {
   for (let i = 0; i < routers.length; i++) {
     const element = routers[i]
@@ -48,37 +51,44 @@ const getRedirectPath = function(routers, basePath = '') {
 /**
  * 取第一个可视路由path作为模块首页重定向路由
  */
-const initRouter = function(authList, asyncRouterMap) {
+const initRouter = function(asyncRouterMap) {
   const menuRouters = {}
   let allRouters = []
   asyncRouterMap.forEach(mainRouter => {
     const accessedRouters = mainRouter.router
-    const redirectPath = getRedirectPath(accessedRouters)
-    const router = accessedRouters.find(router => !router.ignore)
-    if (router) {
-      router.redirect = redirectPath
-    }
-    accessedRouters.push({
-      path: `/${mainRouter.type}`,
-      name: mainRouter.type,
-      redirect: redirectPath,
-      hidden: true
+    const menuRouter = mergeMenuRouter(accessedRouters)
+    const redirectPath = getRedirectPath(menuRouter)
+    const filterRouters = filterIgnoreRouter(accessedRouters)
+    filterRouters.forEach(router => {
+      let childrens = []
+      if (router.children) {
+        router.children.forEach(children => {
+          childrens = childrens.concat(rebuildChildren(children, undefined))
+        })
+        router.children = childrens
+      }
     })
-    menuRouters[mainRouter.type] = mergeMenuRouter(accessedRouters)
-    allRouters = allRouters.concat(filterIgnoreRouter(accessedRouters))
+
+    // 添加模块首页路由以及重定向地址
+    if (redirectPath) {
+      const router = filterRouters.find(router => !router.ignore)
+      if (router) {
+        router.redirect = redirectPath
+      }
+      filterRouters.push({
+        name: mainRouter.type,
+        path: `/${mainRouter.type}`,
+        redirect: redirectPath,
+        hidden: true
+      })
+    }
+
+    menuRouters[mainRouter.type] = menuRouter
+    allRouters = allRouters.concat(filterRouters)
   })
 
   // 添加动态模板路由（由于动态路由会过滤注册，需添加模板路由用于跳转）
   addDynamicRouter(allRouters)
-  allRouters.forEach(router => {
-    let childrens = []
-    if (router.children) {
-      router.children.forEach(children => {
-        childrens = childrens.concat(rebuildChildren(children, undefined))
-      })
-      router.children = childrens
-    }
-  })
 
   // 设置首页重定向地址，暂时写死
   allRouters.push({
@@ -103,16 +113,13 @@ const permission = {
     }
   },
   actions: {
-    GenerateRoutes({
-      commit,
-      state
-    }, data) {
+    GenerateRoutes({ commit, state }, data) {
       return new Promise(resolve => {
         // 路由完善 hidden：注册但不显示，ignore：不注册但显示
         permissionCurrentListAPI().then(res => {
           const asyncRouterMap = filterAsyncRouterMap(res.data)
           mergeDynamicRouter(res.data, asyncRouterMap)
-          const routers = initRouter(res.data, asyncRouterMap)
+          const routers = initRouter(asyncRouterMap)
           commit('SET_ROUTERS', routers)
           resolve()
         })

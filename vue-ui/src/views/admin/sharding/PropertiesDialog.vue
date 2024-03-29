@@ -14,7 +14,7 @@
               effect="dark"
               placement="top">
               <div slot="content" v-html="value.description"/>
-              <i :class="'help wk-help-tips' | iconPre"/>
+              <i :class="'help lego-help-tips' | iconPre"/>
             </el-tooltip>
           </template>
           <el-input v-model="properties[value.code]" :placeholder="value.description" />

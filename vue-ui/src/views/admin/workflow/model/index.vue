@@ -3,7 +3,7 @@
     <xr-header
       :icon-class="'double-gear'"
       :show-search="true"
-      :show-save="manage.genTable.update"
+      :show-save="manage.workflow.model.update"
       icon-color="#1CBAF5"
       label="模型管理"
       placeholder="请输入模型名称搜索"

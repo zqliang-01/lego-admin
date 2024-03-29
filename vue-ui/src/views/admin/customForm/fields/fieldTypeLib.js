@@ -118,5 +118,5 @@ export const picField = {
   componentName: 'FieldInput',
   formType: 'pic',
   name: '图片',
-  icon: 'wk '
+  icon: 'lego '
 }

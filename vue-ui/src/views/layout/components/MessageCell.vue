@@ -394,7 +394,7 @@ export default {
     line-height: 28px;
     border-radius: 14px;
 
-    .wk {
+    .lego {
       color: white;
       font-size: 13px;
     }

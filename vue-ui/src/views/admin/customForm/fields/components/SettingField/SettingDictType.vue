@@ -70,7 +70,7 @@ export default {
   }
 
   &.other-item {
-    .wk-icon-bin {
+    .lego-icon-bin {
       cursor: pointer;
     }
   }

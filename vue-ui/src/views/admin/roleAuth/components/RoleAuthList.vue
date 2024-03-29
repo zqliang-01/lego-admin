@@ -86,8 +86,6 @@ export default {
     }
     this.getAllAuthList()
   },
-  created() {
-  },
   methods: {
     getAllAuthList() {
       permissionListAPI().then(res => {
@@ -96,6 +94,7 @@ export default {
           this.currentAppCode = this.menuList[0].code
         }
         this.updateLeafStyle()
+        this.refreshAuthList()
       })
     },
     generateArr(menus, checkKeys) {
@@ -182,8 +181,8 @@ export default {
 }
 .jurisdiction-content-checkbox {
   border-right: 1px dashed $xr-border-line-color;
-  height: calc(100% - 47px);
-  overflow-y: scroll;
+  height: 100%;
+  overflow-y: auto;
   padding: 20px;
 
   ::v-deep .el-tree-node__content:hover {

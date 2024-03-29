@@ -94,7 +94,6 @@ export default {
   computed: {
     ...mapGetters(['manage']),
     systemSaveAuth() {
-      console.log(this.manage)
       return this.manage && this.manage.system && this.manage.system.update
     },
     logoUrl() {

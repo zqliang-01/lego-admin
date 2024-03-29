@@ -63,8 +63,8 @@ export default {
   }
 }
 
-.wk {
-  margin-right: 8px;
+.lego {
+  margin-right: 10px;
 }
 
 .side-bar-label {

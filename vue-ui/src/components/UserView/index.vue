@@ -137,11 +137,11 @@ export default {
         margin-left: 8px;
       }
 
-      .wk-woman {
+      .lego-woman {
         color: #FF3838;
       }
 
-      .wk-man {
+      .lego-man {
         color: #3875ff;
       }
     }

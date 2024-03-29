@@ -149,7 +149,6 @@ export default {
       this.logDetail = item
     },
     handleDetailValue(key) {
-      console.log(key)
       return this.logDetail[key]
     },
     onSearch(value) {

@@ -499,8 +499,8 @@ export default {
 }
 
 // 系统消息
-.wk-announcement,
-.wk-bell {
+.lego-announcement,
+.lego-bell {
   color: #9DA9C2;
   cursor: pointer;
   font-size: 20px;
@@ -510,8 +510,8 @@ export default {
   margin-right: 20px;
 }
 
-.wk-announcement:hover,
-.wk-bell:hover {
+.lego-announcement:hover,
+.lego-bell:hover {
   color: $xr-color-primary;
 }
 
@@ -533,7 +533,7 @@ export default {
   }
 }
 
-.wk-update-tips {
+.lego-update-tips {
   font-size: 12px;
   text-align: center;
   color: #bbb;

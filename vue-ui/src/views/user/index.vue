@@ -18,7 +18,7 @@
           :class="{active: selectedIndex === index}"
           class="nav-list-item"
           @click="selectedIndex = index">
-          <span :class="item.icon | iconPre" class="wk icon" />
+          <span :class="item.icon | iconPre" class="lego icon" />
           <span class="text">
             {{ item.label }}
           </span>

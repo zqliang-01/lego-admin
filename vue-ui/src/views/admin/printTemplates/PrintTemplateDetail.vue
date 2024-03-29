@@ -178,13 +178,13 @@ export default {
       this.menuIndex = item.fieldName
       // 整单折扣 产品总金额 不能插入
       if (this.activeTab == 'product' && item.fieldName != 'discount_rate' && item.fieldName != 'total_price') {
-        const tableParent = this.getCurrentParentByTag('table[data-wk-table-tag="table"]')
+        const tableParent = this.getCurrentParentByTag('table[data-lego-table-tag="table"]')
         if (tableParent) {
-          const headerTr = this.editor.dom.select('tr[data-wk-table-tr-tag="header"]', tableParent)
-          const valueTr = this.editor.dom.select('tr[data-wk-table-tr-tag="value"]', tableParent)
+          const headerTr = this.editor.dom.select('tr[data-lego-table-tr-tag="header"]', tableParent)
+          const valueTr = this.editor.dom.select('tr[data-lego-table-tr-tag="value"]', tableParent)
           if (headerTr && valueTr) {
-            this.editor.dom.add(headerTr, 'td', { 'data-wk-table-td-tag': 'name' }, item.name)
-            this.editor.dom.add(valueTr, 'td', { 'data-wk-table-td-tag': 'value' }, this.getSpanNode(item, 'table-value'))
+            this.editor.dom.add(headerTr, 'td', { 'data-lego-table-td-tag': 'name' }, item.name)
+            this.editor.dom.add(valueTr, 'td', { 'data-lego-table-td-tag': 'value' }, this.getSpanNode(item, 'table-value'))
             this.content = this.editor.getContent({ format: 'html' })
           }
         } else {
@@ -193,7 +193,7 @@ export default {
           }
         }
       } else {
-        const tableParent = this.getCurrentParentByTag('table[data-wk-table-tag="table"]')
+        const tableParent = this.getCurrentParentByTag('table[data-lego-table-tag="table"]')
         if (!tableParent) {
           // 产品下字段 整单折扣 产品总金额 用商机和合同的
 
@@ -221,10 +221,10 @@ export default {
      * 获取产品表
      */
     getProductTable(item) {
-      return `<table data-wk-table-tag="table" style="border-collapse: collapse; width: 100%;" border="1" >
+      return `<table data-lego-table-tag="table" style="border-collapse: collapse; width: 100%;" border="1" >
       <tbody>
-        <tr data-wk-table-tr-tag="header"><td data-wk-table-td-tag="name">${item.name}</td></tr>
-        <tr data-wk-table-tr-tag="value"><td data-wk-table-td-tag="value">${this.getSpanNode(item, 'table-value')}</td></tr>
+        <tr data-lego-table-tr-tag="header"><td data-lego-table-td-tag="name">${item.name}</td></tr>
+        <tr data-lego-table-tr-tag="value"><td data-lego-table-td-tag="value">${this.getSpanNode(item, 'table-value')}</td></tr>
       </tbody>
       </table>`
     },
@@ -238,17 +238,17 @@ export default {
 
     getSpanNodeAttrsByType(item, tag = '', type) {
       const attrs = {}
-      const dataKey = `data-wk${tag ? `-${tag}` : ''}-tag`
+      const dataKey = `data-lego${tag ? `-${tag}` : ''}-tag`
       const dataValue = `${type}.${item.fieldName}`
 
       attrs[dataKey] = dataValue
-      attrs.class = `wk-print-tag-huge ${this.getSpanColorClass()}`
+      attrs.class = `lego-print-tag ${this.getSpanColorClass()}`
       attrs.contenteditable = false
       return attrs
     },
 
     getSpanNode(item, tag = '', type = this.activeTab) {
-      return `<span data-wk${tag ? `-${tag}` : ''}-tag="${type}.${item.fieldName}" class="wk-print-tag-huge ${this.getSpanColorClass()}" contenteditable="false">{${item.name}}</span>`
+      return `<span data-lego${tag ? `-${tag}` : ''}-tag="${type}.${item.fieldName}" class="lego-print-tag ${this.getSpanColorClass()}" contenteditable="false">{${item.name}}</span>`
     },
 
     /**
@@ -319,7 +319,7 @@ export default {
         menubar: false,
         toolbar_sticky: true,
         statusbar: false,
-        // extended_valid_elements: 'span[class|title|wktag|style|contenteditable]',
+        // extended_valid_elements: 'span[class|title|legotag|style|contenteditable]',
         content_style: 'p { margin: 5px 0; line-height: 1.5;}',
         content_css: ['./static/tinymce/css/tiny-colors.css', './static/tinymce/css/tiny-word.css'],
         table_advtab: false,
@@ -333,7 +333,7 @@ export default {
             this.selectNodes = null
             if (e.keyCode === 8 /* Backspace key */ || /* del key */ e.keyCode == 46) {
               const currentNode = editor.selection.getNode()
-              if (currentNode.getAttribute('data-wk-table-td-tag') === 'value') {
+              if (currentNode.getAttribute('data-lego-table-td-tag') === 'value') {
                 e.preventDefault()
                 return false
               } else if (currentNode.nodeName == 'SPAN') {
@@ -356,7 +356,7 @@ export default {
             } else {
               // table 里面不允许写内容
               const currentNode = editor.selection.getNode()
-              if (currentNode.getAttribute('data-wk-table-td-tag') === 'value') {
+              if (currentNode.getAttribute('data-lego-table-td-tag') === 'value') {
               // 只允许输入上下左右
                 if (e.keyCode !== 37 && e.keyCode !== 38 && e.keyCode !== 39 && e.keyCode !== 40) {
                   e.preventDefault()

@@ -22,14 +22,6 @@
         :prop="item.field"
         :key="index">
         <span slot="label">{{ item.value }}</span>
-        <el-tooltip
-          v-if="item.tips"
-          slot="label"
-          :content="item.tips"
-          effect="dark"
-          placement="top">
-          <i class="huge huge-help_tips" />
-        </el-tooltip>
         <el-select
           v-if="item.type == 'select'"
           v-model="submitForm[item.field]"

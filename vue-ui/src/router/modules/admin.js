@@ -44,6 +44,7 @@ export default [
   },
   {
     ...layout({
+      code: 'manage_users',
       name: 'EmployeeDept',
       path: 'employee-dept',
       component: () => import('@/views/admin/employee'),

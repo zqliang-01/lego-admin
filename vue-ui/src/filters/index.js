@@ -37,11 +37,11 @@ export function filterUserLazyImg(value) {
 }
 
 /**
- * wk 10.0 iconfont 前缀
+ * 10.0 iconfont 前缀
  */
 export function iconPre(name) {
   if (name) {
-    return name.startsWith('wk') ? name : `wk wk-${name}`
+    return name.startsWith('lego') ? name : `lego lego-${name}`
   }
   return ''
 }

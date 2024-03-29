@@ -76,7 +76,7 @@
               content="所关联的表单需与代码生成功能中的字段关联表一致，如修改需重新生成代码"
               effect="dark"
               placement="top">
-              <i :class="'help wk-help-tips' | iconPre" style="margin-left: 3px;"/>
+              <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
             </el-tooltip>
           </div>
           <setting-relative :field="field" />
@@ -90,7 +90,7 @@
               content="当前字段为唯一字段，默认值支持自动编码生成"
               effect="dark"
               placement="top">
-              <i :class="'help wk-help-tips' | iconPre" style="margin-left: 3px;"/>
+              <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
             </el-tooltip>
           </div>
           <setting-default
@@ -116,7 +116,7 @@
             content="配置表单布局，可以单行多字段排布"
             effect="dark"
             placement="top">
-            <i :class="'help wk-help-tips' | iconPre" style="margin-left: 3px;"/>
+            <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
           </el-tooltip>
         </div>
         <el-radio-group

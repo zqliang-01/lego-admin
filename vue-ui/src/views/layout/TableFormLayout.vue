@@ -18,7 +18,7 @@
               v-for="(item, index) in quickAddList"
               :key="index"
               @click="addSkip(item)">
-            <i :class="['wk', 'wk-' + item.icon]"/><span>{{ item.title }}</span></p>
+            <i :class="item.icon | iconPre"/><span>{{ item.title }}</span></p>
           </div>
         </div>
       </sidebar>

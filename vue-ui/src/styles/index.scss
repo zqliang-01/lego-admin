@@ -7,7 +7,6 @@
 @import '../directives/empty/empty.scss';
 @import '../directives/style.scss';
 @import './iconfont/iconfont.css';
-@import '../assets/iconfont/iconfont.css';
 
 body {
   height: 100%;
@@ -323,13 +322,13 @@ div[lazy=loading] {
 }
 
 // 帮助提示符
-.wk-help-tips {
+.lego-help-tips {
   cursor: pointer;
   font-size: 13px;
   color: #cbcbcb;
 }
 
-.wk-help-tips:hover {
+.lego-help-tips:hover {
   color: $xr-color-primary;
 }
 

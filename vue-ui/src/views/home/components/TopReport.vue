@@ -17,7 +17,7 @@
           <div
             :style="{backgroundColor: item.color}"
             class="icon-box">
-            <span :class="item.icon | iconPre" class="icon wk" />
+            <span :class="item.icon | iconPre" class="icon lego" />
           </div>
           <div class="info">
             <div class="title">

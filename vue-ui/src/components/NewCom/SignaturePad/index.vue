@@ -83,7 +83,6 @@ export default {
               const canvasWidth = this.$refs.signaturePad.canvas.width
               const width = img.width
               const ratio = canvasWidth / width
-              console.log(width, canvasWidth, ratio)
               this.options.minWidth = this.options.minWidth * ratio
               this.options.maxWidth = this.options.maxWidth * ratio
 

@@ -160,7 +160,7 @@ export default {
   .add-btn {
     text-align: right;
     padding-right: 10px;
-    .wk-l-plus {
+    .lego-l-plus {
       font-size: 12px;
     }
   }

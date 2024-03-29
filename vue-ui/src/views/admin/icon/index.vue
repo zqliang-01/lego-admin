@@ -34,7 +34,6 @@ export default {
   methods: {
     iconSelect(value) {
       this.currentIcon = value
-      console.log(this.currentIcon)
     }
   }
 }

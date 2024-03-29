@@ -173,7 +173,6 @@ export default {
             optionsData[o.name] = o.value
           })
           this.$set(this.field, 'optionsData', optionsData)
-          console.log(this.field)
         }
       },
       deep: true,

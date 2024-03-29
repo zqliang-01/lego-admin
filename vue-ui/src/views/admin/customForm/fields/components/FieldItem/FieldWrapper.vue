@@ -164,12 +164,12 @@ export default {
     align-items: center;
     justify-content: center;
 
-    .wk {
+    .lego {
       color: #555;
       font-size: 14px;
     }
 
-    .wk-icon-top {
+    .lego-icon-top {
       font-size: 12px;
       font-weight: bold;
       &.bottom {

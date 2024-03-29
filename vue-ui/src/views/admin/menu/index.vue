@@ -36,7 +36,7 @@
                   <i v-else :class="'doc' | iconPre" />
                   <div class="node-data__label text-one-line">{{ node.label }}</div>
                   <i v-if="node.childNodes && node.childNodes.length"
-                    :class="[{ 'is-close': !node.expanded }, {'wk wk-up-unfold': true}]"
+                    :class="[{ 'is-close': !node.expanded }, {'lego lego-up-unfold': true}]"
                     @click="node.expanded = !node.expanded"/>
                 </flexbox>
               </el-tree>
@@ -235,12 +235,12 @@ export default {
       margin: 0px 5px;
     }
 
-    .wk-up-unfold {
+    .lego-up-unfold {
       margin-left: 8px;
       transition: transform 0.3s;
     }
 
-    .wk-up-unfold.is-close {
+    .lego-up-unfold.is-close {
       transform: rotateZ(180deg);
     }
   }

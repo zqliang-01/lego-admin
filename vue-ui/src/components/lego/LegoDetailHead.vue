@@ -14,7 +14,7 @@
             placement="top-start">
             <div class="name">{{ name }}</div>
           </el-tooltip>
-          <el-button-group v-if="pageCodes && pageCodes.length > 1" class="wk-header-page-btn">
+          <el-button-group v-if="pageCodes && pageCodes.length > 1" class="lego-header-page-btn">
             <el-button icon="el-icon-arrow-left" @click="$emit('pageChange', 'left')"/>
             <el-button icon="el-icon-arrow-right" @click="$emit('pageChange', 'right')"/>
           </el-button-group>
@@ -142,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss">
-.wk-header-page-btn {
+.lego-header-page-btn {
   flex-shrink: 0;
   margin-left: 8px;
   .el-button + .el-button {

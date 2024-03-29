@@ -142,7 +142,6 @@ export default {
     },
     handleTable(type, row) {
       this.action.detailData = row
-      console.log(this.action.detailData)
       if (type === 'edit') {
         this.action.type = 'update'
         this.isCreate = true
