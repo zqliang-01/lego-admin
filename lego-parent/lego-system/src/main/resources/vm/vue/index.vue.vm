@@ -28,7 +28,7 @@
         v-loading="loading"
         id="lego-table"
         :row-height="40"
-        :data="list"
+        :data="pageList"
         :height="tableHeight"
         :cell-class-name="cellClassName"
         :row-key="unionKey"
@@ -70,7 +70,7 @@
           width="40">
           <template slot="header">
             <field-set
-              :menu-code="menuCode"
+              :form-code="formCode"
               @change="setSave"/>
           </template>
         </el-table-column>
@@ -97,87 +97,57 @@
           @current-change="handleCurrentChange"/>
       </div>
     </div>
-    <lego-all-detail
-      :visible.sync="showDetail"
-      domName="${ClassName}Detail"
-      :code.sync="rowID"
-      :union-key="unionKey"
-      :menu-code="menuCode"
-      :field-list="fieldList"
-      :page-list="list"
-      :page-index.sync="rowIndex"
+    <Lego-all-detail
+      :visible.sync="relativeEntity.show"
+      :detail-name="detailName"
+      :detail-code.sync="relativeEntity.code"
+      :form-code="relativeEntity.formCode"
+      :page-codes="relativeEntity.pageCodes"
       class="d-view"
       @handle="actionHandle"
-      @hide-view="showDetail=false"/>
+      @hide-view="relativeEntity.show=false"/>
     <!-- 新建 -->
-    <create
-      v-if="createShow"
-      :field-list="fieldList"
+    <lego-all-create
+      :visible.sync="createShow"
+      :form-code="formCode"
       @close="createShow = false"
       @handle="actionHandle"
     />
-    <template v-for="(item, index) in entityDetailList">
-      <lego-all-detail
-      :visible.sync="item.show"
-        :key="index"
-        :domName="item.name"
-        :code.sync="item.detailCode"
-        :menu-code="item.menuCode"
-        :field-list="item.fieldList"
-        class="d-view"
-        @hide-view="closeEntityDetail(item)"/>
-    </template>
   </div>
 </template>
 
 <script>
 import Create from './Create'
-#foreach ($column in $columns)
-#if($column.formType == 'entity')
-import ${column.relativeTable.className}Detail from '@/views/${column.relativeTable.appCode}/${column.relativeTable.FieldName}/Detail'
-#end
-#end
+import Detail from './Detail'
 import {
   ${FieldName}ListAPI,
   ${FieldName}DeleteAPI,
   ${FieldName}ExcelExportAPI,
   ${FieldName}ExcelAllExportAPI
 } from '@/api/${AppCode}/${FieldName}'
-#foreach ($column in $columns)
-#if($column.formType == 'entity')
-import { ${column.relativeTable.FieldName}ListAPI } from '@/api/crm/${column.relativeTable.FieldName}'
-#end
-#end
-import IndexMixin from '@/components/Mixins/LegoIndex'
+import IndexMixin from '@/components/lego/mixins/LegoIndex'
 
 export default {
-  name: '${ClassName}Index',
+  name: 'CrmLeadIndex',
   components: {
-#foreach ($column in $columns)
-  #if($column.formType == 'entity')
-    ${column.relativeTable.className}Detail,
-  #end
-#end
-    Create
+    Create,
+    Detail
   },
   mixins: [IndexMixin],
+  computed: {
+    detailName() {
+      return this.relativeEntity.main ? 'CrmLeadDetail' : ''
+    }
+  },
   data() {
     return {
       createShow: false,
       menuCode: '${PermissionCode}', // 菜单编码
       unionKey: '${UnionKey}', // 表格对象唯一键
-      highlightColumnKey: '${UnionKey}', // 表格需要高亮点击的列key
       listRequest: ${FieldName}ListAPI,
       deleteRequest: ${FieldName}DeleteAPI,
       exportRequest: ${FieldName}ExcelExportAPI,
       exportAllRequest: ${FieldName}ExcelAllExportAPI,
-      entityDetailList: [
-    #foreach ($column in $columns)
-      #if($column.formType == 'entity')
-        { code: '${column.relativeTable.FieldName}', name: '${column.relativeTable.className}Detail', show: false },
-      #end
-    #end
-      ]
     }
   },
   methods: {
@@ -186,16 +156,6 @@ export default {
      */
     createClick() {
       this.createShow = true
-    },
-
-    initRelativeAPI(field) {
-  #foreach ($column in $columns)
-    #if($column.formType == 'entity')
-      if (field.fieldCode === '${column.relativeTable.FieldName}') {
-        field.request = ${column.relativeTable.FieldName}ListAPI
-      }
-    #end
-  #end
     }
   }
 }

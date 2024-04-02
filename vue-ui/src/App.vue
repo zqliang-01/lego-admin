@@ -81,7 +81,7 @@ export default {
 #app {
   position: relative;
   min-width: 1200px;
-  min-height: 605px;
+  min-height: 500px;
 }
 .el-menu-item,
 .el-submenu .el-submenu__title{

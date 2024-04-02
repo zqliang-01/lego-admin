@@ -2,49 +2,54 @@
   <xr-create
     :loading="loading"
     :title="taskName"
-    confirm-button-text="通过"
-    :showCancel="isView"
-    :showConfirm="!isView"
+    :show-cancel="isView || !hasAuth"
+    :show-confirm="!isView && hasAuth"
+    confirm-button-text="审核通过"
     @close="close"
     @save="saveClick">
-    <create-sections
-      v-if="dataFieldList.length > 0"
-      title="基本信息">
-      <el-form
-        ref="createForm"
-        :model="fieldForm"
-        :rules="fieldRules"
-        :validate-on-rule-change="false"
-        class="form"
-        label-position="top">
-        <form-items
-          v-for="(children, index) in dataFieldList"
-          :key="index"
-          :field-form="fieldForm"
-          :field-list="children"
-          :disabled="isView"
-        />
-      </el-form>
-    </create-sections>
-    <create-sections title="审批信息">
-      <el-form
-        ref="otherFrom"
-        :model="otherFieldForm"
-        :rules="otherFieldRules"
-        :validate-on-rule-change="false"
-        class="form"
-        label-position="top">
-        <form-items
-          v-for="(children, index) in otherFieldList"
-          :key="index"
-          :field-form="otherFieldForm"
-          :field-list="children"
-          :disabled="isView"
-        />
-      </el-form>
-    </create-sections>
+    <div
+      v-empty="!hasAuth"
+      xs-empty-icon="nopermission"
+      xs-empty-text="无操作权限">
+      <create-sections
+        v-if="dataFieldList.length > 0"
+        title="基本信息">
+        <el-form
+          ref="createForm"
+          :model="fieldForm"
+          :rules="fieldRules"
+          :validate-on-rule-change="false"
+          class="form"
+          label-position="top">
+          <form-items
+            v-for="(children, index) in dataFieldList"
+            :key="index"
+            :field-form="fieldForm"
+            :field-list="children"
+            :disabled="isView"
+          />
+        </el-form>
+      </create-sections>
+      <create-sections title="审批信息">
+        <el-form
+          ref="otherFrom"
+          :model="otherFieldForm"
+          :rules="otherFieldRules"
+          :validate-on-rule-change="false"
+          class="form"
+          label-position="top">
+          <form-items
+            v-for="(children, index) in otherFieldList"
+            :key="index"
+            :field-form="otherFieldForm"
+            :field-list="children"
+            :disabled="isView"
+          />
+        </el-form>
+      </create-sections>
+    </div>
     <template
-      v-if="!isView"
+      v-if="!isView && hasAuth"
       slot="footer">
       <el-button
         type="warning"
@@ -59,9 +64,11 @@
         icon="el-icon-circle-close"
         @click.native="handleButton('reject')">拒绝</el-button>
       <el-button
+        v-if="dataFieldList.length > 0"
+        plain
         type="primary"
         icon="el-icon-paperclip"
-        @click.native="handleSave">保存</el-button>
+        @click.native="handleSave">保存草稿</el-button>
     </template>
     <user-select
       :visible.sync="showSelectEmployee"
@@ -82,6 +89,7 @@ import { createFieldListAPI } from '@/api/admin/formField'
 import CreateMixin from '@/components/lego/mixins/LegoCreate'
 import UserSelect from '@/components/NewCom/UserSelect'
 import { showFormErrorMessage } from '@/components/NewCom/Form/utils'
+import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'TaskDetail',
@@ -93,6 +101,21 @@ export default {
   computed: {
     isView() {
       return this.action.type === 'view'
+    },
+    hasAuth() {
+      if (this.dataFieldList.length === 0) {
+        return true
+      }
+      if (this.auth.detail && this.isView) {
+        return true
+      }
+      if (this.auth.update && this.actionType === 'update') {
+        return true
+      }
+      if (this.auth.add && this.actionType === 'save') {
+        return true
+      }
+      return false
     }
   },
   watch: {
@@ -102,6 +125,7 @@ export default {
   },
   data() {
     return {
+      auth: {},
       taskName: '',
       selectUser: [],
       showSelectEmployee: false,
@@ -132,10 +156,11 @@ export default {
         if (task.formKey) {
           createFieldListAPI(task.formKey).then(res => {
             this.dataFieldList = res.data.fields
+            this.auth = getMenuAuth(res.data.form.permission.code)
             this.initRequest(res.data.form)
-            if (task.code) {
+            if (task.code && this.hasAuth) {
+              this.actionType = 'update'
               this.detailRequest(task.code).then(res => {
-                this.actionType = 'update'
                 this.detailData = res.data
                 this.initValue()
               })

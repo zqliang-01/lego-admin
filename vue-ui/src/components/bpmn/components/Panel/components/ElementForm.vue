@@ -19,7 +19,7 @@
       </el-row>
       <el-row class="data-value">
         <el-tooltip content="若为节点表单，则表单信息仅在此节点可用，默认为全局表单，表单信息在整个流程实例中可用" placement="top-start" @click.stop.prevent>
-          <i class="header-icon el-icon-info" />
+          <i :class="'help lego-help-tips' | iconPre"/>
         </el-tooltip>
         <span class="custom-label">是否节点：</span>
         <el-switch v-model="localScope" @change="updateElementFormScope" />

@@ -125,9 +125,9 @@
 
 <script type="text/javascript">
 import {
-  crmSceneListAPI,
-  crmSceneDeleteAPI,
-  crmSceneVisibleModifyAPI
+  sceneListAPI,
+  sceneDeleteAPI,
+  sceneVisibleModifyAPI
 } from '@/api/scene'
 import draggable from 'vuedraggable'
 import SceneCreate from './SceneCreate' // 新建编辑场景
@@ -197,7 +197,7 @@ export default {
   mounted() {},
   methods: {
     getSceneList() {
-      crmSceneListAPI({
+      sceneListAPI({
         formCode: this.formCode
       })
         .then(res => {
@@ -223,7 +223,7 @@ export default {
      */
     handleConfirm() {
       this.loading = true
-      crmSceneVisibleModifyAPI({
+      sceneVisibleModifyAPI({
         codes: this.checkedLeftData.map(item => item.code),
         hiddenCodes: this.checkedRightData.map(item => item.code)
       }).then(res => {
@@ -245,7 +245,7 @@ export default {
           type: 'warning'
         }).then(() => {
           this.loading = true
-          crmSceneDeleteAPI(item.code).then(() => {
+          sceneDeleteAPI(item.code).then(() => {
             this.$message.success('删除成功！')
             this.loading = false
           }).catch(() => {

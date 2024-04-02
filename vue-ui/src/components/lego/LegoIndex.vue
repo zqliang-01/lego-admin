@@ -97,11 +97,10 @@
           @current-change="handleCurrentChange"/>
       </div>
     </div>
-    <Lego-all-detail
+    <lego-all-detail
       :visible.sync="relativeEntity.show"
       :detail-code.sync="relativeEntity.code"
       :form-code="relativeEntity.formCode"
-      :menu-code="relativeEntity.menuCode"
       :page-codes="relativeEntity.pageCodes"
       class="d-view"
       @handle="actionHandle"
@@ -122,6 +121,8 @@ import IndexMixin from './mixins/LegoIndex'
 export default {
   name: 'LegoIndex',
   mixins: [IndexMixin],
+  components: {
+  },
   data() {
     return {
       createShow: false,

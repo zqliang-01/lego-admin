@@ -50,22 +50,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.full-container {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  overflow: auto;
-  margin: 0;
-  background-color: rgba(0, 0, 0, 0.3);
-}
-.d-view {
-  position: fixed;
-  min-width: 926px;
-  width: 75%;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-}
 </style>

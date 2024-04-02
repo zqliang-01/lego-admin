@@ -80,7 +80,6 @@ export function fileModifyAPI(code, data) {
 
 /**
  * 系统消息列表
- * @param {*} data
  */
 export function systemMessageListAPI(data) {
   return request({
@@ -95,7 +94,6 @@ export function systemMessageListAPI(data) {
 
 /**
  * 未读消息数
- * @param {*} data
  */
 export function systemMessageUnreadCountAPI() {
   return request({
@@ -105,7 +103,6 @@ export function systemMessageUnreadCountAPI() {
 
 /**
  * 读消息
- * @param {*} data
  */
 export function systemMessageReadAPI(data) {
   return request({
@@ -117,7 +114,6 @@ export function systemMessageReadAPI(data) {
 
 /**
  * 读全部消息
- * @param {*} data
  */
 export function systemMessageReadAllAPI(data) {
   return request({
@@ -129,7 +125,6 @@ export function systemMessageReadAllAPI(data) {
 
 /**
  * 系统消息按类别删除
- * @param {*} data
  */
 export function systemMessageClearAPI(data) {
   return request({
@@ -141,7 +136,6 @@ export function systemMessageClearAPI(data) {
 
 /**
  * 系统消息删除
- * @param {*} data
  */
 export function systemMessageDeleteByIdAPI(id) {
   return request({

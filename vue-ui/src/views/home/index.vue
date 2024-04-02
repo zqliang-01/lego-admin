@@ -1,5 +1,5 @@
 <template>
-  <div ref="workbench" class="crm-workbench">
+  <div ref="workbench" class="lego-workbench">
     <div class="head">
       <flexbox class="head__body">
         <time-type-select
@@ -12,7 +12,7 @@
         <reminder class="setting-reminder" content="点击设置按钮支持编辑图表顺序！" />
       </flexbox>
     </div>
-    <div class="crm-workbench__body">
+    <div class="lego-workbench__body">
       <top-report
         :brief-list="briefList"
         :rate-text="rateText"
@@ -116,7 +116,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.crm-workbench {
+.lego-workbench {
   width: 100%;
   min-width: 1000px;
   height: 100%;

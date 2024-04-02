@@ -26,5 +26,6 @@ public class SysCustomFormInfo extends DTO {
     private String exportApiUrl;
     private String exportAllApiUrl;
     private TypeInfo table;
+    private TypeInfo permission;
     private Date createTime;
 }

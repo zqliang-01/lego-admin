@@ -69,9 +69,8 @@
   </div>
 </template>
 <script type="text/javascript">
-import { mapGetters } from 'vuex'
 import FieldView from '../NewCom/Form/FieldView'
-import { getMenuAuth, getFormAuth } from '@/utils/auth'
+import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoDetailHead',
@@ -81,7 +80,6 @@ export default {
   props: {
     typeName: String,
     menuCode: String,
-    formCode: String,
     detail: {
       type: Object,
       default: () => {
@@ -103,12 +101,8 @@ export default {
     pageCodes: Array
   },
   computed: {
-    ...mapGetters(['allAuth']),
     auth() {
-      if (this.menuCode) {
-        return getMenuAuth(this.menuCode)
-      }
-      return getFormAuth(this.formCode)
+      return getMenuAuth(this.menuCode)
     },
     name() {
       if (this.detail) {

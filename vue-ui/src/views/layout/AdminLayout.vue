@@ -30,7 +30,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['manage', 'manageRouters'])
+    ...mapGetters(['manageRouters'])
   },
 
   mounted() {},

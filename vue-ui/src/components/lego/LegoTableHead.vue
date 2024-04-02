@@ -79,8 +79,7 @@
 </template>
 
 <script type="text/javascript">
-import { mapGetters } from 'vuex'
-import { crmSceneAddAPI } from '@/api/scene'
+import { sceneAddAPI } from '@/api/scene'
 
 import FilterForm from '../FilterForm'
 import FilterContent from '../FilterForm/FilterContent'
@@ -89,6 +88,7 @@ import SceneSet from '../SceneForm/SceneSet'
 import SceneCreate from '../SceneForm/SceneCreate'
 import { Loading } from 'element-ui'
 import { isArray } from '@/utils/types'
+import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoTableHead',
@@ -136,16 +136,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['allAuth']),
     auth() {
-      const menuList = this.menuCode.split(':')
-      var auth = { ...this.allAuth }
-      menuList.forEach(menu => {
-        if (auth) {
-          auth = auth[menu]
-        }
-      })
-      return auth
+      return getMenuAuth(this.menuCode)
     },
     iconClass() {
       return this.showScene ? 'arrow-up' : 'arrow-down'
@@ -175,7 +167,7 @@ export default {
       this.filterObj = data
       this.showFilter = false
       if (data.saveChecked) {
-        crmSceneAddAPI({
+        sceneAddAPI({
           formCode: this.formCode,
           name: data.saveName,
           data: JSON.stringify(data.scenes)

@@ -23,7 +23,6 @@
           :type-name="auth.title"
           :detail="detailData"
           :menu-code="menuCode"
-          :form-code="formCode"
           :head-field-list="headFieldList"
           :page-codes="pageCodes"
           @pageChange="pageChange"
@@ -86,7 +85,6 @@
       <lego-all-detail
         :visible.sync="relativeEntity.show"
         :detail-code.sync="relativeEntity.code"
-        :menu-code="relativeEntity.menuCode"
         :form-code="relativeEntity.formCode"
         @hide-view="closeEntityDetail()"/>
     </div>
@@ -94,7 +92,7 @@
 </template>
 
 <script>
-import DetailMixin from './mixins//LegoDetail'
+import DetailMixin from './mixins/LegoDetail'
 import RelativeHandle from '@/components/Relative/RelativeHandle'
 import RelativeFile from '@/components/Relative/RelativeFile'
 

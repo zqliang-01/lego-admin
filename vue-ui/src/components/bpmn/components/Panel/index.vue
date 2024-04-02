@@ -5,7 +5,7 @@
       <p>{{ bpmnElementName }}</p>
       <p>{{ customTranslate(currentElementType || "Process") }}</p>
     </div>
-    <el-collapse>
+    <el-collapse accordion>
       <component v-for="cp in this.renderComponents" :key="cp.name" :is="cp" />
     </el-collapse>
   </div>

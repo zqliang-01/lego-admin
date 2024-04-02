@@ -1,8 +1,7 @@
-import { mapGetters } from 'vuex'
 import { debounce } from 'throttle-debounce'
 
 import { detailFieldListAPI } from '@/api/admin/formField'
-import { getMenuAuth, getFormAuth } from '@/utils/auth'
+import { getMenuAuth } from '@/utils/auth'
 
 import LegoCommonMixin from './LegoCommon'
 import ImportInfo from '@/components/ImportInfo'
@@ -22,6 +21,7 @@ export default {
     return {
       loading: false,
       pageIndex: 0,
+      menuCode: '',
       detailData: null,
       relativeEntity: {
         show: false
@@ -45,7 +45,6 @@ export default {
   },
   props: {
     detailCode: String,
-    menuCode: String,
     formCode: String,
     pageCodes: {
       type: Array,
@@ -75,14 +74,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'allAuth'
-    ]),
     auth() {
-      if (this.menuCode) {
-        return getMenuAuth(this.menuCode)
-      }
-      return getFormAuth(this.formCode)
+      return getMenuAuth(this.menuCode)
     }
   },
   watch: {
@@ -152,6 +145,7 @@ export default {
     async initFieldList() {
       if (this.formCode) {
         await detailFieldListAPI(this.formCode).then(res => {
+          this.menuCode = res.data.form.permission.code
           this.initRequest(res.data.form)
           this.fieldList = res.data.fields
           this.fieldList.forEach(field => {
@@ -229,8 +223,6 @@ export default {
     },
 
     handleEntityClick(data) {
-      const au = getFormAuth(data.field.relativeForm.code)
-      this.relativeEntity.menuCode = au.code
       this.relativeEntity.code = data.value.code
       this.relativeEntity.formCode = data.field.relativeForm.code
       this.relativeEntity.show = true

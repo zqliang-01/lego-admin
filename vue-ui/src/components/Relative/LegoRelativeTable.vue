@@ -58,7 +58,6 @@
   </div>
 </template>
 <script type="text/javascript">
-import { mapGetters } from 'vuex'
 import FieldView from '@/components/NewCom/Form/FieldView'
 import { postRequest } from '@/api/crm/common'
 
@@ -99,7 +98,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['crm']),
     showSearch() {
       return true
     },

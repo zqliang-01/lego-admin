@@ -8,6 +8,9 @@
     trigger="click">
     <lego-relative
       v-if="!disabled && showSelectView"
+      v-empty="!readAuth"
+      xs-empty-icon="nopermission"
+      xs-empty-text="无操作权限"
       ref="legoRelative"
       :radio="radio"
       :field-list="tableFieldList"
@@ -39,6 +42,7 @@ import { isEmpty } from '@/utils/types'
 import { objDeepCopy } from '@/utils/index'
 import LegoRelative from './LegoRelative'
 import { tableHeaderFieldListAPI } from '@/api/admin/formField'
+import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoRelativeCell',
@@ -71,6 +75,7 @@ export default {
   },
   data() {
     return {
+      auth: {},
       showPopover: false,
       showSelectView: false,
       radio: true,
@@ -81,6 +86,12 @@ export default {
   computed: {
     selectedData() {
       return this.dataValue
+    },
+    readAuth() {
+      if (this.auth.read || !this.formCode) {
+        return true
+      }
+      return false
     }
   },
   watch: {
@@ -99,6 +110,7 @@ export default {
     }
   },
   mounted() {
+    console.log('RelativeCell', this.disabled)
     if (isEmpty(this.value)) {
       this.dataValue = []
       this.checkInfos(this.dataValue)
@@ -113,6 +125,7 @@ export default {
     initFields() {
       if (this.formCode) {
         tableHeaderFieldListAPI(this.formCode).then(res => {
+          this.auth = getMenuAuth(res.data.form.permission.code)
           this.queryApiUrl = res.data.form.queryApiUrl
           this.tableFieldList = res.data.fields
         })

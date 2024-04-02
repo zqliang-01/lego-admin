@@ -27,7 +27,6 @@ export default {
       }
     },
     title: String,
-    menuCode: String,
     formCode: String,
     fieldList: {
       type: Array,

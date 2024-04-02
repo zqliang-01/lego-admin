@@ -25,14 +25,14 @@ export function isEmpty(data) {
   return false
 }
 
-export function getValueObj(obj, value, valueKey) {
+export function getObjValue(obj, value, valueKey) {
   let result = {}
   for (const key in obj) {
     if (!isEmpty(result)) {
       break
     }
     if (isObject(obj[key])) {
-      result = getValueObj(obj[key], value, valueKey)
+      result = getObjValue(obj[key], value, valueKey)
     }
     if (key == valueKey && obj[key] === value) {
       result = obj

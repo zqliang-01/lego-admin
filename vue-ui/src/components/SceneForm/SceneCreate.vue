@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { crmSceneAddAPI, crmSceneModifyAPI } from '@/api/scene'
+import { sceneAddAPI, sceneModifyAPI } from '@/api/scene'
 
 import { objDeepCopy } from '@/utils'
 import { isEmpty } from '@/utils/types'
@@ -109,7 +109,7 @@ export default {
   },
   computed: {
     requestAPI() {
-      return isEmpty(this.edit_id) ? crmSceneAddAPI : crmSceneModifyAPI
+      return isEmpty(this.edit_id) ? sceneAddAPI : sceneModifyAPI
     }
   },
   watch: {

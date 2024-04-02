@@ -182,6 +182,9 @@ public class VelocityUtil {
     public static String buildFilePath(TypeInfo template, SysGenTableInfo table) {
         String templatePath = template.getName();
         String fileName = MessageFormat.format(template.getCode(), table.getClassName());
+        if (templatePath.equals("vm/js/api.js.vm")) {
+            fileName = MessageFormat.format(template.getCode(), table.getFieldName());
+        }
         templatePath = StringUtil.substringAfter(templatePath, "vm/");
         templatePath = templatePath.substring(0, templatePath.lastIndexOf("/") + 1);
         return templatePath + fileName;

@@ -46,8 +46,8 @@
 </template>
 
 <script type="text/javascript">
-import { mapGetters } from 'vuex'
 import Message from 'element-ui'
+import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoListHead',
@@ -85,22 +85,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'allAuth',
-      'userInfo'
-    ]),
     auth() {
-      if (!this.menuCode) {
-        return {}
-      }
-      const menuList = this.menuCode.split('_')
-      var auth = { ...this.allAuth }
-      menuList.forEach(menu => {
-        if (auth) {
-          auth = auth[menu]
-        }
-      })
-      return auth
+      return getMenuAuth(this.menuCode)
     }
   },
   mounted() {

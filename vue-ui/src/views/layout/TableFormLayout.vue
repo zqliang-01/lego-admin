@@ -64,6 +64,7 @@ export default {
   computed: {
     ...mapGetters([
       'menuRouters',
+      'navActiveIndex',
       'allAuth'
     ]),
     currentRouters() {
@@ -89,8 +90,9 @@ export default {
   },
   methods: {
     init() {
-      this.appCode = this.$route.params.model
+      this.appCode = this.$route.params.model || this.navActiveIndex
       if (this.appCode) {
+        this.quickAddList = []
         this.addQuickAddMenu(this.allAuth[this.appCode])
         this.quickAddList.sort(function(a, b) {
           return a.sn - b.sn

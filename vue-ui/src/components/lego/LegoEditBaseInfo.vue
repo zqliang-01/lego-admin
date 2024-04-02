@@ -82,9 +82,8 @@
 import Sections from '../Sections'
 import FieldView from '../NewCom/Form/FieldView'
 import Field from '../NewCom/Form/Field'
-import { mapGetters } from 'vuex'
 import { objDeepCopy } from '@/utils'
-import { getMenuAuth, getFormAuth } from '@/utils/auth'
+import { getMenuAuth } from '@/utils/auth'
 import { getFormFieldValue } from '../NewCom/Form/utils'
 import GenerateRulesMixin from '../Mixins/GenerateRules'
 
@@ -104,14 +103,8 @@ export default {
     systemFieldList: Array
   },
   computed: {
-    ...mapGetters([
-      'allAuth'
-    ]),
     auth() {
-      if (this.menuCode) {
-        return getMenuAuth(this.menuCode)
-      }
-      return getFormAuth(this.formCode)
+      return getMenuAuth(this.menuCode)
     }
   },
   data() {
@@ -148,11 +141,7 @@ export default {
   },
   methods: {
     canEdit(item) {
-      let au = this.auth
-      if (item.formType === 'entity') {
-        au = getFormAuth(item.relativeForm.code)
-      }
-      return !item.unique && au.update
+      return !item.unique
     },
     /**
      * 是整行展示字段

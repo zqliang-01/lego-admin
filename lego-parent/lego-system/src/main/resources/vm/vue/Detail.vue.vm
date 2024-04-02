@@ -1,6 +1,6 @@
 <template>
   <slide-view
-    v-empty="!canShowDetail"
+    v-empty="!auth.detail"
     :listener-ids="listenerIDs"
     :no-listener-ids="noListenerIDs"
     :no-listener-class="noListenerClass"
@@ -14,17 +14,17 @@
       ref="detailMain"
       class="detail-main">
       <flexbox
-        v-if="canShowDetail"
+        v-if="auth.detail"
         direction="column"
         align="stretch"
         class="d-container">
         <lego-detail-head
           :action-types="actionTypes"
-          type-name="${FunctionName}"
+          type-name="线索管理（自定义）"
           :detail="detailData"
           :menu-code="menuCode"
           :head-field-list="headFieldList"
-          :page-list="pageList"
+          :page-codes="pageCodes"
           @pageChange="pageChange"
           @handle="actionHandle"
           @close="hideView" />
@@ -34,18 +34,6 @@
             type="border-card"
             class="d-container-bd--left">
             <el-tab-pane
-              label="详细资料"
-              name="LegoEditBaseInfo"
-              lazy>
-              <lego-edit-base-info
-                :code="code"
-                :detail="detailData"
-                :field-list="fieldList"
-                :system-field-list="systemFieldList"
-                @handle="actionHandle"
-                @clickEntity="handleEntityClick" />
-            </el-tab-pane>
-            <el-tab-pane
               v-for="(item, index) in tabNames"
               :key="index"
               :label="item.label"
@@ -53,10 +41,13 @@
               lazy>
               <component
                 :is="item.name"
-                :code="code"
+                :detail-code="detailCode"
                 :menu-code="menuCode"
-                :detail="detailData"
-                @handle="actionHandle" />
+                :form-code="formCode"
+                :field-list="fieldList"
+                :system-field-list="systemFieldList"
+                @handle="actionHandle"
+                @clickEntity="handleEntityClick" />
             </el-tab-pane>
           </el-tabs>
           <transition name="slide-fade">
@@ -79,7 +70,7 @@
       <create
         v-if="isCreate"
         @close="isCreate = false"
-        :field-list="fieldList"
+        :form-code="formCode"
         :action="{type: 'update', detailData: detailData}"
         @handle="actionHandle"
       />
@@ -90,18 +81,12 @@
       重<br>要<br>信<br>息<br>
       <i :class="{ 'is-reverse': !showImportInfo }" class="el-icon-arrow-right el-icon--right" />
     </el-button>
-    <div v-show="visible" class="full-container">
-      <template v-for="(item, index) in entityDetailList">
-        <lego-all-detail
-          :visible.sync="item.show"
-          :key="index"
-          :domName="item.name"
-          :code.sync="item.detailCode"
-          :menu-code="item.menuCode"
-          :field-list="item.fieldList"
-          class="d-view"
-          @hide-view="closeEntityDetail(item)"/>
-      </template>
+    <div v-show="relativeEntity.show" class="full-container">
+      <lego-all-detail
+        :visible.sync="relativeEntity.show"
+        :detail-code.sync="relativeEntity.code"
+        :form-code="relativeEntity.formCode"
+        @hide-view="closeEntityDetail()"/>
     </div>
   </slide-view>
 </template>
@@ -114,31 +99,20 @@ import {
 } from '@/api/${AppCode}/${FieldName}'
 
 import Create from './Create'
-#foreach ($column in $columns)
-#if($column.formType == 'entity')
-import ${column.relativeTable.className}Detail from '@/views/crm/${column.relativeTable.FieldName}/Detail'
-#end
-#end
-import DetailMixin from '@/components/Mixins/LegoDetail'
+import DetailMixin from '@/components/lego/mixins/LegoDetail'
 import RelativeHandle from '@/components/Relative/RelativeHandle'
 import RelativeFile from '@/components/Relative/RelativeFile'
 
 export default {
   name: '${ClassName}Detail',
   components: {
-#foreach ($column in $columns)
-  #if($column.formType == 'entity')
-    ${column.relativeTable.className}Detail,
-  #end
-#end
     Create,
     RelativeHandle,
     RelativeFile
   },
   mixins: [DetailMixin],
   props: {
-    code: [String, Number],
-    fieldList: Array
+    code: [String, Number]
   },
   data() {
     return {
@@ -146,19 +120,13 @@ export default {
       updateRequest: ${FieldName}UpdateAPI,
       detailRequest: ${FieldName}GetAPI,
       deleteRequest: ${FieldName}DeleteAPI,
-      entityDetailList: [
-    #foreach ($column in $columns)
-      #if($column.formType == 'entity')
-        { code: '${column.relativeTable.FieldName}', name: '${column.relativeTable.className}Detail', show: false },
-      #end
-    #end
-      ]
     }
   },
   computed: {
     /** 明细tab页 */
     tabNames() {
       return [
+        { label: '详细资料', name: 'LegoEditBaseInfo' },
         { label: '操作日志', name: 'RelativeHandle' },
         { label: '附件', name: 'RelativeFile' }
       ]
@@ -174,13 +142,13 @@ export default {
     /** 更多操作事件回调 */
     doActionHandler(data) {
       if (data.type === 'delete') {
-        this.$confirm('此操作将永久删除[' + this.code + ']，是否继续?', '提示', {
+        this.$confirm('此操作将永久删除[' + this.detailCode + ']，是否继续?', '提示', {
           type: 'warning'
         }).then(() => {
-          const loading = Loading.service({ fullscreen: true, text: '删除中...' })
           this.deleteRequest([this.code]).then(res => {
             this.$emit('handle', { type: 'save-success' })
             this.hideView()
+            loading.close()
           })
         })
       }

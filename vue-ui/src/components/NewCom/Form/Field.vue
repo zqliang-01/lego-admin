@@ -123,7 +123,7 @@
     v-else-if="item.formType == 'entity'"
     :value="item.value"
     :form-code="relativeFormCode"
-    :disabled="item.disabled"
+    :disabled="item.disabled || disabled"
     @value-change="entityChange(item, index, $event)"/>
   <div v-else>
     <slot :data="item" :index="index" />

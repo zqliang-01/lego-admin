@@ -7,6 +7,7 @@ import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysGenTable;
+import com.lego.system.entity.SysPermission;
 import com.lego.system.vo.SysCustomFormSearchVO;
 
 import java.util.List;
@@ -44,6 +45,13 @@ public class SysCustomFormDao extends GenericDao<SysCustomForm> implements ISysC
     public List<SysCustomForm> findByName(String name) {
         QueryHandler<SysCustomForm> query = createQueryHandler();
         query.condition("t.name = :name").param("name", name);
+        return query.findList();
+    }
+
+    @Override
+    public List<SysCustomForm> findBy(SysPermission permission) {
+        QueryHandler<SysCustomForm> query = createQueryHandler();
+        query.condition("t.permission = :permission").param("permission", permission);
         return query.findList();
     }
 

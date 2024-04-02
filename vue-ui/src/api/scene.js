@@ -3,7 +3,7 @@ import request from '@/utils/request'
 /**
  * 场景列表
  */
-export function crmSceneListAPI(data) {
+export function sceneListAPI(data) {
   return request({
     url: '/back-end/sys-scene/list',
     data: data
@@ -13,7 +13,7 @@ export function crmSceneListAPI(data) {
 /**
  * 场景列表
  */
-export function crmSceneVisibleListAPI(data) {
+export function sceneVisibleListAPI(data) {
   return request({
     url: '/back-end/sys-scene/list-visible',
     data: data
@@ -23,7 +23,7 @@ export function crmSceneVisibleListAPI(data) {
 /**
  * 场景创建
  */
-export function crmSceneAddAPI(data) {
+export function sceneAddAPI(data) {
   return request({
     url: '/back-end/sys-scene/add',
     method: 'post',
@@ -37,7 +37,7 @@ export function crmSceneAddAPI(data) {
 /**
  * 场景编辑
  */
-export function crmSceneModifyAPI(data) {
+export function sceneModifyAPI(data) {
   return request({
     url: '/back-end/sys-scene/modify',
     method: 'post',
@@ -51,7 +51,7 @@ export function crmSceneModifyAPI(data) {
 /**
  * 场景删除
  */
-export function crmSceneDeleteAPI(data) {
+export function sceneDeleteAPI(data) {
   return request({
     url: '/back-end/sys-scene/delete/' + data,
     method: 'post'
@@ -61,7 +61,7 @@ export function crmSceneDeleteAPI(data) {
 /**
  * 场景排序
  */
-export function crmSceneVisibleModifyAPI(data) {
+export function sceneVisibleModifyAPI(data) {
   return request({
     url: '/back-end/sys-scene/modify-visible',
     method: 'post',

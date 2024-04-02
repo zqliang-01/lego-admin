@@ -5,7 +5,6 @@ import { codeGeneratorGenerateAPI } from '@/api/admin/codeGenerator'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { depSimpleListAPI } from '@/api/admin/dept'
 import { postRequest, fileRequest, codeGetRequest, dictListAPI } from '@/api/crm/common'
-import { getFormAuth } from '@/utils/auth'
 
 export default {
   computed: {
@@ -97,10 +96,6 @@ export default {
       }
       if (type === 'view') {
         return true
-      }
-      if (field.formType === 'entity' && field.relativeForm && type === 'update') {
-        const au = getFormAuth(field.relativeForm.code)
-        return !au.update
       }
       return false
     }

@@ -2,7 +2,7 @@ import axios from 'axios'
 import cache from './cache'
 import Lockr from 'lockr'
 import store from '@/store'
-import { isEmpty, getValueObj } from '@/utils/types'
+import { getObjValue } from '@/utils/types'
 
 /** 移除授权信息 */
 export function removeAuth() {
@@ -41,23 +41,5 @@ export function getMenuAuth(menuCode) {
     return {}
   }
   var auth = { ...store.getters.allAuth }
-  const menuList = menuCode.split('_')
-  menuList.forEach(menu => {
-    if (auth) {
-      auth = auth[menu]
-    }
-  })
-  return isEmpty(auth) ? {} : auth
-}
-
-export function getFormAuth(formCode) {
-  if (!formCode) {
-    return {}
-  }
-  var auth = { ...store.getters.allAuth }
-  const navActiveIndex = store.getters.navActiveIndex
-  if (navActiveIndex) {
-    auth = { ...store.getters.allAuth[navActiveIndex] }
-  }
-  return getValueObj(auth, formCode, 'formCode')
+  return getObjValue(auth, menuCode, 'code')
 }

@@ -2,7 +2,9 @@ package com.lego.system.action;
 
 import com.lego.core.action.AddAction;
 import com.lego.core.exception.BusinessException;
+import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysPermission;
@@ -13,10 +15,13 @@ import com.lego.system.vo.SysPermissionCreateVO;
 import com.lego.system.vo.SysPermissionRouteTypeCode;
 import com.lego.system.vo.SysPermissionTypeCode;
 
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermissionDao> {
+
+    private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
 
     private static final Map<String, String> authList = new TreeMap<String, String>() {
         {
@@ -66,7 +71,7 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
         permission.setType(findByCode(SysPermissionType.class, vo.getType()));
         permission.setRouteType(findByUnsureCode(SysPermissionRouteType.class, vo.getRouteType()));
         permission.setParent(entityDao.findByUnsureCode(vo.getParentCode()));
-        permission.setForm(findByUnsureCode(SysCustomForm.class, vo.getForm()));
+        permission.setForm(formDao.findByUnsureCode(vo.getForm()));
         permission.setIcon(vo.getIcon());
         permission.setSn(vo.getSn());
         return permission;
@@ -77,6 +82,16 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
         if (SysPermissionRouteTypeCode.DYNAMIC.equals(vo.getRouteType())) {
             SysPermissionRouteType dynamicRouterType = findByUnsureCode(SysPermissionRouteType.class, SysPermissionRouteTypeCode.DYNAMIC);
             updateParentRouteType(targetEntity.getParent(), dynamicRouterType);
+        }
+
+        List<SysCustomForm> forms = formDao.findBy(targetEntity);
+        forms.stream().forEach(form -> form.setPermission(null));
+        formDao.saveAll(forms);
+
+        SysCustomForm form = formDao.findByUnsureCode(vo.getForm());
+        if (form != null && !EntityUtil.getCode(form.getPermission()).equals(vo.getForm())) {
+            form.setPermission(targetEntity);
+            formDao.save(form);
         }
         if (this.targetEntity.isMenu() && vo.isCreateAuth()) {
             int sn = targetEntity.getSn() * 10;

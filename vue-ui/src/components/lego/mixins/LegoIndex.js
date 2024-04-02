@@ -9,12 +9,11 @@ import Empty from '@/components/Empty'
 import FieldSet from '@/components/FieldSet'
 import FieldView from '@/components/NewCom/Form/FieldView'
 
-import { mapGetters } from 'vuex'
 import Lockr from 'lockr'
 import { Loading } from 'element-ui'
 import { downloadExcelWithResData } from '@/utils'
 import { isEmpty } from '@/utils/types'
-import { getMenuAuth, getFormAuth } from '@/utils/auth'
+import { getMenuAuth } from '@/utils/auth'
 
 export default {
   components: {
@@ -49,17 +48,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'allAuth'
-    ]),
     auth() {
-      return getMenuAuth(this.$route.params.menuCode)
+      return getMenuAuth(this.$route.params.menuCode || this.menuCode)
     }
   },
   watch: {
     $route: function(val) {
       this.formCode = ''
-      this.menuCode = this.$route.params.menuCode
+      if (this.$route.params.menuCode) {
+        this.menuCode = this.$route.params.menuCode
+      }
       this.getFieldList(true)
     }
   },
@@ -67,7 +65,9 @@ export default {
     window.onresize = () => {
       this.updateTableHeight()
     }
-    this.menuCode = this.$route.params.menuCode
+    if (this.$route.params.menuCode) {
+      this.menuCode = this.$route.params.menuCode
+    }
     this.getFieldList()
   },
 
@@ -189,9 +189,9 @@ export default {
       }
       // 只有点击高亮列才触发打开详情信息
       if (column.property === this.unionKey) {
+        this.$set(this.relativeEntity, 'main', true)
         this.$set(this.relativeEntity, 'show', true)
         this.$set(this.relativeEntity, 'code', row[this.unionKey])
-        this.$set(this.relativeEntity, 'menuCode', this.menuCode)
         this.$set(this.relativeEntity, 'formCode', this.formCode)
         this.$set(this.relativeEntity, 'pageCodes', this.pageCodes)
         return
@@ -199,10 +199,9 @@ export default {
     },
 
     handleEntityClick(data) {
-      const menu = getFormAuth(data.field.relativeForm.code)
+      this.$set(this.relativeEntity, 'main', false)
       this.$set(this.relativeEntity, 'show', true)
       this.$set(this.relativeEntity, 'code', data.value.code)
-      this.$set(this.relativeEntity, 'menuCode', menu.code)
       this.$set(this.relativeEntity, 'formCode', data.field.relativeForm.code)
       this.$set(this.relativeEntity, 'pageCodes', [])
     },

@@ -28,8 +28,7 @@
 </template>
 
 <script type="text/javascript">
-import { mapGetters } from 'vuex'
-import { crmSceneVisibleListAPI } from '@/api/scene'
+import { sceneVisibleListAPI } from '@/api/scene'
 
 export default {
   name: 'SceneList', // 客户管理下 重要提醒 回款计划提醒
@@ -48,9 +47,6 @@ export default {
       sceneList: [{ id: 'all', name: '查询全部', bydata: '' }]
     }
   },
-  computed: {
-    ...mapGetters(['crm'])
-  },
   watch: {
     formCode() {
       this.getSceneList()
@@ -61,7 +57,7 @@ export default {
       if (!this.formCode) {
         return
       }
-      crmSceneVisibleListAPI({ formCode: this.formCode }).then(res => {
+      sceneVisibleListAPI({ formCode: this.formCode }).then(res => {
         this.sceneList = [{ id: 'all', name: '查询全部', bydata: '' }].concat(res.data)
         const defaultScenes = res.data.filter(function(item, index) {
           return item.current === 1
