@@ -9,7 +9,7 @@ public enum ExceptionEnum {
     AUTHORIZATION_INVALID(5000, "功能未授权！"),
     METHOD_INVALID(5001, "请求方法类型错误！"),
     PARAM_INVALID(5002, "请求参数类型错误！"),
-    SESSION_INVALID(1000, "会话超时！");
+    SESSION_INVALID(1000, "登陆超时！");
 
     private Integer code;
     private String msg;

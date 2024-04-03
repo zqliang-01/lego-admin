@@ -27,6 +27,12 @@
           class="head-handle-button xr-btn--green"
           type="primary"
           @click.native="handleTypeClick('edit')">编辑</el-button>
+        <el-button
+          v-if="auth.update"
+          :icon="'print' | iconPre"
+          class="head-handle-button xr-btn--orange"
+          type="primary"
+          @click.native="handleTypeClick('print')">打印</el-button>
         <el-dropdown
           v-if="permissionMoreTypes && permissionMoreTypes.length > 0"
           trigger="click"

@@ -10,7 +10,7 @@ import ${PackageName}.dto.${ClassName}Info;
 import ${PackageName}.entity.${ClassName};
 
 @Component
-public class ${ClassName}Assembler extends BusiAssembler<${ClassName}Info, ${ClassName}> {
+public class ${ClassName}Assembler extends BusAssembler<${ClassName}Info, ${ClassName}> {
 
     @Override
     protected ${ClassName}Info doCreate(${ClassName} entity) {

@@ -37,46 +37,52 @@ CALL add_system_permission('manage_permission_add', '新增', 'auth', 'manage_pe
 CALL add_system_permission('manage_permission_update', '修改', 'auth', 'manage_permission', NULL, 163, NULL);
 CALL add_system_permission('manage_permission_delete', '删除', 'auth', 'manage_permission', NULL, 164, NULL);
 
-CALL add_system_permission('manage_workflow', '审批流程管理', 'menu', 'manage', 'icon-workflow', 17, 'local');
-CALL add_system_permission('manage_workflow_model', '模型管理', 'menu', 'manage_workflow', NULL, 171, 'local');
-CALL add_system_permission('manage_workflow_model_add', '新增', 'auth', 'manage_workflow_model', NULL, 1710, NULL);
-CALL add_system_permission('manage_workflow_model_update', '修改', 'auth', 'manage_workflow_model', NULL, 1711, NULL);
-CALL add_system_permission('manage_workflow_model_delete', '删除', 'auth', 'manage_workflow_model', NULL, 1712, NULL);
-CALL add_system_permission('manage_workflow_model_deploy', '部署', 'auth', 'manage_workflow_model', NULL, 1713, NULL);
+CALL add_system_permission('manage_printTemplate', '打印模板管理', 'menu', 'manage', 'print', 17, 'local');
+CALL add_system_permission('manage_printTemplate_read', '查看列表', 'auth', 'manage_printTemplate', NULL, 171, NULL);
+CALL add_system_permission('manage_printTemplate_add', '新增', 'auth', 'manage_printTemplate', NULL, 172, NULL);
+CALL add_system_permission('manage_printTemplate_delete', '删除', 'auth', 'manage_printTemplate', NULL, 173, NULL);
+CALL add_system_permission('manage_printTemplate_update', '更新', 'auth', 'manage_printTemplate', NULL, 174, NULL);
 
-CALL add_system_permission('manage_workflow_definition', '部署管理', 'menu', 'manage_workflow', NULL, 172, 'local');
-CALL add_system_permission('manage_workflow_definition_update', '修改', 'auth', 'manage_workflow_definition', NULL, 1720, NULL);
-CALL add_system_permission('manage_workflow_definition_delete', '删除', 'auth', 'manage_workflow_definition', NULL, 1721, NULL);
+CALL add_system_permission('manage_workflow', '审批流程管理', 'menu', 'manage', 'icon-workflow', 18, 'local');
+CALL add_system_permission('manage_workflow_model', '模型管理', 'menu', 'manage_workflow', NULL, 181, 'local');
+CALL add_system_permission('manage_workflow_model_add', '新增', 'auth', 'manage_workflow_model', NULL, 1810, NULL);
+CALL add_system_permission('manage_workflow_model_update', '修改', 'auth', 'manage_workflow_model', NULL, 1811, NULL);
+CALL add_system_permission('manage_workflow_model_delete', '删除', 'auth', 'manage_workflow_model', NULL, 1812, NULL);
+CALL add_system_permission('manage_workflow_model_deploy', '部署', 'auth', 'manage_workflow_model', NULL, 1813, NULL);
 
-CALL add_system_permission('manage_sharding', '分表管理', 'menu', 'manage', 'icon-category-note', 18, 'local');
-CALL add_system_permission('manage_sharding_config', '分片规则配置', 'menu', 'manage_sharding', NULL, 181,'local'NULL);
-CALL add_system_permission('manage_sharding_config_read', '查看', 'auth', 'manage_sharding_config', NULL, 1810, NULL);
-CALL add_system_permission('manage_sharding_config_add', '新增', 'auth', 'manage_sharding_config', NULL, 1811, NULL);
-CALL add_system_permission('manage_sharding_config_update', '更新', 'auth', 'manage_sharding_config', NULL, 1812, NULL);
+CALL add_system_permission('manage_workflow_definition', '部署管理', 'menu', 'manage_workflow', NULL, 182, 'local');
+CALL add_system_permission('manage_workflow_definition_update', '修改', 'auth', 'manage_workflow_definition', NULL, 1820, NULL);
+CALL add_system_permission('manage_workflow_definition_delete', '删除', 'auth', 'manage_workflow_definition', NULL, 1821, NULL);
 
-CALL add_system_permission('manage_sharding_table', '分片表配置', 'menu', 'manage_sharding', NULL, 182, 'local');
-CALL add_system_permission('manage_sharding_table_read', '查看', 'auth', 'manage_sharding_table', NULL, 1820, NULL);
-CALL add_system_permission('manage_sharding_table_add', '新增', 'auth', 'manage_sharding_table', NULL, 1821, NULL);
-CALL add_system_permission('manage_sharding_table_update', '更新', 'auth', 'manage_sharding_table', NULL, 1822, NULL);
+CALL add_system_permission('manage_sharding', '分表管理', 'menu', 'manage', 'icon-category-note', 19, 'local');
+CALL add_system_permission('manage_sharding_config', '分片规则配置', 'menu', 'manage_sharding', NULL, 191,'local');
+CALL add_system_permission('manage_sharding_config_read', '查看', 'auth', 'manage_sharding_config', NULL, 1910, NULL);
+CALL add_system_permission('manage_sharding_config_add', '新增', 'auth', 'manage_sharding_config', NULL, 1911, NULL);
+CALL add_system_permission('manage_sharding_config_update', '更新', 'auth', 'manage_sharding_config', NULL, 1912, NULL);
 
-CALL add_system_permission('manage_sharding_algorithm', '分片算法配置', 'menu', 'manage_sharding', NULL, 183, 'local');
-CALL add_system_permission('manage_sharding_algorithm_read', '查看', 'auth', 'manage_sharding_algorithm', NULL, 1830, NULL);
-CALL add_system_permission('manage_sharding_algorithm_add', '新增', 'auth', 'manage_sharding_algorithm', NULL, 1831, NULL);
-CALL add_system_permission('manage_sharding_algorithm_update', '更新', 'auth', 'manage_sharding_algorithm', NULL, 1832, NULL);
+CALL add_system_permission('manage_sharding_table', '分片表配置', 'menu', 'manage_sharding', NULL, 192, 'local');
+CALL add_system_permission('manage_sharding_table_read', '查看', 'auth', 'manage_sharding_table', NULL, 1920, NULL);
+CALL add_system_permission('manage_sharding_table_add', '新增', 'auth', 'manage_sharding_table', NULL, 1921, NULL);
+CALL add_system_permission('manage_sharding_table_update', '更新', 'auth', 'manage_sharding_table', NULL, 1922, NULL);
 
-CALL add_system_permission('manage_sharding_dataSource', '分片数据源配置', 'menu', 'manage_sharding', NULL, 184, 'local');
-CALL add_system_permission('manage_sharding_dataSource_read', '查看', 'auth', 'manage_sharding_dataSource', NULL, 1840, NULL);
-CALL add_system_permission('manage_sharding_dataSource_add', '新增', 'auth', 'manage_sharding_dataSource', NULL, 1841, NULL);
-CALL add_system_permission('manage_sharding_dataSource_delete', '删除', 'auth', 'manage_sharding_dataSource', NULL, 1842, NULL);
-CALL add_system_permission('manage_sharding_dataSource_update', '更新', 'auth', 'manage_sharding_dataSource', NULL, 1843, NULL);
+CALL add_system_permission('manage_sharding_algorithm', '分片算法配置', 'menu', 'manage_sharding', NULL, 193, 'local');
+CALL add_system_permission('manage_sharding_algorithm_read', '查看', 'auth', 'manage_sharding_algorithm', NULL, 1930, NULL);
+CALL add_system_permission('manage_sharding_algorithm_add', '新增', 'auth', 'manage_sharding_algorithm', NULL, 1931, NULL);
+CALL add_system_permission('manage_sharding_algorithm_update', '更新', 'auth', 'manage_sharding_algorithm', NULL, 1932, NULL);
 
-CALL add_system_permission('manage_sharding_template', '分片模板配置', 'menu', 'manage_sharding', NULL, 185, 'local');
-CALL add_system_permission('manage_sharding_template_read', '查看', 'auth', 'manage_sharding_template', NULL, 1850, NULL);
-CALL add_system_permission('manage_sharding_template_add', '新增', 'auth', 'manage_sharding_template', NULL, 1851, NULL);
-CALL add_system_permission('manage_sharding_template_update', '更新', 'auth', 'manage_sharding_template', NULL, 1852, NULL);
+CALL add_system_permission('manage_sharding_dataSource', '分片数据源配置', 'menu', 'manage_sharding', NULL, 194, 'local');
+CALL add_system_permission('manage_sharding_dataSource_read', '查看', 'auth', 'manage_sharding_dataSource', NULL, 1940, NULL);
+CALL add_system_permission('manage_sharding_dataSource_add', '新增', 'auth', 'manage_sharding_dataSource', NULL, 1941, NULL);
+CALL add_system_permission('manage_sharding_dataSource_delete', '删除', 'auth', 'manage_sharding_dataSource', NULL, 1942, NULL);
+CALL add_system_permission('manage_sharding_dataSource_update', '更新', 'auth', 'manage_sharding_dataSource', NULL, 1943, NULL);
 
-CALL add_system_permission('manage_log', '日志管理', 'menu', 'manage', 'task', 19, 'local');
-CALL add_system_permission('manage_log_read', '查看', 'auth', 'manage_log', NULL, 191, NULL);
+CALL add_system_permission('manage_sharding_template', '分片模板配置', 'menu', 'manage_sharding', NULL, 195, 'local');
+CALL add_system_permission('manage_sharding_template_read', '查看', 'auth', 'manage_sharding_template', NULL, 1950, NULL);
+CALL add_system_permission('manage_sharding_template_add', '新增', 'auth', 'manage_sharding_template', NULL, 1951, NULL);
+CALL add_system_permission('manage_sharding_template_update', '更新', 'auth', 'manage_sharding_template', NULL, 1952, NULL);
+
+CALL add_system_permission('manage_log', '日志管理', 'menu', 'manage', 'task', 20, 'local');
+CALL add_system_permission('manage_log_read', '查看', 'auth', 'manage_log', NULL, 201, NULL);
 
 CALL add_system_permission('crm', '客户管理', 'app', NULL, 'icon-Member-management', 2, 'dynamic');
 CALL add_system_permission('crm_customer', '客户管理', 'menu', 'crm', 's-seas', 20, 'Dynamic');

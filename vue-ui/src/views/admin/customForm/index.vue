@@ -163,7 +163,7 @@ export default {
           this.loading = true
           customFormDeleteAPI(row.code).then(res => {
             this.$message.success('删除成功！')
-            this.refresh()
+            this.getList()
             this.loading = false
           })
             .catch(() => {

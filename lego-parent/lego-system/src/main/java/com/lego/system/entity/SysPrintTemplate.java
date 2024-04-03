@@ -1,0 +1,53 @@
+package com.lego.system.entity;
+
+import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.util.Map;
+
+@Setter
+@Getter
+@Entity
+@Table(name = "sys_print_template")
+public class SysPrintTemplate extends BaseEntity {
+
+    private String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "form_id", referencedColumnName = "id")
+    private SysCustomForm form;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
+    private SysEmployee creator;
+
+    protected SysPrintTemplate() {
+    }
+
+    public SysPrintTemplate(String name, SysCustomForm form, SysEmployee creator) {
+        super(name);
+        this.form = form;
+        this.creator = creator;
+    }
+
+    @Override
+    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+        attributes.put("编码", getCode());
+        attributes.put("名称", getName());
+        String md5Str = "";
+        if (StringUtil.isNotBlank(content)) {
+            md5Str = StringUtil.getMD5(content);
+        }
+        attributes.put("内容", md5Str);
+        attributes.put("表单", EntityUtil.toString(form));
+    }
+
+}

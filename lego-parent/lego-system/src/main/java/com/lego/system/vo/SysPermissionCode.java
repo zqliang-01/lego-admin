@@ -13,6 +13,7 @@ public interface SysPermissionCode {
     String manageGenTable = "manage_genTable";
     String manageWorkFlow = "manage_workflow";
     String manageWorkFlowModel = "manage_workflow_model";
+    String managePrintTemplate = "manage_printTemplate";
     String oaUndo = "oa_undo";
 
     List<String> SYSTEM_APP = Arrays.asList("manage");

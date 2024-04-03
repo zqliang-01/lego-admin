@@ -22,6 +22,28 @@ const homeRouter = [
         requiresAuth: false
       }
     }]
+  },
+  {
+    name: 'print',
+    path: '/print/:formCode/:detailCode',
+    hidden: true,
+    component: () => import('@/components/Print'),
+    meta: {
+      title: '打印',
+      icon: 'print',
+      requiresAuth: false
+    }
+  },
+  {
+    name: 'reprint',
+    path: '/reprint/:code',
+    hidden: true,
+    component: () => import('@/components/Print/reprint'),
+    meta: {
+      title: '重打印',
+      icon: 'print',
+      requiresAuth: false
+    }
   }
 ]
 

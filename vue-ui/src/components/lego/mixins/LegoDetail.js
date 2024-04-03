@@ -1,6 +1,7 @@
 import { debounce } from 'throttle-debounce'
 
 import { detailFieldListAPI } from '@/api/admin/formField'
+import { printTemplateSimpleListAPI } from '@/api/admin/printTemplate'
 import { getMenuAuth } from '@/utils/auth'
 
 import LegoCommonMixin from './LegoCommon'
@@ -212,6 +213,18 @@ export default {
           this.editSaveSuccess()
         }).catch(() => {
           this.loading = false
+        })
+        return
+      } else if (data.type === 'print') {
+        printTemplateSimpleListAPI({
+          formCode: this.formCode
+        }).then(res => {
+          if (res.data.length === 0) {
+            this.$message.error('未找到可用的打印模板，请先维护打印模板后再操作打印！')
+            return
+          }
+          const routeData = this.$router.resolve(`/print/${this.formCode}/${this.detailCode}`)
+          window.open(routeData.href, '_blank')
         })
         return
       }

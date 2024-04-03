@@ -1,6 +1,7 @@
 package com.lego.system.service.impl;
 
 import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.dto.TypeInfo;
 import com.lego.system.assembler.SysCustomFieldAssembler;
 import com.lego.system.dao.ISysColumnSortDao;
 import com.lego.system.dao.ISysCustomFieldDao;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCustomFieldAssembler> implements ISysCustomFieldService {
@@ -34,6 +36,12 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
     public List<SysCustomFieldInfo> findBy(String formCode) {
         List<SysCustomField> fields = dao.findBy(formCode);
         return assembler.create(fields);
+    }
+
+    @Override
+    public List<TypeInfo> findSimpleTypeBy(String formCode) {
+        List<SysCustomField> fields = dao.findBy(formCode);
+        return fields.stream().map(field -> new TypeInfo(field.getFieldCode(), field.getName())).collect(Collectors.toList());
     }
 
     @Override

@@ -70,6 +70,11 @@ public class SysCustomFieldController extends BaseController {
         return JsonResponse.success(new SysCustomFormFieldInfo(tableInfo.getAppCode(), tableName, columnInfos, results));
     }
 
+    @GetMapping("/list-simple")
+    public JsonResponse<List<TypeInfo>> listSimple(String formCode) {
+        return JsonResponse.success(customFieldService.findSimpleTypeBy(formCode));
+    }
+
     @GetMapping("/list-table-header/{formCode}")
     public JsonResponse<SysCustomFormListInfo> listTableHeaderByForm(@PathVariable String formCode) {
         SysCustomFormInfo formInfo = customFormService.findBy(formCode);

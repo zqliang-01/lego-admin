@@ -95,12 +95,14 @@
 import DetailMixin from './mixins/LegoDetail'
 import RelativeHandle from '@/components/Relative/RelativeHandle'
 import RelativeFile from '@/components/Relative/RelativeFile'
+import RelativePrint from '@/components/Relative/RelativePrint'
 
 export default {
   name: 'LegoDetail',
   components: {
     RelativeHandle,
-    RelativeFile
+    RelativeFile,
+    RelativePrint
   },
   mixins: [DetailMixin],
   data() {
@@ -117,7 +119,8 @@ export default {
       return [
         { label: '详细资料', name: 'LegoEditBaseInfo' },
         { label: '操作日志', name: 'RelativeHandle' },
-        { label: '附件', name: 'RelativeFile' }
+        { label: '附件', name: 'RelativeFile' },
+        { label: '打印记录', name: 'RelativePrint' }
       ]
     },
     /** 更多操作 */

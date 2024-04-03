@@ -126,6 +126,29 @@ export default [
   },
   {
     ...layout({
+      code: 'manage_printTemplate',
+      name: 'printTemplate',
+      path: 'print-template',
+      component: () => import('@/views/admin/printTemplate'),
+      meta: {
+        title: '打印模板',
+        icon: 'icon-full-setting'
+      }
+    })
+  },
+  {
+    ...layout({
+      name: 'printTemplateDetail',
+      path: 'print-template-detail/:templateCode',
+      component: () => import('@/views/admin/printTemplate/Detail'),
+      hidden: true,
+      meta: {
+        activeMenu: '/manage/print-template'
+      }
+    }, false)
+  },
+  {
+    ...layout({
       code: 'manage_workflow',
       path: 'workflow',
       meta: {

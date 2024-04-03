@@ -1,25 +1,34 @@
 package com.lego.core.vo;
 
-import java.util.ArrayList;
-
+import com.alibaba.fastjson.JSON;
 import com.lego.core.common.ExceptionEnum;
-
 import lombok.Data;
+
+import java.util.ArrayList;
 
 @Data
 public class JsonResponse<T> {
 
-    /** 状态码 **/
+    /**
+     * 状态码
+     **/
     private Integer code;
 
-    /** 提示信息 **/
+    /**
+     * 提示信息
+     **/
     private String msg;
 
-    /** 响应数据 **/
+    /**
+     * 响应数据
+     **/
     private T data;
 
-    /** 无参构造 **/
-    protected JsonResponse() {}
+    /**
+     * 无参构造
+     **/
+    protected JsonResponse() {
+    }
 
     /**
      * 带参构造
@@ -45,7 +54,7 @@ public class JsonResponse<T> {
         return new JsonResponse<>(code, msg, new ArrayList<>());
     }
 
-    public static <T> JsonResponse <T> success(String msg, T data) {
+    public static <T> JsonResponse<T> success(String msg, T data) {
         return new JsonResponse<>(ExceptionEnum.SUCCESS.getCode(), msg, data);
     }
 
@@ -74,5 +83,9 @@ public class JsonResponse<T> {
 
     public static <T> JsonResponse<T> failed(Integer code, String msg, T data) {
         return new JsonResponse<>(code, msg, data);
+    }
+
+    public String toJSONString() {
+        return JSON.toJSONString(this);
     }
 }

@@ -6,6 +6,7 @@ import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.entity.SysPermission;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,10 +87,11 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
 
     @Override
     public int findMaxSn(String appCode) {
-        QueryHandler<Integer> query = createQueryHandler("SELECT max(p.SN) sn FROM sys_permission p", Integer.class);
+        QueryHandler<BigInteger> query = createQueryHandler("SELECT IFNULL(max(p.SN), 100) sn FROM sys_permission p", BigInteger.class);
         query.condition("p.code LIKE :appCode").param("appCode", appCode + "%");
         query.order("p.sn");
-        return query.findSqlUnique();
+        BigInteger maxSn = query.findSqlUnique();
+        return maxSn.intValue();
     }
 
     @Override

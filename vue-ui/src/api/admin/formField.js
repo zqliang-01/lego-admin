@@ -59,6 +59,13 @@ export function customFormDeleteAPI(data) {
   })
 }
 
+export function customFieldSimpleListAPI(data) {
+  return request({
+    url: '/back-end/sys-custom-field/list-simple',
+    data: data
+  })
+}
+
 export function customFieldTypeListAPI(data) {
   return request({
     url: `/back-end/sys-custom-field/list-type`,

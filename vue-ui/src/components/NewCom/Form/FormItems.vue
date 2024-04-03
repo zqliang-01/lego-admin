@@ -4,20 +4,22 @@
     align="flex-start"
     wrap="wrap"
     justify="flex-start">
-    <form-item
-      v-for="(item, index) in fieldList"
-      :key="index"
-      :prop-prefix="propPrefix"
-      :item="item"
-      :index="index"
-      :field-form="fieldForm"
-      :disabled="disabled"
-      @change="fieldChange"
-    >
-      <template slot-scope="{ index }">
-        <slot :data="item" :index="index" />
-      </template>
-    </form-item>
+    <template v-for="(item, index) in fieldList">
+      <form-item
+        v-if="!item.hidden"
+        :key="index"
+        :prop-prefix="propPrefix"
+        :item="item"
+        :index="index"
+        :field-form="fieldForm"
+        :disabled="disabled"
+        @change="fieldChange"
+      >
+        <template slot-scope="{ index }">
+          <slot :data="item" :index="index" />
+        </template>
+      </form-item>
+    </template>
   </flexbox>
 </template>
 

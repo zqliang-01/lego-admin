@@ -437,4 +437,14 @@ public class StringUtil {
         }
         return seq.indexOf(searchChar);
     }
+
+    public static String substring(String content, int maxLength) {
+        if (isBlank(content)) {
+            return "";
+        }
+        if (content.length() < maxLength) {
+            return content;
+        }
+        return content.substring(0, maxLength);
+    }
 }
