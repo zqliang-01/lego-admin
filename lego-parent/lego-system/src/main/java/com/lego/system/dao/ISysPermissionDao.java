@@ -1,6 +1,7 @@
 package com.lego.system.dao;
 
 import com.lego.core.data.hibernate.IGenericDao;
+import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysPermission;
 
 import java.util.List;
@@ -25,4 +26,5 @@ public interface ISysPermissionDao extends IGenericDao<SysPermission> {
 
     List<SysPermission> findByRouteType(String typeCode);
 
+    List<SysPermission> findBy(SysCustomForm form);
 }

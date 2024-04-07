@@ -4,9 +4,9 @@
       :search.sync="search"
       :menu-code="menuCode"
       :create-fun="createClick"
-      title="${FunctionName}（自定义）"
+      title="线索（自定义）"
       placeholder="请输入名称"
-      main-title="新建${FunctionName}"
+      main-title="新建线索"
       @on-handle="listHeadHandle"
       @on-search="commonSearch"
       @on-export="exportInfos" />
@@ -77,7 +77,7 @@
         <empty
           slot="empty"
           :props="{
-            buttonTitle: '新建${FunctionName}',
+            buttonTitle: '新建线索',
             showButton: auth.add
           }"
           @click="createClick"
@@ -97,7 +97,7 @@
           @current-change="handleCurrentChange"/>
       </div>
     </div>
-    <lego-all-detail
+    <Lego-all-detail
       :visible.sync="relativeEntity.show"
       :detail-code.sync="relativeEntity.code"
       :form-code="relativeEntity.formCode"
@@ -117,11 +117,11 @@
 
 <script>
 import {
-  ${FieldName}ListAPI,
-  ${FieldName}DeleteAPI,
-  ${FieldName}ExcelExportAPI,
-  ${FieldName}ExcelAllExportAPI
-} from '@/api/${AppCode}/${FieldName}'
+  leadListAPI,
+  leadDeleteAPI,
+  leadExcelExportAPI,
+  leadExcelAllExportAPI
+} from '@/api/crm/lead'
 import IndexMixin from '@/components/lego/mixins/LegoIndex'
 
 export default {
@@ -130,12 +130,12 @@ export default {
   data() {
     return {
       createShow: false,
-      menuCode: '${PermissionCode}', // 菜单编码
-      unionKey: '${UnionKey}', // 表格对象唯一键
-      listRequest: ${FieldName}ListAPI,
-      deleteRequest: ${FieldName}DeleteAPI,
-      exportRequest: ${FieldName}ExcelExportAPI,
-      exportAllRequest: ${FieldName}ExcelAllExportAPI
+      menuCode: 'crm_lead', // 菜单编码
+      unionKey: 'code', // 表格对象唯一键
+      listRequest: leadListAPI,
+      deleteRequest: leadDeleteAPI,
+      exportRequest: leadExcelExportAPI,
+      exportAllRequest: leadExcelAllExportAPI
     }
   },
   methods: {

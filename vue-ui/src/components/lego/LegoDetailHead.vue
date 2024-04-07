@@ -140,8 +140,7 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
+<style lang="scss" scoped>
 .lego-header-page-btn {
   flex-shrink: 0;
   margin-left: 8px;
@@ -161,9 +160,6 @@ export default {
     background-color: #ff6a00;
   }
 }
-</style>
-
-<style lang="scss" scoped>
 .container {
   position: relative;
   background-color: white;

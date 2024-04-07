@@ -1,20 +1,29 @@
 <template>
-  <lego-detail
+  <component
     v-if="visible"
     class="d-view"
+    :is="componentName"
+    :form-code="formCode"
     v-bind="$attrs"
     v-on="$listeners"
   />
 </template>
 <script type="text/javascript">
 import LegoDetail from './LegoDetail'
+import crmDetail from '@/views/crm/components/detail'
+import { getFormAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoAllDetail',
   components: {
-    LegoDetail
+    LegoDetail,
+    ...crmDetail
   },
   props: {
+    formCode: {
+      type: String,
+      default: ''
+    },
     visible: {
       type: Boolean,
       default: false
@@ -27,7 +36,15 @@ export default {
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+    componentName() {
+      const auth = getFormAuth(this.formCode)
+      if (!auth.dynamicRoute && auth.className && crmDetail[auth.className + 'Detail']) {
+        return auth.className + 'Detail'
+      }
+      return 'LegoDetail'
+    }
+  },
   watch: {},
   mounted() {
     this.$nextTick(() => {

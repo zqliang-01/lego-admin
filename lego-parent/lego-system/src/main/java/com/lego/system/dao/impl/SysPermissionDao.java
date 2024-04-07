@@ -4,6 +4,7 @@ import com.lego.core.data.hibernate.QueryHandler;
 import com.lego.core.data.hibernate.jpa.GenericDao;
 import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysPermissionDao;
+import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysPermission;
 
 import java.math.BigInteger;
@@ -108,6 +109,13 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
             query.condition("t.routeType.code = :typeCode").param("typeCode", typeCode);
         }
         query.order("t.sn");
+        return query.findList();
+    }
+
+    @Override
+    public List<SysPermission> findBy(SysCustomForm form) {
+        QueryHandler<SysPermission> query = createQueryHandler();
+        query.condition("t.form = :form").param("form", form);
         return query.findList();
     }
 

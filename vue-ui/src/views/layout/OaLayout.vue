@@ -37,8 +37,7 @@ export default {
 
   computed: {
     ...mapGetters([
-      'menuRouters',
-      'allAuth'
+      'menuRouters'
     ]),
     currentRouters() {
       return this.menuRouters.oa

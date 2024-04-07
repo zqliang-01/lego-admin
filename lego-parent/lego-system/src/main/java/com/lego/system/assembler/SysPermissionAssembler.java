@@ -26,6 +26,9 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
         info.setForm(createTypeInfo(entity.getForm()));
         info.setCreateTime(entity.getCreateTime());
         info.setParentCode(EntityUtil.getCode(entity.getParent()));
+        if (entity.getForm() != null) {
+            info.setClassName(entity.getForm().getTable().getClassName());
+        }
         return info;
     }
 
@@ -56,6 +59,8 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
                 value.put("title", permission.getName());
                 value.put("icon", permission.getIcon());
                 value.put("formCode", permission.getForm().getCode());
+                value.put("className", permission.getClassName());
+                value.put("dynamicRoute", permission.isDynamicRoute());
                 auth.put(permission.getRealm(), value);
                 continue;
             }

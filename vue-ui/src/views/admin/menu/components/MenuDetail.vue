@@ -69,7 +69,10 @@ import {
   permissionModifyAPI,
   permissionAddAPI,
   permissionDeleteAPI } from '@/api/admin/permission'
-import { customFormSimpleListAPI } from '@/api/admin/formField'
+import {
+  customFormGetAPI,
+  customFormSimpleListAPI
+} from '@/api/admin/formField'
 
 export default {
   components: {
@@ -190,8 +193,16 @@ export default {
       if (field.fieldCode === 'type') {
         this.menuType = value
       }
-      if (field.fieldCode === 'form') {
+      if (field.fieldCode === 'form' && value) {
         this.formCode = value
+        customFormGetAPI(this.formCode).then(res => {
+          const permission = res.data.permission
+          if (this.menuData.code && permission.code && permission.code != this.menuData.code) {
+            this.$alert(`表单已经被菜单【${permission.name}】使用，提交后将自动解除原绑定关系！`, '提示', {
+              type: 'warning'
+            }).then(() => {})
+          }
+        })
       }
     },
     handleSubmit() {

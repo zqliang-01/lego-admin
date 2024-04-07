@@ -31,6 +31,13 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
     protected void preprocess() {
         BusinessException.check(StringUtil.isNotBlank(vo.getName()), "菜单名称不能为空！");
         BusinessException.check(StringUtil.isNotBlank(vo.getType()), "菜单类型不能为空！");
+
+        SysCustomForm form = formDao.findByUnsureCode(vo.getForm());
+        if (form != null) {
+            List<SysPermission> permissions = entityDao.findBy(form);
+            permissions.stream().forEach(p -> p.setForm(null));
+            entityDao.saveAll(permissions);
+        }
     }
 
     @Override

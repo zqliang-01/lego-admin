@@ -64,7 +64,7 @@ export default {
         { fieldCode: 'template', name: '模板', formType: 'select', width: '100' },
         { fieldCode: 'createTime', name: '打印时间', formType: 'text', width: '100' }
       ],
-      tableHeight: document.documentElement.clientHeight - 245
+      tableHeight: document.documentElement.clientHeight - 275
     }
   },
   inject: ['rootTabs'],
@@ -108,13 +108,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '@/styles/relative.scss';
-
-.h-item {
-  font-size: 13px;
-  color: #409eff;
-  margin: 0 5px;
-  cursor: pointer;
-}
 
 .rc-head-file {
   position: absolute;

@@ -115,7 +115,7 @@ export default {
      * 详情
      */
     getDetial() {
-      if (typeof this.detailRequest === 'function' && this.detailCode) {
+      if (this.auth.detail && typeof this.detailRequest === 'function' && this.detailCode) {
         this.loading = true
         this.detailRequest(this.detailCode).then(res => {
           this.detailData = res.data

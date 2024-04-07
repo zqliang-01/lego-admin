@@ -87,7 +87,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'allAuth',
       'allModule',
       'headerModule'
     ]),

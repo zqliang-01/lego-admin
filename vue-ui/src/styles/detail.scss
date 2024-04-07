@@ -27,11 +27,11 @@
   }
 
   ::v-deep .el-tabs {
-    height: calc(100% - 15px) !important;
+    height: 100% !important;
   }
 
   ::v-deep .el-tabs__content {
-    height: calc(100% - 40px) !important;
+    height: calc(100% - 20px) !important;
     padding: 0;
     overflow: hidden;
     position: relative;
@@ -123,7 +123,7 @@
 .full-container {
   position: fixed;
   z-index: 5;
-  top: 0;
+  top: 60px;
   right: 0;
   bottom: 0;
   left: 0;
@@ -133,9 +133,9 @@
 }
 .d-view {
   position: fixed;
-  min-width: 950px;
+  min-width: 926px;
   width: 75%;
-  top: 0px;
+  top: 60px;
   bottom: 0px;
   right: 0px;
 }

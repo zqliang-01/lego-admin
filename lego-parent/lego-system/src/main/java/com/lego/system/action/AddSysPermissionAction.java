@@ -63,6 +63,12 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
                 code += "_";
             }
         }
+        SysCustomForm form = formDao.findByUnsureCode(vo.getForm());
+        if (form != null) {
+            List<SysPermission> permissions = entityDao.findBy(form);
+            permissions.stream().forEach(p -> p.setForm(null));
+            entityDao.saveAll(permissions);
+        }
     }
 
     @Override

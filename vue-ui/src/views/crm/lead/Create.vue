@@ -25,23 +25,23 @@
 
 <script>
 import {
-  ${FieldName}AddAPI,
-  ${FieldName}UpdateAPI
-} from '@/api/${AppCode}/${FieldName}'
+  leadAddAPI,
+  leadUpdateAPI
+} from '@/api/crm/lead'
 import CreateMixin from '@/components/lego/mixins/LegoCreate'
 
 export default {
-  name: '${ClassName}Create',
+  name: 'CrmLeadCreate',
   mixins: [CreateMixin],
   computed: {
     createTitle() {
-      return this.action.type === 'update' ? '编辑${FunctionName}' : '新建${FunctionName}'
+      return this.action.type === 'update' ? '编辑线索' : '新建线索'
     }
   },
   data() {
     return {
-      addRequest: ${FieldName}AddAPI,
-      updateRequest: ${FieldName}UpdateAPI
+      addRequest: leadAddAPI,
+      updateRequest: leadUpdateAPI
     }
   },
   mounted() {

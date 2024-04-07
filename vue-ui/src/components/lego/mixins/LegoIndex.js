@@ -371,6 +371,7 @@ export default {
     handleHeaderDragend(newWidth, oldWidth, column, event) {
       if (column.property) {
         var field = this.fieldList.find(field => field.fieldCode === column.property)
+        console.log(field)
         if (!field) {
           return
         }
@@ -381,6 +382,7 @@ export default {
           code: field.sortCode,
           width: newWidth
         }
+        console.log(params)
         columnWidthModifyAPI(params).then(() => {})
       }
     },

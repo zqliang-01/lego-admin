@@ -17,10 +17,11 @@ public class SysPermissionInfo extends TreeDTO<SysPermissionInfo> {
 
     private String name;
     private String icon;
+    private Date createTime;
+    private String className;
+    private int sn;
     private TypeInfo type;
     private TypeInfo routeType;
-    private Date createTime;
-    private int sn;
     private TypeInfo form;
 
     public String getRealm() {

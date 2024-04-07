@@ -1,5 +1,6 @@
 import Layout from '@/views/layout/TableFormLayout'
 import LegoIndex from '@/components/lego/LegoIndex'
+// import LegoIndex from '@/views/crm/components/LegoIndex'
 
 // 添加需要注册的动态路由（后期按模板适配）
 export function addDynamicRouter(routers) {
@@ -7,7 +8,9 @@ export function addDynamicRouter(routers) {
     path: '/:model',
     component: Layout,
     hidden: true,
-    meta: {},
+    meta: {
+      requiresAuth: true
+    },
     children: [{
       path: ':menuCode',
       component: LegoIndex,

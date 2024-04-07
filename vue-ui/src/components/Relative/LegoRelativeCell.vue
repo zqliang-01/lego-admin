@@ -110,7 +110,6 @@ export default {
     }
   },
   mounted() {
-    console.log('RelativeCell', this.disabled)
     if (isEmpty(this.value)) {
       this.dataValue = []
       this.checkInfos(this.dataValue)

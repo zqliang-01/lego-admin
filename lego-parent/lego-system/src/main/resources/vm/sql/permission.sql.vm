@@ -1,4 +1,4 @@
-CALL add_system_permission('${PermissionCode}', '${FunctionName}管理', 'menu', '${AppCode}', 'icon-title', ${startSn}, NULL);
+CALL add_system_permission('${PermissionCode}', '${FunctionName}管理', 'menu', '${AppCode}', 'icon-title', ${startSn}, 'local');
 CALL add_system_permission('${PermissionCode}_read', '查看列表', 'auth', '${PermissionCode}', NULL, ${startSn}1, NULL);
 CALL add_system_permission('${PermissionCode}_detail', '查看明细', 'auth', '${PermissionCode}', NULL, ${startSn}2, NULL);
 CALL add_system_permission('${PermissionCode}_add', '新增', 'auth', '${PermissionCode}', NULL, ${startSn}3, NULL);

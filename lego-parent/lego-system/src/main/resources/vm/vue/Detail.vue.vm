@@ -6,7 +6,7 @@
     :no-listener-class="noListenerClass"
     :body-style="{padding: 0, height: '100%'}"
     xs-empty-icon="nopermission"
-    xs-empty-text="暂无权限"
+    xs-empty-text="无操作权限"
     @afterEnter="viewAfterEnter"
     @close="hideView">
     <div
@@ -20,7 +20,7 @@
         class="d-container">
         <lego-detail-head
           :action-types="actionTypes"
-          type-name="线索管理（自定义）"
+          type-name="${FunctionName}（自定义）"
           :detail="detailData"
           :menu-code="menuCode"
           :head-field-list="headFieldList"
@@ -67,15 +67,16 @@
         </flexbox>
       </flexbox>
       <!-- 新建 -->
-      <create
-        v-if="isCreate"
-        @close="isCreate = false"
+      <lego-all-create
+        :visible.sync="isCreate"
         :form-code="formCode"
         :action="{type: 'update', detailData: detailData}"
+        @close="isCreate = false"
         @handle="actionHandle"
       />
     </div>
     <el-button
+      v-if="auth.detail"
       class="firse-button"
       @click="showImportInfo= !showImportInfo">
       重<br>要<br>信<br>息<br>
@@ -98,17 +99,17 @@ import {
   ${FieldName}DeleteAPI
 } from '@/api/${AppCode}/${FieldName}'
 
-import Create from './Create'
 import DetailMixin from '@/components/lego/mixins/LegoDetail'
 import RelativeHandle from '@/components/Relative/RelativeHandle'
 import RelativeFile from '@/components/Relative/RelativeFile'
+import RelativePrint from '@/components/Relative/RelativePrint'
 
 export default {
   name: '${ClassName}Detail',
   components: {
-    Create,
     RelativeHandle,
-    RelativeFile
+    RelativeFile,
+    RelativePrint
   },
   mixins: [DetailMixin],
   props: {
@@ -119,7 +120,7 @@ export default {
       isCreate: false,
       updateRequest: ${FieldName}UpdateAPI,
       detailRequest: ${FieldName}GetAPI,
-      deleteRequest: ${FieldName}DeleteAPI,
+      deleteRequest: ${FieldName}DeleteAPI
     }
   },
   computed: {
@@ -128,7 +129,8 @@ export default {
       return [
         { label: '详细资料', name: 'LegoEditBaseInfo' },
         { label: '操作日志', name: 'RelativeHandle' },
-        { label: '附件', name: 'RelativeFile' }
+        { label: '附件', name: 'RelativeFile' },
+        { label: '打印记录', name: 'RelativePrint' }
       ]
     },
     /** 更多操作 */

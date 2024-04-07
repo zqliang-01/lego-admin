@@ -20,7 +20,7 @@
         class="d-container">
         <lego-detail-head
           :action-types="actionTypes"
-          :type-name="auth.title"
+          type-name="线索（自定义）"
           :detail="detailData"
           :menu-code="menuCode"
           :head-field-list="headFieldList"
@@ -93,25 +93,34 @@
 </template>
 
 <script>
-import DetailMixin from './mixins/LegoDetail'
+import {
+  leadGetAPI,
+  leadUpdateAPI,
+  leadDeleteAPI
+} from '@/api/crm/lead'
+
+import DetailMixin from '@/components/lego/mixins/LegoDetail'
 import RelativeHandle from '@/components/Relative/RelativeHandle'
 import RelativeFile from '@/components/Relative/RelativeFile'
 import RelativePrint from '@/components/Relative/RelativePrint'
 
 export default {
-  name: 'LegoDetail',
+  name: 'CrmLeadDetail',
   components: {
     RelativeHandle,
     RelativeFile,
     RelativePrint
   },
   mixins: [DetailMixin],
+  props: {
+    code: [String, Number]
+  },
   data() {
     return {
       isCreate: false,
-      updateRequest: {},
-      detailRequest: {},
-      deleteRequest: {}
+      updateRequest: leadUpdateAPI,
+      detailRequest: leadGetAPI,
+      deleteRequest: leadDeleteAPI
     }
   },
   computed: {

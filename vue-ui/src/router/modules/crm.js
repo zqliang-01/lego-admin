@@ -5,8 +5,8 @@ const layout = function(menu, requiresAuth = true) {
     menu.meta.requiresAuth = requiresAuth
   }
   return {
-    code: '${AppCode}',
-    path: '/${AppCode}',
+    code: 'crm',
+    path: '/crm',
     component: Layout,
     meta: {
       requiresAuth: true
@@ -17,19 +17,19 @@ const layout = function(menu, requiresAuth = true) {
   }
 }
 
-const ${AppCode}Router = [
+const crmRouter = [
   {
     ...layout({
-      code: '${PermissionCode}',
-      name: '${FieldName}',
-      path: '${FieldName}',
-      component: () => import('@/views/${AppCode}/${FieldName}'),
+      code: 'crm_lead',
+      name: 'lead',
+      path: 'lead',
+      component: () => import('@/views/crm/lead'),
       meta: {
-        title: '${FunctionName}',
+        title: '线索',
         icon: 'icon-title'
       }
     })
   }
 ]
 
-export default ${AppCode}Router
+export default crmRouter
