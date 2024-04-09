@@ -63,9 +63,9 @@ public class FlowableDefinitionController extends BaseController {
     }
 
     @PostMapping("/start")
-    public JsonResponse<String> start(@RequestBody FlowableTaskStartVO vo) {
-        String instanceId = definitionService.start(getLoginCode(), vo.getDefinitionId(), vo.getVariables());
-        return JsonResponse.success(instanceId);
+    public JsonResponse<Object> start(@RequestBody FlowableTaskStartVO vo) {
+        definitionService.start(getLoginCode(), vo.getDefinitionId(), vo.getVariables());
+        return JsonResponse.success();
     }
 
 }

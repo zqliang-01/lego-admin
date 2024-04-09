@@ -79,6 +79,11 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
     }
 
     @Override
+    protected void postprocess() {
+        new SendSysMessageAction(operatorCode, task.getProcessInstanceId()).run();
+    }
+
+    @Override
     protected ActionType getActionType() {
         return ActionType.MODIFY;
     }

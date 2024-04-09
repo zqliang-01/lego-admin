@@ -25,8 +25,8 @@
     </div>
 
     <el-badge
-      :value="unreadNums.announceCount"
-      :hidden="!unreadNums.announceCount || unreadNums.announceCount == 0"
+      :value="unreadMessageNums.announceCount"
+      :hidden="!unreadMessageNums.announceCount || unreadMessageNums.announceCount == 0"
       :max="99">
       <i
         :class="'announcement' | iconPre"
@@ -34,8 +34,8 @@
     </el-badge>
 
     <el-badge
-      :value="unreadNums.allCount"
-      :hidden="!unreadNums.allCount || unreadNums.allCount == 0"
+      :value="unreadMessageNums.all"
+      :hidden="!unreadMessageNums.all || unreadMessageNums.all == 0"
       :max="99">
       <i
         :class="'bell' | iconPre"
@@ -44,7 +44,7 @@
 
     <system-message
       :visible.sync="sysMessageShow"
-      :unread-nums="unreadNums"
+      :unread-nums="unreadMessageNums"
       :only-announcement="mesOnlyAnnouncement"
       @update-count="sendSystemUnreadNum"/>
 
@@ -94,7 +94,8 @@
 </template>
 
 <script>
-import { filePreviewUrl, systemMessageUnreadCountAPI } from '@/api/common'
+import { filePreviewUrl } from '@/api/common'
+import { systemMessageUnreadCountAPI } from '@/api/systemMessage'
 import SystemMessage from './SystemMessage'
 import NavManager from './NavManager'
 
@@ -115,14 +116,10 @@ export default {
   },
   data() {
     return {
-      unreadNums: {
-        allCount: 0,
-        announceCount: 0,
-        crmCount: 0,
-        examineCount: 0,
-        eventCount: 0,
-        logCount: 0,
-        taskCount: 0
+      unreadMessageNums: {
+        all: 0,
+        flowable: 0,
+        form: 0
       },
       mesOnlyAnnouncement: false,
       sysMessageShow: false,
@@ -290,7 +287,7 @@ export default {
     sendSystemUnreadNum() {
       systemMessageUnreadCountAPI()
         .then(res => {
-          this.unreadNums = res.data
+          this.unreadMessageNums = res.data
         })
         .catch(() => {
           if (this.intervalId) {

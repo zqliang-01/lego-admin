@@ -10,3 +10,6 @@ CALL add_system_simple_type('image', '图片', 'SysFileType', 2);
 
 CALL add_system_simple_type('local', '本地', 'SysFileLocation', 1);
 CALL add_system_simple_type('aliOss', '阿里云', 'SysFileLocation', 2);
+
+CALL add_system_simple_type('flowable', '审批', 'SysMessageType', 1);
+CALL add_system_simple_type('form', '表单', 'SysMessageType', 2);

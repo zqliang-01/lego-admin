@@ -115,7 +115,12 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
             .map(Comment::getFullMessage)
             .reduce((s1, s2) -> s1 + " " + s2)
             .orElse("");
-        return new FlowableTaskFormDetailInfo(task.getId(), task.getName(), formKey, code, commentMsg, taskLocalVariables);
+        FlowableTaskFormDetailInfo detailInfo = new FlowableTaskFormDetailInfo(task.getId(), task.getName(), code);
+        detailInfo.setVariables(taskLocalVariables);
+        detailInfo.setComment(commentMsg);
+        detailInfo.setFormKey(formKey);
+        detailInfo.setFinished(task instanceof HistoricTaskInstance);
+        return detailInfo;
     }
 
     @Override

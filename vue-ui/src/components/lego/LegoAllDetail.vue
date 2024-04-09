@@ -57,12 +57,6 @@ export default {
     }
   },
   methods: {
-    handle(data) {
-      this.$emit('handle', data)
-    },
-    hiddenView() {
-      this.$emit('hide-view')
-    }
   }
 }
 </script>

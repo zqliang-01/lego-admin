@@ -19,5 +19,5 @@ public interface IFlowableDefinitionService {
 
     void updateStatus(String id, SuspensionState status);
 
-    String start(String operatorCode, String definitionId, Map<String, Object> variables);
+    void start(String operatorCode, String definitionId, Map<String, Object> variables);
 }

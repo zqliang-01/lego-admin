@@ -22,9 +22,12 @@ import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class StringUtil {
 
@@ -446,5 +449,23 @@ public class StringUtil {
             return content;
         }
         return content.substring(0, maxLength);
+    }
+
+    /**
+     * 匹配并替换字符串中的${param}
+     */
+    public static String replaceBrace(String content, Map<String, String> params) {
+        String pattern = "(\\$\\{(.+?)\\})";
+        Pattern p = Pattern.compile(pattern);
+        Matcher m = p.matcher(content);
+        StringBuffer sb = new StringBuffer();
+        while (m.find()) {
+            String key = m.group(2);
+            if (StringUtil.isNotBlank(key)) {
+                String value = params.get(key);
+                m.appendReplacement(sb, value == null ? "" : value);
+            }
+        }
+        return m.appendTail(sb).toString();
     }
 }

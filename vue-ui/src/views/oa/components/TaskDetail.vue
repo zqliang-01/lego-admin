@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     isView() {
-      return this.action.type === 'view'
+      return this.actionType === 'view'
     },
     hasAuth() {
       if (this.dataFieldList.length === 0) {
@@ -153,13 +153,14 @@ export default {
         const task = taskResponse.data
         this.taskName = task.name
         this.$set(this.otherFieldForm, 'comment', task.comment)
+        this.actionType = task.finished ? 'view' : this.action.type
         if (task.formKey) {
           createFieldListAPI(task.formKey).then(res => {
             this.dataFieldList = res.data.fields
             this.auth = getMenuAuth(res.data.form.permission.code)
             this.initRequest(res.data.form)
             if (task.code && this.hasAuth) {
-              this.actionType = 'update'
+              this.actionType = task.finished ? 'view' : 'update'
               this.detailRequest(task.code).then(res => {
                 this.detailData = res.data
                 this.initValue()

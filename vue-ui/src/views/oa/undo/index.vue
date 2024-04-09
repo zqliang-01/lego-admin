@@ -109,8 +109,20 @@ export default {
       ]
     }
   },
+  watch: {
+    $route(to, from) {
+      this.taskId = this.$route.query.taskId
+      if (this.taskId) {
+        this.createShow = true
+      }
+    }
+  },
   created() {
     this.refresh()
+    this.taskId = this.$route.query.taskId
+    if (this.taskId) {
+      this.createShow = true
+    }
   },
   methods: {
     refresh() {

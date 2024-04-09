@@ -17,4 +17,5 @@ public class BusService<D extends IGenericDao<? extends BaseEntity>, A extends E
     public boolean exists(String code) {
         return dao.exists(code);
     }
+
 }

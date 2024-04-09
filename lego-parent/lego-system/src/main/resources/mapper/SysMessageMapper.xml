@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lego.system.mapper.SysMessageMapper">
+
+    <select id="selectUnreadCount" resultType="com.lego.system.dto.SysMessageCountInfo">
+        SELECT
+            COUNT(case when st.code = 'flowable' then 1 END) AS 'flowable',
+            COUNT(case when st.code = 'form' then 1 END) AS 'form',
+            COUNT(1) AS 'all'
+        FROM sys_message t
+        JOIN sys_simple_type st ON st.ID = t.TYPE_ID
+        JOIN sys_employee e ON e.ID = t.RECIPIENT_ID
+        WHERE t.readed = 0
+            AND e.code = #{operatorCode}
+    </select>
+</mapper>
