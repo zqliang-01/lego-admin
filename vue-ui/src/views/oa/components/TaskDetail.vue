@@ -1,5 +1,6 @@
 <template>
-  <xr-create
+  <fade-view
+    :visible.sync="visible"
     :loading="loading"
     :title="taskName"
     :show-cancel="isView || !hasAuth"
@@ -73,7 +74,7 @@
     <user-select
       :visible.sync="showSelectEmployee"
       @selected="handleEmployeeSelect"/>
-  </xr-create>
+  </fade-view>
 </template>
 
 <script>
@@ -145,13 +146,17 @@ export default {
     }
   },
   created() {
-    this.init()
+    if (this.taskId) {
+      this.init()
+    }
   },
   methods: {
     init() {
       taskFormDetailGetAPI(this.taskId).then(taskResponse => {
         const task = taskResponse.data
         this.taskName = task.name
+        this.detailData = {}
+        this.dataFieldList = []
         this.$set(this.otherFieldForm, 'comment', task.comment)
         this.actionType = task.finished ? 'view' : this.action.type
         if (task.formKey) {
@@ -162,10 +167,10 @@ export default {
             if (task.code && this.hasAuth) {
               this.actionType = task.finished ? 'view' : 'update'
               this.detailRequest(task.code).then(res => {
-                this.detailData = res.data
+                this.detailData = res.taskDelegateAPI
                 this.initValue()
               })
-            } else if (!this.isView) {
+            } else {
               this.initValue()
             }
           })

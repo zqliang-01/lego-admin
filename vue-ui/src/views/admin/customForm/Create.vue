@@ -1,5 +1,6 @@
 <template>
-  <xr-create
+  <fade-view
+    :visible.sync="visible"
     :loading="loading"
     :title="createTitle"
     @close="close"
@@ -19,7 +20,7 @@
         @change="handleFieldChange"
       />
     </el-form>
-  </xr-create>
+  </fade-view>
 </template>
 
 <script>
@@ -47,22 +48,32 @@ export default {
       updateRequest: customFormModifyAPI
     }
   },
-  created() {
-    this.dataFieldList = this.fieldList
-    this.detailData = this.action.detailData
-    if (this.action.detailData) {
-      this.dataFieldList.map(fields => {
-        fields.map(field => {
-          this.$set(field, 'disabled', false)
-          if (field.fieldCode === 'table' && this.action.type === 'update') {
-            this.$set(field, 'disabled', true)
-          }
-        })
-      })
+  watch: {
+    action: {
+      handler() {
+        this.init()
+      },
+      deep: true,
+      immediate: true
     }
-    this.initValue()
   },
   methods: {
+    init() {
+      this.actionType = this.action.type
+      this.dataFieldList = this.fieldList
+      this.detailData = this.action.detailData
+      if (this.action.detailData) {
+        this.dataFieldList.map(fields => {
+          fields.map(field => {
+            this.$set(field, 'disabled', false)
+            if (field.fieldCode === 'table' && this.action.type === 'update') {
+              this.$set(field, 'disabled', true)
+            }
+          })
+        })
+      }
+      this.initValue()
+    },
     handleFieldChange(field, index, value) {
       if (field.fieldCode === 'table') {
         customFormInitGetAPI(value).then(res => {

@@ -37,8 +37,8 @@
       </lego-table>
     </div>
 
-    <create
-      v-if="isCreate"
+    <Create
+      :visible="isCreate"
       :field-list="fieldList"
       :action="action"
       @handle="actionHandle"
@@ -52,9 +52,9 @@ import {
   configListAPI,
   configTestAPI
 } from '@/api/admin/sharding/config'
-import Create from './Create'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/lego/LegoTable'
+import Create from './Create'
 import { mapGetters } from 'vuex'
 
 export default {

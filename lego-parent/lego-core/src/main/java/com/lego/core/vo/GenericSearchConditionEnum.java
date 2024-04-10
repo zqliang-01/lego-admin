@@ -1,9 +1,9 @@
 package com.lego.core.vo;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 import java.util.List;
-
-import lombok.Getter;
 
 @Getter
 public enum GenericSearchConditionEnum {
@@ -28,42 +28,42 @@ public enum GenericSearchConditionEnum {
     LESS_THAN("lessThan", "小于", "<"),
     LESS_THAN_OR_EQUALS("lessThanOrEquals", "小于等于", "<=");
 
-	private static final List<GenericSearchConditionEnum> notValueTypes = Arrays.asList(IS_NULL, IS_NOT_NULL);
-	private static final List<GenericSearchConditionEnum> multiValueTypes = Arrays.asList(CONTAINS, NOT_CONTAINS);
+    private static final List<GenericSearchConditionEnum> notValueTypes = Arrays.asList(IS_NULL, IS_NOT_NULL);
+    private static final List<GenericSearchConditionEnum> multiValueTypes = Arrays.asList(CONTAINS, NOT_CONTAINS);
 
-	private String code;
-	private String name;
-	private String type;
+    private String code;
+    private String name;
+    private String type;
 
-	private GenericSearchConditionEnum(String code, String name, String type) {
-		this.code = code;
-		this.name = name;
-		this.type = type;
-	}
+    private GenericSearchConditionEnum(String code, String name, String type) {
+        this.code = code;
+        this.name = name;
+        this.type = type;
+    }
 
-	public boolean equals(String code) {
-		return this.getCode().equals(code);
-	}
+    public boolean equals(String code) {
+        return this.getCode().equals(code);
+    }
 
-	public boolean equals(GenericSearchConditionEnum condition) {
-		return this.getCode().equals(condition.getCode());
-	}
+    public boolean equals(GenericSearchConditionEnum condition) {
+        return this.getCode().equals(condition.getCode());
+    }
 
-	public boolean isNotValue() {
-		return notValueTypes.contains(this);
-	}
+    public boolean needValue() {
+        return !notValueTypes.contains(this);
+    }
 
-	public boolean isSingleValue() {
-		return !multiValueTypes.contains(this);
-	}
+    public boolean isSingleValue() {
+        return !multiValueTypes.contains(this);
+    }
 
-	public static GenericSearchConditionEnum get(String code) {
-		for (GenericSearchConditionEnum value : values()) {
-			if (value.equals(code)) {
-				return value;
-			}
-		}
-		return null;
-	}
+    public static GenericSearchConditionEnum get(String code) {
+        for (GenericSearchConditionEnum value : values()) {
+            if (value.equals(code)) {
+                return value;
+            }
+        }
+        return null;
+    }
 
 }

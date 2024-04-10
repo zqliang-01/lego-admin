@@ -31,8 +31,8 @@
       </lego-table>
     </div>
 
-    <create
-      v-if="isCreate"
+    <Create
+      :visible="isCreate"
       :field-list="fieldList"
       :action="action"
       @handle="actionHandle"
@@ -46,9 +46,9 @@ import {
   templateListAPI,
   templateTypeListAPI
 } from '@/api/admin/sharding/template'
-import Create from './Create'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/lego/LegoTable'
+import Create from './Create'
 import { mapGetters } from 'vuex'
 
 export default {

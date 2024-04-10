@@ -1,23 +1,22 @@
 <template>
-  <create-view
+  <fade-transaction
+    v-if="visible"
     :body-style="{ height: '100%'}"
     @afterEnter="afterEnter">
     <flexbox
       v-loading="loading"
       direction="column"
       align="stretch"
-      class="xr-create">
-      <flexbox class="xr-create__header">
+      class="fade-view">
+      <flexbox class="fade-view__header">
         <div v-if="!$slots.title" class="title">{{ title }}</div>
         <slot name="title" />
-        <i
-          class="el-icon-close close"
-          @click="close" />
+        <i class="el-icon-close close" @click="close" />
       </flexbox>
-      <div class="xr-create__body">
+      <div class="fade-view__body">
         <slot />
       </div>
-      <div class="xr-create__footer">
+      <div class="fade-view__footer">
         <el-button
           v-if="showCancel"
           @click.native="close">取消</el-button>
@@ -28,20 +27,24 @@
           @click.native="debouncedSaveField(false)">{{ confirmButtonText }}</el-button>
       </div>
     </flexbox>
-  </create-view>
+  </fade-transaction>
 </template>
 
-<script>
-import CreateView from '@/components/CreateView'
+<script type="text/javascript">
+import FadeTransaction from './FadeTransaction'
 import { debounce } from 'throttle-debounce'
 
 export default {
-  // 创建页面
-  name: 'XrCreate',
+  name: 'FadeLayout',
   components: {
-    CreateView
+    FadeTransaction
   },
+  inheritAttrs: false,
   props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
     title: String,
     loading: Boolean,
     appendToBody: {
@@ -97,9 +100,8 @@ export default {
   }
 }
 </script>
-
 <style lang="scss" scoped>
-.xr-create {
+.fade-view {
   position: relative;
   height: 100%;
 

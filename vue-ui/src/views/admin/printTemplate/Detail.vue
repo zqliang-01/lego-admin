@@ -80,7 +80,6 @@ export default {
     }
   },
   created() {
-    // this.getFields(this.type)
     this.getDetail()
   },
   methods: {

@@ -1,5 +1,6 @@
 <template>
-  <xr-create
+  <fade-view
+    :visible.sync="visible"
     :loading="loading"
     :title="createTitle"
     @close="close"
@@ -18,7 +19,7 @@
         :field-list="children"
       />
     </el-form>
-  </xr-create>
+  </fade-view>
 </template>
 
 <script>
@@ -43,19 +44,31 @@ export default {
       updateRequest: printTemplateModifyAPI
     }
   },
-  created() {
-    this.dataFieldList = this.fieldList
-    this.detailData = this.action.detailData
-    this.dataFieldList.map(fields => {
-      fields.map(field => {
-        if (field.fieldCode === 'form') {
-          customFormSimpleListAPI().then(res => {
-            field.setting = res.data
-          })
-        }
+  watch: {
+    action: {
+      handler() {
+        this.init()
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  methods: {
+    init() {
+      this.actionType = this.action.type
+      this.dataFieldList = this.fieldList
+      this.detailData = this.action.detailData
+      this.dataFieldList.map(fields => {
+        fields.map(field => {
+          if (field.fieldCode === 'form') {
+            customFormSimpleListAPI().then(res => {
+              field.setting = res.data
+            })
+          }
+        })
       })
-    })
-    this.initValue()
+      this.initValue()
+    }
   }
 }
 </script>

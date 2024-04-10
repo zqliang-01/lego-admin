@@ -102,7 +102,6 @@
       :detail-code.sync="relativeEntity.code"
       :form-code="relativeEntity.formCode"
       :page-codes="relativeEntity.pageCodes"
-      class="d-view"
       @handle="actionHandle"
       @hide-view="relativeEntity.show=false"/>
     <!-- 新建 -->

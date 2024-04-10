@@ -47,7 +47,7 @@ public class BaseService {
             if (GenericSearchConditionEnum.LIKE.equals(condition)) {
                 value = "%" + search.getFirstValue(fieldType) + "%";
             }
-            if (!condition.isNotValue() && value == null) {
+            if (condition.needValue() && value == null) {
                 throw new BusinessException("条件类型[{0}]需要传值，但是值为空！", condition.getName());
             }
             conditionVO.addItem(new GenericConditionItemVO(condition, fieldType, search.getFieldCode(), value));

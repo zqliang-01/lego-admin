@@ -43,7 +43,7 @@
         :instance-id="instanceId" />
     </el-dialog>
     <task-detail
-      v-if="createShow"
+      :visible.sync="createShow"
       :task-id="taskId"
       :action="{ type: 'save' }"
       @close="createShow = false"

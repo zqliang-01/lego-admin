@@ -4,9 +4,9 @@
     class="full-container">
     <template>
       <slide-view
-        v-if="showDetail"
+        :visible.sync="showDetail"
         :show-close="false"
-        :no-listener-class="['bell-message-hook', 'lego-bell']"
+        :no-listener-class="['lego-bell']"
         class="d-view"
         @close="showDetail = false">
         <div class="sm-main">

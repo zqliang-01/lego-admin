@@ -50,7 +50,7 @@
       </lego-table>
     </div>
     <Create
-      v-if="isCreate"
+      :visible="isCreate"
       :field-list="fieldList"
       :action="action"
       @handle="actionHandle"
@@ -79,10 +79,10 @@ import BpmnViewer from '@/components/bpmn/components/Viewer'
 export default {
   name: 'WorkflowModel',
   components: {
+    Create,
     XrHeader,
     LegoTable,
     FieldView,
-    Create,
     BpmnViewer
   },
   computed: {

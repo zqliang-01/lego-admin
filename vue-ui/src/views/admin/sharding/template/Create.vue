@@ -1,5 +1,6 @@
 <template>
-  <xr-create
+  <fade-view
+    :visible.sync="visible"
     :loading="loading"
     :title="createTitle"
     @close="close"
@@ -18,7 +19,7 @@
         :field-list="children"
       />
     </el-form>
-  </xr-create>
+  </fade-view>
 </template>
 
 <script>
@@ -42,19 +43,29 @@ export default {
       updateRequest: templateUpdateAPI
     }
   },
-  created() {
-    this.dataFieldList = this.fieldList
-    this.detailData = this.action.detailData
-    if (this.action.detailData) {
-      this.dataFieldList.map(fields => {
-        fields.map(field => {
-          this.$set(field, 'disabled', false)
-        })
-      })
+  watch: {
+    action: {
+      handler() {
+        this.init()
+      },
+      deep: true,
+      immediate: true
     }
-    this.initValue()
   },
   methods: {
+    init() {
+      this.actionType = this.action.type
+      this.dataFieldList = this.fieldList
+      this.detailData = this.action.detailData
+      if (this.action.detailData) {
+        this.dataFieldList.map(fields => {
+          fields.map(field => {
+            this.$set(field, 'disabled', false)
+          })
+        })
+      }
+      this.initValue()
+    }
   }
 }
 </script>

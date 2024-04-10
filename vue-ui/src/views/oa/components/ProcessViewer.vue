@@ -28,7 +28,7 @@
       :process-node-info="processNodeInfo"
       @clickElement="handleElementClick"/>
     <task-detail
-      v-if="createShow"
+      :visible.sync="createShow"
       :task-id="taskId"
       :action="{ type: 'view' }"
       @close="createShow = false"
@@ -104,4 +104,4 @@ export default {
     }
   }
 }
-</script>./TaskDetail.vue
+</script>

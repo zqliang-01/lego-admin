@@ -1,5 +1,6 @@
 <template>
-  <xr-create
+  <fade-view
+    :visible.sync="visible"
     :loading="loading"
     :title="createTitle"
     @close="close"
@@ -18,7 +19,7 @@
         :field-list="children"
       />
     </el-form>
-  </xr-create>
+  </fade-view>
 </template>
 
 <script>
@@ -29,7 +30,7 @@ import {
 import CreateMixin from '@/components/lego/mixins/LegoCreate'
 
 export default {
-  name: 'GenTableCreate',
+  name: 'WorkflowModelCreate',
   mixins: [CreateMixin],
   props: {
   },
@@ -44,22 +45,32 @@ export default {
       return this.action.type === 'update' ? modelUpdateAPI : modelAddAPI
     }
   },
-  created() {
-    this.dataFieldList = this.fieldList
-    this.detailData = this.action.detailData
-    if (this.action.detailData) {
-      this.dataFieldList.map(fields => {
-        fields.map(field => {
-          this.$set(field, 'disabled', false)
-          if (field.fieldCode === 'key' && this.action.type === 'update') {
-            this.$set(field, 'disabled', true)
-          }
-        })
-      })
+  watch: {
+    action: {
+      handler() {
+        this.init()
+      },
+      deep: true,
+      immediate: true
     }
-    this.initValue()
   },
   methods: {
+    init() {
+      this.actionType = this.action.type
+      this.dataFieldList = this.fieldList
+      this.detailData = this.action.detailData
+      if (this.action.detailData) {
+        this.dataFieldList.map(fields => {
+          fields.map(field => {
+            this.$set(field, 'disabled', false)
+            if (field.fieldCode === 'key' && this.action.type === 'update') {
+              this.$set(field, 'disabled', true)
+            }
+          })
+        })
+      }
+      this.initValue()
+    }
   }
 }
 </script>

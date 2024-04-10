@@ -1,6 +1,7 @@
 <template>
   <slide-view
     v-empty="!auth.detail"
+    :visible.sync="visible"
     :listener-ids="listenerIDs"
     :no-listener-ids="noListenerIDs"
     :no-listener-class="noListenerClass"
@@ -108,7 +109,6 @@ export default {
   mixins: [DetailMixin],
   data() {
     return {
-      isCreate: false,
       updateRequest: {},
       detailRequest: {},
       deleteRequest: {}
@@ -138,7 +138,7 @@ export default {
         this.$confirm('此操作将永久删除[' + this.detailCode + ']，是否继续?', '提示', {
           type: 'warning'
         }).then(() => {
-          this.deleteRequest([this.code]).then(res => {
+          this.deleteRequest([this.detailCode]).then(res => {
             this.$emit('handle', { type: 'save-success' })
             this.hideView()
             loading.close()

@@ -1,6 +1,5 @@
 <template>
   <component
-    v-if="visible"
     class="d-view"
     :is="componentName"
     :form-code="formCode"
@@ -20,43 +19,26 @@ export default {
     ...crmDetail
   },
   props: {
-    formCode: {
+    name: {
       type: String,
       default: ''
     },
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    item: {
-      type: Object,
-      default: () => {}
+    formCode: {
+      type: String,
+      default: ''
     }
-  },
-  data() {
-    return {}
   },
   computed: {
     componentName() {
+      if (this.name) {
+        return this.name
+      }
       const auth = getFormAuth(this.formCode)
       if (!auth.dynamicRoute && auth.className && crmDetail[auth.className + 'Detail']) {
         return auth.className + 'Detail'
       }
       return 'LegoDetail'
     }
-  },
-  watch: {},
-  mounted() {
-    this.$nextTick(() => {
-      document.body.appendChild(this.$el)
-    })
-  },
-  destroyed() {
-    if (this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el)
-    }
-  },
-  methods: {
   }
 }
 </script>

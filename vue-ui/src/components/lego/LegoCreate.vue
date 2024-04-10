@@ -1,5 +1,6 @@
 <template>
-  <xr-create
+  <fade-view
+    :visible.sync="visible"
     :loading="loading"
     :title="createTitle"
     @close="close"
@@ -21,7 +22,7 @@
         />
       </el-form>
     </create-sections>
-  </xr-create>
+  </fade-view>
 </template>
 
 <script>

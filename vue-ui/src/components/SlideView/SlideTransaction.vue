@@ -39,7 +39,7 @@
 import { getMaxIndex } from '@/utils/index'
 
 export default {
-  name: 'SlideView', // 客户管理详情 滑动view
+  name: 'SlideTransaction',
   componentName: 'SlideView',
   components: {},
   props: {

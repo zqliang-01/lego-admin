@@ -18,7 +18,7 @@
 import { getMaxIndex } from '@/utils/index'
 
 export default {
-  name: 'CreateView', // 所有新建效果的view
+  name: 'FadeTransaction',
   components: {},
   props: {
     bodyStyle: {

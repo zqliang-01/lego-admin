@@ -38,7 +38,7 @@
         :instance-id="instanceId" />
     </el-dialog>
     <task-detail
-      v-if="createShow"
+      :visible.sync="createShow"
       title="任务表单"
       :task-id="taskId"
       :action="{ type: 'view' }"

@@ -42,8 +42,8 @@
       </lego-table>
     </div>
 
-    <create
-      v-if="isCreate"
+    <Create
+      :visible="isCreate"
       :field-list="fieldList"
       :action="action"
       @handle="actionHandle"

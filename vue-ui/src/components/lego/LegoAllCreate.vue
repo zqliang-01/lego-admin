@@ -3,10 +3,9 @@
     v-if="visible"
     :is="componentName"
     :form-code="formCode"
+    :visible="visible"
     v-bind="$attrs"
-    v-on="$listeners"
-    @hiden-view="hiddenView"
-    @close="hiddenView"/>
+    v-on="$listeners"/>
 </template>
 
 <script type="text/javascript">
@@ -22,17 +21,13 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    formCode: {
-      type: String,
-      default: ''
-    },
     visible: {
       type: Boolean,
       default: false
     },
-    item: {
-      type: Object,
-      default: () => {}
+    formCode: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -45,12 +40,6 @@ export default {
         return auth.className + 'Create'
       }
       return 'LegoCreate'
-    }
-  },
-  watch: {},
-  methods: {
-    hiddenView() {
-      this.$emit('close')
     }
   }
 }

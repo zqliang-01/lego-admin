@@ -54,8 +54,8 @@
       title="代码预览"
     />
 
-    <gen-table-create
-      v-if="isCreate"
+    <Create
+      :visible="isCreate"
       :field-list="fieldList"
       :table-name-list="tableNameList"
       :action="action"
@@ -76,8 +76,8 @@ import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import FieldView from '@/components/NewCom/Form/FieldView'
 import LegoTable from '@/components/lego/LegoTable'
-import GenTableCreate from './Create'
 import CodePreview from './CodePreview'
+import Create from './Create'
 import { downloadFileWithBuffer } from '@/utils'
 
 import 'highlight.js/styles/github-gist.css'
@@ -95,8 +95,8 @@ export default {
     XrHeader,
     FieldView,
     LegoTable,
-    GenTableCreate,
-    CodePreview
+    CodePreview,
+    Create
   },
   computed: {
     ...mapGetters(['manage'])

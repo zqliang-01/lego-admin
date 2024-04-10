@@ -1,5 +1,6 @@
 <template>
-  <xr-create
+  <fade-view
+    :visible.sync="visible"
     :loading="loading"
     :title="createTitle"
     @close="close"
@@ -19,7 +20,7 @@
         @change="fieldChange"
       />
     </el-form>
-  </xr-create>
+  </fade-view>
 </template>
 
 <script>
@@ -52,22 +53,32 @@ export default {
       return this.action.type === 'update' ? genTableModifyAPI : genTableAddAPI
     }
   },
-  created() {
-    this.dataFieldList = this.fieldList
-    this.detailData = this.action.detailData
-    if (this.action.detailData) {
-      this.dataFieldList.map(fields => {
-        fields.map(field => {
-          this.$set(field, 'disabled', false)
-          if (field.fieldCode === 'code') {
-            field.setting = this.tableNameList
-          }
-        })
-      })
+  watch: {
+    action: {
+      handler() {
+        this.init()
+      },
+      deep: true,
+      immediate: true
     }
-    this.initValue()
   },
   methods: {
+    init() {
+      this.actionType = this.action.type
+      this.dataFieldList = this.fieldList
+      this.detailData = this.action.detailData
+      if (this.action.detailData) {
+        this.dataFieldList.map(fields => {
+          fields.map(field => {
+            this.$set(field, 'disabled', false)
+            if (field.fieldCode === 'code') {
+              field.setting = this.tableNameList
+            }
+          })
+        })
+      }
+      this.initValue()
+    },
     fieldChange(item, index, value, valueList) {
       if (item && item.fieldCode === 'code') {
         genTableInitGetAPI(value).then(res => {

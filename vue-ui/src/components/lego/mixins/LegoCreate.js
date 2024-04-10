@@ -1,4 +1,4 @@
-import XrCreate from '@/components/XrCreate'
+import FadeView from '@/components/FadeView'
 import CreateSections from '@/components/CreateSections'
 import FormItems from '@/components/NewCom/Form/FormItems'
 
@@ -10,7 +10,7 @@ import { createFieldListAPI } from '@/api/admin/formField'
 export default {
   // 新建编辑
   components: {
-    XrCreate,
+    FadeView,
     CreateSections,
     FormItems
   },
@@ -25,6 +25,10 @@ export default {
           detailData: {}
         }
       }
+    },
+    visible: {
+      type: Boolean,
+      default: false
     },
     title: String,
     formCode: String,

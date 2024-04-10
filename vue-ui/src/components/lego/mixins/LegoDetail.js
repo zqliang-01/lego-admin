@@ -27,6 +27,7 @@ export default {
       relativeEntity: {
         show: false
       },
+      isCreate: false,
       importList: [],
       fieldList: [],
       showImportInfo: false,
@@ -47,6 +48,10 @@ export default {
   props: {
     detailCode: String,
     formCode: String,
+    visible: {
+      type: Boolean,
+      default: false
+    },
     pageCodes: {
       type: Array,
       default: function() {
@@ -98,7 +103,9 @@ export default {
     }
   },
   mounted() {
-    this.$refs.detailMain.style.background = 'white'
+    if (this.$refs.detailMain) {
+      this.$refs.detailMain.style.background = 'white'
+    }
     this.debouncedGetTabsNum = debounce(300, this.getTabsNum)
     this.initFieldList()
     if (this.detailCode) {
