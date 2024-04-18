@@ -6,8 +6,11 @@ import com.lego.core.data.hibernate.jpa.GenericDao;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysEmployeeDao;
+import com.lego.system.entity.SysDept;
 import com.lego.system.entity.SysEmployee;
 import com.lego.system.vo.SysEmployeeSearchVO;
+
+import java.util.List;
 
 public class SysEmployeeDao extends GenericDao<SysEmployee> implements ISysEmployeeDao {
 
@@ -33,6 +36,13 @@ public class SysEmployeeDao extends GenericDao<SysEmployee> implements ISysEmplo
             query.condition("t.enable = :enable").param("enable", vo.getEnable());
         }
         return query.findPage(vo);
+    }
+
+    @Override
+    public List<SysEmployee> findBy(List<SysDept> depts) {
+        QueryHandler<SysEmployee> query = createQueryHandler();
+        query.condition("t.dept IN (:depts)").param("depts", depts);
+        return query.findList();
     }
 
 }

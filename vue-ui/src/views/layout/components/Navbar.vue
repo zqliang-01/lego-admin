@@ -15,7 +15,7 @@
           v-for="(item, index) in showItems"
           :key="index"
           :index="item.code">
-          <i :class="item.icon | iconPre" style="fontSize: 17px;margin-right: 0.3em;" />
+          <i :class="item.icon | iconPre" style="font-size: 17px;margin-right: 0.3em;" />
           <span>{{ item.name }}</span>
         </el-menu-item>
         <el-menu-item ref="navManagerMenu" index="other">
@@ -25,8 +25,8 @@
     </div>
 
     <el-badge
-      :value="unreadMessageNums.announceCount"
-      :hidden="!unreadMessageNums.announceCount || unreadMessageNums.announceCount == 0"
+      :value="unreadMessageNums.notice"
+      :hidden="!unreadMessageNums.notice || unreadMessageNums.notice == 0"
       :max="99">
       <i
         :class="'announcement' | iconPre"
@@ -42,10 +42,13 @@
         @click="checkMessageDetail(false)"/>
     </el-badge>
 
+    <notice-message
+      :visible.sync="noticeMessageShow"
+      @update-count="sendSystemUnreadNum"/>
+
     <system-message
       :visible.sync="sysMessageShow"
       :unread-nums="unreadMessageNums"
-      :only-announcement="mesOnlyAnnouncement"
       @update-count="sendSystemUnreadNum"/>
 
     <el-dropdown
@@ -96,7 +99,8 @@
 <script>
 import { filePreviewUrl } from '@/api/common'
 import { systemMessageUnreadCountAPI } from '@/api/systemMessage'
-import SystemMessage from './SystemMessage'
+import SystemMessage from './Message/SystemMessage'
+import NoticeMessage from './Message/NoticeMessage'
 import NavManager from './NavManager'
 
 import { mapGetters } from 'vuex'
@@ -106,6 +110,7 @@ import { on, off } from '@/utils/dom'
 export default {
   components: {
     SystemMessage,
+    NoticeMessage,
     NavManager
   },
   props: {
@@ -121,8 +126,8 @@ export default {
         flowable: 0,
         form: 0
       },
-      mesOnlyAnnouncement: false,
       sysMessageShow: false,
+      noticeMessageShow: false,
       intervalId: null,
       type: 0,
       items: [],
@@ -288,8 +293,7 @@ export default {
       systemMessageUnreadCountAPI()
         .then(res => {
           this.unreadMessageNums = res.data
-        })
-        .catch(() => {
+        }).catch(() => {
           if (this.intervalId) {
             clearInterval(this.intervalId)
             this.intervalId = null
@@ -349,8 +353,12 @@ export default {
     /**
      * 查看消息详情
      */
-    checkMessageDetail(onlyAnnouncement) {
-      this.mesOnlyAnnouncement = onlyAnnouncement
+    checkMessageDetail(isNotice) {
+      console.log(isNotice)
+      if (isNotice) {
+        this.noticeMessageShow = true
+        return
+      }
       this.sysMessageShow = true
     }
   }

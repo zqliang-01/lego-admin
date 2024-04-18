@@ -58,8 +58,8 @@ public class SysPermissionController extends BaseController {
     }
 
     @GetMapping("/list")
-    public JsonResponse<List<SysPermissionInfo>> list(String routeType) {
-        return JsonResponse.success(permissionService.findBy(routeType));
+    public JsonResponse<List<SysPermissionInfo>> list(String name, String routeType) {
+        return JsonResponse.success(permissionService.findBy(name, routeType));
     }
 
     @GetMapping("/list-type")

@@ -10,6 +10,10 @@ export function isArray(obj) {
   return Object.prototype.toString.call(obj) === '[object Array]'
 }
 
+export function isBoolean(obj) {
+  return Object.prototype.toString.call(obj) === '[object Boolean]'
+}
+
 /**
  * 数据非空验证
  * @desc 验证数据是否为 null undefined [] {} ''

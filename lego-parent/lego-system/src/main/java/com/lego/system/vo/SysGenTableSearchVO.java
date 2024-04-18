@@ -1,7 +1,6 @@
 package com.lego.system.vo;
 
 import com.lego.core.vo.PageVO;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +8,7 @@ import lombok.Setter;
 @Setter
 public class SysGenTableSearchVO extends PageVO {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	private String code;
+    private String code;
 }

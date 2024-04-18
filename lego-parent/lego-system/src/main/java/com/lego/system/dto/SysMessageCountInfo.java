@@ -11,4 +11,5 @@ public class SysMessageCountInfo extends DTO {
     private int all;
     private int flowable;
     private int form;
+    private long notice;
 }

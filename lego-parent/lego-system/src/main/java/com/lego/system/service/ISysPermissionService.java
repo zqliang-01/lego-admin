@@ -12,7 +12,7 @@ public interface ISysPermissionService {
 
     void add(String employeeCode, SysPermissionCreateVO vo);
 
-    List<SysPermissionInfo> findBy(String routeType);
+    List<SysPermissionInfo> findBy(String name, String routeType);
 
     List<SysPermissionInfo> findByEmployee(String employeeCode, String... types);
 

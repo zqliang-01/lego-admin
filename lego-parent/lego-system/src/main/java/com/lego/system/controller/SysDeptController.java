@@ -2,6 +2,7 @@ package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.dto.TreeInfo;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysDeptInfo;
@@ -30,6 +31,11 @@ public class SysDeptController extends BaseController {
     public JsonResponse<List<SysDeptInfo>> list(SysDeptSearchVO vo) {
         List<SysDeptInfo> depts = deptService.findBy(vo);
         return JsonResponse.success(depts);
+    }
+
+    @GetMapping("/list-children")
+    public JsonResponse<List<TypeInfo>> listChildren(String parentCode) {
+        return JsonResponse.success(deptService.findChildrenBy(parentCode));
     }
 
     @GetMapping("/list-simple")

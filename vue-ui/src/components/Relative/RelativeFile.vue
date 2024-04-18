@@ -85,7 +85,7 @@
 
 <script type="text/javascript">
 
-import FieldView from '../NewCom/Form/FieldView'
+import FieldView from '../Common/Form/FieldView'
 import {
   fileListAPI,
   fileDeleteAPI,

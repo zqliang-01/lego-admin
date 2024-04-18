@@ -1,8 +1,10 @@
 <template>
   <component
-    class="d-view"
+    v-if="visible"
+    :visible="visible"
     :is="componentName"
     :form-code="formCode"
+    class="d-view"
     v-bind="$attrs"
     v-on="$listeners"
   />
@@ -19,9 +21,9 @@ export default {
     ...crmDetail
   },
   props: {
-    name: {
-      type: String,
-      default: ''
+    visible: {
+      type: Boolean,
+      default: false
     },
     formCode: {
       type: String,
@@ -30,15 +32,14 @@ export default {
   },
   computed: {
     componentName() {
-      if (this.name) {
-        return this.name
-      }
       const auth = getFormAuth(this.formCode)
       if (!auth.dynamicRoute && auth.className && crmDetail[auth.className + 'Detail']) {
         return auth.className + 'Detail'
       }
       return 'LegoDetail'
     }
+  },
+  methods: {
   }
 }
 </script>

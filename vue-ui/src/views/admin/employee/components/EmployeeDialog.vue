@@ -76,7 +76,7 @@
 </template>
 <script>
 import { employeeAddAPI, employeeModifyAPI } from '@/api/admin/employee'
-import SelectTree from '@/components/NewCom/SelectTree'
+import SelectTree from '@/components/Common/SelectTree'
 
 export default {
   name: 'EmployeeDialog',

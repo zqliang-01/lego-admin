@@ -77,7 +77,7 @@
 import { mapGetters } from 'vuex'
 import Reminder from '@/components/Reminder'
 import { employeeListAPI } from '@/api/admin/employee'
-import FieldView from '@/components/NewCom/Form/FieldView'
+import FieldView from '@/components/Common/Form/FieldView'
 import RoleEmployeeDialog from './RoleEmployeeDialog'
 export default {
   components: {

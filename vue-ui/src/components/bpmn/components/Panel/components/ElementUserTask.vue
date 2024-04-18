@@ -90,9 +90,9 @@
 <script>
 import LucideIcon from '../../common/LucideIcon'
 import CollapseTitle from '../../common/CollapseTitle'
-import SelectTree from '@/components/NewCom/SelectTree'
+import SelectTree from '@/components/Common/SelectTree'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
-import { depSimpleListAPI } from '@/api/admin/dept'
+import { deptSimpleListAPI } from '@/api/admin/dept'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { roleSimpleListAPI } from '@/api/admin/role'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
@@ -156,7 +156,7 @@ export default {
           if (userCodes && userCodes.toString().length > 0) {
             this.selectedUser.codes = userCodes.toString().split(',')
           }
-          if (this.selectedUser.codes.length > 1) {
+          if (this.selectedUser.codes && this.selectedUser.codes.length > 1) {
             this.showMultiFlog = true
           }
         })
@@ -172,7 +172,7 @@ export default {
         })
       }
       if (dataType === 'DEPTS') {
-        depSimpleListAPI().then(res => {
+        deptSimpleListAPI().then(res => {
           this.deptOptions = res.data
           this.selectedDept = elementObj.get('candidateGroups') || ''
           this.showMultiFlog = true
@@ -214,7 +214,7 @@ export default {
         })
       }
       if (dataType === 'DEPTS') {
-        depSimpleListAPI().then(res => {
+        deptSimpleListAPI().then(res => {
           this.deptOptions = res.data
           this.resetTaskForm(dataType)
         })

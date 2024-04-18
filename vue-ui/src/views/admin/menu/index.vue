@@ -96,6 +96,7 @@ export default {
     filterRouteType(val) {
       if (val) {
         this.listMenu({
+          name: this.menuName,
           routeType: 'Dynamic'
         })
         return
@@ -104,8 +105,9 @@ export default {
     },
     headerSearch(search) {
       this.menuName = search
+      this.listMenu()
     },
-    listMenu(data) {
+    listMenu(data = { name: this.menuName }) {
       permissionListAPI(data).then(res => {
         this.menuList = res.data
       })

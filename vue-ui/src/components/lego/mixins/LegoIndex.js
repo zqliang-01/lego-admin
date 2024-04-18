@@ -7,7 +7,7 @@ import LegoListHead from '../LegoListHead'
 import LegoTableHead from '../LegoTableHead'
 import Empty from '@/components/Empty'
 import FieldSet from '@/components/FieldSet'
-import FieldView from '@/components/NewCom/Form/FieldView'
+import FieldView from '@/components/Common/Form/FieldView'
 
 import Lockr from 'lockr'
 import { Loading } from 'element-ui'

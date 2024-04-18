@@ -24,7 +24,7 @@ public interface ISysPermissionDao extends IGenericDao<SysPermission> {
 
     List<SysPermission> findByParent(SysPermission parent);
 
-    List<SysPermission> findByRouteType(String typeCode);
+    List<SysPermission> findByRouteType(String name, String typeCode);
 
     List<SysPermission> findBy(SysCustomForm form);
 }

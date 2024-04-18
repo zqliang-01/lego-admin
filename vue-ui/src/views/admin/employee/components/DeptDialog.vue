@@ -74,8 +74,8 @@
   </el-dialog>
 </template>
 <script>
-import { depAddAPI, depModifyAPI } from '@/api/admin/dept'
-import SelectTree from '@/components/NewCom/SelectTree'
+import { deptAddAPI, deptModifyAPI } from '@/api/admin/dept'
+import SelectTree from '@/components/Common/SelectTree'
 
 export default {
   name: 'DeptDialog',
@@ -164,7 +164,7 @@ export default {
         }
         this.loading = true
         if (this.creatable) {
-          depAddAPI(this.submitForm).then(res => {
+          deptAddAPI(this.submitForm).then(res => {
             this.loading = false
             this.$emit('success')
             this.$message.success('新增成功')
@@ -174,7 +174,7 @@ export default {
             })
           return
         }
-        depModifyAPI(this.submitForm).then(res => {
+        deptModifyAPI(this.submitForm).then(res => {
           this.loading = false
           this.$emit('success')
           this.$message.success('更新成功')

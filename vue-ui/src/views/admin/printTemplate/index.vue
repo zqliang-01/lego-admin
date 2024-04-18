@@ -93,7 +93,7 @@ export default {
         ],
         [
           { fieldCode: 'form', name: '关联表单', formType: 'select', width: '150', required: true },
-          { fieldCode: 'creator', name: '创建人', formType: 'select', width: '150', hidden: true }
+          { fieldCode: 'creator', name: '创建人', formType: 'select', width: '150', editable: false }
         ]
       ]
     }

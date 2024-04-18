@@ -87,7 +87,7 @@ import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import EmployeeList from './components/EmployeeList'
 import DeptDialog from './components/DeptDialog'
-import { depListAPI } from '@/api/admin/dept'
+import { deptListAPI } from '@/api/admin/dept'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { roleSimpleListAPI } from '@/api/admin/role'
 
@@ -155,7 +155,7 @@ export default {
       this.employeeName = search
     },
     listDept() {
-      depListAPI().then(res => {
+      deptListAPI().then(res => {
         this.optionsList.deptList = res.data
       })
     },

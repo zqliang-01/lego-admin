@@ -1,9 +1,10 @@
 package com.lego.core.data.hibernate.impl;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.ICommonDao;
+import com.lego.core.exception.CoreException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -14,13 +15,11 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
-
-import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
-
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.data.hibernate.ICommonDao;
-import com.lego.core.exception.CoreException;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class CommonDao implements ICommonDao, InitializingBean {
@@ -50,6 +49,20 @@ public class CommonDao implements ICommonDao, InitializingBean {
         criteriaQuery.where(criteriaBuilder.equal(root.get("code"), code));
         TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
         return uniqueOrNull(query.getResultList());
+    }
+
+    @Override
+    public <T extends BaseEntity> List<T> findByCodes(Class<T> clazz, List<String> codes) {
+        if (codes == null || codes.isEmpty()) {
+            return new ArrayList<T>();
+        }
+        CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<T> criteriaQuery = criteriaBuilder.createQuery(clazz);
+        Root<T> root = criteriaQuery.from(clazz);
+        CriteriaBuilder.In<Object> in = criteriaBuilder.in(root.get("code"));
+        criteriaQuery.where(in.value(codes));
+        TypedQuery<T> query = entityManager.createQuery(criteriaQuery);
+        return query.getResultList();
     }
 
     @Override
@@ -88,8 +101,7 @@ public class CommonDao implements ICommonDao, InitializingBean {
                 Object paramValue = entry.getValue();
                 if (paramName.toLowerCase().endsWith("calendar") || paramValue instanceof Calendar) {
                     query.setParameter(paramName, (Calendar) paramValue, TemporalType.TIMESTAMP);
-                }
-                else {
+                } else {
                     query.setParameter(paramName, paramValue);
                 }
             }

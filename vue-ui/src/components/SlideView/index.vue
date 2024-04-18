@@ -29,7 +29,9 @@ export default {
   },
   destroyed() {
     if (this.$el && this.$el.parentNode) {
-      this.$el.parentNode.removeChild(this.$el)
+      setTimeout(() => {
+        this.$el.parentNode.removeChild(this.$el)
+      }, 350)
     }
   }
 }

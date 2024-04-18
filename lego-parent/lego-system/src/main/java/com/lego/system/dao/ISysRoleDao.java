@@ -11,5 +11,7 @@ public interface ISysRoleDao extends IGenericDao<SysRole> {
 
     List<SysRole> findBy(SysRoleSearchVO vo);
 
+    List<SysRole> findBy(String name);
+
     List<String> findCodesBy(SysPermission permission);
 }

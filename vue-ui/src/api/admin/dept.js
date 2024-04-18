@@ -1,18 +1,25 @@
 import request from '@/utils/request'
 
-export function depListAPI(data) {
+export function deptListAPI(data) {
   return request({
     url: '/back-end/sys-dept/list'
   })
 }
 
-export function depSimpleListAPI(data) {
+export function deptChildrenListAPI(data) {
+  return request({
+    url: '/back-end/sys-dept/list-children',
+    data: data
+  })
+}
+
+export function deptSimpleListAPI(data) {
   return request({
     url: '/back-end/sys-dept/list-simple'
   })
 }
 
-export function depModifyAPI(data) {
+export function deptModifyAPI(data) {
   return request({
     url: '/back-end/sys-dept/modify',
     method: 'post',
@@ -23,7 +30,7 @@ export function depModifyAPI(data) {
   })
 }
 
-export function depAddAPI(data) {
+export function deptAddAPI(data) {
   return request({
     url: '/back-end/sys-dept/add',
     method: 'post',

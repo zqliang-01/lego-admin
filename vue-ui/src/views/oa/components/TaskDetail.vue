@@ -72,6 +72,9 @@
         @click.native="handleSave">保存草稿</el-button>
     </template>
     <user-select
+      required
+      multiple
+      :value="['test']"
       :visible.sync="showSelectEmployee"
       @selected="handleEmployeeSelect"/>
   </fade-view>
@@ -88,8 +91,8 @@ import {
 } from '@/api/admin/workflow/task'
 import { createFieldListAPI } from '@/api/admin/formField'
 import CreateMixin from '@/components/lego/mixins/LegoCreate'
-import UserSelect from '@/components/NewCom/UserSelect'
-import { showFormErrorMessage } from '@/components/NewCom/Form/utils'
+import UserSelect from '@/components/Common/UserSelect'
+import { showFormErrorMessage } from '@/components/Common/Form/utils'
 import { getMenuAuth } from '@/utils/auth'
 
 export default {

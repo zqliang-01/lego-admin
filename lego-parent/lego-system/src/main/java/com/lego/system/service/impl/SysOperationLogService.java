@@ -30,7 +30,7 @@ public class SysOperationLogService extends BusService<ISysOperationLogDao, SysO
     public LegoPage<SysOperationLogInfo> findBy(SysOperationLogSearchVO vo) {
         GenericConditionVO condition = GenericConditionVO.create(vo);
         if (StringUtil.isNotBlank(vo.getDescription())) {
-            condition.addItem(GenericConditionItemVO.createLike("description", vo.getDescription()));
+            condition.addItem(GenericConditionItemVO.createLike("description", "%" + vo.getDescription() + "%"));
         }
         if (StringUtil.isNotBlank(vo.getOperatorCode())) {
             condition.addItem(GenericConditionItemVO.createEqual(CustomFieldTypeEnum.ENTITY, "operator", vo.getOperatorCode()));

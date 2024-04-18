@@ -245,6 +245,18 @@ export default [
   },
   {
     ...layout({
+      code: 'manage_notice',
+      name: 'Notice',
+      path: 'notice',
+      component: () => import('@/views/admin/notice'),
+      meta: {
+        title: '公告管理',
+        icon: 'announcement'
+      }
+    })
+  },
+  {
+    ...layout({
       code: 'manage_log',
       name: 'Log',
       path: 'log',

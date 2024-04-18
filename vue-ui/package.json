@@ -43,6 +43,7 @@
     "nprogress": "0.2.0",
     "numeral": "^2.0.6",
     "or": "^0.2.0",
+    "pinyin-match": "1.0.9",
     "sass-resources-loader": "^2.0.0",
     "signature_pad": "3.0.0-beta.4",
     "vue": "^2.6.11",

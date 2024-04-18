@@ -33,6 +33,9 @@ import java.util.regex.Pattern;
 public class PrintUtil {
 
     public static String buildPrintContent(String content, Map<String, String> params) {
+        if (StringUtil.isBlank(content)) {
+            return content;
+        }
         for (Map.Entry<String, String> entry : params.entrySet()) {
             String key = entry.getKey();
             String value = StrUtil.isNotEmpty(entry.getValue()) ? entry.getValue() : "";

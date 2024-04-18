@@ -8,6 +8,7 @@ import com.lego.system.action.ReadAllSysMessageAction;
 import com.lego.system.action.ReadSysMessageAction;
 import com.lego.system.assembler.SysMessageAssembler;
 import com.lego.system.dao.ISysMessageDao;
+import com.lego.system.dao.ISysNoticeDao;
 import com.lego.system.dto.SysMessageCountInfo;
 import com.lego.system.dto.SysMessageInfo;
 import com.lego.system.mapper.SysMessageMapper;
@@ -21,6 +22,9 @@ public class SysMessageService extends BusService<ISysMessageDao, SysMessageAsse
 
     @Autowired
     private SysMessageMapper messageMapper;
+
+    @Autowired
+    private ISysNoticeDao noticeDao;
 
     @Override
     public void read(String operatorCode, String code) {
@@ -49,6 +53,8 @@ public class SysMessageService extends BusService<ISysMessageDao, SysMessageAsse
 
     @Override
     public SysMessageCountInfo findUnreadCountBy(String operatorCode) {
-        return messageMapper.selectUnreadCount(operatorCode);
+        SysMessageCountInfo countInfo = messageMapper.selectUnreadCount(operatorCode);
+        countInfo.setNotice(noticeDao.findUnreadCount(operatorCode));
+        return countInfo;
     }
 }

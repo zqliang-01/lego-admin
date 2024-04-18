@@ -103,8 +103,11 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
     }
 
     @Override
-    public List<SysPermission> findByRouteType(String typeCode) {
+    public List<SysPermission> findByRouteType(String name, String typeCode) {
         QueryHandler<SysPermission> query = createQueryHandler();
+        if (StringUtil.isNotBlank(name)) {
+            query.condition("t.name LIKE :name").param("name", "%" + name + "%");
+        }
         if (StringUtil.isNotBlank(typeCode)) {
             query.condition("t.routeType.code = :typeCode").param("typeCode", typeCode);
         }

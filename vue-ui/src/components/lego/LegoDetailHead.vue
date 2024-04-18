@@ -75,7 +75,7 @@
   </div>
 </template>
 <script type="text/javascript">
-import FieldView from '../NewCom/Form/FieldView'
+import FieldView from '../Common/Form/FieldView'
 import { getMenuAuth } from '@/utils/auth'
 
 export default {

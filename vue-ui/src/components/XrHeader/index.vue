@@ -131,6 +131,7 @@ export default {
 <style lang="scss" scoped>
 .xr-header {
   padding: 15px;
+  height: 60px;
   position: relative;
   &__icon {
     width: 30px;

@@ -25,6 +25,15 @@ public class SysRoleDao extends GenericDao<SysRole> implements ISysRoleDao {
     }
 
     @Override
+    public List<SysRole> findBy(String name) {
+        QueryHandler<SysRole> query = createQueryHandler();
+        if (StringUtil.isNotBlank(name)) {
+            query.condition("t.name LIKE :name").param("name", "%" + name + "%");
+        }
+        return query.findList();
+    }
+
+    @Override
     public List<String> findCodesBy(SysPermission permission) {
         QueryHandler<String> query = createQueryHandler("SELECT t.code FROM sys_role t", String.class);
         query.join("sys_role_permission rp ON rp.role_id = t.id");

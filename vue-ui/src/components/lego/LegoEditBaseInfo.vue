@@ -80,11 +80,11 @@
 
 <script>
 import Sections from '../Sections'
-import FieldView from '../NewCom/Form/FieldView'
-import Field from '../NewCom/Form/Field'
+import FieldView from '../Common/Form/FieldView'
+import Field from '../Common/Form/Field'
 import { objDeepCopy } from '@/utils'
 import { getMenuAuth } from '@/utils/auth'
-import { getFormFieldValue } from '../NewCom/Form/utils'
+import { getFormFieldValue } from '../Common/Form/utils'
 import GenerateRulesMixin from '../Mixins/GenerateRules'
 
 export default {

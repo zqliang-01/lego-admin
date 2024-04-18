@@ -60,7 +60,7 @@ import {
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/lego/LegoTable'
-import FieldView from '@/components/NewCom/Form/FieldView'
+import FieldView from '@/components/Common/Form/FieldView'
 import ProcessViewer from '../components/ProcessViewer'
 import TaskDetail from '../components/TaskDetail.vue'
 

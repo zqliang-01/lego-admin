@@ -21,5 +21,5 @@ public interface ISysRoleService {
 
     void deleteBy(String code);
 
-    List<TypeInfo> findSimpleType(String operatorCode);
+    List<TypeInfo> findSimpleType(String name, String operatorCode);
 }

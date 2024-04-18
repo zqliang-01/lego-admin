@@ -75,6 +75,7 @@ export default {
   data() {
     return {
       loading: false,
+      searchValue: '',
       creatable: true,
       roleCreateDialog: false,
       currentRole: {},
@@ -86,14 +87,16 @@ export default {
   },
   methods: {
     getRoleList() {
-      roleSimpleListAPI().then(res => {
+      roleSimpleListAPI({ name: this.searchValue }).then(res => {
         this.roleList = res.data
         if (this.roleList && this.roleList.length > 0) {
           this.currentRole = this.roleList[0]
         }
       })
     },
-    headerSearch() {
+    headerSearch(val) {
+      this.searchValue = val
+      this.getRoleList()
     },
     addRole() {
       this.creatable = true

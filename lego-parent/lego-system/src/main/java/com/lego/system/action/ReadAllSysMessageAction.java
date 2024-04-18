@@ -12,8 +12,6 @@ public class ReadAllSysMessageAction extends EntityAction<SysMessage, ISysMessag
 
     private String type;
 
-    private ISysMessageDao messageDao = getDao(ISysMessageDao.class);
-
     public ReadAllSysMessageAction(String operatorCode, String type) {
         super(SysPermissionCode.manage, operatorCode);
         this.type = type;
@@ -21,9 +19,9 @@ public class ReadAllSysMessageAction extends EntityAction<SysMessage, ISysMessag
 
     @Override
     protected void doRun() {
-        List<SysMessage> messages = messageDao.findUnReadBy(operatorCode, type);
+        List<SysMessage> messages = entityDao.findUnReadBy(operatorCode, type);
         messages.stream().forEach(message -> message.setReaded(true));
-        messageDao.saveAll(messages);
+        entityDao.saveAll(messages);
     }
 
     @Override

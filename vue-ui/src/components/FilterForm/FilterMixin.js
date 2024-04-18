@@ -1,4 +1,4 @@
-import Field from '@/components/NewCom/Form/Field'
+import Field from '@/components/Common/Form/Field'
 import FilterConditionMixin from '@/components/Mixins/FilterConditionMixin'
 export default {
   name: 'Index',

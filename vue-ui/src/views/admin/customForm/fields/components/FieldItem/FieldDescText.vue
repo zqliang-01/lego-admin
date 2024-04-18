@@ -42,21 +42,16 @@ export default {
   methods: {}
 }
 </script>
-
-<style lang="scss">
-.field-desc-text {
-  .tox-tinymce {
-    border: none;
-  }
-
-  .tox .tox-edit-area__iframe {
-    background-color: unset;
-  }
-}
-</style>
 <style scoped lang="scss">
 .field-desc-text {
   padding: 15px 10px;
+
+  ::v-deep .tox-tinymce {
+    border: none;
+  }
+  ::v-deep .tox .tox-edit-area__iframe {
+    background-color: unset;
+  }
 
   &-cover {
     position: absolute;

@@ -11,5 +11,7 @@ public interface ICommonDao {
 
     <T extends BaseEntity> T findByUnsureCode(Class<T> clazz, String code);
 
+    <T extends BaseEntity> List<T> findByCodes(Class<T> clazz, List<String> codes);
+
     <T extends BaseEntity> List<T> findAll(Class<T> clazz);
 }

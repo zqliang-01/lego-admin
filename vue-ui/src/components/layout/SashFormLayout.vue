@@ -1,9 +1,9 @@
 <template>
-	<el-row class="contnet" :style="{height: height}" :gutter="24" >
-		<el-col id="left-content" class="left-content" :offset="0" :span="spanLeft">
+	<el-row class="contnet" :style="{height: height}">
+		<el-col id="left-content" class="left-content" :span="spanLeft">
       <slot name="left"></slot>
 		</el-col>
-		<el-col id="right-content" class="right-content" :offset="0" :span="spanRight">
+		<el-col id="right-content" class="right-content" :span="spanRight">
       <div id="resize" class="resize" title="收缩侧边栏">⋮</div>
       <slot name="right"></slot>
 		</el-col>
@@ -78,11 +78,12 @@ export default {
 .resize {
   cursor: col-resize;
   position: absolute;
+  z-index: 1;
   top: 45%;
   background-color: #d6d6d6;
   border-radius: 5px;
   margin-top: -10px;
-  margin-left: -21px;
+  margin-left: -10px;
   width: 10px;
   padding: 5px 0px;
   background-size: cover;
@@ -94,7 +95,6 @@ export default {
   display: inline-block;
   border: 1px solid #e6e6e6;
   border-radius: 4px;
-  padding: 10px;
   vertical-align: top;
   overflow: auto;
 }

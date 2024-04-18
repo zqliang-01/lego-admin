@@ -22,7 +22,7 @@
 
 <script>
 import FilterConditionMixin from '../Mixins/FilterConditionMixin'
-import { getConditionShowValue } from '../NewCom/Form/utils'
+import { getConditionShowValue } from '../Common/Form/utils'
 
 export default {
   name: 'FilterContent',

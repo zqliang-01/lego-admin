@@ -81,8 +81,13 @@ CALL add_system_permission('manage_sharding_template_read', '查看', 'auth', 'm
 CALL add_system_permission('manage_sharding_template_add', '新增', 'auth', 'manage_sharding_template', NULL, 1951, NULL);
 CALL add_system_permission('manage_sharding_template_update', '更新', 'auth', 'manage_sharding_template', NULL, 1952, NULL);
 
-CALL add_system_permission('manage_log', '日志管理', 'menu', 'manage', 'task', 20, 'local');
-CALL add_system_permission('manage_log_read', '查看', 'auth', 'manage_log', NULL, 201, NULL);
+CALL add_system_permission('manage_notice', '公告管理', 'menu', 'manage', 'announcement', 20, 'local');
+CALL add_system_permission('manage_notice_read', '查看', 'auth', 'manage_notice', NULL, 201, NULL);
+CALL add_system_permission('manage_notice_add', '新增', 'auth', 'manage_notice', NULL, 202, NULL);
+CALL add_system_permission('manage_notice_publish', '发布', 'auth', 'manage_notice', NULL, 203, NULL);
+
+CALL add_system_permission('manage_log', '日志管理', 'menu', 'manage', 'task', 21, 'local');
+CALL add_system_permission('manage_log_read', '查看', 'auth', 'manage_log', NULL, 211, NULL);
 
 CALL add_system_permission('crm', '客户管理', 'app', NULL, 'icon-Member-management', 2, 'dynamic');
 CALL add_system_permission('crm_customer', '客户管理', 'menu', 'crm', 's-seas', 20, 'Dynamic');

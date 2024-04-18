@@ -1,9 +1,9 @@
 <template>
   <component
     v-if="visible"
+    :visible="visible"
     :is="componentName"
     :form-code="formCode"
-    :visible="visible"
     v-bind="$attrs"
     v-on="$listeners"/>
 </template>

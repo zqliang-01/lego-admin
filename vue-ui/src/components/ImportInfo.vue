@@ -25,8 +25,8 @@
 </template>
 
 <script>
-import FieldView from './NewCom/Form/FieldView'
-import { getFormFieldShowValue } from './NewCom/Form/utils'
+import FieldView from './Common/Form/FieldView'
+import { getFormFieldShowValue } from './Common/Form/utils'
 
 export default {
   //  重要信息 中的列表展示

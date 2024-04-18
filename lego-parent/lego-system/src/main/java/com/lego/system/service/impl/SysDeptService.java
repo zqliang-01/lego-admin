@@ -48,6 +48,12 @@ public class SysDeptService extends BusService<ISysDeptDao, SysDeptAssembler> im
     }
 
     @Override
+    public List<TypeInfo> findChildrenBy(String parentCode) {
+        List<SysDept> depts = dao.findBy(parentCode);
+        return assembler.createTypeInfo(depts);
+    }
+
+    @Override
     public TypeInfo findSimpleTypeBy(String code) {
         SysDept dept = dao.findByCode(code);
         return assembler.createTypeInfo(dept);

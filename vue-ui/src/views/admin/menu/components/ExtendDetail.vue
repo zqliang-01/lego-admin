@@ -16,9 +16,9 @@
 </template>
 <script>
 import CreateSections from '@/components/CreateSections'
-import FormItems from '@/components/NewCom/Form/FormItems'
+import FormItems from '@/components/Common/Form/FormItems'
 import { customFormGetAPI } from '@/api/admin/formField'
-import { getFormFieldValue } from '@/components/NewCom/Form/utils'
+import { getFormFieldValue } from '@/components/Common/Form/utils'
 
 export default {
   components: {

@@ -1,9 +1,9 @@
 import { mapGetters } from 'vuex'
 
-import { getFormFieldValue } from '@/components/NewCom/Form/utils'
+import { getFormFieldValue } from '@/components/Common/Form/utils'
 import { codeGeneratorGenerateAPI } from '@/api/admin/codeGenerator'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
-import { depSimpleListAPI } from '@/api/admin/dept'
+import { deptSimpleListAPI } from '@/api/admin/dept'
 import { postRequest, fileRequest, codeGetRequest, dictListAPI } from '@/api/crm/common'
 
 export default {
@@ -76,13 +76,13 @@ export default {
           field.setting = res.data
         })
       }
-      if (field.formType == 'user') {
+      if (['user', 'multiple_user'].includes(field.formType)) {
         employeeSimpleListAPI().then(res => {
           field.setting = res.data
         })
       }
       if (field.formType == 'structure') {
-        depSimpleListAPI().then(res => {
+        deptSimpleListAPI().then(res => {
           field.setting = res.data
         })
       }

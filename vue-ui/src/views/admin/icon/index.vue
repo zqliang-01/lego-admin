@@ -17,7 +17,7 @@
 <script>
 import XrHeader from '@/components/XrHeader'
 import IconList from '@/components/IconList'
-import SelectIcon from '@/components/NewCom/SelectIcon'
+import SelectIcon from '@/components/Common/SelectIcon'
 
 export default {
   name: 'IconIndex',

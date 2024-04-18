@@ -1,9 +1,9 @@
 import FadeView from '@/components/FadeView'
 import CreateSections from '@/components/CreateSections'
-import FormItems from '@/components/NewCom/Form/FormItems'
+import FormItems from '@/components/Common/Form/FormItems'
 
 import LegoCommonMixin from './LegoCommon'
-import { showFormErrorMessage } from '@/components/NewCom/Form/utils'
+import { showFormErrorMessage } from '@/components/Common/Form/utils'
 import GenerateRulesMixin from '@/components/Mixins/GenerateRules'
 import { createFieldListAPI } from '@/api/admin/formField'
 

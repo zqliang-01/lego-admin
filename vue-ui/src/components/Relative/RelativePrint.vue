@@ -40,7 +40,7 @@
 import {
   printLogListAPI
 } from '@/api/printLog'
-import FieldView from '../NewCom/Form/FieldView'
+import FieldView from '../Common/Form/FieldView'
 
 export default {
   name: 'RelativePrint',

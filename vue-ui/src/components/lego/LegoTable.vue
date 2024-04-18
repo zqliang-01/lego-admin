@@ -7,21 +7,23 @@
       highlight-current-row
       style="width: 100%">
       <template v-for="(fields, r) in fieldList">
-        <el-table-column
-          v-for="(item, index) in fields"
-          :key="r + '-' + index"
-          :min-width="item.width"
-          :prop="item.fieldCode"
-          :label="item.name"
-          show-overflow-tooltip>
-          <template slot-scope="{ row }">
-            <field-view
-              :props="item"
-              :form-type="item.formType"
-              :value="row[item.fieldCode]"
-              @clickValue="handleField($event, row)" />
-          </template>
-        </el-table-column>
+        <template v-for="(item, index) in fields">
+          <el-table-column
+            v-if="showColumn(item)"
+            :key="r + '-' + index"
+            :min-width="item.width"
+            :prop="item.fieldCode"
+            :label="item.name"
+            show-overflow-tooltip>
+            <template slot-scope="{ row }">
+              <field-view
+                :props="item"
+                :form-type="item.formType"
+                :value="row[item.fieldCode]"
+                @clickValue="handleField($event, row)" />
+            </template>
+          </el-table-column>
+        </template>
       </template>
       <el-table-column
         v-if="operational"
@@ -50,7 +52,8 @@
 </template>
 
 <script>
-import FieldView from '@/components/NewCom/Form/FieldView'
+import FieldView from '@/components/Common/Form/FieldView'
+import { isBoolean } from '@/utils/types'
 
 export default {
   name: 'CustomField',
@@ -106,6 +109,12 @@ export default {
     this.getList()
   },
   methods: {
+    showColumn(item) {
+      if (isBoolean(item.visible)) {
+        return item.visible
+      }
+      return true
+    },
     getList() {
       this.$emit('onList', this.tablePageSize, this.tableCurrentPage)
     },

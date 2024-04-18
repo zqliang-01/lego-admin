@@ -9,6 +9,8 @@ import com.lego.core.util.StringUtil;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.web.LegoBeanFactory;
 
+import java.util.List;
+
 public abstract class MaintainAction {
 
     protected String operatorCode;
@@ -62,6 +64,10 @@ public abstract class MaintainAction {
 
     protected <T extends BaseEntity> T findByUnsureCode(Class<T> clazz, String code) {
         return commonDao.findByUnsureCode(clazz, code);
+    }
+
+    protected <T extends BaseEntity> List<T> findByCodes(Class<T> clazz, List<String> codes) {
+        return commonDao.findByCodes(clazz, codes);
     }
 
     protected <D extends IGenericDao<?>> D getDao(Class<D> clazz) {

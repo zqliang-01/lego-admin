@@ -153,7 +153,6 @@ export default {
             }
           }
         })
-
         if (this.$el && this.$el.contains(e.target)) {
           hidden = false
         }

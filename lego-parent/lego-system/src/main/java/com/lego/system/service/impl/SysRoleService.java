@@ -61,9 +61,9 @@ public class SysRoleService extends BusService<ISysRoleDao, SysRoleAssembler> im
     }
 
     @Override
-    public List<TypeInfo> findSimpleType(String operatorCode) {
+    public List<TypeInfo> findSimpleType(String name, String operatorCode) {
         SysEmployee employee = employeeDao.findByCode(operatorCode);
-        List<SysRole> roles = dao.findAll();
+        List<SysRole> roles = dao.findBy(name);
         if (employee.isAdmin()) {
             return assembler.createTypeInfo(roles);
         }

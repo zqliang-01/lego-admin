@@ -132,7 +132,7 @@ export default {
     getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
       customFormListAPI({
-        search: this.searchValue,
+        name: this.searchValue,
         pageSize: pageSize,
         pageIndex: currentPage
       }).then(res => {
