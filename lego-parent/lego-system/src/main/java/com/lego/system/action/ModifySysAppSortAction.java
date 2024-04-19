@@ -46,4 +46,12 @@ public class ModifySysAppSortAction extends MaintainAction {
         return ActionType.MODIFY;
     }
 
+    @Override
+    protected void createLog() {
+    }
+
+    @Override
+    protected String getEntityName() {
+        return "APP排序";
+    }
 }

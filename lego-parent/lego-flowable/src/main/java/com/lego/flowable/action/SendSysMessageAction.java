@@ -56,4 +56,9 @@ public class SendSysMessageAction extends MaintainAction {
     @Override
     protected void createLog() {
     }
+
+    @Override
+    protected String getEntityName() {
+        return "发布系统消息";
+    }
 }

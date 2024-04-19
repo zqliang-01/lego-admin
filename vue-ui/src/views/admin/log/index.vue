@@ -49,7 +49,15 @@
       </lego-table>
     </div>
     <el-dialog title="详细信息" :visible.sync="showDetail" append-to-body>
-      <p style="white-space: pre-wrap">{{ logDetail.description }}</p>
+      <div>
+        <span>操作对象：{{ logDetail.entityName }}</span>
+      </div>
+      <div>
+        <span>操作时间：{{ logDetail.createTime }}</span>
+      </div>
+      <div>
+        <span>操作内容：<p style="white-space: pre-wrap">{{ logDetail.description }}</p></span>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -95,8 +103,8 @@ export default {
           { fieldCode: 'createTime', name: '时间', formType: 'text', width: '150' }
         ],
         [
-          { fieldCode: 'action', name: '行为', formType: 'text', width: '100' },
-          { fieldCode: 'entityCode', name: '操作对象', formType: 'text', width: '100' }
+          { fieldCode: 'action', name: '行为', formType: 'text', width: '50' },
+          { fieldCode: 'entityName', name: '操作对象', formType: 'text', width: '150' }
         ],
         [
           { fieldCode: 'permission', name: '功能模块', formType: 'select', width: '100' },

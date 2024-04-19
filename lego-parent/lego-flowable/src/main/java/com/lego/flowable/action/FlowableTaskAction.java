@@ -15,6 +15,7 @@ import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskQuery;
 
+import java.text.MessageFormat;
 import java.util.List;
 
 public abstract class FlowableTaskAction extends MaintainAction {
@@ -51,5 +52,10 @@ public abstract class FlowableTaskAction extends MaintainAction {
     @Override
     protected ActionType getActionType() {
         return ActionType.MODIFY;
+    }
+
+    @Override
+    protected String getEntityName() {
+        return MessageFormat.format("任务[{0}]", task.getName());
     }
 }

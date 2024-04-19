@@ -10,6 +10,8 @@ import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.Model;
 
+import java.text.MessageFormat;
+
 public class AddFlowableModelAction extends MaintainAction {
 
     private FlowableModelCreateVO vo;
@@ -51,5 +53,10 @@ public class AddFlowableModelAction extends MaintainAction {
     @Override
     protected ActionType getActionType() {
         return ActionType.ADD;
+    }
+
+    @Override
+    protected String getEntityName() {
+        return MessageFormat.format("模型[{0}]", vo.getName());
     }
 }

@@ -37,7 +37,9 @@ public class CommonService extends BaseService implements ICommonService {
     public void save(ActionVO vo) {
         SysEmployee operator = employeeDao.findByCode(vo.getOperatorCode());
         SysPermission permission = permissionDao.findByCode(vo.getPermissionCode());
-        SysOperationLog sysOperationLog = new SysOperationLog(vo.getEntityCode(), vo.getActionType(), operator, permission);
+        SysOperationLog sysOperationLog = new SysOperationLog(vo.getActionType(), operator, permission);
+        sysOperationLog.setEntityCode(vo.getEntityCode());
+        sysOperationLog.setEntityName(vo.getEntityName());
         sysOperationLog.setDescription(vo.getDescription());
         operationDao.save(sysOperationLog);
     }

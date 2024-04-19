@@ -53,4 +53,9 @@ public class BatchAddNoticeAction extends MaintainAction {
     @Override
     protected void createLog() {
     }
+
+    @Override
+    protected String getEntityName() {
+        return "批量公告";
+    }
 }

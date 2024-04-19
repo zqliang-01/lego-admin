@@ -15,6 +15,7 @@ public class SysOperationLogAssembler extends EntityAssembler<SysOperationLogInf
         info.setCode(entity.getCode());
         info.setName(entity.getName());
         info.setEntityCode(entity.getEntityCode());
+        info.setEntityName(entity.getEntityName());
         info.setOperator(createTypeInfo(entity.getOperator()));
         info.setAction(ActionType.getName(entity.getActionType()));
         info.setDescription(entity.getDescription());

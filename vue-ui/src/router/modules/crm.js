@@ -1,4 +1,4 @@
-import Layout from '@/views/layout/TableFormLayout'
+import Layout from '@/views/layout/CrmLayout'
 
 const layout = function(menu, requiresAuth = true) {
   if (menu.meta) {

@@ -17,6 +17,7 @@ public class SysOperationLogInfo extends DTO {
     private String name;
     private String action;
     private String entityCode;
+    private String entityName;
     private String description;
     private Date createTime;
     private TypeInfo permission;

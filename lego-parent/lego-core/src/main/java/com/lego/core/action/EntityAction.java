@@ -6,6 +6,7 @@ import com.lego.core.data.hibernate.BusEntity;
 import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.DateUtil;
+import com.lego.core.util.EntityUtil;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -45,7 +46,11 @@ public abstract class EntityAction<E extends BaseEntity, D extends IGenericDao<E
 
     @Override
     protected String getEntityCode() {
-        CoreException.check(targetEntity != null, "targetEntity is null");
-        return targetEntity.getCode();
+        return EntityUtil.getCode(targetEntity);
+    }
+
+    @Override
+    protected String getEntityName() {
+        return EntityUtil.getName(targetEntity);
     }
 }

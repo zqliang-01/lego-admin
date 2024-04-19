@@ -58,4 +58,9 @@ public class DesignFlowableModelAction extends MaintainAction {
     protected ActionType getActionType() {
         return ActionType.MODIFY;
     }
+
+    @Override
+    protected String getEntityName() {
+        return MessageFormat.format("模型[{0}]", vo.getId());
+    }
 }

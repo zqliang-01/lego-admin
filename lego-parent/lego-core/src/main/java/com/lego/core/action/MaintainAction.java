@@ -36,6 +36,7 @@ public abstract class MaintainAction {
         if (StringUtil.isNotBlank(description) && actionService != null) {
             ActionVO actionVO = new ActionVO();
             actionVO.setEntityCode(getEntityCode());
+            actionVO.setEntityName(getEntityName());
             actionVO.setActionType(getActionType());
             actionVO.setDescription(description);
             actionVO.setOperatorCode(operatorCode);
@@ -47,6 +48,8 @@ public abstract class MaintainAction {
     protected String getEntityCode() {
         return null;
     }
+
+    protected abstract String getEntityName();
 
     protected abstract void doRun();
 

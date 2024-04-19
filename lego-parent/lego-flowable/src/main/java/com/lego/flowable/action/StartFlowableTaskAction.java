@@ -17,6 +17,7 @@ import org.flowable.engine.repository.ProcessDefinitionQuery;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.engine.runtime.ProcessInstanceBuilder;
 
+import java.text.MessageFormat;
 import java.util.Map;
 
 public class StartFlowableTaskAction extends MaintainAction {
@@ -71,5 +72,10 @@ public class StartFlowableTaskAction extends MaintainAction {
     @Override
     protected ActionType getActionType() {
         return ActionType.ADD;
+    }
+
+    @Override
+    protected String getEntityName() {
+        return MessageFormat.format("流程定义[{0}]", definitionId);
     }
 }

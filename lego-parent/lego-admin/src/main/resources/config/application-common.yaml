@@ -11,7 +11,8 @@ spring:
       max-file-size: 100MB
       max-request-size: 100MB
   resources:
-    static-locations: file:public/
+    static-locations:
+      - file:public/
 
 flowable:
   #enable-history-cleaning: true

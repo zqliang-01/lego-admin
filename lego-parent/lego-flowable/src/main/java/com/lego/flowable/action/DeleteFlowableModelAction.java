@@ -29,4 +29,9 @@ public class DeleteFlowableModelAction extends MaintainAction {
     protected ActionType getActionType() {
         return ActionType.DELETE;
     }
+
+    @Override
+    protected String getEntityName() {
+        return MessageFormat.format("模型[{0}]", id);
+    }
 }
