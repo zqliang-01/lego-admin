@@ -170,7 +170,7 @@ export default {
             if (task.code && this.hasAuth) {
               this.actionType = task.finished ? 'view' : 'update'
               this.detailRequest(task.code).then(res => {
-                this.detailData = res.taskDelegateAPI
+                this.detailData = res.data
                 this.initValue()
               })
             } else {
