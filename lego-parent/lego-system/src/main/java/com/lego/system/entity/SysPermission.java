@@ -38,6 +38,8 @@ public class SysPermission extends TreeEntity<SysPermission> {
     @JoinColumn(name = "form_id", referencedColumnName = "id")
     private SysCustomForm form;
 
+    private String reportCode;
+
     protected SysPermission() {
     }
 
@@ -54,9 +56,14 @@ public class SysPermission extends TreeEntity<SysPermission> {
         attributes.put("路由类型", EntityUtil.getName(routeType));
         attributes.put("表单", EntityUtil.toString(form));
         attributes.put("图标", icon);
+        attributes.put("自定义报表", reportCode);
     }
 
     public boolean isMenu() {
         return SysPermissionTypeCode.MENU.equals(type.getCode());
+    }
+
+    public boolean isReport() {
+        return SysPermissionTypeCode.REPORT.equals(type.getCode());
     }
 }

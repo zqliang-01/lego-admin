@@ -16,4 +16,6 @@ public interface ICommonService {
     TypeInfo findDeptBy(String code);
 
     void addSysMessage(String operatorCode, SysMessageCreateVO vo);
+
+    String findReportCodeBy(String permissionCode);
 }

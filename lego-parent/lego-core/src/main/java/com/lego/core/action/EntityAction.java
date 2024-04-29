@@ -45,11 +45,6 @@ public abstract class EntityAction<E extends BaseEntity, D extends IGenericDao<E
     }
 
     @Override
-    protected String getEntityCode() {
-        return EntityUtil.getCode(targetEntity);
-    }
-
-    @Override
     protected String getEntityName() {
         return EntityUtil.getName(targetEntity);
     }

@@ -29,6 +29,7 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
         if (entity.getForm() != null) {
             info.setClassName(entity.getForm().getTable().getClassName());
         }
+        info.setReportCode(entity.getReportCode());
         return info;
     }
 
@@ -67,14 +68,5 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
             auth.put(permission.getRealm(), true);
         }
         return auth;
-    }
-
-    private boolean hasMenuChildren(List<SysPermissionInfo> childrens) {
-        for (SysPermissionInfo children : childrens) {
-            if (children.isMenu()) {
-                return true;
-            }
-        }
-        return false;
     }
 }

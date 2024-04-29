@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -18,17 +17,18 @@ import java.util.Map;
 @Transactional(propagation = Propagation.NOT_SUPPORTED)
 public class MybatisDynamicExecutor {
 
-    private static final String COUNT_SQL = "SELECT COUNT(1) CC FROM ({0})";
+    private static final String COUNT_SQL = "SELECT COUNT(1) CC {0}";
 
     public long selectCount(SqlSessionTemplate sqlSessionTemplate, String sql, Map<String, Object> parameter) {
         SqlSession sqlSession = getSqlSession(sqlSessionTemplate);
         try {
+            sql = sql.substring(sql.toUpperCase().indexOf("FROM"));
             String countSql = StringUtil.format(COUNT_SQL, sql);
-            List<Map<String, BigDecimal>> select = MybatisUtils.select(sqlSession, countSql, parameter);
+            List<Map<String, Long>> select = MybatisUtils.select(sqlSession, countSql, parameter);
             if (select.isEmpty()) {
                 return 0;
             }
-            return select.get(0).get("CC").longValue();
+            return select.get(0).get("CC");
         } finally {
             closeSqlSession(sqlSession, sqlSessionTemplate);
         }

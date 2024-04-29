@@ -1,6 +1,5 @@
 import Layout from '@/views/layout/TableFormLayout'
-import LegoIndex from '@/components/lego/LegoIndex'
-// import LegoIndex from '@/views/crm/components/LegoIndex'
+import LegoIndex from '@/components/lego/LegoAllIndex'
 
 // 添加需要注册的动态路由（后期按模板适配）
 export function addDynamicRouter(routers) {

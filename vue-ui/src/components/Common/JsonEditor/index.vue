@@ -3,7 +3,7 @@
     <vue-json-editor
       v-model="jsonContent"
       :expanded-on-start="true"
-      mode="text"
+      :mode="mode"
       lang="zh"
       @json-change="onJsonChange"
       @json-save="onJsonSave"
@@ -20,6 +20,10 @@ export default {
     value: {
       type: String,
       default: ''
+    },
+    mode: {
+      type: String,
+      default: 'text'
     }
   },
   watch: {

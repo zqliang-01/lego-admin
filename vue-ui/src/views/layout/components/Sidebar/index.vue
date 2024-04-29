@@ -1,10 +1,10 @@
 <template>
   <div class="sidebar-container">
     <div
-      :style="{ 'padding-top': createButtonTitle != '' ? '40px' : '25px', 'background-color':variables.menuBg }"
+      :style="{ 'padding-top': createButtonTitle != '' && showCreateButton ? '40px' : '25px', 'background-color':variables.menuBg }"
       class="create-button-container">
       <el-popover
-        v-if="createButtonTitle != ''"
+        v-if="createButtonTitle != '' && showCreateButton"
         :offset="addOffset"
         :visible-arrow="false"
         :disabled="!$slots.add"
@@ -29,7 +29,7 @@
       </el-popover>
     </div>
     <el-scrollbar
-      :style="{'border-right-color': variables.menuBg, 'padding-top': createButtonTitle != '' ? '90px' : '40px'}"
+      :style="{'border-right-color': variables.menuBg, 'padding-top': createButtonTitle != '' && showCreateButton ? '90px' : '40px'}"
       wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -86,6 +86,10 @@ export default {
     addOffset: {
       type: Number,
       default: 70
+    },
+    showCreateButton: {
+      type: Boolean,
+      default: true
     },
     createButtonTitle: {
       type: String,

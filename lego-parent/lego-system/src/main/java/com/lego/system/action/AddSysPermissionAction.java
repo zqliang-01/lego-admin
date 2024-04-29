@@ -33,6 +33,12 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
             put("export", "导出");
         }
     };
+    private static final Map<String, String> reportAuthList = new TreeMap<String, String>() {
+        {
+            put("read", "查看列表");
+            put("export", "导出");
+        }
+    };
     private SysPermissionCreateVO vo;
 
     public AddSysPermissionAction(String operatorCode, SysPermissionCreateVO vo) {
@@ -78,6 +84,7 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
         permission.setRouteType(findByUnsureCode(SysPermissionRouteType.class, vo.getRouteType()));
         permission.setParent(entityDao.findByUnsureCode(vo.getParentCode()));
         permission.setForm(formDao.findByUnsureCode(vo.getForm()));
+        permission.setReportCode(vo.getReportCode());
         permission.setIcon(vo.getIcon());
         permission.setSn(vo.getSn());
         return permission;
@@ -102,6 +109,18 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
         if (this.targetEntity.isMenu() && vo.isCreateAuth()) {
             int sn = targetEntity.getSn() * 10;
             for (Map.Entry<String, String> entry : authList.entrySet()) {
+                SysPermissionCreateVO addVO = new SysPermissionCreateVO();
+                addVO.setCode(targetEntity.getCode() + "_" + entry.getKey());
+                addVO.setName(entry.getValue());
+                addVO.setType(SysPermissionTypeCode.AUTH);
+                addVO.setParentCode(targetEntity.getCode());
+                addVO.setSn(++sn);
+                new AddSysPermissionAction(operatorCode, addVO).run();
+            }
+        }
+        if (this.targetEntity.isReport()) {
+            int sn = targetEntity.getSn() * 10;
+            for (Map.Entry<String, String> entry : reportAuthList.entrySet()) {
                 SysPermissionCreateVO addVO = new SysPermissionCreateVO();
                 addVO.setCode(targetEntity.getCode() + "_" + entry.getKey());
                 addVO.setName(entry.getValue());

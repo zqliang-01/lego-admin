@@ -65,6 +65,8 @@
   ![Image text](https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/10%E6%B5%81%E7%A8%8B%E8%AE%BE%E8%AE%A1.png)
 * 任务审批
   ![Image text](https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/11%E4%BB%BB%E5%8A%A1%E5%AE%A1%E6%89%B9.png)
+* 统计分析
+  ![Image text](https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/12%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90.png)
 * 分库分表
   ![Image text](https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/9%E5%88%86%E5%BA%93%E5%88%86%E8%A1%A8.png)
 * 企业定制

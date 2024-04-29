@@ -21,7 +21,6 @@ const crmRouter = [
   {
     ...layout({
       code: 'crm_lead',
-      name: 'lead',
       path: 'lead',
       component: () => import('@/views/crm/lead'),
       meta: {

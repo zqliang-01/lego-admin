@@ -74,6 +74,7 @@
     	<module>lego-crm</module>
 		<module>lego-admin</module>
         <module>lego-flowable</module>
+        <module>lego-report</module>
     </modules>
 
 	<build>
@@ -117,6 +118,20 @@
 						<configuration>
 							<target if="sql.exec">
 								<ant antfile="run-sql.xml" target="default" inheritAll="false">
+									<property name="driver_classpath" refid="maven.test.classpath"/>
+								</ant>
+							</target>
+						</configuration>
+					</execution>
+					<execution>
+						<id>run-sql-update</id>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target if="sql-update.exec">
+								<ant antfile="run-sql.xml" target="update" inheritAll="false">
 									<property name="driver_classpath" refid="maven.test.classpath"/>
 								</ant>
 							</target>

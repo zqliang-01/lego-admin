@@ -51,7 +51,7 @@ public class SysPermissionDao extends GenericDao<SysPermission> implements ISysP
 
     @Override
     public List<SysPermission> findBy(String employeeCode, String... types) {
-        QueryHandler<SysPermission> query = createQueryHandler("SELECT p.* FROM sys_permission p");
+        QueryHandler<SysPermission> query = createQueryHandler("SELECT DISTINCT p.* FROM sys_permission p");
         query.join("sys_simple_type pt ON pt.id = p.type_id");
         query.join("sys_role_permission rp ON rp.permission_id = p.id");
         query.join("sys_employee_role er ON er.role_id = rp.role_id");

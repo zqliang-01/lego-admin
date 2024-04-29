@@ -8,9 +8,10 @@
         :main-router="appCode"
         :items="currentRouters"
         :add-offset="quickAddOffset"
+        :show-create-button="showQuickAddButton"
         create-button-title="快速创建">
         <div
-          v-if="quickAddList.length > 0"
+          v-if="showQuickAddButton"
           slot="add"
           class="quick-add">
           <div class="quick-add-content">
@@ -78,6 +79,9 @@ export default {
     },
     quickAddOffset() {
       return Math.round(this.quickAddList.length / 2) * 25
+    },
+    showQuickAddButton() {
+      return this.quickAddList.length > 0
     }
   },
   watch: {

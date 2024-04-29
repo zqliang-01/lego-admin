@@ -1,5 +1,8 @@
 package com.lego.system.vo;
 
+import java.util.Arrays;
+import java.util.List;
+
 public interface SysPermissionTypeCode {
 
     String APP = "app";
@@ -8,5 +11,9 @@ public interface SysPermissionTypeCode {
 
     String AUTH = "auth";
 
-    String[] MENU_TYPES = new String[]{APP, MENU};
+    String REPORT = "report";
+
+    String[] SHOW_TYPES = new String[]{APP, MENU, REPORT};
+
+    List<String> MENU_TYPES = Arrays.asList(MENU, REPORT);
 }

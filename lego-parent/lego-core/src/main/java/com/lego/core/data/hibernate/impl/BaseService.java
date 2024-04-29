@@ -1,6 +1,5 @@
 package com.lego.core.data.hibernate.impl;
 
-import com.lego.core.assembler.TypeInfoAssembler;
 import com.lego.core.data.hibernate.ICommonDao;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
@@ -13,12 +12,7 @@ import com.lego.core.vo.GenericSearchSortEnum;
 import com.lego.core.vo.GenericSearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
-
 public class BaseService {
-
-    @Resource
-    protected TypeInfoAssembler typeInfoAssembler;
 
     @Autowired
     protected ICommonDao commonDao;

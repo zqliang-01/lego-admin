@@ -4,7 +4,7 @@ import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.dto.VersionDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lego.core.util.EntityUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,32 +12,29 @@ import java.util.List;
 
 public abstract class EntityAssembler<D extends DTO, E extends BaseEntity> extends BaseAssembler<D, E> {
 
-  @Autowired
-  protected TypeInfoAssembler typeInfoAssembler;
-
-  public List<String> createCodes(List<E> entities) {
-    List<String> codes = new ArrayList<String>();
-    for (E entity : entities) {
-      codes.add(entity.getCode());
+    public List<String> createCodes(List<E> entities) {
+        List<String> codes = new ArrayList<String>();
+        for (E entity : entities) {
+            codes.add(entity.getCode());
+        }
+        return codes;
     }
-    return codes;
-  }
 
-  public D create(E entity) {
-    D dto = doCreate(entity);
-    if (dto instanceof VersionDTO) {
-      VersionDTO versionDTO = (VersionDTO) dto;
-      versionDTO.setVersion(entity.getVersion());
+    public D create(E entity) {
+        D dto = doCreate(entity);
+        if (dto instanceof VersionDTO) {
+            VersionDTO versionDTO = (VersionDTO) dto;
+            versionDTO.setVersion(entity.getVersion());
+        }
+        return dto;
     }
-    return dto;
-  }
 
-  public TypeInfo createTypeInfo(BaseEntity entity) {
-    return typeInfoAssembler.create(entity);
-  }
+    public TypeInfo createTypeInfo(BaseEntity entity) {
+        return EntityUtil.toTypeInfo(entity);
+    }
 
-  public List<TypeInfo> createTypeInfo(Collection<? extends BaseEntity> entities) {
-    return typeInfoAssembler.create(entities);
-  }
+    public List<TypeInfo> createTypeInfo(Collection<? extends BaseEntity> entities) {
+        return EntityUtil.toTypeInfo(entities);
+    }
 
 }

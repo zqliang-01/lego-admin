@@ -79,7 +79,7 @@ public class SysPermissionController extends BaseController {
 
     @GetMapping("/list-current")
     public JsonResponse<List<SysPermissionInfo>> listCurrent() {
-        List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode(), SysPermissionTypeCode.MENU_TYPES);
+        List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode(), SysPermissionTypeCode.SHOW_TYPES);
         return JsonResponse.success(permissions);
     }
 

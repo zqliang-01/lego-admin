@@ -109,6 +109,10 @@ public class DateUtil {
         return toDate(date);
     }
 
+    public static String currentDateString() {
+        return toDateString(currentDate());
+    }
+
     public static Date currentDate(Date date) {
         if (date == null || lt(toDate(date), currentDate())) {
             return currentDateTime();

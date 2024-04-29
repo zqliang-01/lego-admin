@@ -3,6 +3,7 @@ package com.lego.system.service.impl;
 import com.lego.core.data.hibernate.ICommonService;
 import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.util.EntityUtil;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.SysMessageCreateVO;
 import com.lego.system.action.AddSysMessageAction;
@@ -47,17 +48,23 @@ public class CommonService extends BaseService implements ICommonService {
     @Override
     public TypeInfo findEmployeeBy(String code) {
         SysEmployee employee = employeeDao.findByUnsureCode(code);
-        return typeInfoAssembler.create(employee);
+        return EntityUtil.toTypeInfo(employee);
     }
 
     @Override
     public TypeInfo findDeptBy(String code) {
         SysDept dept = deptDao.findByUnsureCode(code);
-        return typeInfoAssembler.create(dept);
+        return EntityUtil.toTypeInfo(dept);
     }
 
     @Override
     public void addSysMessage(String operatorCode, SysMessageCreateVO vo) {
         new AddSysMessageAction(operatorCode, vo).run();
+    }
+
+    @Override
+    public String findReportCodeBy(String permissionCode) {
+        SysPermission permission = permissionDao.findByCode(permissionCode);
+        return permission.getReportCode();
     }
 }

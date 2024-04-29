@@ -9,22 +9,22 @@ import com.lego.system.vo.SysPermissionCode;
 
 public class ModifySysCodeGeneratorAction extends ModifyAction<SysCodeGenerator, ISysCodeGeneratorDao> {
 
-	private SysCodeGeneratorModifyVO vo;
+    private SysCodeGeneratorModifyVO vo;
 
-	public ModifySysCodeGeneratorAction(String operatorCode, SysCodeGeneratorModifyVO vo) {
-		super(SysPermissionCode.manage, operatorCode, vo.getCode());
-		this.vo = vo;
-	}
+    public ModifySysCodeGeneratorAction(String operatorCode, SysCodeGeneratorModifyVO vo) {
+        super(SysPermissionCode.manage, operatorCode, vo.getCode());
+        this.vo = vo;
+    }
 
-	@Override
-	protected void doModify(SysCodeGenerator entity) {
-		entity.setName(vo.getName());
-		entity.setDatePattern(vo.getDatePattern());
-		entity.setPrefix(vo.getPrefix());
-		entity.setSerialLength(vo.getSerialLength());
-	}
+    @Override
+    protected void doModify(SysCodeGenerator entity) {
+        entity.setName(vo.getName());
+        entity.setDatePattern(vo.getDatePattern());
+        entity.setPrefix(vo.getPrefix());
+        entity.setSerialLength(vo.getSerialLength());
+    }
 
-	public TypeInfo getTypeInfo() {
-		return new TypeInfo(targetEntity.getCode(), targetEntity.getName());
-	}
+    public TypeInfo getTypeInfo() {
+        return new TypeInfo(targetEntity.getCode(), targetEntity.getName());
+    }
 }

@@ -18,6 +18,8 @@
             <artifactId>spring-boot-devtools</artifactId>
             <optional>true</optional>
         </dependency>
+
+        <!-- 启动依赖模块，微服务部署时按需单独启动 -->
         <dependency>
             <groupId>com.lego</groupId>
             <artifactId>lego-flowable</artifactId>
@@ -31,6 +33,11 @@
         <dependency>
             <groupId>com.lego</groupId>
             <artifactId>lego-crm</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lego</groupId>
+            <artifactId>lego-report</artifactId>
             <version>1.0.0</version>
         </dependency>
 

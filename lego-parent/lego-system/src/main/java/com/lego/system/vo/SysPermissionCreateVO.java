@@ -19,4 +19,5 @@ public class SysPermissionCreateVO extends VO {
     private boolean createAuth;
     private int sn;
     private String form;
+    private String reportCode;
 }

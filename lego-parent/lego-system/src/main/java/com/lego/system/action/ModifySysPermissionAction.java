@@ -35,7 +35,11 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
         SysCustomForm form = formDao.findByUnsureCode(vo.getForm());
         if (form != null) {
             List<SysPermission> permissions = entityDao.findBy(form);
-            permissions.stream().forEach(p -> p.setForm(null));
+            permissions.stream().forEach(p -> {
+                if (!p.equals(targetEntity)) {
+                    p.setForm(null);
+                }
+            });
             entityDao.saveAll(permissions);
         }
     }
@@ -49,6 +53,7 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
         entity.setSn(vo.getSn());
         entity.setForm(formDao.findByUnsureCode(vo.getForm()));
         entity.setParent(entityDao.findByUnsureCode(vo.getParentCode()));
+        entity.setReportCode(vo.getReportCode());
     }
 
     @Override

@@ -8,6 +8,7 @@ import userRouter from './modules/user'
 import adminRouter from './modules/admin'
 import oaRouter from './modules/oa'
 import crmRouter from './modules/crm'
+import reportRouter from './modules/report'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -61,5 +62,6 @@ export const asyncRouterMap = [
   { type: 'home', router: homeRouter },
   { type: 'manage', router: adminRouter },
   { type: 'oa', router: oaRouter },
-  { type: 'crm', router: crmRouter }
+  { type: 'crm', router: crmRouter },
+  { type: 'report', router: reportRouter }
 ]

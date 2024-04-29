@@ -47,9 +47,17 @@
             @change="handleChangeValue"
           />
         </create-sections>
+        <content-detail
+          v-if="showContentDetail"
+          :menu-type="menuType"
+          :menu-data="menuData"
+          :field-form="fieldForm"
+          :field-rule="fieldRule"
+          @change="handleChangeValue"
+        />
       </el-form>
       <extend-detail
-        v-if="menuType === 'menu'"
+        v-if="showExtendDetail"
         :form-code="formCode"
       />
     </div>
@@ -60,25 +68,23 @@ import { mapGetters } from 'vuex'
 import CreateSections from '@/components/CreateSections'
 import FormItems from '@/components/Common/Form/FormItems'
 import ExtendDetail from './ExtendDetail'
+import ContentDetail from './ContentDetail'
 import { isEmpty } from '@/utils/types'
 import { getFormFieldValue, showFormErrorMessage } from '@/components/Common/Form/utils'
 import GenerateRulesMixin from '@/components/Mixins/GenerateRules'
 import {
   permissionTypeListAPI,
-  permissionRouteTypeListAPI,
   permissionModifyAPI,
   permissionAddAPI,
   permissionDeleteAPI } from '@/api/admin/permission'
-import {
-  customFormGetAPI,
-  customFormSimpleListAPI
-} from '@/api/admin/formField'
+import { customFormGetAPI } from '@/api/admin/formField'
 
 export default {
   components: {
     CreateSections,
     FormItems,
-    ExtendDetail
+    ExtendDetail,
+    ContentDetail
   },
   mixins: [GenerateRulesMixin],
   props: {
@@ -102,6 +108,12 @@ export default {
     },
     showDelete() {
       return this.operationType === 'update' && this.manage.permission.delete && !isEmpty(this.menuData)
+    },
+    showContentDetail() {
+      return this.fieldForm.type === 'menu' || this.fieldForm.type === 'report'
+    },
+    showExtendDetail() {
+      return this.fieldForm.type === 'menu' && this.fieldForm.routeType === 'dynamic'
     }
   },
   data() {
@@ -118,7 +130,7 @@ export default {
           { fieldCode: 'parentCode', name: '上级菜单', formType: 'structure', stylePercent: 100 }
         ],
         [
-          { fieldCode: 'code', name: '编码', formType: 'text', unique: true, required: true, tipType: 'tooltip', inputTips: '编码格式：模块_一级菜单_二级菜单' },
+          { fieldCode: 'code', name: '编码', formType: 'text', unique: true, required: true, inputTips: '编码格式：模块_一级菜单_二级菜单' },
           { fieldCode: 'name', name: '名称', formType: 'text', required: true }
         ],
         [
@@ -126,11 +138,7 @@ export default {
           { fieldCode: 'type', name: '类型', formType: 'select', precisions: 1, required: true }
         ],
         [
-          { fieldCode: 'form', name: '表单', formType: 'select', clearable: true },
-          { fieldCode: 'routeType', name: '路由类型', formType: 'select', precisions: 1, tipType: 'tooltip', inputTips: '模块路由定义，动态路由页面受后台控制' }
-        ],
-        [
-          { fieldCode: 'sn', name: '序号', formType: 'number' }
+          { fieldCode: 'sn', name: '序号', formType: 'number', tipType: 'tooltip', inputTips: '定义菜单的显示顺序，序号越小排序越靠前' }
         ]
       ],
       fieldForm: {},
@@ -151,14 +159,6 @@ export default {
       this.permissionTypes = res.data
       this.resetForm()
     })
-    permissionRouteTypeListAPI().then(res => {
-      this.permissionRouteTypes = res.data
-      this.resetForm()
-    })
-    customFormSimpleListAPI().then(res => {
-      this.formList = res.data
-      this.resetForm()
-    })
   },
   methods: {
     resetForm() {
@@ -170,15 +170,8 @@ export default {
           if (field.fieldCode === 'parentCode') {
             field.setting = this.menuList
           }
-          if (field.fieldCode === 'form') {
-            field.setting = this.formList
-          }
           if (field.fieldCode === 'type') {
             field.setting = this.permissionTypes
-          }
-          if (field.fieldCode === 'routeType') {
-            field.setting = this.permissionRouteTypes
-            this.$set(field, 'disabled', this.menuType !== 'menu')
           }
           if (field.fieldCode === 'code' && this.operationType !== 'add') {
             field.disabled = true
@@ -193,16 +186,18 @@ export default {
       if (field.fieldCode === 'type') {
         this.menuType = value
       }
-      if (field.fieldCode === 'form' && value) {
+      if (field.fieldCode === 'form') {
         this.formCode = value
-        customFormGetAPI(this.formCode).then(res => {
-          const permission = res.data.permission
-          if (this.menuData.code && permission.code && permission.code != this.menuData.code) {
-            this.$alert(`表单已经被菜单【${permission.name}】使用，提交后将自动解除原绑定关系！`, '提示', {
-              type: 'warning'
-            }).then(() => {})
-          }
-        })
+        if (value) {
+          customFormGetAPI(this.formCode).then(res => {
+            const permission = res.data.permission
+            if (this.menuData.code && permission.code && permission.code != this.menuData.code) {
+              this.$alert(`表单已经被菜单【${permission.name}】使用，提交后将自动解除原绑定关系！`, '提示', {
+                type: 'warning'
+              }).then(() => {})
+            }
+          })
+        }
       }
     },
     handleSubmit() {
@@ -232,6 +227,7 @@ export default {
       })
     },
     submitRequest() {
+      console.log(this.fieldForm)
       this.requestAPI(this.fieldForm).then(() => {
         this.loading = false
         this.$message.success('提交成功！')

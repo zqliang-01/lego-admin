@@ -23,6 +23,7 @@ public class SysPermissionInfo extends TreeDTO<SysPermissionInfo> {
     private TypeInfo type;
     private TypeInfo routeType;
     private TypeInfo form;
+    private String reportCode;
 
     public String getRealm() {
         String[] codes = getCode().split("_");
@@ -41,6 +42,6 @@ public class SysPermissionInfo extends TreeDTO<SysPermissionInfo> {
     }
 
     public boolean isMenu() {
-        return type != null && SysPermissionTypeCode.MENU.equals(type.getCode());
+        return type != null && SysPermissionTypeCode.MENU_TYPES.contains(type.getCode());
     }
 }
