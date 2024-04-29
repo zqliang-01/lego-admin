@@ -1,5 +1,7 @@
 # LegoAdmin
 
+<a target="_blank" href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=wBCgfng_HilFFVLXWimzrd63aPh8We-_&authKey=6lKMaBUa5MbsLcB44lOCT2aO52h8jw8lLZX8qYdTIxyfVMawTdm4p2bwfGI8QtOH&noverify=0&group_code=962119957">技术交流群</a> 962119957
+
 ### 介绍
 
 * 一款彻底开源的前后端分离的低代码开发框架
