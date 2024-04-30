@@ -70,7 +70,6 @@
 		<module>lego-core</module>
 		<module>lego-sharding</module>
 		<module>lego-system</module>
-		<module>lego-pay</module>
     	<module>lego-crm</module>
 		<module>lego-admin</module>
         <module>lego-flowable</module>

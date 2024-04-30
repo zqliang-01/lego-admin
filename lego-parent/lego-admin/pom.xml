@@ -27,11 +27,6 @@
         </dependency>
         <dependency>
             <groupId>com.lego</groupId>
-            <artifactId>lego-pay</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.lego</groupId>
             <artifactId>lego-crm</artifactId>
             <version>1.0.0</version>
         </dependency>

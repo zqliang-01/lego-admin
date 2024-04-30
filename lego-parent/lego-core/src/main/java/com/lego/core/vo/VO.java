@@ -1,12 +1,13 @@
 package com.lego.core.vo;
 
+import com.alibaba.fastjson.JSON;
+import com.lego.core.util.StringUtil;
+
 import java.io.Serializable;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-
-import com.alibaba.fastjson.JSON;
-
-/** VO的基类 */
+/**
+ * VO的基类
+ */
 public abstract class VO implements Serializable {
 
     private static final long serialVersionUID = 5946293315696611712L;
@@ -17,7 +18,7 @@ public abstract class VO implements Serializable {
 
     @Override
     public String toString() {
-        return ReflectionToStringBuilder.toString(this);
+        return StringUtil.toString(this);
     }
 
     @SuppressWarnings("unchecked")
