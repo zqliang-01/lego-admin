@@ -21,6 +21,7 @@ public interface IReportDefinitionService {
 
     void delete(String operatorCode, List<String> codes);
 
-    <M> IPage<M> openTestSql(String sqlText, List<ReportConditionVO> vos);
+    <M> IPage<M> openTestSql(String dataSource, String sqlText, List<ReportConditionVO> vos);
 
+    List<TypeInfo> findDataSource();
 }

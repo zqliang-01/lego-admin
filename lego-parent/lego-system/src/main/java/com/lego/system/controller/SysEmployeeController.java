@@ -31,6 +31,7 @@ public class SysEmployeeController extends BaseController {
     private ISysEmployeeService employeeService;
 
     @GetMapping("/list")
+    @SaCheckPermission("manage_users_read")
     public JsonResponse<LegoPage<SysEmployeeInfo>> list(SysEmployeeSearchVO vo) {
         LegoPage<SysEmployeeInfo> employees = employeeService.findBy(vo);
         return JsonResponse.success(employees);

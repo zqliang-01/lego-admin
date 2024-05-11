@@ -7,7 +7,6 @@
 	
     <target name="default" description="执行全量SQL">
         <runsqldir sql.dir="sql/init" encoding="utf-8"/>
-		<runsqldir sql.dir="sql/update" encoding="utf-8"/>
     </target>
 
 	<target name="update" description="执行更新SQL">

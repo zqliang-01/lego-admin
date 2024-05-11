@@ -36,12 +36,6 @@
             <version>1.0.0</version>
         </dependency>
 
-        <!-- sql driver -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
     </dependencies>
 
     <build>
@@ -51,7 +45,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>${start-class}</mainClass>
+                    <mainClass>com.lego.LegoAdminApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

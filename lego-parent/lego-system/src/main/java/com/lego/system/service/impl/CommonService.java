@@ -1,7 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.ICommonService;
-import com.lego.core.data.hibernate.impl.BaseService;
+import com.lego.core.data.ICommonService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.vo.ActionVO;
@@ -15,12 +14,16 @@ import com.lego.system.entity.SysDept;
 import com.lego.system.entity.SysEmployee;
 import com.lego.system.entity.SysOperationLog;
 import com.lego.system.entity.SysPermission;
+import com.lego.system.mapper.SysPermissionMapper;
+import com.lego.system.mapper.SysRoleMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Service
-public class CommonService extends BaseService implements ICommonService {
+public class CommonService implements ICommonService {
 
     @Resource
     private ISysOperationLogDao operationDao;
@@ -34,8 +37,14 @@ public class CommonService extends BaseService implements ICommonService {
     @Resource
     private ISysPermissionDao permissionDao;
 
+    @Autowired
+    private SysPermissionMapper permissionMapper;
+
+    @Autowired
+    private SysRoleMapper roleMapper;
+
     @Override
-    public void save(ActionVO vo) {
+    public void addLog(ActionVO vo) {
         SysEmployee operator = employeeDao.findByCode(vo.getOperatorCode());
         SysPermission permission = permissionDao.findByCode(vo.getPermissionCode());
         SysOperationLog sysOperationLog = new SysOperationLog(vo.getActionType(), operator, permission);
@@ -58,13 +67,23 @@ public class CommonService extends BaseService implements ICommonService {
     }
 
     @Override
-    public void addSysMessage(String operatorCode, SysMessageCreateVO vo) {
-        new AddSysMessageAction(operatorCode, vo).run();
+    public void addSysMessage(SysMessageCreateVO vo) {
+        new AddSysMessageAction(vo.getCreator(), vo).run();
     }
 
     @Override
     public String findReportCodeBy(String permissionCode) {
         SysPermission permission = permissionDao.findByCode(permissionCode);
         return permission.getReportCode();
+    }
+
+    @Override
+    public List<String> findPermissionCodesBy(String employeeCode) {
+        return permissionMapper.selectCodesByEmployee(employeeCode);
+    }
+
+    @Override
+    public List<String> findRoleCodesBy(String employeeCode) {
+        return roleMapper.selectCodesByEmployee(employeeCode);
     }
 }

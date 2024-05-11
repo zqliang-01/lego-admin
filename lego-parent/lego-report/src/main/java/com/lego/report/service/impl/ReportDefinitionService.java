@@ -1,6 +1,8 @@
 package com.lego.report.service.impl;
 
+import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lego.core.data.DynamicDataSourceConfig;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.data.mybatis.MybatisDynamicExecutor;
 import com.lego.core.dto.TypeInfo;
@@ -43,6 +45,8 @@ public class ReportDefinitionService extends BusService<IReportDefinitionDao, Re
     private SqlSessionTemplate sqlSessionTemplate;
     @Autowired
     private MybatisDynamicExecutor executor;
+    @Autowired
+    private DynamicDataSourceConfig dynamicDataSourceConfig;
 
     @Override
     public List<TypeInfo> findSimpleType(String code, String name, Boolean enable) {
@@ -65,13 +69,13 @@ public class ReportDefinitionService extends BusService<IReportDefinitionDao, Re
 
     @Override
     public void update(String operatorCode, ReportDefinitionModifyVO vo) {
-        openTestSql(vo.getSqlText(), vo.getParams());
+        openTestSql(vo.getDataSource(), vo.getSqlText(), vo.getParams());
         new ModifyReportDefinitionAction(operatorCode, vo).run();
     }
 
     @Override
     public TypeInfo add(String operatorCode, ReportDefinitionCreateVO vo) {
-        openTestSql(vo.getSqlText(), vo.getParams());
+        openTestSql(vo.getDataSource(), vo.getSqlText(), vo.getParams());
         AddReportDefinitionAction addAction = new AddReportDefinitionAction(operatorCode, vo);
         addAction.run();
         return addAction.getTypeInfo();
@@ -85,9 +89,15 @@ public class ReportDefinitionService extends BusService<IReportDefinitionDao, Re
     }
 
     @Override
-    public <M> IPage<M> openTestSql(String sqlText, List<ReportConditionVO> vos) {
+    public <M> IPage<M> openTestSql(String dataSource, String sqlText, List<ReportConditionVO> vos) {
+        DynamicDataSourceContextHolder.push(dataSource);
         Map<String, Object> params = conditionAssembler.convertParams(vos);
         return executor.selectPage(sqlSessionTemplate, sqlText, params, 1, 1);
+    }
+
+    @Override
+    public List<TypeInfo> findDataSource() {
+        return dynamicDataSourceConfig.getNames();
     }
 
 }

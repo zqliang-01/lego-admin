@@ -2,7 +2,7 @@ package com.lego.flowable.action;
 
 import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
-import com.lego.core.data.hibernate.ICommonService;
+import com.lego.core.data.ICommonService;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.SysMessageCreateVO;
 import com.lego.core.vo.SysMessageTypeEnum;
@@ -43,7 +43,7 @@ public class SendSysMessageAction extends MaintainAction {
                 messageVO.setFormCode(task.getFormKey());
                 messageVO.setType(SysMessageTypeEnum.FLOWABLE.getCode());
                 messageVO.setContent("${creator} 发起了任务《${title}》需要您审批，请及时查看");
-                commonService.addSysMessage(operatorCode, messageVO);
+                commonService.addSysMessage(messageVO);
             }
         });
     }

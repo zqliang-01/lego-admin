@@ -63,7 +63,6 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
 
     @Override
     public LegoPage<FlowableTaskInfo> findCompletedBy(String employeeCode, FlowableTaskSearchVO vo) {
-        SysEmployee employee = employeeDao.findByCode(employeeCode);
         HistoricTaskInstanceQuery taskInstanceQuery = historyService.createHistoricTaskInstanceQuery()
             .finished()
             .taskAssignee(employeeCode)

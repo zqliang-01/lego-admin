@@ -10,10 +10,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -30,11 +28,6 @@ public class LegoAdminApplication extends SpringBootServletInitializer {
         return builder.sources(LegoAdminApplication.class);
     }
 
-    @Bean
-    public OpenEntityManagerInViewFilter openEntityManagerInViewFilter() {
-        return new OpenEntityManagerInViewFilter();
-    }
-
     public static void main(String[] args) throws UnknownHostException {
         ConfigurableApplicationContext application = SpringApplication.run(LegoAdminApplication.class, args);
         Environment env = application.getEnvironment();
@@ -44,7 +37,6 @@ public class LegoAdminApplication extends SpringBootServletInitializer {
         log.info("\n----------------------------------------------------------\n" +
             "Application LegoAdmin is running! Access URLs:\n" +
             "Local: \t\thttp://:" + ip + ":" + port + path + "/\n" +
-            "接口文档: \thttp://" + ip + ":" + port + path + "/swagger-ui.html\n" +
             "----------------------------------------------------------");
     }
 }

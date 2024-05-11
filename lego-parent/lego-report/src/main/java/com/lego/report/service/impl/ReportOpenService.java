@@ -57,6 +57,7 @@ public class ReportOpenService extends BusService<IReportDefinitionDao, ReportDe
 
         ReportDefinition dataDefinition = condition.getDataDefinition();
         BusinessException.check(dataDefinition != null, "报表条件[{0}]未定义数据，获取报表条件结果失败！", condition.getName());
+        DynamicDataSourceContextHolder.push(definition.getDataSource());
         long count = executor.selectCount(sqlSessionTemplate, dataDefinition.getSqlText(), new HashMap<>());
         BusinessException.check(count <= 100, "报表条件[{0}]结果集超过100，请缩小查询范围！", dataDefinition.getName());
         return executor.select(sqlSessionTemplate, dataDefinition.getSqlText(), new HashMap<>());

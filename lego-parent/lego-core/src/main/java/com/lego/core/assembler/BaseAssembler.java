@@ -1,36 +1,35 @@
 package com.lego.core.assembler;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.lego.core.data.ICommonService;
 import com.lego.core.data.TreeEntity;
-import com.lego.core.data.hibernate.ICommonService;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TreeInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.lego.core.web.LegoBeanFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseAssembler<D extends DTO, E> {
 
-    @Autowired(required = false)
-    private ICommonService actionService;
-
     protected TypeInfo createEmployee(String code) {
-        if (actionService == null) {
+        ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
+        if (commonService == null) {
             return TypeInfo.NULL;
         }
-        return actionService.findEmployeeBy(code);
+        return commonService.findEmployeeBy(code);
     }
 
     protected TypeInfo createDept(String code) {
-        if (actionService == null) {
+        ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
+        if (commonService == null) {
             return TypeInfo.NULL;
         }
-        return actionService.findDeptBy(code);
+        return commonService.findDeptBy(code);
     }
 
     public List<D> create(List<E> entities) {

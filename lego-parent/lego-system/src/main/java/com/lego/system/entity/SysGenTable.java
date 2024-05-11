@@ -27,6 +27,7 @@ public class SysGenTable extends BaseEntity {
     private String permissionCode;
     private String packageName;
     private String path;
+    private String dataSource;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
@@ -51,6 +52,7 @@ public class SysGenTable extends BaseEntity {
         attributes.put("资源名称", this.urlName);
         attributes.put("权限编码", this.permissionCode);
         attributes.put("生成路径", this.path);
+        attributes.put("数据源", this.dataSource);
     }
 
     public String createApiUrl(String type) {

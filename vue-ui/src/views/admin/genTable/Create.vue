@@ -27,21 +27,15 @@
 import {
   genTableAddAPI,
   genTableModifyAPI,
-  genTableInitGetAPI
+  genTableInitGetAPI,
+  genTableNameListAPI
 } from '@/api/admin/genTable'
 import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import { objDeepCopy } from '@/utils'
 
 export default {
   name: 'GenTableCreate',
   mixins: [CreateMixin],
-  props: {
-    tableNameList: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    }
-  },
   computed: {
     createTitle() {
       if (this.title) {
@@ -65,27 +59,31 @@ export default {
   methods: {
     init() {
       this.actionType = this.action.type
-      this.dataFieldList = this.fieldList
       this.detailData = this.action.detailData
-      if (this.action.detailData) {
-        this.dataFieldList.map(fields => {
-          fields.map(field => {
-            this.$set(field, 'disabled', false)
-            if (field.fieldCode === 'code') {
-              field.setting = this.tableNameList
-            }
+      this.dataFieldList = objDeepCopy(this.fieldList)
+      this.initValue()
+    },
+    fieldChange(item, index, value) {
+      if (item && item.fieldCode === 'code') {
+        genTableInitGetAPI({
+          code: value,
+          dataSource: this.fieldForm.dataSource
+        }).then(res => {
+          this.dataFieldList.map(fields => {
+            fields.map(field => {
+              if (!['code', 'dataSource'].includes(field.fieldCode)) {
+                this.$set(this.fieldForm, field.fieldCode, res.data[field.fieldCode])
+              }
+            })
           })
         })
       }
-      this.initValue()
-    },
-    fieldChange(item, index, value, valueList) {
-      if (item && item.fieldCode === 'code') {
-        genTableInitGetAPI(value).then(res => {
+      if (item && item.fieldCode === 'dataSource') {
+        genTableNameListAPI({ dataSource: value }).then(res => {
           this.dataFieldList.map(fields => {
             fields.map(field => {
-              if (field.fieldCode !== 'code') {
-                this.$set(this.fieldForm, field.fieldCode, res.data[field.fieldCode])
+              if (field.fieldCode === 'code') {
+                field.setting = res.data
               }
             })
           })

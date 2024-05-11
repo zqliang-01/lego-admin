@@ -172,7 +172,7 @@ export default {
         const res = this.checkFromItem(arr[i], this.form[arr[i]] || null)
         if (!res) return false
       }
-      if (this.form.code !== this.captchaCode) {
+      if (this.form.code.toLowerCase() !== this.captchaCode.toLowerCase()) {
         this.setError('code', '验证码不一致，请重新输入！')
         return false
       }

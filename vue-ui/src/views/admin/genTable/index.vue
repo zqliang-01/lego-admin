@@ -57,7 +57,6 @@
     <Create
       :visible="isCreate"
       :field-list="fieldList"
-      :table-name-list="tableNameList"
       :action="action"
       @handle="actionHandle"
       @close="isCreate = false"
@@ -68,9 +67,10 @@
 <script>
 import {
   genTableListAPI,
-  genTableNameListAPI,
   genTablePreviewAPI,
-  genTableDownloadAPI
+  genTableDownloadAPI,
+  genTableNameListAPI,
+  genTableDataSourceListAPI
 } from '@/api/admin/genTable'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
@@ -79,15 +79,6 @@ import LegoTable from '@/components/lego/LegoTable'
 import CodePreview from './CodePreview'
 import Create from './Create'
 import { downloadFileWithBuffer } from '@/utils'
-
-import 'highlight.js/styles/github-gist.css'
-const hljs = require('highlight.js/lib/core')
-hljs.registerLanguage('java', require('highlight.js/lib/languages/java'))
-hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'))
-hljs.registerLanguage('html', require('highlight.js/lib/languages/xml'))
-hljs.registerLanguage('vue', require('highlight.js/lib/languages/xml'))
-hljs.registerLanguage('javascript', require('highlight.js/lib/languages/javascript'))
-hljs.registerLanguage('sql', require('highlight.js/lib/languages/sql'))
 
 export default {
   name: 'CustomField',
@@ -107,7 +98,6 @@ export default {
       isCreate: false,
       previewVisible: false,
       dataList: [],
-      tableNameList: [],
       currentPage: 1,
       pageSize: 15,
       total: 0,
@@ -119,22 +109,23 @@ export default {
       previewData: [],
       fieldList: [
         [
-          { fieldCode: 'code', name: '表名', formType: 'select', filterable: true, width: '150', unique: true, required: true, tipType: 'tooltip', inputTips: '数据库表名，会自动读取数据库表' },
-          { fieldCode: 'name', name: '功能名称', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: '功能菜单名称，对应前台菜单名' }
+          { fieldCode: 'dataSource', name: '数据源', formType: 'select', filterable: true, width: '150', unique: true, tipType: 'tooltip', inputTips: '数据表所在数据库' },
+          { fieldCode: 'code', name: '表名', formType: 'select', filterable: true, width: '150', unique: true, required: true, tipType: 'tooltip', inputTips: '数据库表名，会自动读取数据库表' }
         ],
         [
-          { fieldCode: 'urlName', name: '资源名称', formType: 'text', width: '100', required: true, xAxis: 4, tipType: 'tooltip', inputTips: 'Url地址路径，前端api以及后端Controller使用' },
-          { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: 'JAVA文件包名，例如 com.lego.system' }
+          { fieldCode: 'name', name: '功能名称', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: '功能菜单名称，对应前台菜单名' },
+          { fieldCode: 'urlName', name: '资源名称', formType: 'text', width: '100', required: true, xAxis: 4, tipType: 'tooltip', inputTips: 'Url地址路径，前端api以及后端Controller使用' }
         ],
         [
-          { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '可理解为子系统名，对应前台应用以及后端微服务模块' },
-          { fieldCode: 'permissionCode', name: '权限编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '权限编码，格式为-模块编码_一级菜单_二级菜单_...' }
+          { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150', required: true, tipType: 'tooltip', inputTips: 'JAVA文件包名，例如 com.lego.system' },
+          { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '可理解为子系统名，对应前台应用以及后端微服务模块' }
         ],
         [
-          { fieldCode: 'className', name: '类名', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: 'JAVA类名' },
-          { fieldCode: 'fieldName', name: '属性名称', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '属性命名，涉及JAVA类属性命名以及前端路由名等' }
+          { fieldCode: 'permissionCode', name: '权限编码', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '权限编码，格式为-模块编码_一级菜单_二级菜单_...' },
+          { fieldCode: 'className', name: '类名', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: 'JAVA类名' }
         ],
         [
+          { fieldCode: 'fieldName', name: '属性名称', formType: 'text', width: '100', required: true, tipType: 'tooltip', inputTips: '属性命名，涉及JAVA类属性命名以及前端路由名等' },
           { fieldCode: 'comment', name: '描述', formType: 'text', width: '150' }
           // { fieldCode: 'path', name: '生成路径', formType: 'text', width: '150', tipType: 'tooltip', inputTips: '填写磁盘绝对路径，若不填写，则生成到当前Web项目下' }
         ]
@@ -146,10 +137,13 @@ export default {
   },
   methods: {
     refresh() {
-      this.getList()
-      genTableNameListAPI().then(res => {
-        this.tableNameList = res.data
+      this.fieldList.map(fields => {
+        fields.map(field => {
+          this.$set(field, 'disabled', false)
+          this.initSetting(field)
+        })
       })
+      this.getList()
     },
     getList(pageSize = this.pageSize, currentPage = this.currentPage) {
       this.loading = true
@@ -202,6 +196,18 @@ export default {
     onSearch(value) {
       this.search = value
       this.getList()
+    },
+    async initSetting(field) {
+      if (field.fieldCode === 'code') {
+        await genTableNameListAPI().then(res => {
+          field.setting = res.data
+        })
+      }
+      if (field.fieldCode === 'dataSource') {
+        await genTableDataSourceListAPI().then(res => {
+          field.setting = res.data
+        })
+      }
     },
     onCreate() {
       this.action.type = 'save'

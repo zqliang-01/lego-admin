@@ -1,8 +1,12 @@
 package com.lego.system.service.impl;
 
+import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.lego.core.common.GenConstants;
+import com.lego.core.data.DynamicDataSourceConfig;
 import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.mybatis.mapper.MetaTableMapper;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.MetaTableColumnInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
@@ -15,13 +19,14 @@ import com.lego.system.assembler.SysGenTableAssembler;
 import com.lego.system.dao.ISysGenTableDao;
 import com.lego.system.dto.SysGenTableInfo;
 import com.lego.system.entity.SysGenTable;
-import com.lego.system.mapper.SysTableMapper;
 import com.lego.system.service.ISysGenTableService;
 import com.lego.system.vo.SysGenTableCreateVO;
 import com.lego.system.vo.SysGenTableModifyVO;
 import com.lego.system.vo.SysGenTableSearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,7 +34,10 @@ import java.util.List;
 public class SysGenTableService extends BusService<ISysGenTableDao, SysGenTableAssembler> implements ISysGenTableService {
 
     @Autowired
-    private SysTableMapper tableMapper;
+    private MetaTableMapper tableMapper;
+
+    @Autowired
+    private DynamicDataSourceConfig dynamicDataSourceConfig;
 
     @Override
     public LegoPage<SysGenTableInfo> findPageBy(SysGenTableSearchVO vo) {
@@ -65,12 +73,16 @@ public class SysGenTableService extends BusService<ISysGenTableDao, SysGenTableA
     }
 
     @Override
-    public List<TypeInfo> findTableName() {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public List<TypeInfo> findTableName(String dataSource) {
+        DynamicDataSourceContextHolder.push(dataSource);
         return tableMapper.selectByDBName(null);
     }
 
     @Override
-    public SysGenTableInfo findInitBy(String code) {
+    @Transactional(propagation = Propagation.NOT_SUPPORTED)
+    public SysGenTableInfo findInitBy(String code, String dataSource) {
+        DynamicDataSourceContextHolder.push(dataSource);
         BusinessException.check(StringUtil.isNotBlank(code), "数据表名不能为空！");
         String tableName = code.toLowerCase();
         String appCode = StringUtil.substringBefore(tableName, "_");
@@ -89,8 +101,10 @@ public class SysGenTableService extends BusService<ISysGenTableDao, SysGenTableA
     }
 
     @Override
-    public void add(String operatorCode, SysGenTableCreateVO vo) {
+    @Transactional(rollbackFor = Throwable.class)
+    public void add(String operatorCode, SysGenTableCreateVO vo, List<MetaTableColumnInfo> tableColumns) {
         new AddSysGenTableAction(operatorCode, vo).run();
+        new ImportSysGenTableColumnAction(operatorCode, vo.getCode(), tableColumns).run();
     }
 
     @Override
@@ -99,8 +113,14 @@ public class SysGenTableService extends BusService<ISysGenTableDao, SysGenTableA
     }
 
     @Override
-    public void sync(String operatorCode, String code) {
-        new ImportSysGenTableColumnAction(operatorCode, code).run();
+    @Transactional(rollbackFor = Throwable.class)
+    public void sync(String operatorCode, String code, List<MetaTableColumnInfo> tableColumns) {
+        new ImportSysGenTableColumnAction(operatorCode, code, tableColumns).run();
+    }
+
+    @Override
+    public List<TypeInfo> findDataSource() {
+        return dynamicDataSourceConfig.getNames();
     }
 
 }

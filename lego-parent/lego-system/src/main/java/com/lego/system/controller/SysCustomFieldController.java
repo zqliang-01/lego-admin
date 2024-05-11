@@ -123,6 +123,9 @@ public class SysCustomFieldController extends BaseController {
         SysGenTableInfo table = tableService.findByCode(tableCode);
         List<SysCustomFieldTypeInfo> typeInfos = new ArrayList<SysCustomFieldTypeInfo>();
         for (CustomFieldTypeEnum type : CustomFieldTypeEnum.values()) {
+            if (type == CustomFieldTypeEnum.CHECKBOX) {
+                continue;
+            }
             String javaField = type.getType().getSimpleName();
             if (type == CustomFieldTypeEnum.SELECT) {
                 String appCode = StringUtil.toFirstUpper(table.getAppCode());

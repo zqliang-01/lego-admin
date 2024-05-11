@@ -35,12 +35,12 @@ export default [
     name: '单选',
     icon: 'icon-select'
   },
-  {
-    componentName: 'FieldCheckbox',
-    formType: 'checkbox',
-    name: '多选',
-    icon: 'icon-checkbox'
-  },
+  // {
+  //   componentName: 'FieldCheckbox',
+  //   formType: 'checkbox',
+  //   name: '多选',
+  //   icon: 'icon-checkbox'
+  // },
   {
     componentName: 'FieldInput',
     formType: 'number',

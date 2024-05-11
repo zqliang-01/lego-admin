@@ -1,10 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="build-ui" basedir="." default="default">
 
+    <property name="os.type" value="${os.name}"/>
     <property name="ui.root" value="${basedir}/../vue-ui"/>
     <property name="ui.target" value="${basedir}/lego-admin/target/public"/>
 
-    <target name="default" depends="install, package, deploy"/>
+    <target name="default" depends="install,package,deploy"/>
+
+    <target name="build-unix" depends="install-unix,package-unix,deploy"/>
+
+    <target name="install">
+        <echo message="前端安装依赖${ui.root}"/>
+        <exec executable="cmd.exe" failonerror="true" dir="${ui.root}">
+            <arg line="/c npm install"/>
+        </exec>
+    </target>
+
+    <target name="install-unix">
+        <echo message="前端安装依赖${ui.root}"/>
+        <exec executable="/bin/sh" failonerror="true" dir="${ui.root}">
+            <arg line="/c npm install"/>
+        </exec>
+    </target>
 
     <target name="package">
         <echo message="执行构建命令: npm run build"/>
@@ -13,10 +30,10 @@
         </exec>
     </target>
 
-    <target name="install">
-        <echo message="前端安装依赖${ui.root}"/>
-        <exec executable="cmd.exe" failonerror="true" dir="${ui.root}">
-            <arg line="/c npm install"/>
+    <target name="package-unix">
+        <echo message="执行构建命令: npm run build"/>
+        <exec executable="/bin/sh" failonerror="true" dir="${ui.root}">
+            <arg line="/c npm run build"/>
         </exec>
     </target>
 

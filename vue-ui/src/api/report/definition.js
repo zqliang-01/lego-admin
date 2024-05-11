@@ -36,6 +36,13 @@ export function definitionSimpleValidListAPI(data) {
   })
 }
 
+export function definitionDataSourceListAPI(data) {
+  return request({
+    url: '/back-end/report-definition/list-data-source',
+    data: data
+  })
+}
+
 export function definitionGetAPI(data) {
   return request({
     url: '/back-end/report-definition/get/' + data

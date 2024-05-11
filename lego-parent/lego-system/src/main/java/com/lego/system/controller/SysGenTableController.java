@@ -3,8 +3,10 @@ package com.lego.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.IoUtil;
+import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.lego.core.common.Constants;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.MetaTableColumnInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
@@ -69,21 +71,29 @@ public class SysGenTableController extends BaseController {
         return JsonResponse.success(tableService.findAll());
     }
 
-    @GetMapping("/list-name")
-    public JsonResponse<List<TypeInfo>> listName() {
-        return JsonResponse.success(tableService.findTableName());
+    @GetMapping("/list-data-source")
+    @SaCheckPermission("report_definition_add")
+    public JsonResponse<List<TypeInfo>> listDataSource(String code, String name) {
+        return JsonResponse.success(tableService.findDataSource());
     }
 
-    @GetMapping("/get-init/{code}")
+    @GetMapping("/list-name")
+    public JsonResponse<List<TypeInfo>> listName(String dataSource) {
+        DynamicDataSourceContextHolder.push(dataSource);
+        return JsonResponse.success(tableService.findTableName(dataSource));
+    }
+
+    @GetMapping("/get-init")
     @SaCheckPermission("manage_genTable_update")
-    public JsonResponse<SysGenTableInfo> getInit(@PathVariable String code) {
-        return JsonResponse.success(tableService.findInitBy(code));
+    public JsonResponse<SysGenTableInfo> getInit(String code, String dataSource) {
+        return JsonResponse.success(tableService.findInitBy(code, dataSource));
     }
 
     @PostMapping("/add")
     @SaCheckPermission("manage_genTable_update")
     public JsonResponse<Object> add(@RequestBody SysGenTableCreateVO vo) {
-        tableService.add(getLoginCode(), vo);
+        List<MetaTableColumnInfo> tableColumns = columnService.findMetaColumnBy(vo.getDataSource(), vo.getCode());
+        tableService.add(getLoginCode(), vo, tableColumns);
         return JsonResponse.success();
     }
 
@@ -97,7 +107,9 @@ public class SysGenTableController extends BaseController {
     @PostMapping("/sync/{code}")
     @SaCheckPermission("manage_genTable_sync")
     public JsonResponse<Object> sync(@PathVariable String code) {
-        tableService.sync(getLoginCode(), code);
+        SysGenTableInfo table = tableService.findByCode(code);
+        List<MetaTableColumnInfo> tableColumns = columnService.findMetaColumnBy(table.getDataSource(), code);
+        tableService.sync(getLoginCode(), code, tableColumns);
         return JsonResponse.success();
     }
 

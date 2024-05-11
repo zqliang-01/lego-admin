@@ -1,16 +1,15 @@
 package com.lego.system.entity.simpletype;
 
+import com.lego.core.data.hibernate.SimpleType;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import com.lego.core.data.SimpleType;
 
 @Entity
 @Table(name = "sys_simple_type")
@@ -19,5 +18,6 @@ import com.lego.core.data.SimpleType;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public abstract class SysSimpleType extends SimpleType {
 
-    protected SysSimpleType() { }
+    protected SysSimpleType() {
+    }
 }

@@ -20,15 +20,23 @@ export function genTableAllListAPI(data) {
   })
 }
 
-export function genTableInitGetAPI(code) {
+export function genTableInitGetAPI(data) {
   return request({
-    url: `/back-end/sys-gen-table/get-init/${code}`
+    url: '/back-end/sys-gen-table/get-init',
+    data: data
   })
 }
 
 export function genTableNameListAPI(data) {
   return request({
-    url: '/back-end/sys-gen-table/list-name'
+    url: '/back-end/sys-gen-table/list-name',
+    data: data
+  })
+}
+
+export function genTableDataSourceListAPI(data) {
+  return request({
+    url: '/back-end/sys-gen-table/list-data-source'
   })
 }
 

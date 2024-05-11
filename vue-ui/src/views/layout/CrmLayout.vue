@@ -8,6 +8,7 @@
         :main-router="appCode"
         :items="currentRouters"
         :add-offset="quickAddOffset"
+        :show-create-button="quickAddList.length > 0"
         create-button-title="快速创建">
         <div
           v-if="quickAddList.length > 0"

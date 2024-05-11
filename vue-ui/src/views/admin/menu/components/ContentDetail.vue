@@ -123,7 +123,6 @@ export default {
           this.$set(this.fieldForm, field.fieldCode, getFormFieldValue(field, false))
         })
       })
-      console.log(this.fieldForm)
     },
     handleChangeValue(field, index, value) {
       this.$emit('change', field, index, value)

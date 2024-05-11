@@ -10,6 +10,7 @@ import com.lego.core.common.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
 import com.lego.core.vo.JsonResponse;
+import feign.codec.DecodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -40,7 +40,7 @@ public class LegoExceptionHandler {
     private List<ILegoExceptionHandler> handlers;
 
     @ExceptionHandler(Throwable.class)
-    public ModelAndView defaultErrorHandler(HttpServletRequest request, HttpServletResponse response, Throwable e) throws IOException {
+    public ModelAndView defaultErrorHandler(HttpServletResponse response, Throwable e) throws IOException {
         String errorMsg = e.getMessage();
         Integer errorCode = ExceptionEnum.UNKNOW_ERROR.getCode();
         if (CollectionUtil.isNotEmpty(handlers)) {
@@ -74,8 +74,18 @@ public class LegoExceptionHandler {
         return handlerResponse(response, errorMsg, errorCode);
     }
 
+    @ExceptionHandler(DecodeException.class)
+    public ModelAndView loginError(HttpServletResponse response, DecodeException e) throws IOException {
+        Throwable root = getRootCause(e);
+        if (root instanceof BusinessException) {
+            BusinessException bx = (BusinessException) root;
+            return businessErrorHandler(response, bx);
+        }
+        return defaultErrorHandler(response, root);
+    }
+
     @ExceptionHandler(NotPermissionException.class)
-    public ModelAndView permissionError(HttpServletRequest request, HttpServletResponse response, NotPermissionException e) throws IOException {
+    public ModelAndView permissionError(HttpServletResponse response, NotPermissionException e) throws IOException {
         Integer errorCode = ExceptionEnum.AUTHORIZATION_INVALID.getCode();
         String errorMsg = ExceptionEnum.AUTHORIZATION_INVALID.getMsg();
         log.error(e.getMessage());
@@ -83,14 +93,14 @@ public class LegoExceptionHandler {
     }
 
     @ExceptionHandler(NotLoginException.class)
-    public ModelAndView loginError(HttpServletRequest request, HttpServletResponse response, NotLoginException e) throws IOException {
+    public ModelAndView loginError(HttpServletResponse response, NotLoginException e) throws IOException {
         Integer errorCode = ExceptionEnum.SESSION_INVALID.getCode();
         String errorMsg = ExceptionEnum.SESSION_INVALID.getMsg();
         return handlerResponse(response, errorMsg, errorCode);
     }
 
     @ExceptionHandler(value = BusinessException.class)
-    public ModelAndView businessErrorHandler(HttpServletRequest request, HttpServletResponse response, BusinessException e) throws IOException {
+    public ModelAndView businessErrorHandler(HttpServletResponse response, BusinessException e) throws IOException {
         Integer errorCode = e.getCode();
         String errorMsg = e.getMessage();
         return handlerResponse(response, errorMsg, errorCode);

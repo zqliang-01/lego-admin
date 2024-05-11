@@ -73,6 +73,7 @@ export default {
         return
       }
       var param = {
+        dataSource: this.fieldForm.dataSource,
         params: this.fieldForm.params,
         sqlText: this.fieldForm.sqlText
       }

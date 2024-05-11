@@ -2,9 +2,8 @@ package com.lego.report.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.stp.StpUtil;
-import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.lego.core.common.Constants;
-import com.lego.core.data.hibernate.ICommonService;
+import com.lego.core.data.ICommonService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.vo.JsonResponse;
@@ -31,7 +30,7 @@ public class ReportDefinitionController extends BaseController {
     @Autowired
     private IReportDefinitionService definitionService;
 
-    @Autowired
+    @Autowired(required = false)
     private ICommonService commonService;
 
     @PostMapping("/add")
@@ -65,6 +64,12 @@ public class ReportDefinitionController extends BaseController {
         return JsonResponse.success(definitionService.findSimpleType(code, name, true));
     }
 
+    @GetMapping("/list-data-source")
+    @SaCheckPermission("report_definition_add")
+    public JsonResponse<List<TypeInfo>> listDataSource(String code, String name) {
+        return JsonResponse.success(definitionService.findDataSource());
+    }
+
     @GetMapping("/get/{code}")
     @SaCheckPermission("report_definition_add")
     public JsonResponse<ReportDefinitionInfo> getByCode(@PathVariable String code) {
@@ -74,8 +79,7 @@ public class ReportDefinitionController extends BaseController {
     @PostMapping(value = "/open-test")
     @SaCheckPermission("report_definition_update")
     public JsonResponse<Object> openTest(@RequestBody ReportOpenTestVO vo) throws Exception {
-        DynamicDataSourceContextHolder.push(vo.getDataSource());
-        return JsonResponse.success(definitionService.openTestSql(vo.getSqlText(), vo.getParams()));
+        return JsonResponse.success(definitionService.openTestSql(vo.getDataSource(), vo.getSqlText(), vo.getParams()));
     }
 
     @GetMapping(value = "/permission-get")

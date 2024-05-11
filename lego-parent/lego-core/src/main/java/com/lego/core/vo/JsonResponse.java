@@ -1,6 +1,7 @@
 package com.lego.core.vo;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.lego.core.common.ExceptionEnum;
 import lombok.Data;
 
@@ -83,6 +84,11 @@ public class JsonResponse<T> {
 
     public static <T> JsonResponse<T> failed(Integer code, String msg, T data) {
         return new JsonResponse<>(code, msg, data);
+    }
+
+    @JSONField(serialize = false)
+    public boolean isSuccess() {
+        return ExceptionEnum.SUCCESS.getCode().equals(code);
     }
 
     public String toJSONString() {

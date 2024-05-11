@@ -3,23 +3,26 @@ package com.lego.flowable.action;
 import cn.hutool.core.convert.Convert;
 import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
+import com.lego.core.feign.vo.TaskCompletedVO;
 import com.lego.core.flowable.FlowableProcessConstants;
-import com.lego.core.flowable.IFlowableTaskCompletedListener;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
+import com.lego.flowable.handler.FlowableTaskCompleteHandler;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
-import com.lego.system.service.ISysCustomFormService;
+import com.lego.system.dao.ISysCustomFormDao;
+import com.lego.system.entity.SysCustomForm;
+import com.lego.system.entity.SysGenTable;
 import com.lego.system.vo.SysPermissionCode;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.task.api.DelegationState;
-
-import java.util.List;
 
 public class CompleteFlowableTaskAction extends FlowableTaskAction {
 
     private FlowableTaskCompleteVO vo;
 
-    private ISysCustomFormService formService = LegoBeanFactory.getBean(ISysCustomFormService.class);
+    private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
+
+    private FlowableTaskCompleteHandler completeHandler = LegoBeanFactory.getBean(FlowableTaskCompleteHandler.class);
 
     public CompleteFlowableTaskAction(String operatorCode, FlowableTaskCompleteVO vo) {
         super(SysPermissionCode.oaUndo, operatorCode, vo.getId());
@@ -68,16 +71,14 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
         if (StringUtil.isBlank(task.getFormKey())) {
             return;
         }
-        String tableCode = formService.findTableCodeBy(task.getFormKey());
-        if (StringUtil.isBlank(tableCode)) {
-            return;
-        }
-        List<IFlowableTaskCompletedListener> listeners = LegoBeanFactory.getBeans(IFlowableTaskCompletedListener.class);
-        for (IFlowableTaskCompletedListener listener : listeners) {
-            if (tableCode.equals(listener.getTableCode())) {
-                listener.completed(false, vo.getVariables());
-            }
-        }
+        SysCustomForm form = formDao.findByCode(task.getFormKey());
+        SysGenTable genTable = form.getTable();
+        BusinessException.check(genTable != null, "表单[{0}]无关联数据表，任务保存失败！", task.getFormKey());
+
+        TaskCompletedVO completedVO = new TaskCompletedVO();
+        completedVO.setTableCode(genTable.getCode());
+        completedVO.setVariable(vo.getVariables());
+        completeHandler.doCompleted(genTable.getAppCode(), completedVO);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.lego.report.action;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
@@ -77,7 +78,7 @@ public class ExportReportAction extends MaintainAction {
             data.add(values);
         }
         ExcelUtil.exportExcel(head, data, definition.getName(), vo.getResponse());
-        this.description = MessageFormat.format("导出报表数据[{1}]条，报表导出条件[{0}]", results.size(), vo.getParam());
+        this.description = MessageFormat.format("导出报表数据[{0}]条，报表导出条件[{1}]", results.size(), JSON.toJSONString(vo.getParam()));
     }
 
     @Override

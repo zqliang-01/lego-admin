@@ -1,31 +1,27 @@
 package com.lego.core.data.hibernate;
 
-import static java.text.MessageFormat.format;
-
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import com.lego.core.data.IdGenerator;
+import com.lego.core.exception.CoreException;
+import com.lego.core.util.DateUtil;
+import com.lego.core.util.StringUtil;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.lego.core.data.IdGenerator;
-import com.lego.core.exception.CoreException;
-import com.lego.core.util.DateUtil;
-import com.lego.core.util.StringUtil;
-
-import lombok.Getter;
-import lombok.Setter;
+import static java.text.MessageFormat.format;
 
 @MappedSuperclass
 public abstract class BaseEntity {
 
-	@Id
+    @Id
     @Getter
-	@TableId(value="id")
     private Long id;
 
     @Getter
@@ -43,13 +39,14 @@ public abstract class BaseEntity {
     @Getter
     private Date createTime;
 
-    protected BaseEntity() { }
+    protected BaseEntity() {
+    }
 
     protected BaseEntity(String name) {
         this(null, name);
     }
 
-	protected BaseEntity(String code, String name) {
+    protected BaseEntity(String code, String name) {
         this.id = IdGenerator.getCurrent().nextId();
         this.code = (StringUtil.isBlank(code) ? id.toString() : code);
         this.name = name;

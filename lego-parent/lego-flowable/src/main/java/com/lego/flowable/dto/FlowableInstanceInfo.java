@@ -2,7 +2,6 @@ package com.lego.flowable.dto;
 
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.TypeInfo;
-import com.lego.flowable.vo.ProcessStatus;
 import lombok.Getter;
 import lombok.Setter;
 

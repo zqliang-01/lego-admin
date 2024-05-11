@@ -21,7 +21,6 @@ public class ModifyReportDefinitionAction extends ModifyAction<ReportDefinition,
     protected void preprocess() {
         BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，报表定义表修改失败！");
         BusinessException.check(StringUtil.isNotBlank(vo.getName()), "姓名不能为空，报表定义表修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getDataSource()), "数据源不能为空，报表定义表修改失败！");
         BusinessException.check(StringUtil.isNotBlank(vo.getSqlText()), "SQL脚本不能为空，报表定义表修改失败！");
     }
 

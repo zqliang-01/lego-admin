@@ -1,5 +1,6 @@
 package com.lego.sharding.config;
 
+import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
@@ -40,6 +41,7 @@ import org.apache.shardingsphere.sqlfederation.api.config.SQLFederationRuleConfi
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -72,6 +74,7 @@ public class ShardingDataSourceConfig {
     private MybatisDynamicExecutor mybatisExecutor;
 
     @Bean
+    @ConditionalOnProperty(prefix = DynamicDataSourceProperties.PREFIX, name = "enabled", havingValue = "false", matchIfMissing = true)
     public DataSource getDataSource() throws Exception {
         if (!openSharding) {
             log.info("未开启分表数据源sharding.open");

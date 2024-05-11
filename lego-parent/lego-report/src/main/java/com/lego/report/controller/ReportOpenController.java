@@ -3,7 +3,7 @@ package com.lego.report.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.stp.StpUtil;
 import com.lego.core.common.Constants;
-import com.lego.core.data.hibernate.ICommonService;
+import com.lego.core.data.ICommonService;
 import com.lego.core.vo.JsonResponse;
 import com.lego.report.service.IReportOpenService;
 import com.lego.report.vo.ReportExportVO;
@@ -25,7 +25,7 @@ public class ReportOpenController {
     @Autowired
     private IReportOpenService openService;
 
-    @Autowired
+    @Autowired(required = false)
     private ICommonService commonService;
 
     @PostMapping(value = "/page")

@@ -4,9 +4,9 @@ import cn.hutool.core.io.IoUtil;
 import com.lego.core.common.Constants;
 import com.lego.core.exception.CoreException;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.util.AntPathMatcher;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
@@ -17,11 +17,11 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.sql.Clob;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Random;
@@ -71,6 +71,22 @@ public class StringUtil {
             BigDecimal bg = (BigDecimal) obj;
             return new DecimalFormat(NUMBER_PATTERN).format(bg.setScale(DEFAULT_SCALE, RoundingMode.HALF_UP));
         }
+        if (obj instanceof Clob) {
+            Clob clob = (Clob) obj;
+            try {
+                Reader is = clob.getCharacterStream();
+                BufferedReader br = new BufferedReader(is);
+                String line = br.readLine();
+                StringBuffer sb = new StringBuffer();
+                while (line != null) {
+                    sb.append(line);
+                    line = br.readLine();
+                }
+                return sb.toString();
+            } catch (Exception e) {
+                throw new CoreException("Clob转String异常！", e);
+            }
+        }
         return obj == null ? "" : String.valueOf(obj);
     }
 
@@ -85,34 +101,12 @@ public class StringUtil {
         }
     }
 
-    public static String encodeUrl(String value, String charset) {
-        try {
-            if (isBlank(value)) {
-                return value;
-            }
-            return URLEncoder.encode(value, charset);
-        } catch (UnsupportedEncodingException e) {
-            throw new CoreException("Url编码异常！", e);
-        }
-    }
-
     public static String decodeUrl(String value) {
         try {
             if (isBlank(value)) {
                 return value;
             }
             return URLDecoder.decode(value, Constants.DEFAULT_CHARSET_NAME);
-        } catch (UnsupportedEncodingException e) {
-            throw new CoreException("Url解码异常！", e);
-        }
-    }
-
-    public static String decodeUrl(String value, String charset) {
-        try {
-            if (isBlank(value)) {
-                return value;
-            }
-            return URLDecoder.decode(value, charset);
         } catch (UnsupportedEncodingException e) {
             throw new CoreException("Url解码异常！", e);
         }
@@ -130,7 +124,7 @@ public class StringUtil {
         return new String(Base64.decodeBase64(value.getBytes()), Constants.DEFAULT_CHARSET);
     }
 
-    public static String getRandomString(int length) {
+    public static String getRandom(int length) {
         String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
@@ -165,56 +159,8 @@ public class StringUtil {
         return buf.toString().toUpperCase();
     }
 
-    /**
-     * Clob转为String
-     */
-    public static String clobToString(Clob clob) {
-        String reString = "";
-        Reader is = null;
-        try {
-            is = clob.getCharacterStream();
-        } catch (SQLException e) {
-            throw new CoreException("Clob转String异常！", e);
-        }
-        BufferedReader br = new BufferedReader(is);
-        String s = null;
-        try {
-            s = br.readLine();
-        } catch (IOException e) {
-            throw new CoreException("Clob转为String出错", e);
-        }
-        StringBuffer sb = new StringBuffer();
-        while (s != null) {
-            sb.append(s);
-            try {
-                s = br.readLine();
-            } catch (IOException e) {
-                throw new CoreException("Clob转为String出错", e);
-            }
-        }
-        reString = sb.toString();
-        return reString;
-    }
-
     public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "");
-    }
-
-    public static String replaceSubString(String param, int start, int end, String replaceStr) {
-        param = param.trim();
-        if (isBlank(param)) {
-            return null;
-        }
-        StringBuffer str = new StringBuffer();
-        char[] arr = param.toCharArray();
-        for (int i = 0; i < arr.length; i++) {
-            if (start <= i && i < end) {
-                str.append(replaceStr);
-            } else {
-                str.append(arr[i]);
-            }
-        }
-        return str.toString();
     }
 
     public static String trim(String str) {
@@ -224,33 +170,11 @@ public class StringUtil {
         return str.trim();
     }
 
-    public static String trimStart(String str, String replaceStr) {
-        if (str != null && str.startsWith(replaceStr)) {
-            return str.substring(str.indexOf(replaceStr) + replaceStr.length());
-        }
-        return str;
-    }
-
-    public static String trimEnd(String str, String replaceStr) {
-        if (str != null && str.endsWith(replaceStr)) {
-            return str.substring(0, str.lastIndexOf(replaceStr));
-        }
-        return str;
-    }
-
     public static boolean equals(String originalStr, String newStr) {
         if (isBlank(originalStr)) {
             return isBlank(newStr);
         }
         return originalStr.equals(newStr);
-    }
-
-    public static String getFirstPartOfPath(String url) {
-        String[] urls = url.split("/", 3);
-        if (urls.length == 3) {
-            return "/" + urls[2];
-        }
-        return url;
     }
 
     public static String getMaxLength(String str, int maxLength) {
@@ -271,16 +195,6 @@ public class StringUtil {
     public static String format(double d) {
         BigDecimal bd = new BigDecimal(d).setScale(2, RoundingMode.UP);
         return bd.toString();
-    }
-
-    public static String formatCent(BigDecimal amount) {
-        BigDecimal centAmount = amount.multiply(new BigDecimal(100));
-        return new DecimalFormat(NUMBER_PATTERN_CENT).format(centAmount);
-    }
-
-    public static String trimToNull(Object str) {
-        String ts = trim(str.toString());
-        return isBlank(ts) ? null : ts;
     }
 
     /**
@@ -336,40 +250,6 @@ public class StringUtil {
             return "";
         }
         return str.substring(0, pos);
-    }
-
-    public static String substringBetween(String str, String open, String close) {
-        if (isBlank(str) || isBlank(open) || isBlank(close)) {
-            return null;
-        }
-        final int start = str.indexOf(open);
-        if (start != -1) {
-            final int end = str.indexOf(close, start + open.length());
-            if (end != -1) {
-                return str.substring(start + open.length(), end);
-            }
-        }
-        return null;
-    }
-
-    public static String stripStart(final String str, final String stripChars) {
-        int strLen = str == null ? 0 : str.length();
-        if (strLen == 0) {
-            return str;
-        }
-        int start = 0;
-        if (stripChars == null) {
-            while (start != strLen && Character.isWhitespace(str.charAt(start))) {
-                start++;
-            }
-        } else if (stripChars.isEmpty()) {
-            return str;
-        } else {
-            while (start != strLen && stripChars.indexOf(str.charAt(start)) != -1) {
-                start++;
-            }
-        }
-        return str.substring(start);
     }
 
     public static String join(Collection<String> values, String separator) {
@@ -468,4 +348,29 @@ public class StringUtil {
         }
         return m.appendTail(sb).toString();
     }
+
+    /**
+     * 查找指定字符串是否匹配指定字符串列表中的任意一个字符串
+     *
+     * @param str  指定字符串
+     * @param strs 需要检查的字符串数组
+     * @return 是否匹配
+     */
+    public static boolean matches(String str, List<String> strs) {
+        if (isBlank(str) || isBlank(strs)) {
+            return false;
+        }
+        for (String pattern : strs) {
+            if (isMatch(pattern, str)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isMatch(String pattern, String url) {
+        AntPathMatcher matcher = new AntPathMatcher();
+        return matcher.match(pattern, url);
+    }
+
 }

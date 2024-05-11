@@ -47,11 +47,8 @@ public class AddSysGenTableAction extends AddAction<SysGenTable, ISysGenTableDao
         table.setPackageName(vo.getPackageName());
         table.setPermissionCode(vo.getPermissionCode());
         table.setCreator(employeeDao.findByCode(operatorCode));
+        table.setDataSource(vo.getDataSource());
         return table;
     }
 
-    @Override
-    protected void postprocess() {
-        new ImportSysGenTableColumnAction(operatorCode, vo.getCode()).run();
-    }
 }

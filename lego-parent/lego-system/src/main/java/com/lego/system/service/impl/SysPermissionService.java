@@ -112,5 +112,4 @@ public class SysPermissionService extends BusService<ISysPermissionDao, SysPermi
     public void delete(String operatorCode, String code) {
         new DeleteSysPermissionAction(operatorCode, code).run();
     }
-
 }

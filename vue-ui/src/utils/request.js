@@ -7,6 +7,7 @@ import {
   removeAuth
 } from '@/utils/auth'
 import qs from 'qs'
+import store from '../store'
 import { debounce } from 'throttle-debounce'
 
 /**
@@ -107,6 +108,11 @@ service.interceptors.response.use(
         } else {
           clearCacheEnterLogin()
         }
+      } else if (res.code === 1000) {
+        confirmMessage(`会话超时，请重新登陆！`)
+        store.dispatch('LogOut').then(() => {
+          next({ path: '/' })
+        })
       } else if (res.msg) {
         errorMessage(res.msg)
       }

@@ -1,16 +1,22 @@
 package com.lego.core.exception;
 
-import java.text.MessageFormat;
-
 import com.lego.core.common.ExceptionEnum;
 
+import java.text.MessageFormat;
+
 public class CoreException extends RuntimeException {
+
     private static final long serialVersionUID = 3357231670678262776L;
     private Integer code;
 
     public CoreException(String message) {
         super(message);
         this.code = ExceptionEnum.UNKNOW_ERROR.getCode();
+    }
+
+    public CoreException(Integer code, String message) {
+        super(message);
+        this.code = code;
     }
 
     public CoreException(Throwable e) {

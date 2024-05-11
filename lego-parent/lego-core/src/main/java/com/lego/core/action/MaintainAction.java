@@ -1,9 +1,9 @@
 package com.lego.core.action;
 
 import com.lego.core.data.ActionType;
+import com.lego.core.data.ICommonService;
 import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.data.hibernate.ICommonDao;
-import com.lego.core.data.hibernate.ICommonService;
 import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.ActionVO;
@@ -32,8 +32,8 @@ public abstract class MaintainAction {
     }
 
     protected void createLog() {
-        ICommonService actionService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
-        if (StringUtil.isNotBlank(description) && actionService != null) {
+        ICommonService commonService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
+        if (StringUtil.isNotBlank(description) && commonService != null) {
             ActionVO actionVO = new ActionVO();
             actionVO.setEntityCode(getEntityCode());
             actionVO.setEntityName(getEntityName());
@@ -41,15 +41,9 @@ public abstract class MaintainAction {
             actionVO.setDescription(description);
             actionVO.setOperatorCode(operatorCode);
             actionVO.setPermissionCode(permissionCode);
-            actionService.save(actionVO);
+            commonService.addLog(actionVO);
         }
     }
-
-    protected String getEntityCode() {
-        return null;
-    }
-
-    protected abstract String getEntityName();
 
     protected abstract void doRun();
 
@@ -60,6 +54,12 @@ public abstract class MaintainAction {
     }
 
     protected abstract ActionType getActionType();
+
+    protected String getEntityCode() {
+        return null;
+    }
+
+    protected abstract String getEntityName();
 
     protected <T extends BaseEntity> T findByCode(Class<T> clazz, String code) {
         return commonDao.findByCode(clazz, code);

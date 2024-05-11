@@ -1,7 +1,6 @@
 package com.lego.core.vo;
 
 import com.alibaba.fastjson.JSON;
-import com.lego.core.util.StringUtil;
 
 import java.io.Serializable;
 
@@ -18,7 +17,7 @@ public abstract class VO implements Serializable {
 
     @Override
     public String toString() {
-        return StringUtil.toString(this);
+        return JSON.toJSONString(this);
     }
 
     @SuppressWarnings("unchecked")
