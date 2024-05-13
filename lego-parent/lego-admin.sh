@@ -11,14 +11,14 @@ APP_BASE_PATH=$(cd `dirname $0`; pwd)
 
 function start()
 {
-    nohup java -Xms512m -Xmx1g -jar -Djava.io.tmpdir=tmpdir lego-admin.jar > output.log 2>&1 &
+    nohup java -Xms512m -Xmx512m -jar -Djava.io.tmpdir=tmpdir ${project.build.finalName}.jar > output.log 2>&1 &
     echo "--------项目启动成功--------"
     echo "--------欢迎使用LegoAdmin--------"
 }
 
 function stop()
 {
-    P_ID=`ps -ef | grep -w lego-admin.jar | grep -v "grep" | awk '{print $2}'`
+    P_ID=`ps -ef | grep -w ${project.build.finalName}.jar | grep -v "grep" | awk '{print $2}'`
     kill $P_ID
     echo "--------项目已关--------"
     echo ""

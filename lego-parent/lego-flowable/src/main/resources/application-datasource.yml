@@ -28,7 +28,7 @@ spring:
           driver-class-name: ${jdbc.classname}
         crm:
           name: crm
-          url: jdbc:mysql://192.168.0.110:3306/lego-admin-crm?useunicode=true&characterEncoding=utf8&serverTimezone=GMT&nullCatalogMeansCurrent=true
-          username: root
-          password: 123456
-          driver-class-name: com.mysql.cj.jdbc.Driver
+          url: ${jdbc.crm.url}
+          username: ${jdbc.crm.username}
+          password: ${jdbc.crm.password}
+          driver-class-name: ${jdbc.crm.classname}

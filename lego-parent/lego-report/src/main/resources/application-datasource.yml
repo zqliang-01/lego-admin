@@ -27,8 +27,8 @@ spring:
           password: ${jdbc.password}
           driver-class-name: ${jdbc.classname}
         system:
-          name: 基础系统库
-          url: jdbc:mysql://192.168.0.110:3306/lego-admin-system?useunicode=true&characterEncoding=utf8&serverTimezone=GMT&nullCatalogMeansCurrent=true
-          username: root
-          password: 123456
-          driver-class-name: com.mysql.cj.jdbc.Driver
+          name: 系统基础库
+          url: ${jdbc.system.url}
+          username: ${jdbc.system.username}
+          password: ${jdbc.system.password}
+          driver-class-name: ${jdbc.system.classname}
