@@ -36,17 +36,10 @@ export default {
 
   computed: {
     ...mapGetters([
-      'menuRouters',
-      'allAuth'
+      'menuRouters'
     ]),
     currentRouters() {
       return this.menuRouters[this.appCode]
-    },
-    appName() {
-      if (this.appCode) {
-        return this.allAuth[this.appCode].title
-      }
-      return ''
     }
   }
 }

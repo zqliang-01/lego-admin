@@ -48,7 +48,9 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
     protected void doModify(SysPermission entity) {
         entity.setName(vo.getName());
         entity.setType(findByCode(SysPermissionType.class, vo.getType()));
-        entity.setRouteType(findByUnsureCode(SysPermissionRouteType.class, vo.getRouteType()));
+        if (StringUtil.isNotBlank(vo.getRouteType())) {
+            entity.setRouteType(findByUnsureCode(SysPermissionRouteType.class, vo.getRouteType()));
+        }
         entity.setIcon(vo.getIcon());
         entity.setSn(vo.getSn());
         entity.setForm(formDao.findByUnsureCode(vo.getForm()));
