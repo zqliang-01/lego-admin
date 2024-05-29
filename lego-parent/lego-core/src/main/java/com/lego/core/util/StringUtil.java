@@ -170,6 +170,9 @@ public class StringUtil {
         return str.trim();
     }
 
+    /**
+     * 都是空值也会相等，空值包含null和''
+     */
     public static boolean equals(String originalStr, String newStr) {
         if (isBlank(originalStr)) {
             return isBlank(newStr);

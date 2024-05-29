@@ -23,7 +23,7 @@ public class SysOperationLogController extends BaseController {
 
     @PostMapping("/list")
     public JsonResponse<LegoPage<SysOperationLogInfo>> list(@RequestBody SysOperationLogSearchVO vo) {
-        return JsonResponse.success(operationLogService.findBy(vo));
+        return JsonResponse.success(operationLogService.findBy(getLoginCode(), vo));
     }
 
     @PostMapping("/list-entity")

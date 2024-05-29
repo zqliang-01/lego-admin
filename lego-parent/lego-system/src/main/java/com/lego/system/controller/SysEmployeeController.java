@@ -1,6 +1,7 @@
 package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaMode;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.JsonResponse;
@@ -31,7 +32,7 @@ public class SysEmployeeController extends BaseController {
     private ISysEmployeeService employeeService;
 
     @GetMapping("/list")
-    @SaCheckPermission("manage_users_read")
+    @SaCheckPermission(value = {"manage_users_read", "manage_role"}, mode = SaMode.OR)
     public JsonResponse<LegoPage<SysEmployeeInfo>> list(SysEmployeeSearchVO vo) {
         LegoPage<SysEmployeeInfo> employees = employeeService.findBy(vo);
         return JsonResponse.success(employees);

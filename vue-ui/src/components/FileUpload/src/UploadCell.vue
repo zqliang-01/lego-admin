@@ -94,8 +94,8 @@ export default {
         .then(res => {
           this.$emit('completed', this.index, res)
         })
-        .catch(() => {
-          this.$emit('error', this.index)
+        .catch(res => {
+          this.$message.error('文件上传失败！' + res)
         })
     },
 

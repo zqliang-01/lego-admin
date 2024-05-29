@@ -110,37 +110,6 @@ export default {
 
     fieldSelect(item, index) {
       this.editor.insertContent(this.getSpanNode(item))
-      // console.log(this.editor.selection.getNode())
-      // 整单折扣 产品总金额 不能插入
-      // if (item.code != 'discount_rate' && item.code != 'total_price') {
-      //   const tableParent = this.getCurrentParentByTag('table[data-lego-table-tag="table"]')
-      //   if (tableParent) {
-      //     const headerTr = this.editor.dom.select('tr[data-lego-table-tr-tag="header"]', tableParent)
-      //     const valueTr = this.editor.dom.select('tr[data-lego-table-tr-tag="value"]', tableParent)
-      //     if (headerTr && valueTr) {
-      //       this.editor.dom.add(headerTr, 'td', { 'data-lego-table-td-tag': 'name' }, item.name)
-      //       this.editor.dom.add(valueTr, 'td', { 'data-lego-table-td-tag': 'value' }, this.getSpanNode(item, 'table-value'))
-      //       this.content = this.editor.getContent({ format: 'html' })
-      //     }
-      //   } else {
-      //     if (!this.getCurrentParentByTag('table')) {
-      //       this.editor.insertContent(this.getProductTable(item))
-      //     }
-      //   }
-      // } else {
-      //   const tableParent = this.getCurrentParentByTag('table[data-lego-table-tag="table"]')
-      //   if (!tableParent) {
-      //     // 产品下字段 整单折扣 产品总金额 用商机和合同的
-
-      //     // const parentPNode = this.getCurrentParentByTag('p')
-      //     if (item.code == 'discount_rate' || item.code == 'total_price') {
-      //       this.editor.insertContent(this.getSpanNode(item, '', 1))
-      //     } else {
-      //       this.editor.insertContent(this.getSpanNode(item))
-      //     }
-      //     this.content = this.editor.getContent({ format: 'html' })
-      //   }
-      // }
     },
 
 
@@ -149,19 +118,6 @@ export default {
      */
     getCurrentParentByTag(tag) {
       return this.editor.dom.getParent(this.editor.selection.getNode(), tag)
-    },
-
-
-    /**
-     * 获取产品表
-     */
-    getProductTable(item) {
-      return `<table data-lego-table-tag="table" style="border-collapse: collapse; width: 100%;" border="1" >
-      <tbody>
-        <tr data-lego-table-tr-tag="header"><td data-lego-table-td-tag="name">${item.name}</td></tr>
-        <tr data-lego-table-tr-tag="value"><td data-lego-table-td-tag="value">${this.getSpanNode(item, 'table-value')}</td></tr>
-      </tbody>
-      </table>`
     },
 
     /**

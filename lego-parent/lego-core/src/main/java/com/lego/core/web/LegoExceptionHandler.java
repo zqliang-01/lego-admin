@@ -9,6 +9,7 @@ import com.lego.core.common.Constants;
 import com.lego.core.common.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
+import com.lego.core.util.StringUtil;
 import com.lego.core.vo.JsonResponse;
 import feign.codec.DecodeException;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -84,6 +86,13 @@ public class LegoExceptionHandler {
         return defaultErrorHandler(response, root);
     }
 
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ModelAndView fileError(HttpServletResponse response, MaxUploadSizeExceededException e) throws IOException {
+        Integer errorCode = ExceptionEnum.PARAM_INVALID.getCode();
+        String errorMsg = StringUtil.format("文件过大，上传失败!");
+        return handlerResponse(response, errorMsg, errorCode);
+    }
+
     @ExceptionHandler(NotPermissionException.class)
     public ModelAndView permissionError(HttpServletResponse response, NotPermissionException e) throws IOException {
         Integer errorCode = ExceptionEnum.AUTHORIZATION_INVALID.getCode();
@@ -125,7 +134,7 @@ public class LegoExceptionHandler {
                 writer.close();
             }
         }
-        return new ModelAndView();
+        return null;
     }
 
     public Throwable getRootCause(Throwable throwable) {

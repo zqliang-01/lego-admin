@@ -8,6 +8,11 @@
     :placeholder="item.placeholder"
     type="text"
     @input="commonChange(item, index, $event)"/>
+  <doc-image
+    v-else-if="item.formType == 'doc_image'"
+    v-model="fieldForm[item.fieldCode]"
+    :disabled="item.disabled || disabled"
+    @value-change="commonChange(item, index, $event)"/>
   <json-editor
     v-else-if="item.formType == 'jsonEditor'"
     v-model="fieldForm[item.fieldCode]"
@@ -144,6 +149,7 @@ import SelectTree from '@/components/Common/SelectTree'
 import SelectIcon from '@/components/Common/SelectIcon'
 import RichTextEditor from '@/components/Common/RichTextEditor'
 import DeptSelect from '@/components/Common/DeptSelect'
+import DocImage from '@/components/Common/DocImage'
 
 import Mixin from './Mixin'
 
@@ -160,7 +166,8 @@ export default {
     SelectIcon,
     LegoRelativeCell,
     RichTextEditor,
-    DeptSelect
+    DeptSelect,
+    DocImage
   },
   mixins: [Mixin],
   props: {

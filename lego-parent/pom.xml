@@ -90,6 +90,7 @@
         <module>lego-flowable</module>
         <module>lego-report</module>
         <module>lego-gateway</module>
+        <module>lego-doc</module>
     </modules>
 
 	<build>

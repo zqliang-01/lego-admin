@@ -21,7 +21,6 @@ export default {
       default: () => {
         return {
           type: 'save',
-          id: '',
           detailData: {}
         }
       }

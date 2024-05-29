@@ -34,6 +34,7 @@
             AND t.table_name NOT LIKE 'act_%'
             AND t.table_name NOT LIKE 'flw_%'
             AND t.table_name NOT LIKE 'report_%'
+            AND t.table_name NOT LIKE 'doc_%'
         </where>
     </select>
 

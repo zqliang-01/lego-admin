@@ -1,7 +1,9 @@
 package com.lego.system.action;
 
+import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import com.lego.core.action.MaintainAction;
+import com.lego.core.common.Constants;
 import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
@@ -28,18 +30,18 @@ public class LoginSysEmployeeAction extends MaintainAction {
     protected void preprocess() {
         BusinessException.check(StringUtil.isNotBlank(code), "登录账号不能为空！");
         BusinessException.check(StringUtil.isNotBlank(password), "登录密码不能为空！");
+    }
 
+    @Override
+    protected void doRun() {
         SysEmployee employee = employeeDao.findByUnsureCode(code);
         BusinessException.check(employee != null, "账号[{0}]不存在！", code);
         BusinessException.check(employee.isEnable(), "账号[{0}]未激活！", code);
 
         boolean result = employee.checkPassword(password);
         BusinessException.check(result, "密码错误！");
-    }
 
-    @Override
-    protected void doRun() {
-        StpUtil.login(code);
+        StpUtil.login(code, SaLoginConfig.setExtra(Constants.DEPT_KEY, employee.getDept().getCode()));
     }
 
     @Override

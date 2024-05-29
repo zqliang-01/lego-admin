@@ -89,7 +89,7 @@ export default {
           { fieldCode: 'actualDataNodes', name: '物理表规则', formType: 'text', width: '150', required: true }
         ],
         [
-          { fieldCode: 'shardingColumn', name: '本片字段', formType: 'text', width: '150' },
+          { fieldCode: 'shardingColumn', name: '分片字段', formType: 'text', width: '150' },
           { fieldCode: 'algorithm', name: '算法', formType: 'select', width: '150', clearable: true }
         ],
         [

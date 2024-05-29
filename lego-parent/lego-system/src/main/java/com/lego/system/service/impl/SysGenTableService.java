@@ -43,7 +43,7 @@ public class SysGenTableService extends BusService<ISysGenTableDao, SysGenTableA
     public LegoPage<SysGenTableInfo> findPageBy(SysGenTableSearchVO vo) {
         GenericConditionVO conditionVO = GenericConditionVO.create(vo);
         if (StringUtil.isNotBlank(vo.getCode())) {
-            conditionVO.addItem(GenericConditionItemVO.createEqual("code", vo.getCode()));
+            conditionVO.addItem(GenericConditionItemVO.createLike("code", "%" + vo.getCode() + "%"));
         }
         LegoPage<SysGenTable> page = dao.findPageBy(conditionVO);
         return assembler.create(page);

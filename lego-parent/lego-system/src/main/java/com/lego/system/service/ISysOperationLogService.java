@@ -10,5 +10,5 @@ public interface ISysOperationLogService {
 
     List<SysOperationLogInfo> findBy(String loginCode, String entityCode, String permissionCode);
 
-    LegoPage<SysOperationLogInfo> findBy(SysOperationLogSearchVO vo);
+    LegoPage<SysOperationLogInfo> findBy(String loginCode, SysOperationLogSearchVO vo);
 }

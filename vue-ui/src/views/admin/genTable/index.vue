@@ -18,8 +18,7 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-        @onList="getList"
-        @onEdit="handleTable">
+        @onList="getList">
         <template slot-scope="scope">
           <el-button
             v-if="manage.genTable.update"

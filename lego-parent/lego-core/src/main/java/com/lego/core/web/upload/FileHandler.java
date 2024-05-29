@@ -1,16 +1,17 @@
 package com.lego.core.web.upload;
 
-import java.io.InputStream;
-
 import com.lego.core.dto.FileUploadInfo;
+
+import java.io.InputStream;
 
 public interface FileHandler {
 
-	String JOIN_STR = "-";
+    String JOIN_STR = "-";
+
     /**
      * 上传文件
      */
-	FileUploadInfo upload(InputStream inputStream, String code, String name);
+    FileUploadInfo upload(InputStream inputStream, String path, String name);
 
     /**
      * 删除文件

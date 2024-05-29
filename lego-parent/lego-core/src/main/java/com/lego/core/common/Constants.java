@@ -6,6 +6,7 @@ import java.nio.charset.Charset;
 
 public interface Constants {
 
+    String DEPT_KEY = "deptCode";
     String DEFAULT_LANG = "zh";
     String ADMIN_ROLE_CODE = "admin";
     String ADMIN_EMPLOYEE_CODE = "admin";

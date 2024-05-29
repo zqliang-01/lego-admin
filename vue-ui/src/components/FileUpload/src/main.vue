@@ -119,7 +119,7 @@ export default {
       data.res = res
       data.complete = true
       if (data.resolve) {
-        data.resolve(data)
+        data.resolve(res)
       }
     },
 

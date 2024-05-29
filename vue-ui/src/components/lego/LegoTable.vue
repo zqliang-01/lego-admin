@@ -126,9 +126,6 @@ export default {
       this.tableCurrentPage = val
       this.getList()
     },
-    handleTable(type, item, index) {
-      this.$emit('onEdit', type, item, index)
-    },
     handleField(data, row) {
       this.$emit('onClickField', data, row)
     }

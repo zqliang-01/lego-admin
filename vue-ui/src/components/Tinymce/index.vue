@@ -28,32 +28,15 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    /**
-     *  apiKey: String,
-        cloudChannel: String,
-        id: String,
-        init: Object,
-        initialValue: String,
-        inline: Boolean,
-        modelEvents: [String, Array],
-        plugins: [String, Array],
-        tagName: String,
-        toolbar: [String, Array],
-        value: String,
-        disabled: Boolean,
-        tinymceScriptSrc: String,
-        outputFormat: {
-          type: String,
-          validator: (prop: string) => prop === 'html' || prop === 'text'
-        }
-     */
     disabled: Boolean,
     value: String,
     init: Object,
     height: [String, Number],
     plugins: [String, Array],
     toolbar: [String, Array],
-    menubar: [String, Array]
+    menubar: [String, Array],
+    uploadAPI: Function,
+    previewUrl: String
   },
   data() {
     return {
@@ -72,13 +55,23 @@ export default {
     editor() {
       return window.tinymce.get(this.id)
     },
-
     showToolbar() {
       return this.toolbar != undefined ? this.toolbar : toolbar
     },
-
     showPlugins() {
       return this.plugins != undefined ? this.plugins : plugins
+    },
+    tinymceRequestAPI() {
+      if (this.uploadAPI) {
+        return this.uploadAPI
+      }
+      return fileUploadAPI
+    },
+    tinymcePreviewUrl() {
+      if (this.previewUrl) {
+        return this.previewUrl
+      }
+      return filePreviewUrl
     }
   },
   watch: {
@@ -106,6 +99,8 @@ export default {
   },
   methods: {
     initTinymce() {
+      var requestAPI = this.tinymceRequestAPI
+      var previewUrl = this.tinymcePreviewUrl
       const initDefault = {
         skin: 'lego',
         resize: false,
@@ -134,12 +129,12 @@ export default {
         toolbar_mode: 'sliding',
         images_upload_handler: function(blobInfo, success, failure, progress) {
           progress(0)
-          fileUploadAPI({
+          requestAPI({
             file: blobInfo.blob(),
             entityCode: 'manage',
             permissionCode: 'manage'
           }).then(res => {
-            success(filePreviewUrl + res.data)
+            success(previewUrl + res.data)
             progress(100)
           }).catch(res => {
             failure(res.msg)
@@ -151,46 +146,11 @@ export default {
       /**
        * statusbar 隐藏底部状态栏
        */
-
       if (this.height != undefined) {
         initDefault.height = this.height
       }
 
       this.showInit = initDefault
-
-      // 整合七牛上传
-      // images_dataimg_filter(img) {
-      //   setTimeout(() => {
-      //     const $image = $(img);
-      //     $image.removeAttr('width');
-      //     $image.removeAttr('height');
-      //     if ($image[0].height && $image[0].width) {
-      //       $image.attr('data-wscntype', 'image');
-      //       $image.attr('data-wscnh', $image[0].height);
-      //       $image.attr('data-wscnw', $image[0].width);
-      //       $image.addClass('wscnph');
-      //     }
-      //   }, 0);
-      //   return img
-      // },
-      // images_upload_handler(blobInfo, success, failure, progress) {
-      //   progress(0);
-      //   const token = _this.$store.getters.token;
-      //   getToken(token).then(response => {
-      //     const url = response.data.qiniu_url;
-      //     const formData = new FormData();
-      //     formData.append('token', response.data.qiniu_token);
-      //     formData.append('key', response.data.qiniu_key);
-      //     formData.append('file', blobInfo.blob(), url);
-      //     upload(formData).then(() => {
-      //       success(url);
-      //       progress(100);
-      //     })
-      //   }).catch(err => {
-      //     failure('出现未知问题，刷新页面，或者联系程序员')
-      //     console.log(err);
-      //   });
-      // },
     },
     uuid() {
       const time = Date.now()
@@ -198,7 +158,7 @@ export default {
 
       unique++
 
-      return 'huge_' + random + unique + String(time)
+      return 'lego_' + random + unique + String(time)
     },
     imageSuccessCBK(arr) {
       arr.forEach(v => {

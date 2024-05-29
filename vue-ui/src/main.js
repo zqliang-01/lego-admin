@@ -25,8 +25,6 @@ import VueBus from 'vue-bus'
 Vue.use(VueBus)
 import FileUpload from '@/components/FileUpload/index.js'
 Vue.use(FileUpload)
-import FileSelect from '@/components/Common/File/Select/main.js'
-Vue.use(FileSelect)
 import PreviewFile from '@/components/PreviewFile/main.js'
 Vue.use(PreviewFile)
 // 限制数据数值

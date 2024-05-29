@@ -48,7 +48,7 @@ public class AddSysFileAction extends AddAction<SysFile, ISysFileDao> {
         file.setSize(springFile.getSize());
         file.setType(getFileType());
 
-        FileUploadInfo uploadInfo = uploadFile(file.getCode());
+        FileUploadInfo uploadInfo = uploadFile();
         file.setPath(uploadInfo.getPath());
         file.setCreator(findByCode(SysEmployee.class, operatorCode));
         file.setLocation(findByCode(SysFileLocation.class, uploadInfo.getLocationCode()));
@@ -56,9 +56,9 @@ public class AddSysFileAction extends AddAction<SysFile, ISysFileDao> {
         return file;
     }
 
-    private FileUploadInfo uploadFile(String code) {
+    private FileUploadInfo uploadFile() {
         try {
-            return fileHandler.upload(springFile.getInputStream(), code, fileName);
+            return fileHandler.upload(springFile.getInputStream(), "sys", fileName);
         } catch (Exception e) {
             throw new CoreException("附件上传失败", e);
         }

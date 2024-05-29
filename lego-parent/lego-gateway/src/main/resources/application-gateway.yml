@@ -20,6 +20,12 @@ spring:
             - Path=/back-end/report-*/**
           filters:
             - StripPrefix=1
+        - id: doc
+          uri: lb://doc
+          predicates:
+            - Path=/back-end/doc-*/**
+          filters:
+            - StripPrefix=1
 lego:
   open-request-log: true
   # 防止XSS攻击

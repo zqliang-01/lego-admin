@@ -1,5 +1,6 @@
 package com.lego.system.service.impl;
 
+import com.lego.core.common.Constants;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.util.StringUtil;
@@ -36,10 +37,13 @@ public class SysOperationLogService extends BusService<ISysOperationLogDao, SysO
     }
 
     @Override
-    public LegoPage<SysOperationLogInfo> findBy(SysOperationLogSearchVO vo) {
+    public LegoPage<SysOperationLogInfo> findBy(String loginCode, SysOperationLogSearchVO vo) {
         GenericConditionVO condition = GenericConditionVO.create(vo);
         if (StringUtil.isNotBlank(vo.getDescription())) {
             condition.addItem(GenericConditionItemVO.createLike("description", "%" + vo.getDescription() + "%"));
+        }
+        if (!Constants.ADMIN_EMPLOYEE_CODE.equals(loginCode)) {
+            condition.addItem(new GenericConditionItemVO(GenericSearchConditionEnum.NOT_EQUALS, CustomFieldTypeEnum.ENTITY, "operator", Constants.ADMIN_EMPLOYEE_CODE));
         }
         if (StringUtil.isNotBlank(vo.getOperatorCode())) {
             condition.addItem(GenericConditionItemVO.createEqual(CustomFieldTypeEnum.ENTITY, "operator", vo.getOperatorCode()));
