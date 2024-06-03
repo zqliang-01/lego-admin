@@ -18,7 +18,7 @@ const layout = function(menu, requiresAuth = true) {
   }
 }
 
-export default [
+export default { type: 'oa', router: [
   {
     ...layout({
       code: 'oa_start',
@@ -78,5 +78,5 @@ export default [
         icon: 'icon-task-state'
       }
     })
-  }
-]
+  }]
+}

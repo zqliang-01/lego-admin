@@ -12,7 +12,7 @@ const layout = function(meta = {}, path = '/home', requiresAuth = false) {
   }
 }
 
-const homeRouter = [
+export default { type: 'home', router: [
   {
     ...layout(),
     children: [{
@@ -44,7 +44,5 @@ const homeRouter = [
       icon: 'print',
       requiresAuth: false
     }
-  }
-]
-
-export default homeRouter
+  }]
+}

@@ -17,7 +17,7 @@ const layout = function(menu, requiresAuth = true) {
   }
 }
 
-const crmRouter = [
+export default { type: 'crm', router: [
   {
     ...layout({
       code: 'crm_lead',
@@ -28,7 +28,5 @@ const crmRouter = [
         icon: 'icon-title'
       }
     })
-  }
-]
-
-export default crmRouter
+  }]
+}

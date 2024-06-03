@@ -40,11 +40,9 @@ public abstract class FlowableTaskAction extends MaintainAction {
     protected void preprocess() {
         SysEmployee employee = employeeDao.findByCode(operatorCode);
         TaskQuery taskQuery = taskService.createTaskQuery().active().taskId(taskId);
-        if (!employee.isAdmin()) {
-            List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
-            candidateGroups.add(EntityUtil.getCode(employee.getDept()));
-            taskQuery.taskCandidateOrAssigned(operatorCode).taskCandidateGroupIn(candidateGroups);
-        }
+        List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
+        candidateGroups.add(EntityUtil.getCode(employee.getDept()));
+        taskQuery.taskCandidateOrAssigned(operatorCode).taskCandidateGroupIn(candidateGroups);
         this.task = taskQuery.singleResult();
         BusinessException.check(this.task != null, "当前任务审核人非[{0}]，审核失败！", operatorCode);
     }

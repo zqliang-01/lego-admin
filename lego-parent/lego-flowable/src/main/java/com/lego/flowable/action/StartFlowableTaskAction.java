@@ -10,7 +10,6 @@ import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.engine.IdentityService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
-import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
@@ -25,7 +24,6 @@ public class StartFlowableTaskAction extends MaintainAction {
     private String definitionId;
     private Map<String, Object> variables;
 
-    private TaskService taskService = LegoBeanFactory.getBean(TaskService.class);
     private RuntimeService runtimeService = LegoBeanFactory.getBean(RuntimeService.class);
     private IdentityService identityService = LegoBeanFactory.getBean(IdentityService.class);
     private RepositoryService repositoryService = LegoBeanFactory.getBean(RepositoryService.class);

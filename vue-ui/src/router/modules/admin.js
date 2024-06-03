@@ -17,11 +17,10 @@ const layout = function(menu, requiresAuth = true) {
   }
 }
 
-export default [
+export default { type: 'manage', router: [
   {
     ...layout({
       code: 'manage_system',
-      name: 'systemconfig',
       path: 'systemconfig', // 企业首页
       component: () => import('@/views/admin/config'),
       meta: {
@@ -33,7 +32,6 @@ export default [
   {
     ...layout({
       code: 'manage_configSet',
-      name: 'application',
       path: 'application', // 应用管理
       component: () => import('@/views/admin/application'),
       meta: {
@@ -45,7 +43,6 @@ export default [
   {
     ...layout({
       code: 'manage_users',
-      name: 'EmployeeDept',
       path: 'employee-dept',
       component: () => import('@/views/admin/employee'),
       meta: {
@@ -57,7 +54,6 @@ export default [
   {
     ...layout({
       code: 'manage_role',
-      name: 'RoleAuth',
       path: 'role-auth',
       component: () => import('@/views/admin/roleAuth'),
       meta: {
@@ -69,7 +65,6 @@ export default [
   {
     ...layout({
       code: 'manage_genTable',
-      name: 'genTableList',
       path: 'gen-table-list',
       component: () => import('@/views/admin/genTable'),
       meta: {
@@ -92,7 +87,6 @@ export default [
   {
     ...layout({
       code: 'manage_customForm',
-      name: 'customForm',
       path: 'custom-form',
       component: () => import('@/views/admin/customForm'),
       meta: {
@@ -127,7 +121,6 @@ export default [
   {
     ...layout({
       code: 'manage_printTemplate',
-      name: 'printTemplate',
       path: 'print-template',
       component: () => import('@/views/admin/printTemplate'),
       meta: {
@@ -246,7 +239,6 @@ export default [
   {
     ...layout({
       code: 'manage_notice',
-      name: 'Notice',
       path: 'notice',
       component: () => import('@/views/admin/notice'),
       meta: {
@@ -258,7 +250,6 @@ export default [
   {
     ...layout({
       code: 'manage_log',
-      name: 'Log',
       path: 'log',
       component: () => import('@/views/admin/log'),
       meta: {
@@ -277,5 +268,5 @@ export default [
         sn: 9999
       }
     }, false)
-  }
-]
+  }]
+}

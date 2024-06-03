@@ -1,4 +1,5 @@
-call mvn -f lego-parent\ clean
-call mvn -f lego-parent\ test -Dui.exec=y
-call mvn -f lego-parent\ package
+cd lego-parent
+call mvn clean
+call mvn test -Dui.exec=y
+call mvn package
 pause

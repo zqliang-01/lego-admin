@@ -82,18 +82,81 @@
 	</dependencyManagement>
 
 	<modules>
-		<module>lego-core</module>
-		<module>lego-sharding</module>
-		<module>lego-system</module>
     	<module>lego-crm</module>
 		<module>lego-admin</module>
         <module>lego-flowable</module>
         <module>lego-report</module>
         <module>lego-gateway</module>
         <module>lego-doc</module>
-    </modules>
+		<module>lego-plugin</module>
+	</modules>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-dependency-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>copy-dependencies</id>
+							<phase>package</phase>
+							<goals>
+								<goal>copy-dependencies</goal>
+							</goals>
+							<configuration>
+								<outputDirectory>
+									${project.build.directory}/lib/
+								</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<configuration>
+						<appendAssemblyId>false</appendAssemblyId>
+						<descriptors>
+							<descriptor>script/assembly.xml</descriptor>
+						</descriptors>
+					</configuration>
+					<executions>
+						<execution>
+							<id>make-assembly</id>
+							<phase>package</phase>
+							<goals>
+								<goal>single</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-resources-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>copy-package</id>
+							<phase>package</phase>
+							<goals>
+								<goal>copy-resources</goal>
+							</goals>
+							<configuration>
+								<resources>
+									<resource>
+										<directory>${project.build.directory}</directory>
+										<includes>
+											<include>*.tar.gz</include>
+										</includes>
+									</resource>
+								</resources>
+								<outputDirectory>${project.parent.basedir}/../package</outputDirectory>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -133,7 +196,7 @@
 						</goals>
 						<configuration>
 							<target if="sql.exec">
-								<ant antfile="run-sql.xml" target="default" inheritAll="false">
+								<ant antfile="script/run-sql.xml" target="default" inheritAll="false">
 									<property name="driver_classpath" refid="maven.test.classpath"/>
 								</ant>
 							</target>
@@ -147,7 +210,7 @@
 						</goals>
 						<configuration>
 							<target if="sql-update.exec">
-								<ant antfile="run-sql.xml" target="update" inheritAll="false">
+								<ant antfile="script/run-sql.xml" target="update" inheritAll="false">
 									<property name="driver_classpath" refid="maven.test.classpath"/>
 								</ant>
 							</target>
@@ -161,7 +224,7 @@
 						</goals>
 						<configuration>
 							<target if="ui.exec">
-								<ant antfile="build-ui.xml" target="default" inheritAll="false"/>
+								<ant antfile="script/build-ui.xml" target="default" inheritAll="false"/>
 							</target>
 						</configuration>
 					</execution>
@@ -173,7 +236,7 @@
 						</goals>
 						<configuration>
 							<target>
-								<ant antfile="build-ui.xml" target="clean" inheritAll="false"/>
+								<ant antfile="script/build-ui.xml" target="clean" inheritAll="false"/>
 							</target>
 						</configuration>
 					</execution>

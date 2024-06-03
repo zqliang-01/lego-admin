@@ -17,7 +17,7 @@ const layout = function(menu, requiresAuth = true) {
   }
 }
 
-const reportRouter = [
+export default { type: 'report', router: [
   {
     ...layout({
       code: 'report_definition',
@@ -28,7 +28,5 @@ const reportRouter = [
         icon: 'icon-title'
       }
     })
-  }
-]
-
-export default reportRouter
+  }]
+}

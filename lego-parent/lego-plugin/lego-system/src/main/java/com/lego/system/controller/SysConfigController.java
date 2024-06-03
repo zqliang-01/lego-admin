@@ -1,7 +1,6 @@
 package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.alibaba.fastjson.JSONObject;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysAppInfo;
@@ -75,25 +74,5 @@ public class SysConfigController extends BaseController {
         validList.remove(code);
         configService.update(validList, SysConfigCode.APP_VALID_LIST);
         return JsonResponse.success();
-    }
-
-    @GetMapping("/getMessageNum")
-    public JsonResponse<JSONObject> getMessageNum() {
-        JSONObject obj = new JSONObject();
-        obj.put("totalNum", 10);
-        return JsonResponse.success(obj);
-    }
-
-    @GetMapping("/getUnreadMessageNum")
-    public JsonResponse<JSONObject> getUnreadMessageNum() {
-        JSONObject obj = new JSONObject();
-        obj.put("allCount", 10);
-        obj.put("announceCount", 10);
-        obj.put("crmCount", 10);
-        obj.put("eventCount", 10);
-        obj.put("examineCount", 10);
-        obj.put("logCount", 10);
-        obj.put("taskCount", 10);
-        return JsonResponse.success(obj);
     }
 }

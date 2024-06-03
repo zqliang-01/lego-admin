@@ -2,15 +2,15 @@
 <project name="lego" default="default">
 
     <property environment="env"/>
-    <property file="./lego-admin/src/main/resources/application.properties"/>
+    <property file="../lego-admin/src/main/resources/application.properties"/>
     <property name="temp.sql.path" value="./.temp"/>
 	
     <target name="default" description="执行全量SQL">
-        <runsqldir sql.dir="sql/init" encoding="utf-8"/>
+        <runsqldir sql.dir="../sql/init" encoding="utf-8"/>
     </target>
 
 	<target name="update" description="执行更新SQL">
-		<runsqldir sql.dir="sql/update" encoding="utf-8"/>
+		<runsqldir sql.dir="../sql/update" encoding="utf-8"/>
 	</target>
 
 	<macrodef name="runsqldir">

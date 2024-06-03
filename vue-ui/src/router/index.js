@@ -1,15 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import syncRouter from './modules/index'
 
 Vue.use(Router)
-
-import homeRouter from './modules/home'
-import userRouter from './modules/user'
-import adminRouter from './modules/admin'
-import oaRouter from './modules/oa'
-import crmRouter from './modules/crm'
-import reportRouter from './modules/report'
-import docRouter from './modules/doc'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -35,7 +28,20 @@ export const constantRouterMap = [
     component: () => import('@/views/404'),
     hidden: true
   },
-  userRouter,
+  {
+    path: '/person',
+    component: () => import('@/views/layout/UserLayout'),
+    redirect: '/person/index',
+    name: 'person',
+    hidden: true,
+    meta: {
+      title: '个人中心'
+    },
+    children: [{
+      path: 'index',
+      component: () => import('@/views/user/index')
+    }]
+  },
   {
     path: '*',
     redirect: '/404',
@@ -58,12 +64,4 @@ export function resetRouter() {
 }
 
 export default router
-
-export const asyncRouterMap = [
-  { type: 'home', router: homeRouter },
-  { type: 'manage', router: adminRouter },
-  { type: 'oa', router: oaRouter },
-  { type: 'crm', router: crmRouter },
-  { type: 'report', router: reportRouter },
-  { type: 'doc', router: docRouter }
-]
+export const asyncRouterMap = syncRouter

@@ -18,7 +18,19 @@ const layout = function(menu, requiresAuth = true) {
   }
 }
 
-export default [
+export default { type: 'doc', router: [
+  {
+    ...layout({
+      path: 'public',
+      component: () => import('@/views/doc/public'),
+      meta: {
+        title: '公共知识库',
+        icon: 'customer',
+        isMenu: true,
+        sn: 51
+      }
+    }, false)
+  },
   {
     ...layout({
       code: 'doc_book',
@@ -67,18 +79,6 @@ export default [
   },
   {
     ...layout({
-      path: 'public',
-      component: () => import('@/views/doc/public'),
-      meta: {
-        title: '公共知识库',
-        icon: 'customer',
-        isMenu: true,
-        sn: 53
-      }
-    }, false)
-  },
-  {
-    ...layout({
       code: 'doc_recycle',
       path: 'recycle',
       component: () => import('@/views/doc/recycle'),
@@ -87,5 +87,5 @@ export default [
         icon: 'recycle-bin'
       }
     })
-  }
-]
+  }]
+}

@@ -133,11 +133,11 @@ export default {
       })
     },
     handleSizeChange(val) {
-      this.tablePageSize = val
+      this.pageSize = val
       this.getList()
     },
     handleCurrentChange(val) {
-      this.tableCurrentPage = val
+      this.currentPage = val
       this.getList()
     },
     handleFileImage(name) {

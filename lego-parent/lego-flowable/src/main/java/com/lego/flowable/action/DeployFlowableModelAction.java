@@ -6,7 +6,6 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
-import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.Deployment;
@@ -20,7 +19,6 @@ public class DeployFlowableModelAction extends MaintainAction {
     private String id;
 
     private RepositoryService repositoryService = LegoBeanFactory.getBean(RepositoryService.class);
-    private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
 
     public DeployFlowableModelAction(String operatorCode, String id) {
         super(SysPermissionCode.manageWorkFlowModel, operatorCode);

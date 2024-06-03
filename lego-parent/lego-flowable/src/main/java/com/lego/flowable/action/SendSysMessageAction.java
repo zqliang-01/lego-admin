@@ -8,7 +8,6 @@ import com.lego.core.vo.SysMessageCreateVO;
 import com.lego.core.vo.SysMessageTypeEnum;
 import com.lego.core.web.LegoBeanFactory;
 import com.lego.system.vo.SysPermissionCode;
-import org.flowable.engine.RuntimeService;
 import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
 
@@ -19,7 +18,6 @@ public class SendSysMessageAction extends MaintainAction {
     private String instanceId;
 
     private TaskService taskService = LegoBeanFactory.getBean(TaskService.class);
-    private RuntimeService runtimeService = LegoBeanFactory.getBean(RuntimeService.class);
 
     public SendSysMessageAction(String operatorCode, String instanceId) {
         super(SysPermissionCode.manageWorkFlow, operatorCode);

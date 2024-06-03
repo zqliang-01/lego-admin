@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="build-ui" basedir="." default="default">
 
-    <property name="os.type" value="${os.name}"/>
-    <property name="ui.root" value="${basedir}/../vue-ui"/>
-    <property name="ui.target" value="${basedir}/lego-admin/target/public"/>
-    <property name="ui.target.microservice" value="${basedir}/lego-gateway/target/public"/>
+    <property name="ui.root" value="${basedir}/../../vue-ui"/>
+    <property name="package.root" value="${basedir}/../../package"/>
+    <property name="ui.target" value="${basedir}/../lego-admin/target/public"/>
+    <property name="ui.target.gateway" value="${basedir}/../lego-gateway/target/public"/>
 
     <target name="default" depends="install,package,deploy"/>
 
@@ -43,15 +43,18 @@
         <copy todir="${ui.target}" overwrite="true">
             <fileset dir="${ui.root}/dist"/>
         </copy>
-        <delete dir="${ui.target.microservice}" failonerror="true"/>
-        <copy todir="${ui.target.microservice}" overwrite="true">
+        <delete dir="${ui.target.gateway}" failonerror="true"/>
+        <copy todir="${ui.target.gateway}" overwrite="true">
             <fileset dir="${ui.root}/dist"/>
         </copy>
     </target>
 
     <target name="clean">
-        <echo message="前端清理"/>
+        <echo message="前端清理：${ui.root}"/>
         <delete dir="${ur.root}/dist" failonerror="true"/>
         <delete dir="${ui.target}" failonerror="true"/>
+
+        <echo message="前端后端：${package.root}"/>
+        <delete dir="${package.root}" failonerror="true"/>
     </target>
 </project>
