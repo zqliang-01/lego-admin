@@ -8,14 +8,14 @@ import javax.persistence.MappedSuperclass;
 @Getter
 @Setter
 @MappedSuperclass
-public abstract class SimpleType extends BaseEntity {
+public abstract class Dictionary extends BaseEntity {
 
     private Integer serialNumber;
 
-    protected SimpleType() {
+    protected Dictionary() {
     }
 
-    protected SimpleType(String name, int serialNumber) {
+    protected Dictionary(String name, Integer serialNumber) {
         super(name);
         this.serialNumber = serialNumber;
     }

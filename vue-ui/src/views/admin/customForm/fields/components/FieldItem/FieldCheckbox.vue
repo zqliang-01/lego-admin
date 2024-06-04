@@ -41,7 +41,7 @@
 <script>
 import FieldWrapper from './FieldWrapper'
 import mixins from './mixins'
-import { dictListAPI } from '@/api/crm/common'
+import { dictListAPI } from '@/api/dictionary'
 
 export default {
   name: 'FieldCheckbox',

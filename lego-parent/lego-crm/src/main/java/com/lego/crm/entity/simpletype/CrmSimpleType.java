@@ -20,4 +20,8 @@ public abstract class CrmSimpleType extends SimpleType {
 
     protected CrmSimpleType() {
     }
+
+    protected CrmSimpleType(String name, int serialNumber) {
+        super(name, serialNumber);
+    }
 }

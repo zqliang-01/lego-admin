@@ -64,7 +64,7 @@
               :is-table-child="isTableChild" />
             <setting-dict-type
               v-if="dataResourceRadio == 'dict'"
-              :dict-type-list="dictTypeList"
+              :app-code="appCode"
               :field="field" />
           </div>
         </template>
@@ -197,10 +197,6 @@ export default {
       required: true
     },
     point: { // 被选中的字段坐标
-      type: Array,
-      required: true
-    },
-    dictTypeList: {
       type: Array,
       required: true
     }

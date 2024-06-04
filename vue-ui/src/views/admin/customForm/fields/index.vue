@@ -84,7 +84,6 @@
         :field-list="fieldList"
         :app-code="appCode"
         :column-list="columnList"
-        :dict-type-list="dictTypeList"
         @update-width="handleUpdateFieldWidth" />
     </flexbox-item>
   </flexbox>
@@ -96,7 +95,6 @@ import {
   customFieldInitListAPI,
   customFieldListAPI
 } from '@/api/admin/formField'
-import { dictTypeListAPI } from '@/api/crm/common'
 import { isEmpty } from '@/utils/types'
 import { objDeepCopy } from '@/utils/index'
 
@@ -152,8 +150,7 @@ export default {
       fieldList: [],
       rejectHandle: true, // 请求未获取前不能操作
       selectedPoint: [null, null],
-      selectedField: null,
-      dictTypeList: []
+      selectedField: null
     }
   },
   created() {
@@ -173,7 +170,6 @@ export default {
         this.appCode = res.data.appCode
         this.tableName = res.data.tableName
         this.columnList = res.data.columns
-        this.getDictType()
         if (this.fieldList.length > 0) {
           this.handleSelect([0, 0])
         }
@@ -209,6 +205,7 @@ export default {
      */
     dragLeftEnd(evt) {
       if (this.rejectHandle) {
+        this.$message.error('表单未初始化，无法编辑！')
         return
       }
       const newField = new Field({
@@ -496,7 +493,6 @@ export default {
         this.appCode = res.data.appCode
         this.tableName = res.data.tableName
         this.columnList = res.data.columns
-        this.getDictType()
         if (this.fieldList.length > 0) {
           this.handleSelect([0, 0])
         }
@@ -512,7 +508,10 @@ export default {
      * 保存
      */
     handleSave() {
-      if (this.rejectHandle) return
+      if (this.rejectHandle) {
+        this.$message.error('表单未初始化，保存失败！')
+        return
+      }
       const arr = []
       // 追加坐标
       objDeepCopy(this.fieldList).forEach((father, fatherIndex) => {
@@ -544,20 +543,9 @@ export default {
         this.$message.success('操作成功')
         this.loading = false
         this.getFieldList()
-      })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    getDictType() {
-      this.loading = true
-      dictTypeListAPI(this.appCode).then(res => {
-        this.dictTypeList = res.data
+      }).catch(() => {
         this.loading = false
       })
-        .catch(() => {
-          this.loading = false
-        })
     },
 
     /**

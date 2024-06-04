@@ -4,7 +4,8 @@ import { getFormFieldValue } from '@/components/Common/Form/utils'
 import { codeGeneratorGenerateAPI } from '@/api/admin/codeGenerator'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { deptSimpleListAPI } from '@/api/admin/dept'
-import { postRequest, fileRequest, codeGetRequest, dictListAPI } from '@/api/crm/common'
+import { postRequest, fileRequest, codeGetRequest } from '@/api/crm/common'
+import { dictListAPI } from '@/api/dictionary'
 
 export default {
   computed: {

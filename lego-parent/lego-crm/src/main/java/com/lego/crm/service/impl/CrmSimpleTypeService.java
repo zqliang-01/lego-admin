@@ -15,7 +15,7 @@ public class CrmSimpleTypeService extends BaseService implements ICrmSimpleTypeS
     @Override
     public List<TypeInfo> findDictionaryType() {
         List<CrmDictionaryType> types = commonDao.findAll(CrmDictionaryType.class);
-        return EntityUtil.toTypeInfo(types);
+        return EntityUtil.toSimpleTypeInfo(types);
     }
 
 }
