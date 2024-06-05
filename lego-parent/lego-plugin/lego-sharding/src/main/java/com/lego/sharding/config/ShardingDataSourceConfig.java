@@ -135,7 +135,7 @@ public class ShardingDataSourceConfig {
         List<Long> configIds = ruleConfigMapper.selectValid();
 
         for (Long id : configIds) {
-            if (configId != null && configId != id) {
+            if (configId != null && !configId.equals(id)) {
                 continue;
             }
             createTableRuleConfig(session, config, id);

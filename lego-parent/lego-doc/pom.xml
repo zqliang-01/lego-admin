@@ -38,7 +38,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>com.lego.crm.LegoDocApplication</mainClass>
+                            <mainClass>com.lego.doc.LegoDocApplication</mainClass>
                         </manifest>
                     </archive>
                     <outputDirectory>${project.build.directory}</outputDirectory>

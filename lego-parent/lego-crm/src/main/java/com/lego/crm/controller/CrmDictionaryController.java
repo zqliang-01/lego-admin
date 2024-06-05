@@ -1,5 +1,6 @@
 package com.lego.crm.controller;
 
+import com.lego.core.dto.DictionaryInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.DictionaryTypeVO;
 import com.lego.core.vo.DictionaryVO;
@@ -31,8 +32,13 @@ public class CrmDictionaryController extends BaseController {
         return JsonResponse.success(simpleTypeService.findDictionaryType());
     }
 
+    @GetMapping("/list-simple")
+    public JsonResponse<List<TypeInfo>> listSimple(String typeCode) {
+        return JsonResponse.success(dictionaryService.findSimpleByType(typeCode));
+    }
+
     @GetMapping("/list")
-    public JsonResponse<List<TypeInfo>> list(String typeCode) {
+    public JsonResponse<List<DictionaryInfo>> list(String typeCode) {
         return JsonResponse.success(dictionaryService.findByType(typeCode));
     }
 

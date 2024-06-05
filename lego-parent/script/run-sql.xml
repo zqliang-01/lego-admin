@@ -13,6 +13,10 @@
 		<runsqldir sql.dir="../sql/update" encoding="utf-8"/>
 	</target>
 
+	<target name="test" description="执行更新SQL">
+		<runsqldir sql.dir="../sql/test" encoding="utf-8"/>
+	</target>
+
 	<macrodef name="runsqldir">
 		<attribute name="sql.dir"/>
 		<attribute name="encoding" default="gbk"/>

@@ -11,4 +11,5 @@ public class DictionaryVO extends VO {
     private String code;
     private String name;
     private int sn;
+    private boolean enable;
 }

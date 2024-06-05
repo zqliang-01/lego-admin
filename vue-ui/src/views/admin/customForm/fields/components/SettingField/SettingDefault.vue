@@ -77,7 +77,7 @@
 </template>
 
 <script>
-import { dictListAPI } from '@/api/dictionary'
+import { dictSimpleListAPI } from '@/api/dictionary'
 import LegoCodeGenerator from '@/components/lego/LegoCodeGenerator'
 
 import { isEmpty } from '@/utils/types'
@@ -146,7 +146,7 @@ export default {
     getOptions() {
       const field = this.field
       if (this.appCode && field.optionDataType === 'dict' && field.optionDictType) {
-        dictListAPI(this.appCode, field.optionDictType).then(res => {
+        dictSimpleListAPI(this.appCode, field.optionDictType).then(res => {
           this.options = res.data
         })
       }

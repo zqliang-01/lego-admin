@@ -1,5 +1,11 @@
 import request from '@/utils/request'
 
+export function dictSimpleListAPI(model, type) {
+  return request({
+    url: '/back-end/' + model + '-dict/list-simple?typeCode=' + type
+  })
+}
+
 export function dictListAPI(model, type) {
   return request({
     url: '/back-end/' + model + '-dict/list?typeCode=' + type

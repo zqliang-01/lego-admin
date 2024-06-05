@@ -5,7 +5,7 @@ import { codeGeneratorGenerateAPI } from '@/api/admin/codeGenerator'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { deptSimpleListAPI } from '@/api/admin/dept'
 import { postRequest, fileRequest, codeGetRequest } from '@/api/crm/common'
-import { dictListAPI } from '@/api/dictionary'
+import { dictSimpleListAPI } from '@/api/dictionary'
 
 export default {
   computed: {
@@ -73,7 +73,7 @@ export default {
       }
       if (field.optionDataType === 'dict' &&
         field.optionDictType) {
-        dictListAPI(this.appCode, field.optionDictType).then(res => {
+        dictSimpleListAPI(this.appCode, field.optionDictType).then(res => {
           field.setting = res.data
         })
       }

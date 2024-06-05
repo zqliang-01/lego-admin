@@ -56,14 +56,26 @@
             :prop="item.field"
             :label="item.name"
             :width="item.width"
+            :align="item.align"
             header-align="center">
             <template slot-scope="{ row }">
-              <el-input
-                v-if="row.show && !item.readOnly"
-                v-model="row[item.field]" />
-              <span v-else>
-                {{ row[item.field] }}
-              </span>
+              <template v-if="row.show && !item.readOnly">
+                <el-switch
+                  v-if="item.type === 'boolean'"
+                  v-model="row[item.field]" />
+                <el-input
+                  v-else
+                  v-model="row[item.field]" />
+              </template>
+              <template v-else>
+                <el-switch
+                  v-if="item.type === 'boolean'"
+                  :disabled="true"
+                  v-model="row[item.field]" />
+                <span v-else>
+                  {{ row[item.field] }}
+                </span>
+              </template>
             </template>
           </el-table-column>
           <el-table-column :resizable="false" label="操作" width="200" align="center">
@@ -86,23 +98,24 @@
         </el-table>
       </div>
       <el-dialog
-        :visible.sync="showCreate"
+        :visible.sync="showDialog"
         append-to-body
-        title="新增字典数据"
+        :title="dialogTitle"
         width="500px">
         <flexbox
           class="nav-dialog-div"
           v-for="(item, index) in titleList"
           :key="index">
-          <label>{{ item.name }}：</label>
-          <el-input
-            :type="item.type"
-            :disabled="item.readOnly"
-            v-model="submitForm[item.field]"
-            placeholder="请输入内容" />
+          <template v-if="item.field !== 'enable'">
+            <label>{{ item.name }}：</label>
+            <el-input
+              :disabled="item.readOnly"
+              v-model="submitForm[item.field]"
+              placeholder="请输入内容" />
+          </template>
         </flexbox>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="showCreate = false">取 消</el-button>
+          <el-button @click="showDialog = false">取 消</el-button>
           <el-button type="primary" @click="submitDialog">确 定</el-button>
         </span>
       </el-dialog>
@@ -152,6 +165,15 @@ export default {
         return dictAddAPI
       }
       return dictModifyAPI
+    },
+    dialogTitle() {
+      if (this.editType === 'addType') {
+        return '新增字典类型'
+      }
+      if (this.editType === 'modifyType') {
+        return '修改字典类型'
+      }
+      return '新增字典数据'
     }
   },
   watch: {
@@ -166,7 +188,7 @@ export default {
       tableHeight: document.documentElement.clientHeight - 295,
       valueList: [],
       currentTypeCode: '',
-      showCreate: false,
+      showDialog: false,
       submitForm: {},
       editType: 'add',
       titleList: [
@@ -175,6 +197,7 @@ export default {
           name: '序号',
           width: '50',
           type: 'number',
+          align: 'center',
           readOnly: false
         },
         {
@@ -182,6 +205,7 @@ export default {
           name: '编码',
           width: '100',
           type: 'text',
+          align: 'left',
           readOnly: true
         },
         {
@@ -189,6 +213,15 @@ export default {
           name: '名称',
           width: '150',
           type: 'text',
+          align: 'left',
+          readOnly: false
+        },
+        {
+          field: 'enable',
+          name: '状态',
+          width: '100',
+          type: 'boolean',
+          align: 'center',
           readOnly: false
         }
       ]
@@ -249,23 +282,23 @@ export default {
           typeCode: this.currentTypeCode,
           sn: this.getMaxSN(this.valueList)
         }
-        this.showCreate = true
+        this.showDialog = true
       } else if (type == 'addType') {
         this.submitForm = {
           name: '',
           sn: this.getMaxSN(this.dictTypeList)
         }
-        this.showCreate = true
+        this.showDialog = true
       } else if (type == 'modifyType') {
         this.submitForm = objDeepCopy(this.getCurrentType())
-        this.showCreate = true
+        this.showDialog = true
       }
     },
     submitDialog() {
       this.loading = true
       this.request(this.appCode, this.submitForm).then(res => {
         this.$message.success('操作成功')
-        this.showCreate = false
+        this.showDialog = false
         if (this.editType === 'modifyType') {
           this.$emit('onRefreshType')
         }

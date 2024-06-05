@@ -1,1 +1,0 @@
-INSERT INTO crm_sequence(ID, NAME) VALUES (1, 'general');

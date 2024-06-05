@@ -1,6 +1,7 @@
 package com.lego.crm.service.impl;
 
 import com.lego.core.data.hibernate.impl.BaseService;
+import com.lego.core.dto.DictionaryInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.vo.DictionaryTypeVO;
@@ -24,8 +25,14 @@ public class CrmDictionaryService extends BaseService implements ICrmDictionaryS
     private ICrmDictionaryDao dictionaryDao;
 
     @Override
-    public List<TypeInfo> findByType(String typeCode) {
-        List<CrmDictionary> dictionaries = dictionaryDao.findBytype(typeCode);
+    public List<TypeInfo> findSimpleByType(String typeCode) {
+        List<CrmDictionary> dictionaries = dictionaryDao.findValidByType(typeCode);
+        return EntityUtil.toTypeInfo(dictionaries);
+    }
+
+    @Override
+    public List<DictionaryInfo> findByType(String typeCode) {
+        List<CrmDictionary> dictionaries = dictionaryDao.findByType(typeCode);
         return EntityUtil.toDictInfo(dictionaries);
     }
 

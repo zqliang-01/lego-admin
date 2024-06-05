@@ -41,7 +41,7 @@
 <script>
 import FieldWrapper from './FieldWrapper'
 import mixins from './mixins'
-import { dictListAPI } from '@/api/dictionary'
+import { dictSimpleListAPI } from '@/api/dictionary'
 
 export default {
   name: 'FieldCheckbox',
@@ -74,7 +74,7 @@ export default {
     getOptions() {
       const field = this.field
       if (field.appCode && field.optionDataType === 'dict') {
-        dictListAPI(field.appCode, field.optionDictType).then(res => {
+        dictSimpleListAPI(field.appCode, field.optionDictType).then(res => {
           this.options = res.data
         })
       }

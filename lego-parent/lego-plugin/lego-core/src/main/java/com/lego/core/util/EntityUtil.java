@@ -3,6 +3,7 @@ package com.lego.core.util;
 import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.data.hibernate.Dictionary;
 import com.lego.core.data.hibernate.SimpleType;
+import com.lego.core.dto.DictionaryInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.CoreException;
 
@@ -56,10 +57,13 @@ public class EntityUtil {
         return infos;
     }
 
-    public static List<TypeInfo> toDictInfo(Collection<? extends Dictionary> entities) {
-        List<TypeInfo> infos = new ArrayList<TypeInfo>();
+    public static List<DictionaryInfo> toDictInfo(Collection<? extends Dictionary> entities) {
+        List<DictionaryInfo> infos = new ArrayList<DictionaryInfo>();
         for (Dictionary entity : entities) {
-            infos.add(new TypeInfo(entity.getCode(), entity.getName(), entity.getSerialNumber()));
+            DictionaryInfo info = new DictionaryInfo(entity.getCode(), entity.getName());
+            info.setSn(entity.getSerialNumber());
+            info.setEnable(entity.isEnable());
+            infos.add(info);
         }
         return infos;
     }

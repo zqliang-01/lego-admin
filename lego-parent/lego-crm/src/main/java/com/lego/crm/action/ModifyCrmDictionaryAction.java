@@ -18,5 +18,6 @@ public class ModifyCrmDictionaryAction extends ModifyAction<CrmDictionary, ICrmD
     protected void doModify(CrmDictionary entity) {
         entity.setName(vo.getName());
         entity.setSerialNumber(vo.getSn());
+        entity.setEnable(vo.isEnable());
     }
 }

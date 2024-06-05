@@ -2,7 +2,6 @@ package com.lego.gateway.util;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.lego.core.vo.JsonResponse;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.cloud.gateway.support.ServerWebExchangeUtils;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.core.io.buffer.DataBufferUtils;
@@ -45,11 +44,14 @@ public class WebFluxUtils {
      * @param exchange HTTP请求
      */
     public static boolean isJsonRequest(ServerWebExchange exchange) {
-        String header = exchange.getRequest().getHeaders().getFirst(HttpHeaders.CONTENT_TYPE);
-        if (StringUtils.startsWithIgnoreCase(header, MediaType.APPLICATION_JSON_VALUE)) {
+        MediaType contentType = exchange.getRequest().getHeaders().getContentType();
+        if (contentType == null) {
+            return false;
+        }
+        if (contentType.includes(MediaType.APPLICATION_JSON)) {
             return true;
         }
-        return StringUtils.startsWithIgnoreCase(header, MediaType.APPLICATION_JSON_UTF8_VALUE);
+        return contentType.includes(MediaType.APPLICATION_JSON_UTF8);
     }
 
     /**

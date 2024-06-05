@@ -10,7 +10,16 @@ import java.util.List;
 public class CrmDictionaryDao extends GenericDao<CrmDictionary> implements ICrmDictionaryDao {
 
     @Override
-    public List<CrmDictionary> findBytype(String typeCode) {
+    public List<CrmDictionary> findValidByType(String typeCode) {
+        QueryHandler<CrmDictionary> query = createQueryHandler();
+        query.condition("t.type.code = :typeCode").param("typeCode", typeCode);
+        query.condition("t.enable = :enable").param("enable", true);
+        query.order("t.serialNumber");
+        return query.findList();
+    }
+
+    @Override
+    public List<CrmDictionary> findByType(String typeCode) {
         QueryHandler<CrmDictionary> query = createQueryHandler();
         query.condition("t.type.code = :typeCode").param("typeCode", typeCode);
         query.order("t.serialNumber");

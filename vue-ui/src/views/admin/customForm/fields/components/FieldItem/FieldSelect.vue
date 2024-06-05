@@ -32,7 +32,7 @@
 <script>
 import FieldWrapper from './FieldWrapper'
 import mixins from './mixins'
-import { dictListAPI } from '@/api/dictionary'
+import { dictSimpleListAPI } from '@/api/dictionary'
 
 export default {
   name: 'FieldSelect',
@@ -80,7 +80,7 @@ export default {
     getOptions() {
       const field = this.field
       if (this.appCode && field.optionDataType === 'dict') {
-        dictListAPI(this.appCode, field.optionDictType).then(res => {
+        dictSimpleListAPI(this.appCode, field.optionDictType).then(res => {
           this.options = res.data
         })
       }
