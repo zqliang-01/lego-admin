@@ -170,7 +170,7 @@ public class JobGroupController extends BaseController {
     }
 
     @GetMapping("/loadById/{id}")
-    @SaCheckPermission("job_config_read")
+    @SaCheckPermission("job_task_read")
     public JsonResponse<XxlJobGroup> loadById(@PathVariable int id) {
         XxlJobGroup jobGroup = xxlJobGroupMapper.load(id);
         BusinessException.check(jobGroup != null, "根据[]未查询到分组结果!", id);

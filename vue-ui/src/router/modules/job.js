@@ -37,7 +37,7 @@ export default { type: 'job', router: [
       path: 'task',
       component: () => import('@/views/job/task'),
       meta: {
-        title: '运行报表',
+        title: '任务管理',
         icon: 'icon-full-setting'
       }
     })
