@@ -44,8 +44,8 @@
 - `mysql5.7`
 - `JDK1.8`
 - `maven3`
-- `node` >= 10.0.0 建议 v21.4.0
-- `npm` >= 6.0.0 建议 10.2.4
+- `node` >= 10.0.0 建议 v21
+- `npm` >= 6.0.0 建议 v10
 
 #### 打包运行
 
@@ -93,6 +93,16 @@
     <td>
 - 任务审批
   <img src="https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/11%E4%BB%BB%E5%8A%A1%E5%AE%A1%E6%89%B9.png"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+- 定时任务
+  <img src="https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/13%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.png"/>
+    </td>
+    <td>
+- 操作日志
+  <img src="https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/14%E6%93%8D%E4%BD%9C%E6%97%A5%E5%BF%97.png"/>
     </td>
   </tr>
   <tr>

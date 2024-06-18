@@ -1,7 +1,6 @@
 package com.lego.job.core.scheduler;
 
 import com.lego.core.dto.TypeInfo;
-import com.lego.job.core.util.I18nUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +10,22 @@ import java.util.List;
  */
 public enum ScheduleTypeEnum {
 
-    NONE(I18nUtil.getString("schedule_type_none")),
+    NONE("无"),
 
     /**
      * schedule by cron
      */
-    CRON(I18nUtil.getString("schedule_type_cron")),
+    CRON("CRON"),
 
     /**
      * schedule by fixed rate (in seconds)
      */
-    FIX_RATE(I18nUtil.getString("schedule_type_fix_rate")),
+    FIX_RATE("固定速度"),
 
     /**
      * schedule by fix delay (in seconds)， after the last time
      */
-    /*FIX_DELAY(I18nUtil.getString("schedule_type_fix_delay"))*/;
+    /*FIX_DELAY("固定延迟")*/;
 
     private String title;
 

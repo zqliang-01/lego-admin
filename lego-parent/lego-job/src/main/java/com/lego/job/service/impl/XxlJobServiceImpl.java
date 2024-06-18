@@ -18,7 +18,6 @@ import com.lego.job.core.scheduler.ScheduleTypeEnum;
 import com.lego.job.core.thread.JobScheduleHelper;
 import com.lego.job.core.thread.JobTriggerPoolHelper;
 import com.lego.job.core.trigger.TriggerTypeEnum;
-import com.lego.job.core.util.I18nUtil;
 import com.lego.job.core.util.TemplateUtil;
 import com.lego.job.mapper.XxlJobGroupMapper;
 import com.lego.job.mapper.XxlJobInfoMapper;
@@ -32,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -78,45 +76,33 @@ public class XxlJobServiceImpl implements XxlJobService {
         // valid base
         XxlJobGroup group = xxlJobGroupMapper.load(jobInfo.getJobGroup());
         if (group == null) {
-            throw new BusinessException(I18nUtil.getString("system_please_choose") + I18nUtil.getString("jobinfo_field_jobgroup"));
+            throw new BusinessException("请选择执行器");
         }
         if (jobInfo.getJobDesc() == null || jobInfo.getJobDesc().trim().length() == 0) {
-            throw new BusinessException(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_field_jobdesc"));
+            throw new BusinessException("请输入任务描述");
         }
         if (jobInfo.getAuthor() == null || jobInfo.getAuthor().trim().length() == 0) {
-            throw new BusinessException(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_field_author"));
+            throw new BusinessException("请输入负责人");
         }
 
         // valid trigger
         ScheduleTypeEnum scheduleTypeEnum = ScheduleTypeEnum.match(jobInfo.getScheduleType(), null);
-        if (scheduleTypeEnum == null) {
-            throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-        }
+        BusinessException.check(scheduleTypeEnum != null, "调度类型非法");
         if (scheduleTypeEnum == ScheduleTypeEnum.CRON) {
             if (jobInfo.getScheduleConf() == null || !CronExpression.isValidExpression(jobInfo.getScheduleConf())) {
-                throw new BusinessException("Cron" + I18nUtil.getString("system_unvalid"));
+                throw new BusinessException("Cron非法");
             }
         } else if (scheduleTypeEnum == ScheduleTypeEnum.FIX_RATE) {
-            if (jobInfo.getScheduleConf() == null) {
-                throw new BusinessException(I18nUtil.getString("schedule_type"));
-            }
-            try {
-                int fixSecond = Integer.valueOf(jobInfo.getScheduleConf());
-                if (fixSecond < 1) {
-                    throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-                }
-            } catch (Exception e) {
-                throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-            }
+            BusinessException.check(StringUtil.isNotBlank(jobInfo.getScheduleConf()), "调度类型为固定固定速度时必须填写时间信息");
+            int fixSecond = Integer.valueOf(jobInfo.getScheduleConf());
+            BusinessException.check(fixSecond >= 1, "调度时间格式非法");
         }
 
         // valid job
         GlueTypeEnum glueType = GlueTypeEnum.match(jobInfo.getGlueType());
-        if (glueType == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_gluetype") + I18nUtil.getString("system_unvalid"));
-        }
+        BusinessException.check(glueType != null, "运行模式非法");
         if (GlueTypeEnum.BEAN == glueType && (jobInfo.getExecutorHandler() == null || jobInfo.getExecutorHandler().trim().length() == 0)) {
-            throw new BusinessException(I18nUtil.getString("system_please_input") + "JobHandler");
+            throw new BusinessException("请输入JobHandler");
         }
 
         String templateName = glueType.getTemplateName();
@@ -131,13 +117,13 @@ public class XxlJobServiceImpl implements XxlJobService {
 
         // valid advanced
         if (ExecutorRouteStrategyEnum.match(jobInfo.getExecutorRouteStrategy(), null) == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_executorRouteStrategy") + I18nUtil.getString("system_unvalid"));
+            throw new BusinessException("路由策略非法");
         }
         if (MisfireStrategyEnum.match(jobInfo.getMisfireStrategy(), null) == null) {
-            throw new BusinessException(I18nUtil.getString("misfire_strategy") + I18nUtil.getString("system_unvalid"));
+            throw new BusinessException("调度过期策略非法");
         }
         if (ExecutorBlockStrategyEnum.match(jobInfo.getExecutorBlockStrategy(), null) == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_executorBlockStrategy") + I18nUtil.getString("system_unvalid"));
+            throw new BusinessException("阻塞处理策略非法");
         }
 
         // 》ChildJobId valid
@@ -146,11 +132,9 @@ public class XxlJobServiceImpl implements XxlJobService {
             for (String childJobIdItem : childJobIds) {
                 if (childJobIdItem != null && childJobIdItem.trim().length() > 0 && isNumeric(childJobIdItem)) {
                     XxlJobInfo childJobInfo = xxlJobInfoMapper.loadById(Integer.parseInt(childJobIdItem));
-                    if (childJobInfo == null) {
-                        throw new BusinessException(MessageFormat.format((I18nUtil.getString("jobinfo_field_childJobId") + "({0})" + I18nUtil.getString("system_not_found")), childJobIdItem));
-                    }
+                    BusinessException.check(childJobInfo != null, "子任务ID({0})不存在", childJobIdItem);
                 } else {
-                    throw new BusinessException(MessageFormat.format((I18nUtil.getString("jobinfo_field_childJobId") + "({0})" + I18nUtil.getString("system_unvalid")), childJobIdItem));
+                    throw new BusinessException("子任务ID({0})非法", childJobIdItem);
                 }
             }
 
@@ -169,9 +153,7 @@ public class XxlJobServiceImpl implements XxlJobService {
         jobInfo.setUpdateTime(new Date());
         jobInfo.setGlueUpdatetime(new Date());
         xxlJobInfoMapper.save(jobInfo);
-        if (jobInfo.getId() < 1) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_add") + I18nUtil.getString("system_fail"));
-        }
+        BusinessException.check(jobInfo.getId() >= 1, "新增失败");
 
         // log old code
         if (StringUtil.isNotBlank(jobInfo.getGlueSource())) {
@@ -201,45 +183,31 @@ public class XxlJobServiceImpl implements XxlJobService {
     public void update(XxlJobInfo jobInfo) {
 
         // valid base
-        if (StringUtil.isBlank(jobInfo.getJobDesc())) {
-            throw new BusinessException(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_field_jobdesc"));
-        }
-        if (StringUtil.isBlank(jobInfo.getAuthor())) {
-            throw new BusinessException(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_field_author"));
-        }
+        BusinessException.check(StringUtil.isNotBlank(jobInfo.getJobDesc()), "请输入任务描述");
+        BusinessException.check(StringUtil.isNotBlank(jobInfo.getAuthor()), "请输入负责人");
 
         // valid trigger
         ScheduleTypeEnum scheduleTypeEnum = ScheduleTypeEnum.match(jobInfo.getScheduleType(), null);
-        if (scheduleTypeEnum == null) {
-            throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-        }
+        BusinessException.check(scheduleTypeEnum != null, "调度类型非法");
         if (scheduleTypeEnum == ScheduleTypeEnum.CRON) {
             if (jobInfo.getScheduleConf() == null || !CronExpression.isValidExpression(jobInfo.getScheduleConf())) {
-                throw new BusinessException("Cron" + I18nUtil.getString("system_unvalid"));
+                throw new BusinessException("Cron非法");
             }
         } else if (scheduleTypeEnum == ScheduleTypeEnum.FIX_RATE /*|| scheduleTypeEnum == ScheduleTypeEnum.FIX_DELAY*/) {
-            if (jobInfo.getScheduleConf() == null) {
-                throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-            }
-            try {
-                int fixSecond = Integer.valueOf(jobInfo.getScheduleConf());
-                if (fixSecond < 1) {
-                    throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-                }
-            } catch (Exception e) {
-                throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-            }
+            BusinessException.check(StringUtil.isNotBlank(jobInfo.getScheduleConf()), "调度类型为固定时间时必须填写时间信息");
+            int fixSecond = Integer.valueOf(jobInfo.getScheduleConf());
+            BusinessException.check(fixSecond >= 1, "调度时间格式非法");
         }
 
         // valid advanced
         if (ExecutorRouteStrategyEnum.match(jobInfo.getExecutorRouteStrategy(), null) == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_executorRouteStrategy") + I18nUtil.getString("system_unvalid"));
+            throw new BusinessException("路由策略非法");
         }
         if (MisfireStrategyEnum.match(jobInfo.getMisfireStrategy(), null) == null) {
-            throw new BusinessException(I18nUtil.getString("misfire_strategy") + I18nUtil.getString("system_unvalid"));
+            throw new BusinessException("调度过期策略非法");
         }
         if (ExecutorBlockStrategyEnum.match(jobInfo.getExecutorBlockStrategy(), null) == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_executorBlockStrategy") + I18nUtil.getString("system_unvalid"));
+            throw new BusinessException("阻塞处理策略非法");
         }
 
         // 》ChildJobId valid
@@ -248,11 +216,9 @@ public class XxlJobServiceImpl implements XxlJobService {
             for (String childJobIdItem : childJobIds) {
                 if (childJobIdItem != null && childJobIdItem.trim().length() > 0 && isNumeric(childJobIdItem)) {
                     XxlJobInfo childJobInfo = xxlJobInfoMapper.loadById(Integer.parseInt(childJobIdItem));
-                    if (childJobInfo == null) {
-                        throw new BusinessException(MessageFormat.format((I18nUtil.getString("jobinfo_field_childJobId") + "({0})" + I18nUtil.getString("system_not_found")), childJobIdItem));
-                    }
+                    BusinessException.check(childJobInfo != null, "子任务ID({0})不存在", childJobIdItem);
                 } else {
-                    throw new BusinessException(MessageFormat.format((I18nUtil.getString("jobinfo_field_childJobId") + "({0})" + I18nUtil.getString("system_unvalid")), childJobIdItem));
+                    throw new BusinessException("子任务ID({0})非法", childJobIdItem);
                 }
             }
 
@@ -268,15 +234,11 @@ public class XxlJobServiceImpl implements XxlJobService {
 
         // group valid
         XxlJobGroup jobGroup = xxlJobGroupMapper.load(jobInfo.getJobGroup());
-        if (jobGroup == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_jobgroup") + I18nUtil.getString("system_unvalid"));
-        }
+        BusinessException.check(jobGroup != null, "执行器非法，未获取到执行器[{0}]", jobInfo.getJobGroup());
 
         // stage job info
         XxlJobInfo exists_jobInfo = xxlJobInfoMapper.loadById(jobInfo.getId());
-        if (exists_jobInfo == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_field_id") + I18nUtil.getString("system_not_found"));
-        }
+        BusinessException.check(exists_jobInfo != null, "任务[{0}]不存在", jobInfo.getId());
 
         // next trigger time (5s后生效，避开预读周期)
         long nextTriggerTime = exists_jobInfo.getTriggerNextTime();
@@ -284,13 +246,11 @@ public class XxlJobServiceImpl implements XxlJobService {
         if (exists_jobInfo.getTriggerStatus() == 1 && !scheduleDataNotChanged) {
             try {
                 Date nextValidTime = JobScheduleHelper.generateNextValidTime(jobInfo, new Date(System.currentTimeMillis() + JobScheduleHelper.PRE_READ_MS));
-                if (nextValidTime == null) {
-                    throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-                }
+                BusinessException.check(nextValidTime != null, "调度类型非法");
                 nextTriggerTime = nextValidTime.getTime();
             } catch (Exception e) {
                 logger.error(e.getMessage(), e);
-                throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
+                throw new BusinessException("调度类型非法非法");
             }
         }
 
@@ -333,20 +293,18 @@ public class XxlJobServiceImpl implements XxlJobService {
         // valid
         ScheduleTypeEnum scheduleTypeEnum = ScheduleTypeEnum.match(xxlJobInfo.getScheduleType(), ScheduleTypeEnum.NONE);
         if (ScheduleTypeEnum.NONE == scheduleTypeEnum) {
-            throw new BusinessException(I18nUtil.getString("schedule_type_none_limit_start"));
+            throw new BusinessException("当前调度类型禁止启动");
         }
 
         // next trigger time (5s后生效，避开预读周期)
         long nextTriggerTime = 0;
         try {
             Date nextValidTime = JobScheduleHelper.generateNextValidTime(xxlJobInfo, new Date(System.currentTimeMillis() + JobScheduleHelper.PRE_READ_MS));
-            if (nextValidTime == null) {
-                throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
-            }
+            BusinessException.check(nextValidTime != null, "调度类型非法");
             nextTriggerTime = nextValidTime.getTime();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
-            throw new BusinessException(I18nUtil.getString("schedule_type") + I18nUtil.getString("system_unvalid"));
+            throw new BusinessException("调度类型非法非法");
         }
 
         xxlJobInfo.setTriggerStatus(1);
@@ -373,9 +331,7 @@ public class XxlJobServiceImpl implements XxlJobService {
     @Override
     public void trigger(int jobId, String executorParam, String addressList) {
         XxlJobInfo xxlJobInfo = xxlJobInfoMapper.loadById(jobId);
-        if (xxlJobInfo == null) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
-        }
+        BusinessException.check(xxlJobInfo != null, "任务ID({0})非法", jobId);
         // force cover job param
         if (executorParam == null) {
             executorParam = "";

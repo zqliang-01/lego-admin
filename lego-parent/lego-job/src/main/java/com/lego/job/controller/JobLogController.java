@@ -17,7 +17,6 @@ import com.lego.job.core.model.XxlJobGroup;
 import com.lego.job.core.model.XxlJobInfo;
 import com.lego.job.core.model.XxlJobLog;
 import com.lego.job.core.scheduler.XxlJobScheduler;
-import com.lego.job.core.util.I18nUtil;
 import com.lego.job.dto.JobLogInfo;
 import com.lego.job.mapper.XxlJobGroupMapper;
 import com.lego.job.mapper.XxlJobInfoMapper;
@@ -62,7 +61,7 @@ public class JobLogController extends BaseController {
         List<XxlJobGroup> jobGroupList = xxlJobGroupMapper.findAll();
 
         if (jobGroupList == null || jobGroupList.size() == 0) {
-            throw new BusinessException(I18nUtil.getString("jobgroup_empty"));
+            throw new BusinessException("不存在有效执行器，请联系管理员");
         }
 
         JobLogInfo info = new JobLogInfo();
@@ -71,7 +70,7 @@ public class JobLogController extends BaseController {
         // 任务
         if (jobId > 0) {
             XxlJobInfo jobInfo = xxlJobInfoMapper.loadById(jobId);
-            BusinessException.check(jobInfo != null, I18nUtil.getString("jobinfo_field_id") + I18nUtil.getString("system_unvalid"));
+            BusinessException.check(jobInfo != null, "任务[{0}]不存在", jobId);
             info.setJobInfo(jobInfo);
         }
 
@@ -107,7 +106,7 @@ public class JobLogController extends BaseController {
     @SaCheckPermission("job_log_read")
     public JsonResponse<LogResult> logDetailCat(long logId, int fromLineNum) {
         XxlJobLog jobLog = xxlJobLogMapper.load(logId);    // todo, need to improve performance
-        BusinessException.check(jobLog != null, I18nUtil.getString("joblog_logid_unvalid"));
+        BusinessException.check(jobLog != null, "日志ID非法");
 
         // log cat
         ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(jobLog.getExecutorAddress());
@@ -140,9 +139,9 @@ public class JobLogController extends BaseController {
     public JsonResponse<String> logKill(@PathVariable int id) {
         XxlJobLog log = xxlJobLogMapper.load(id);
         XxlJobInfo jobInfo = xxlJobInfoMapper.loadById(log.getJobId());
-        BusinessException.check(jobInfo != null, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+        BusinessException.check(jobInfo != null, "任务ID非法");
         if (ReturnT.SUCCESS_CODE != log.getTriggerCode()) {
-            new BusinessException(I18nUtil.getString("joblog_kill_log_limit"));
+            new BusinessException("调度失败，无法终止日志");
         }
 
         ExecutorBiz executorBiz = XxlJobScheduler.getExecutorBiz(log.getExecutorAddress());
@@ -150,7 +149,7 @@ public class JobLogController extends BaseController {
         BusinessException.check(ReturnT.SUCCESS_CODE == runResult.getCode(), runResult.getMsg());
 
         log.setHandleCode(ReturnT.FAIL_CODE);
-        log.setHandleMsg(I18nUtil.getString("joblog_kill_log_byman") + ":" + (runResult.getMsg() != null ? runResult.getMsg() : ""));
+        log.setHandleMsg("人为操作，主动终止:" + (runResult.getMsg() != null ? runResult.getMsg() : ""));
         log.setHandleTime(new Date());
         XxlJobCompleter.updateHandleInfoAndFinish(log);
         return JsonResponse.success(runResult.getMsg());
@@ -181,7 +180,7 @@ public class JobLogController extends BaseController {
         } else if (type == 9) {
             clearBeforeNum = 0;            // 清理所有日志数据
         } else {
-            new BusinessException(I18nUtil.getString("joblog_clean_type_unvalid"));
+            new BusinessException("清理类型参数异常");
         }
 
         List<Long> logIds = null;

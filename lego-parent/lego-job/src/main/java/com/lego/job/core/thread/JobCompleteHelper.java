@@ -6,7 +6,6 @@ import com.lego.core.job.util.XxlDateUtil;
 import com.lego.job.core.complete.XxlJobCompleter;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.model.XxlJobLog;
-import com.lego.job.core.util.I18nUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -92,7 +91,7 @@ public class JobCompleteHelper {
 
                                 jobLog.setHandleTime(new Date());
                                 jobLog.setHandleCode(ReturnT.FAIL_CODE);
-                                jobLog.setHandleMsg(I18nUtil.getString("joblog_lost_fail"));
+                                jobLog.setHandleMsg("任务结果丢失，标记失败");
 
                                 XxlJobCompleter.updateHandleInfoAndFinish(jobLog);
                             }

@@ -59,6 +59,7 @@ export default {
   },
   methods: {
     reportClick(item) {
+      this.$emit('onClick', item)
     }
   }
 }

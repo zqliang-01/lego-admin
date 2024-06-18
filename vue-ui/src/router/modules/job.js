@@ -33,6 +33,7 @@ export default { type: 'job', router: [
   {
     ...layout({
       code: 'job_task',
+      name: 'jobTask',
       path: 'task',
       component: () => import('@/views/job/task'),
       meta: {
@@ -55,6 +56,7 @@ export default { type: 'job', router: [
   {
     ...layout({
       code: 'job_log',
+      name: 'jobLog',
       path: 'log',
       component: () => import('@/views/job/log'),
       meta: {
@@ -88,6 +90,7 @@ export default { type: 'job', router: [
   {
     ...layout({
       code: 'job_executor',
+      name: 'jobExecutor',
       path: 'executor',
       component: () => import('@/views/job/executor'),
       meta: {

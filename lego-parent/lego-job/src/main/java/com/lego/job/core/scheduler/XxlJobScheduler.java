@@ -2,7 +2,6 @@ package com.lego.job.core.scheduler;
 
 import com.lego.core.job.biz.ExecutorBiz;
 import com.lego.core.job.biz.client.ExecutorBizClient;
-import com.lego.core.job.enums.ExecutorBlockStrategyEnum;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.thread.JobCompleteHelper;
 import com.lego.job.core.thread.JobFailMonitorHelper;
@@ -10,7 +9,6 @@ import com.lego.job.core.thread.JobLogReportHelper;
 import com.lego.job.core.thread.JobRegistryHelper;
 import com.lego.job.core.thread.JobScheduleHelper;
 import com.lego.job.core.thread.JobTriggerPoolHelper;
-import com.lego.job.core.util.I18nUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,9 +25,6 @@ public class XxlJobScheduler {
 
 
     public void init() throws Exception {
-        // init i18n
-        initI18n();
-
         // admin trigger pool start
         JobTriggerPoolHelper.toStart();
 
@@ -72,14 +67,6 @@ public class XxlJobScheduler {
         // admin trigger pool stop
         JobTriggerPoolHelper.toStop();
 
-    }
-
-    // ---------------------- I18n ----------------------
-
-    private void initI18n() {
-        for (ExecutorBlockStrategyEnum item : ExecutorBlockStrategyEnum.values()) {
-            item.setTitle(I18nUtil.getString("jobconf_block_".concat(item.name())));
-        }
     }
 
     // ---------------------- executor-client ----------------------

@@ -1,5 +1,6 @@
 package com.lego.job.core.conf;
 
+import com.lego.core.exception.BusinessException;
 import com.lego.job.core.alarm.JobAlarmer;
 import com.lego.job.core.scheduler.XxlJobScheduler;
 import com.lego.job.mapper.XxlJobGroupMapper;
@@ -28,6 +29,7 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
     private static XxlJobAdminConfig adminConfig = null;
 
     public static XxlJobAdminConfig getAdminConfig() {
+        BusinessException.check(adminConfig != null, "定时调度器未启动，请检查配置是否正确！");
         return adminConfig;
     }
 

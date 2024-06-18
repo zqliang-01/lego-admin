@@ -5,7 +5,6 @@ import com.lego.core.job.biz.model.ReturnT;
 import com.lego.core.job.biz.model.TriggerParam;
 import com.lego.job.core.route.ExecutorRouter;
 import com.lego.job.core.scheduler.XxlJobScheduler;
-import com.lego.job.core.util.I18nUtil;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ExecutorRouteFailover extends ExecutorRouter {
                 beatResult = new ReturnT<String>(ReturnT.FAIL_CODE, "" + e);
             }
             beatResultSB.append((beatResultSB.length() > 0) ? "<br><br>" : "")
-                .append(I18nUtil.getString("jobconf_beat") + "：")
+                .append("心跳检测：")
                 .append("<br>address：").append(address)
                 .append("<br>code：").append(beatResult.getCode())
                 .append("<br>msg：").append(beatResult.getMsg());

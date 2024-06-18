@@ -14,7 +14,6 @@ import com.lego.job.core.route.ExecutorRouteStrategyEnum;
 import com.lego.job.core.scheduler.MisfireStrategyEnum;
 import com.lego.job.core.scheduler.ScheduleTypeEnum;
 import com.lego.job.core.thread.JobScheduleHelper;
-import com.lego.job.core.util.I18nUtil;
 import com.lego.job.dto.JobConfigInfo;
 import com.lego.job.mapper.XxlJobGroupMapper;
 import com.lego.job.service.XxlJobService;
@@ -54,7 +53,7 @@ public class JobInfoController extends BaseController {
         List<XxlJobGroup> jobGroupList = xxlJobGroupMapper.findAll();
 
         if (jobGroupList == null || jobGroupList.size() == 0) {
-            throw new BusinessException(I18nUtil.getString("jobgroup_empty"));
+            throw new BusinessException("不存在有效执行器，请联系管理员");
         }
 
         JobConfigInfo info = new JobConfigInfo();

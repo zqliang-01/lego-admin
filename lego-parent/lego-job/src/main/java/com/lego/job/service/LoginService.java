@@ -3,7 +3,6 @@ package com.lego.job.service;
 import com.lego.core.job.biz.model.ReturnT;
 import com.lego.job.core.model.XxlJobUser;
 import com.lego.job.core.util.CookieUtil;
-import com.lego.job.core.util.I18nUtil;
 import com.lego.job.core.util.JacksonUtil;
 import com.lego.job.mapper.XxlJobUserMapper;
 import org.springframework.context.annotation.Configuration;
@@ -46,17 +45,17 @@ public class LoginService {
 
         // param
         if (username == null || username.trim().length() == 0 || password == null || password.trim().length() == 0) {
-            return new ReturnT<String>(500, I18nUtil.getString("login_param_empty"));
+            return new ReturnT<String>(500, "账号或密码为空");
         }
 
         // valid passowrd
         XxlJobUser xxlJobUser = xxlJobUserMapper.loadByUserName(username);
         if (xxlJobUser == null) {
-            return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+            return new ReturnT<String>(500, "账号或密码错误");
         }
         String passwordMd5 = DigestUtils.md5DigestAsHex(password.getBytes());
         if (!passwordMd5.equals(xxlJobUser.getPassword())) {
-            return new ReturnT<String>(500, I18nUtil.getString("login_param_unvalid"));
+            return new ReturnT<String>(500, "账号或密码错误");
         }
 
         String loginToken = makeToken(xxlJobUser);

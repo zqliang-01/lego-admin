@@ -8,7 +8,6 @@ import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.job.core.model.XxlJobInfo;
 import com.lego.job.core.model.XxlJobLogGlue;
-import com.lego.job.core.util.I18nUtil;
 import com.lego.job.dto.JobCodeInfo;
 import com.lego.job.mapper.XxlJobInfoMapper;
 import com.lego.job.mapper.XxlJobLogGlueMapper;
@@ -37,9 +36,9 @@ public class JobCodeController extends BaseController {
         XxlJobInfo jobInfo = xxlJobInfoMapper.loadById(jobId);
         List<XxlJobLogGlue> jobLogGlues = xxlJobLogGlueMapper.findByJobId(jobId);
 
-        BusinessException.check(jobInfo != null, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+        BusinessException.check(jobInfo != null, "任务ID非法");
         if (GlueTypeEnum.BEAN == GlueTypeEnum.match(jobInfo.getGlueType())) {
-            throw new BusinessException(I18nUtil.getString("jobinfo_glue_gluetype_unvalid"));
+            throw new BusinessException("该任务非GLUE模式");
         }
 
         JobCodeInfo info = new JobCodeInfo();
@@ -52,10 +51,10 @@ public class JobCodeController extends BaseController {
     @PostMapping("/save")
     @SaCheckPermission("job_task_update")
     public JsonResponse<Object> save(int id, String glueSource, String glueRemark) {
-        BusinessException.check(StringUtil.isNotBlank(glueRemark), I18nUtil.getString("system_please_input") + I18nUtil.getString("jobinfo_glue_remark"));
-        BusinessException.check(glueRemark.length() >= 4 && glueRemark.length() < 100, I18nUtil.getString("jobinfo_glue_remark_limit"));
+        BusinessException.check(StringUtil.isNotBlank(glueRemark), "请输入源码备注");
+        BusinessException.check(glueRemark.length() >= 4 && glueRemark.length() < 100, "源码备注长度限制为4~100");
         XxlJobInfo exists_jobInfo = xxlJobInfoMapper.loadById(id);
-        BusinessException.check(exists_jobInfo != null, I18nUtil.getString("jobinfo_glue_jobid_unvalid"));
+        BusinessException.check(exists_jobInfo != null, "任务ID非法");
 
         // update new code
         exists_jobInfo.setGlueSource(glueSource);

@@ -7,7 +7,6 @@ import com.lego.job.core.model.XxlJobInfo;
 import com.lego.job.core.model.XxlJobLog;
 import com.lego.job.core.thread.JobTriggerPoolHelper;
 import com.lego.job.core.trigger.TriggerTypeEnum;
-import com.lego.job.core.util.I18nUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +50,7 @@ public class XxlJobCompleter {
         if (XxlJobContext.HANDLE_CODE_SUCCESS == xxlJobLog.getHandleCode()) {
             XxlJobInfo xxlJobInfo = XxlJobAdminConfig.getAdminConfig().getXxlJobInfoMapper().loadById(xxlJobLog.getJobId());
             if (xxlJobInfo != null && xxlJobInfo.getChildJobId() != null && xxlJobInfo.getChildJobId().trim().length() > 0) {
-                triggerChildMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>" + I18nUtil.getString("jobconf_trigger_child_run") + "<<<<<<<<<<< </span><br>";
+                triggerChildMsg = "<br><br><span style=\"color:#00c0ef;\" > >>>>>>>>>>>触发子任务<<<<<<<<<<< </span><br>";
 
                 String[] childJobIds = xxlJobInfo.getChildJobId().split(",");
                 for (int i = 0; i < childJobIds.length; i++) {
@@ -62,14 +61,14 @@ public class XxlJobCompleter {
                         ReturnT<String> triggerChildResult = ReturnT.SUCCESS;
 
                         // add msg
-                        triggerChildMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg1"),
+                        triggerChildMsg += MessageFormat.format("{0}/{1} [任务ID={2}], 触发{3}, 触发备注: {4} <br>",
                             (i + 1),
                             childJobIds.length,
                             childJobIds[i],
-                            (triggerChildResult.getCode() == ReturnT.SUCCESS_CODE ? I18nUtil.getString("system_success") : I18nUtil.getString("system_fail")),
+                            (triggerChildResult.getCode() == ReturnT.SUCCESS_CODE ? "成功" : "失败"),
                             triggerChildResult.getMsg());
                     } else {
-                        triggerChildMsg += MessageFormat.format(I18nUtil.getString("jobconf_callback_child_msg2"),
+                        triggerChildMsg += MessageFormat.format("{0}/{1} [任务ID={2}], 触发失败, 触发备注: 任务ID格式错误 <br>",
                             (i + 1),
                             childJobIds.length,
                             childJobIds[i]);

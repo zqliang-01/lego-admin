@@ -8,7 +8,6 @@ import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.job.core.model.XxlJobGroup;
 import com.lego.job.core.model.XxlJobRegistry;
-import com.lego.job.core.util.I18nUtil;
 import com.lego.job.mapper.XxlJobGroupMapper;
 import com.lego.job.mapper.XxlJobInfoMapper;
 import com.lego.job.mapper.XxlJobRegistryMapper;
@@ -51,32 +50,32 @@ public class JobGroupController extends BaseController {
     @SaCheckPermission("job_executor_add")
     public JsonResponse<Object> save(@RequestBody XxlJobGroup xxlJobGroup) {
         if (xxlJobGroup.getAppname() == null || xxlJobGroup.getAppname().trim().length() == 0) {
-            new BusinessException(I18nUtil.getString("system_please_input") + "AppName");
+            new BusinessException("请输入AppName");
         }
         if (xxlJobGroup.getAppname().length() < 4 || xxlJobGroup.getAppname().length() > 64) {
-            new BusinessException(I18nUtil.getString("jobgroup_field_appname_length"));
+            new BusinessException("AppName长度限制为4~64");
         }
         if (xxlJobGroup.getAppname().contains(">") || xxlJobGroup.getAppname().contains("<")) {
-            new BusinessException("AppName" + I18nUtil.getString("system_unvalid"));
+            new BusinessException("AppName非法");
         }
         if (xxlJobGroup.getTitle() == null || xxlJobGroup.getTitle().trim().length() == 0) {
-            new BusinessException(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title"));
+            new BusinessException("请输入名称");
         }
         if (xxlJobGroup.getTitle().contains(">") || xxlJobGroup.getTitle().contains("<")) {
-            new BusinessException(I18nUtil.getString("jobgroup_field_title") + I18nUtil.getString("system_unvalid"));
+            new BusinessException("名称非法");
         }
         if (xxlJobGroup.getAddressType() != 0) {
             if (xxlJobGroup.getAddressList() == null || xxlJobGroup.getAddressList().trim().length() == 0) {
-                new BusinessException(I18nUtil.getString("jobgroup_field_addressType_limit"));
+                new BusinessException("手动录入注册方式，机器地址不可为空");
             }
             if (xxlJobGroup.getAddressList().contains(">") || xxlJobGroup.getAddressList().contains("<")) {
-                new BusinessException(I18nUtil.getString("jobgroup_field_registryList") + I18nUtil.getString("system_unvalid"));
+                new BusinessException("机器地址非法");
             }
 
             String[] addresss = xxlJobGroup.getAddressList().split(",");
             for (String item : addresss) {
                 if (item == null || item.trim().length() == 0) {
-                    new BusinessException(I18nUtil.getString("jobgroup_field_registryList_unvalid"));
+                    new BusinessException("机器地址格式非法");
                 }
             }
         }
@@ -93,13 +92,13 @@ public class JobGroupController extends BaseController {
     public JsonResponse<Object> update(@RequestBody XxlJobGroup xxlJobGroup) {
         // valid
         if (xxlJobGroup.getAppname() == null || xxlJobGroup.getAppname().trim().length() == 0) {
-            new BusinessException(I18nUtil.getString("system_please_input") + "AppName");
+            new BusinessException("请输入AppName");
         }
         if (xxlJobGroup.getAppname().length() < 4 || xxlJobGroup.getAppname().length() > 64) {
-            new BusinessException(I18nUtil.getString("jobgroup_field_appname_length"));
+            new BusinessException("AppName长度限制为4~64");
         }
         if (xxlJobGroup.getTitle() == null || xxlJobGroup.getTitle().trim().length() == 0) {
-            new BusinessException(I18nUtil.getString("system_please_input") + I18nUtil.getString("jobgroup_field_title"));
+            new BusinessException("请输入名称");
         }
         if (xxlJobGroup.getAddressType() == 0) {
             // 0=自动注册
@@ -117,12 +116,12 @@ public class JobGroupController extends BaseController {
         } else {
             // 1=手动录入
             if (xxlJobGroup.getAddressList() == null || xxlJobGroup.getAddressList().trim().length() == 0) {
-                new BusinessException(I18nUtil.getString("jobgroup_field_addressType_limit"));
+                new BusinessException("手动录入注册方式，机器地址不可为空");
             }
             String[] addresss = xxlJobGroup.getAddressList().split(",");
             for (String item : addresss) {
                 if (item == null || item.trim().length() == 0) {
-                    new BusinessException(I18nUtil.getString("jobgroup_field_registryList_unvalid"));
+                    new BusinessException("机器地址格式非法");
                 }
             }
         }
@@ -161,14 +160,10 @@ public class JobGroupController extends BaseController {
     public JsonResponse<Object> remove(@PathVariable int id) {
         // valid
         int count = xxlJobInfoMapper.pageListCount(0, 10, id, -1, null, null, null);
-        if (count > 0) {
-            new BusinessException(I18nUtil.getString("jobgroup_del_limit_0"));
-        }
+        BusinessException.check(count <= 0, "拒绝删除，该执行器使用中");
 
         List<XxlJobGroup> allList = xxlJobGroupMapper.findAll();
-        if (allList.size() == 1) {
-            new BusinessException(I18nUtil.getString("jobgroup_del_limit_1"));
-        }
+        BusinessException.check(allList.size() != 1, "拒绝删除, 系统至少保留一个执行器");
 
         int ret = xxlJobGroupMapper.remove(id);
         return (ret > 0) ? JsonResponse.success() : JsonResponse.failed("删除失败！");

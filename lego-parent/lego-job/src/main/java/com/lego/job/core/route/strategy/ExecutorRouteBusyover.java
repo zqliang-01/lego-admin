@@ -6,7 +6,6 @@ import com.lego.core.job.biz.model.ReturnT;
 import com.lego.core.job.biz.model.TriggerParam;
 import com.lego.job.core.route.ExecutorRouter;
 import com.lego.job.core.scheduler.XxlJobScheduler;
-import com.lego.job.core.util.I18nUtil;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ExecutorRouteBusyover extends ExecutorRouter {
                 idleBeatResult = new ReturnT<String>(ReturnT.FAIL_CODE, "" + e);
             }
             idleBeatResultSB.append((idleBeatResultSB.length() > 0) ? "<br><br>" : "")
-                .append(I18nUtil.getString("jobconf_idleBeat") + "：")
+                .append("空闲检测：")
                 .append("<br>address：").append(address)
                 .append("<br>code：").append(idleBeatResult.getCode())
                 .append("<br>msg：").append(idleBeatResult.getMsg());

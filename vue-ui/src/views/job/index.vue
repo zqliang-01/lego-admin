@@ -10,13 +10,14 @@
           <el-button
             class="type-btn"
             icon="el-icon-refresh"
-            @click.native="handleClick('refresh')" />
+            @click.native="handleRefresh('refresh')" />
         </el-tooltip>
       </flexbox>
     </div>
     <div class="lego-workbench__body">
       <top-report
         :brief-list="briefList"
+        @onClick="handleTopClick"
       />
       <flexbox
         class="section"
@@ -82,9 +83,9 @@ export default {
     init() {
       reportGetAPI().then(res => {
         this.briefList = [
-          { label: '任务数量(个)', icon: 'tag', num: res.data.jobInfoCount, description: '调度中心运行的任务数量', color: '#2362FB' },
-          { label: '调度次数(次)', icon: 'calendar', num: res.data.jobLogCount, description: '调度中心触发的调度次数', color: '#FB9323' },
-          { label: '执行器数量(个)', icon: 'config', num: res.data.executorCount, description: '调度中心在线的执行器机器数量', color: '#27BA4A' }
+          { label: '任务数量(个)', type: 'jobTask', icon: 'tag', num: res.data.jobInfoCount, description: '调度中心运行的任务数量', color: '#2362FB' },
+          { label: '调度次数(次)', type: 'jobLog', icon: 'calendar', num: res.data.jobLogCount, description: '调度中心触发的调度次数', color: '#FB9323' },
+          { label: '执行器数量(个)', type: 'jobExecutor', icon: 'config', num: res.data.executorCount, description: '调度中心在线的执行器机器数量', color: '#27BA4A' }
         ]
       })
     },
@@ -106,11 +107,14 @@ export default {
         ]
       })
     },
-    handleClick(type) {
+    handleRefresh(type) {
       if (type === 'refresh') {
         this.init()
         this.handleChartData()
       }
+    },
+    handleTopClick(item) {
+      this.$router.push({ name: item.type })
     }
   }
 }

@@ -1,7 +1,6 @@
 package com.lego.job.core.scheduler;
 
 import com.lego.core.dto.TypeInfo;
-import com.lego.job.core.util.I18nUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,12 +13,12 @@ public enum MisfireStrategyEnum {
     /**
      * do nothing
      */
-    DO_NOTHING(I18nUtil.getString("misfire_strategy_do_nothing")),
+    DO_NOTHING("忽略"),
 
     /**
      * fire once now
      */
-    FIRE_ONCE_NOW(I18nUtil.getString("misfire_strategy_fire_once_now"));
+    FIRE_ONCE_NOW("立即执行一次");
 
     private String title;
 
