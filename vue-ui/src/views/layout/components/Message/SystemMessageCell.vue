@@ -3,18 +3,27 @@
     :class="{ 'is-unread' : !messageData.readed }"
     class="message-cell"
     align="stretch">
-    <div class="message-cell__hd">
+    <div class="message-cell__hd" :style="{ 'background-color': typeObj.color}">
       <i
         :class="typeObj.icon | iconPre"
       />
     </div>
 
-    <div class="message-cell__bd">
+    <div
+      v-if="messageData.type.code === 'flowable'"
+      class="message-cell__bd">
       <span
         v-if="canClick"
-        :class="['click-content']"
+        class="click-content"
         @click="enterDetail">{{ messageData.content }}</span>
       <span v-else>{{ messageData.content }}</span>
+    </div>
+    <div
+      v-if="messageData.type.code === 'form'"
+      class="message-cell__bd">
+      <span
+        class="click-content"
+        @click="enterDetail">{{ messageData.name }}</span>
     </div>
 
     <div class="message-cell__ft">
@@ -42,12 +51,12 @@ export default {
       if (this.messageData.type.code === 'flowable') {
         return {
           icon: 'office',
-          color: '#6995FF'
+          color: '#2362FB'
         }
       }
       return {
-        icon: 'log',
-        color: '#6995FF'
+        icon: 'icon-full-clock',
+        color: '#FF6666'
       }
     },
     canClick() {
@@ -98,7 +107,6 @@ export default {
   &__hd {
     flex-shrink: 0;
     margin-right: 15px;
-    background-color: $xr-color-primary;
     text-align: center;
     width: 28px;
     height: 28px;

@@ -6,6 +6,8 @@
     <el-switch
       v-if="formType == 'boolean_value'"
       :value="value"
+      :active-value="props.activeValue"
+      :inactive-value="props.inactiveValue"
       disabled />
     <signature-image
       v-else-if="formType == 'handwriting_sign'"

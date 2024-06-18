@@ -7,4 +7,6 @@ public interface AppCode {
     String system = "system";
 
     String report = "report";
+
+    String job = "job";
 }

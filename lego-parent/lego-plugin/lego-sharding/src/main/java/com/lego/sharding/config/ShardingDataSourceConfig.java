@@ -78,7 +78,7 @@ public class ShardingDataSourceConfig {
     public DataSource getDataSource() throws Exception {
         if (!openSharding) {
             log.info("未开启分表数据源sharding.open");
-            return dataSourceUtil.createDataSource();
+            return dataSourceUtil.getDataSource();
         }
         return createDataSource(null);
     }
@@ -91,7 +91,7 @@ public class ShardingDataSourceConfig {
     }
 
     private DataSource createDataSource(Long configId) throws Exception {
-        DataSource defaultDataSource = dataSourceUtil.createDataSource();
+        DataSource defaultDataSource = dataSourceUtil.getDataSource();
         SqlSession session = metaSqlSessionFactory(defaultDataSource).openSession();
         Map<String, DataSource> dataSourceMap = createDataSourceMap(session);
         Set<RuleConfiguration> ruleConfiguration = new HashSet<>();

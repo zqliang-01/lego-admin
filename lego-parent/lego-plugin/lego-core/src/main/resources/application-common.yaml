@@ -55,3 +55,18 @@ sa-token:
   # 是否输出操作日志 
   is-log: false
   is-print: false
+
+# xxl-job定时任务
+xxl:
+  job:
+    accessToken: ${sa-token.jwt-secret-key}
+    executor:
+      appname: ${spring.application.name:xxl-job-executor-sample}
+    i18n: zh_CN
+    # job-admin
+    triggerpool:
+      fast:
+        max: 200
+      slow:
+        max: 100
+    logretentiondays: 30

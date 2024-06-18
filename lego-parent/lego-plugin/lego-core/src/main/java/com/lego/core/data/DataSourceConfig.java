@@ -2,6 +2,8 @@ package com.lego.core.data;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.sql.DataSource;
@@ -21,7 +23,9 @@ public class DataSourceConfig {
     @Value("${jdbc.password}")
     private String password;
 
-    public DataSource createDataSource() {
+    @Bean
+    @ConditionalOnMissingBean
+    public DataSource getDataSource() {
         DruidDataSource result = new DruidDataSource();
         result.setDriverClassName(className);
         result.setUrl(url);

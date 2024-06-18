@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lego</groupId>
-            <artifactId>lego-sharding</artifactId>
+            <artifactId>lego-core</artifactId>
             <version>1.0.0</version>
         </dependency>
     </dependencies>

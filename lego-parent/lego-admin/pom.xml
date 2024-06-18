@@ -40,6 +40,11 @@
             <artifactId>lego-doc</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.lego</groupId>
+            <artifactId>lego-job</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
 

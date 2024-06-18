@@ -1,0 +1,13 @@
+<?php
+
+    echo "xxl-job: hello php  \n";
+
+    echo "脚本位置：$argv[0]  \n";
+    echo "任务参数：$argv[1]  \n";
+    echo "分片序号 = $argv[2]  \n";
+    echo "分片总数 = $argv[3]  \n";
+
+    echo "Good bye!  \n";
+    exit(0);
+
+?>

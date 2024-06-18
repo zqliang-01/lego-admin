@@ -2,7 +2,7 @@
   <el-input
     v-if="isTrimInput(item.formType)"
     v-model.trim="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :prefix-icon="getInputIcon(item.formType) | iconPre"
     :maxlength="getInputMaxlength(item.formType)"
     :placeholder="item.placeholder"
@@ -11,43 +11,43 @@
   <doc-image
     v-else-if="item.formType == 'doc_image'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     @value-change="commonChange(item, index, $event)"/>
   <json-editor
     v-else-if="item.formType == 'jsonEditor'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     @input="commonChange(item, index, $event)"/>
   <rich-text-editor
     v-else-if="item.formType == 'rich_text_editor'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     @input="commonChange(item, index, $event)"/>
   <el-input-number
     v-else-if="item.formType == 'number'"
     v-model="fieldForm[item.fieldCode]"
     :placeholder="item.placeholder"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <el-input-number
     v-else-if="item.formType == 'floatnumber'"
     v-model="fieldForm[item.fieldCode]"
     :placeholder="item.placeholder"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <percent-input
     v-else-if="item.formType == 'percent'"
     v-model="fieldForm[item.fieldCode]"
     :placeholder="item.placeholder"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <el-input
     v-else-if="item.formType == 'textarea'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :rows="3"
     :autosize="{ minRows: 3}"
     :maxlength="item.maxlength || 800"
@@ -59,7 +59,7 @@
     v-else-if="['select', 'user'].includes(item.formType)"
     v-model="fieldForm[item.fieldCode]"
     :item="item"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :clearable="item.clearable"
     :placeholder="item.placeholder"
     :options="item.setting"
@@ -70,18 +70,18 @@
     v-else-if="['structure'].includes(item.formType)"
     v-model="fieldForm[item.fieldCode]"
     :options="item.setting"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     filterable
   />
   <dept-select
     v-else-if="['multiple_structure'].includes(item.formType)"
     :value="item.value"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     @value-change="deptChange(item, index, $event)" />
   <lego-checkbox
     v-else-if="['checkbox', 'multiple_user'].includes(item.formType)"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :clearable="item.clearable"
     :placeholder="item.placeholder"
     :options="item.setting"
@@ -91,7 +91,7 @@
   <el-date-picker
     v-else-if="item.formType == 'date'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     :picker-options="pickerOptions"
     clearable
     style="width: 100%;"
@@ -102,7 +102,7 @@
   <el-date-picker
     v-else-if="item.formType == 'datetime'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     clearable
     style="width: 100%;"
     type="datetime"
@@ -112,25 +112,28 @@
   <el-switch
     v-else-if="item.formType == 'boolean_value'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :active-value="item.activeValue"
+    :inactive-value="item.inactiveValue"
+    :disabled="disableStatus"
     @change="commonChange(item, index, $event)"/>
   <select-icon
     v-else-if="item.formType == 'icon'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     @change="commonChange(item, index, $event)"/>
   <signature-pad
     v-else-if="item.formType == 'handwriting_sign'"
     v-model="fieldForm[item.fieldCode]"
-    :disabled="item.disabled || disabled"/>
+    :disabled="disableStatus"/>
   <desc-text
     v-else-if="item.formType == 'desc_text'"
-    :value="fieldForm[item.fieldCode]"/>
+    :value="fieldForm[item.fieldCode]"
+    :disabled="disableStatus"/>
   <lego-relative-cell
     v-else-if="item.formType == 'entity'"
-    :value="item.value"
+    :value="fieldForm[item.fieldCode]"
     :form-code="relativeFormCode"
-    :disabled="item.disabled || disabled"
+    :disabled="disableStatus"
     @value-change="entityChange(item, index, $event)"/>
   <div v-else>
     <slot :data="item" :index="index" />
@@ -184,6 +187,7 @@ export default {
 
   data() {
     return {
+      disableStatus: false,
       pickerOptions: {}
     }
   },
@@ -195,8 +199,18 @@ export default {
       return ''
     }
   },
-  watch: {},
-  created() {},
+  watch: {
+    item: {
+      handler() {
+        this.disableStatus = this.item.disabled || this.disabled
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  created() {
+    this.disableStatus = this.item.disabled || this.disabled
+  },
   mounted() {},
   beforeDestroy() {},
   methods: {
@@ -206,6 +220,10 @@ export default {
       this.commonChange(item, index, value)
     },
     deptChange(item, index, value) {
+      this.$set(this.fieldForm, item.fieldCode, value)
+      this.commonChange(item, index, value)
+    },
+    cronChange(item, index, value) {
       this.$set(this.fieldForm, item.fieldCode, value)
       this.commonChange(item, index, value)
     }

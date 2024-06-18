@@ -2,7 +2,6 @@ mybatis-plus:
   global-config:
     banner: false
   mapper-locations: classpath*:mapper/**/*Mapper.xml
-  type-enums-package: com.lego.**.entity
   configuration: 
     default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
     #是否打印SQL语句

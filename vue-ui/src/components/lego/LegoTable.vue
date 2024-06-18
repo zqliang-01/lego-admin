@@ -16,11 +16,13 @@
             :label="item.name"
             show-overflow-tooltip>
             <template slot-scope="{ row }">
-              <field-view
-                :props="item"
-                :form-type="item.formType"
-                :value="row[item.fieldCode]"
-                @clickValue="handleField($event, row)" />
+              <slot name="column" v-bind="{ row: row, item: item }">
+                <field-view
+                  :props="item"
+                  :form-type="item.formType"
+                  :value="row[item.fieldCode]"
+                  @clickValue="handleField($event, row)" />
+              </slot>
             </template>
           </el-table-column>
         </template>
@@ -106,7 +108,6 @@ export default {
     }
     this.tablePageSize = this.pageSize
     this.tableCurrentPage = this.currentPage
-    this.getList()
   },
   methods: {
     showColumn(item) {
