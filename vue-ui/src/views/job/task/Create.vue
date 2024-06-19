@@ -77,7 +77,7 @@ export default {
         { fieldCode: 'scheduleType', name: '调度类型', formType: 'select', required: true, setting: this.scheduleTypeList }
       ]
       if (this.fieldForm.scheduleType === 'CRON') {
-        fields.push({ fieldCode: 'scheduleConf', name: 'Cron', formType: 'text', required: true, tipType: 'tooltip', tips: 'cron执行表达式，格式：* * * * * ?' })
+        fields.push({ fieldCode: 'scheduleConf', name: 'Cron', formType: 'cron_input', required: true, tipType: 'tooltip', tips: 'cron执行表达式，格式：* * * * * ?' })
         return [fields]
       }
       if (this.fieldForm.scheduleType === 'FIX_RATE') {
@@ -99,12 +99,10 @@ export default {
     }
   },
   watch: {
-    action: {
-      handler() {
+    visible(val) {
+      if (val) {
         this.init()
-      },
-      deep: true,
-      immediate: true
+      }
     },
     scheduleFieldList: {
       handler() {

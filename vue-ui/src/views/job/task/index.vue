@@ -337,6 +337,7 @@ export default {
       }
       if (type === 'edit') {
         this.action.type = 'update'
+        this.action.time = new Date().getTime()
         this.action.detailData = item
         this.showDetail = true
         return

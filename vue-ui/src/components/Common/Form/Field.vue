@@ -77,7 +77,7 @@
     v-else-if="['multiple_structure'].includes(item.formType)"
     :value="item.value"
     :disabled="disableStatus"
-    @value-change="deptChange(item, index, $event)" />
+    @value-change="valueChange(item, index, $event)" />
   <lego-checkbox
     v-else-if="['checkbox', 'multiple_user'].includes(item.formType)"
     v-model="fieldForm[item.fieldCode]"
@@ -135,6 +135,11 @@
     :form-code="relativeFormCode"
     :disabled="disableStatus"
     @value-change="entityChange(item, index, $event)"/>
+  <cron-input
+    v-else-if="item.formType == 'cron_input'"
+    :cron-value="fieldForm[item.fieldCode]"
+    :disabled="disableStatus"
+    @change="valueChange(item, index, $event)"/>
   <div v-else>
     <slot :data="item" :index="index" />
   </div>
@@ -153,6 +158,7 @@ import SelectIcon from '@/components/Common/SelectIcon'
 import RichTextEditor from '@/components/Common/RichTextEditor'
 import DeptSelect from '@/components/Common/DeptSelect'
 import DocImage from '@/components/Common/DocImage'
+import CronInput from '@/components/Common/CronInput'
 
 import Mixin from './Mixin'
 
@@ -170,7 +176,8 @@ export default {
     LegoRelativeCell,
     RichTextEditor,
     DeptSelect,
-    DocImage
+    DocImage,
+    CronInput
   },
   mixins: [Mixin],
   props: {
@@ -219,11 +226,7 @@ export default {
       this.$set(this.fieldForm, item.fieldCode, result)
       this.commonChange(item, index, value)
     },
-    deptChange(item, index, value) {
-      this.$set(this.fieldForm, item.fieldCode, value)
-      this.commonChange(item, index, value)
-    },
-    cronChange(item, index, value) {
+    valueChange(item, index, value) {
       this.$set(this.fieldForm, item.fieldCode, value)
       this.commonChange(item, index, value)
     }
