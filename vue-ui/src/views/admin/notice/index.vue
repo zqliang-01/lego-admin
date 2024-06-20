@@ -116,6 +116,7 @@ export default {
     }
   },
   mounted() {
+    this.getList()
   },
   methods: {
     getList(pageSize = this.pageSize, currentPage = this.currentPage) {

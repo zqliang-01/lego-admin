@@ -73,6 +73,7 @@ export default {
       })
     },
     initValue() {
+      this.fieldForm = {}
       this.dataFieldList.forEach(fields => {
         fields.forEach(field => {
           if (field.show !== false) {
@@ -80,7 +81,17 @@ export default {
             field.value = this.detailData[field.fieldCode]
             field.disabled = this.getDisable(field, this.actionType)
             this.setDefaultValue(field, this.fieldForm, this.actionType === 'save')
-            this.fieldRules[field.fieldCode] = this.getRules(field)
+          }
+        })
+      })
+      this.initRule()
+    },
+    initRule() {
+      this.fieldRules = {}
+      this.dataFieldList.forEach(fields => {
+        fields.forEach(field => {
+          if (field.show !== false) {
+            this.$set(this.fieldRules, field.fieldCode, this.getRules(field))
           }
         })
       })

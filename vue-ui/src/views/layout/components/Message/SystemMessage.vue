@@ -76,6 +76,12 @@
         </div>
       </slide-view>
     </template>
+    <el-dialog
+      :title="messageTitle"
+      :visible.sync="showMessageDialog"
+      append-to-body>
+      <span v-html="messageContent"/>
+    </el-dialog>
   </div>
 </template>
 
@@ -105,6 +111,9 @@ export default {
   },
   data() {
     return {
+      messageTitle: '',
+      showMessageDialog: false,
+      messageContent: '',
       todayDetailData: {},
       showDetail: false,
       currentType: 'all',
@@ -233,13 +242,17 @@ export default {
      */
     checkDetail(type, id, dataIndex, data) {
       if (type === 'flowable') {
-        console.log(type, id)
         this.$router.push({
           path: '/oa/undo',
           query: {
             taskId: id
           }
         })
+      }
+      if (type === 'form') {
+        this.messageTitle = data.name
+        this.messageContent = data.content
+        this.showMessageDialog = true
       }
     },
 

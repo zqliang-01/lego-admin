@@ -89,7 +89,8 @@
         <module>lego-gateway</module>
         <module>lego-doc</module>
 		<module>lego-plugin</module>
-	</modules>
+		<module>lego-job</module>
+    </modules>
 
 	<build>
 		<pluginManagement>

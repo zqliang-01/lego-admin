@@ -10,7 +10,6 @@
     </parent>
 
     <name>lego-report</name>
-    <groupId>com.lego</groupId>
     <artifactId>lego-report</artifactId>
 
     <dependencies>

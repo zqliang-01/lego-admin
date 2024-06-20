@@ -20,34 +20,25 @@ import { Navbar, Sidebar, AppMain } from './components'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'TableFormLayout',
-
+  name: 'OaLayout',
   components: {
     Navbar,
     Sidebar,
     AppMain
   },
-
   data() {
     return {
-      appCode: '',
-      createShow: false
     }
   },
-
   computed: {
     ...mapGetters([
       'menuRouters'
     ]),
     currentRouters() {
       return this.menuRouters.oa
-    },
-    quickAddOffset() {
-      return Math.round(this.quickAddList.length / 2) * 25
     }
   },
   mounted() {
-    this.appCode = this.$route.params.model
   },
   methods: {
   }

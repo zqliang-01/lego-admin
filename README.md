@@ -15,20 +15,21 @@
 
 ### 技术栈
 
-| 技术                                                                  | 说明                      | 版本       |
-| --------------------------------------------------------------------- | ------------------------- | ---------- |
-| [SpringBoot](https://spring.io/projects/spring-boot)                  | Java 框架                 | 2.7.11     |
+| 技术                                                                    | 说明                     | 版本         |
+|-----------------------------------------------------------------------|------------------------|------------|
+| [SpringBoot](https://spring.io/projects/spring-boot)                  | Java 框架                | 2.7.11     |
 | [SpringCloud](https://spring.io/projects/spring-cloud)                | SpringCloud 全家桶        | 2021.0.9   |
 | [SpringCloudAlibaba](https://spring.io/projects/spring-cloud-alibaba) | SpringCloudAlibaba 全家桶 | 2021.0.6.0 |
-| [mybatis-plus](https://mybatis.plus)                                  | 数据持久化框架            | 3.4.2      |
-| [flowable](https://www.flowable.com)                                  | 流程引擎                  | 6.8.0      |
-| [ShardingSphere](https://shardingsphere.apache.org)                   | 分库分表框架              | 5.4.1      |
-| [sa-token](https://sa-token.cc)                                       | 权限认证框架              | 1.34.0     |
-| [openfeign](https://cloud.spring.io/spring-cloud-openfeign)           | 远程调用框架              | 3.1.9      |
-| [hutool](https://hutool.mydoc.io)                                     | 工具类库                  | 5.8.26     |
-| [easyexcel](https://easyexcel.opensource.alibaba.com)                 | excel 操作框架            | 3.2.1      |
-| [velocity](https://velocity-technology.com)                           | 模板引擎                  | 2.3        |
-| [SpringDataJpa](https://github.com/spring-projects/spring-data-jpa)   | 数据持久化框架            | 2.7.11     |
+| [mybatis-plus](https://mybatis.plus)                                  | 数据持久化框架                | 3.4.2      |
+| [flowable](https://www.flowable.com)                                  | 流程引擎                   | 6.8.0      |
+| [ShardingSphere](https://shardingsphere.apache.org)                   | 分库分表框架                 | 5.4.1      |
+| [sa-token](https://sa-token.cc)                                       | 权限认证框架                 | 1.34.0     |
+| [openfeign](https://cloud.spring.io/spring-cloud-openfeign)           | 远程调用框架                 | 3.1.9      |
+| [hutool](https://hutool.mydoc.io)                                     | 工具类库                   | 5.8.26     |
+| [easyexcel](https://easyexcel.opensource.alibaba.com)                 | excel 操作框架             | 3.2.1      |
+| [velocity](https://velocity-technology.com)                           | 模板引擎                   | 2.3        |
+| [SpringDataJpa](https://github.com/spring-projects/spring-data-jpa)   | 数据持久化框架                | 2.7.11     |
+| [xxl-job](https://www.xuxueli.com/xxl-job/)                           | 分布式定时任务框架              | 2.4.1      |
 
 ### 软件架构
 
@@ -43,8 +44,8 @@
 - `mysql5.7`
 - `JDK1.8`
 - `maven3`
-- `node` >= 10.0.0 建议 v19.9.0
-- `npm` >= 6.0.0 建议 9.6.3
+- `node` >= 10.0.0 建议 v21
+- `npm` >= 6.0.0 建议 v10
 
 #### 打包运行
 
@@ -92,6 +93,16 @@
     <td>
 - 任务审批
   <img src="https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/11%E4%BB%BB%E5%8A%A1%E5%AE%A1%E6%89%B9.png"/>
+    </td>
+  </tr>
+  <tr>
+    <td>
+- 定时任务
+  <img src="https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/13%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1.png"/>
+    </td>
+    <td>
+- 操作日志
+  <img src="https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/14%E6%93%8D%E4%BD%9C%E6%97%A5%E5%BF%97.png"/>
     </td>
   </tr>
   <tr>

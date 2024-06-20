@@ -1,0 +1,13 @@
+package com.lego.job.service.handler;
+
+import com.lego.core.job.context.XxlJobHelper;
+import com.lego.core.job.handler.IJobHandler;
+
+public class DemoGlueJobHandler extends IJobHandler {
+
+	@Override
+	public void execute() throws Exception {
+		XxlJobHelper.log("XXL-JOB, Hello World.");
+	}
+
+}

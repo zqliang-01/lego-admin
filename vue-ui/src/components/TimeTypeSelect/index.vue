@@ -29,12 +29,12 @@
         <el-date-picker
           v-model="startTime"
           type="date"
-          value-format="yyyy.MM.dd"
+          value-format="yyyy-MM-dd"
           placeholder="选择日期"/>
         <el-date-picker
           v-model="endTime"
           type="date"
-          value-format="yyyy.MM.dd"
+          value-format="yyyy-MM-dd"
           placeholder="选择日期"/>
         <el-button @click="customSureClick">确定</el-button>
       </div>
@@ -55,6 +55,8 @@
 <script type="text/javascript">
 import { isObject } from '@/utils/types'
 
+const formatterData = require('./date.js')
+
 export default {
   name: 'TimeTypeSelect', // 时间类型选择
   props: {
@@ -68,16 +70,14 @@ export default {
       type: Array,
       default: () => {
         return [
-          { label: '今天', value: 'today' },
-          { label: '昨天', value: 'yesterday' },
-          { label: '本周', value: 'week' },
-          { label: '上周', value: 'lastWeek' },
-          { label: '本月', value: 'month' },
-          { label: '上月', value: 'lastMonth' },
-          { label: '本季度', value: 'quarter' },
-          { label: '上季度', value: 'lastQuarter' },
-          { label: '本年', value: 'year' },
-          { label: '去年', value: 'lastYear' }
+          { label: '今天', value: 'today', date: formatterData.getTodayDate() },
+          { label: '昨天', value: 'yesterday', date: formatterData.getYesterday() },
+          { label: '本周', value: 'week', date: formatterData.getWeekDate() },
+          { label: '上周', value: 'lastWeek', date: formatterData.getLastWeekDate() },
+          { label: '本月', value: 'month', date: formatterData.getMonth() },
+          { label: '上月', value: 'lastMonth', date: formatterData.getLastMonth() },
+          { label: '本年', value: 'year', date: formatterData.getYear() },
+          { label: '去年', value: 'lastYear', date: formatterData.getLastYear() }
         ]
       }
     } // 数据源 如果存在 替换 默认
@@ -140,7 +140,6 @@ export default {
           return element
         }
       }
-
       return { label: '本年', value: 'year' }
     },
 
@@ -150,7 +149,13 @@ export default {
       this.sureCustomContent = false
       this.showCustomContent = false
       this.selectType = item
-      this.$emit('change', { type: 'default', value: this.selectType.value, label: this.selectType.label })
+      this.$emit('change', {
+        type: 'default',
+        value: this.selectType.value,
+        label: this.selectType.label,
+        startTime: item.date[0],
+        endTime: item.date[1]
+      })
     },
     // 选择自定义时间 确定
     customSureClick() {
