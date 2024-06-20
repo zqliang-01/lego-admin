@@ -27,24 +27,30 @@
             </el-badge>
           </flexbox>
 
-          <div :style="{ height: contentHeight }" class="sm-main__bd">
+          <template v-for="(item, index) in typeList">
             <div
-              v-infinite-scroll="getList"
-              :key="scrollKey"
-              infinite-scroll-distance="15"
-              infinite-scroll-disabled="scrollDisabled">
-              <message-cell
-                v-for="(item, index) in dataList"
-                :key="index"
-                :message-data="item"
-                :data-index="index"
-                @detail="checkDetail"
-                @read="readMessageClick"
-                @delete="deleteMessageClick"/>
+              v-if="currentType == item.code"
+              :key="index"
+              :style="{ height: contentHeight }"
+              class="sm-main__bd">
+              <div
+                :key="scrollKey"
+                v-infinite-scroll="getList"
+                infinite-scroll-distance="15"
+                infinite-scroll-disabled="scrollDisabled">
+                <message-cell
+                  v-for="(item, index) in dataList"
+                  :key="index"
+                  :message-data="item"
+                  :data-index="index"
+                  @detail="checkDetail"
+                  @read="readMessageClick"
+                  @delete="deleteMessageClick"/>
+              </div>
+              <p v-if="loading" class="scroll-bottom-tips">加载中...</p>
+              <p v-if="noMore" class="scroll-bottom-tips">没有更多了</p>
             </div>
-            <p v-if="loading" class="scroll-bottom-tips">加载中...</p>
-            <p v-if="noMore" class="scroll-bottom-tips">没有更多了</p>
-          </div>
+          </template>
 
           <flexbox class="sm-main__ft">
             <div class="switch-read">
@@ -211,27 +217,15 @@ export default {
       if (this.isUnRead) {
         params.readed = 0
       }
-      systemMessageListAPI(params)
-        .then(res => {
-          this.loading = false
-          if (this.currentTypeCode == params.type) {
-            if (!this.noMore) {
-              if (this.pageIndex == 1) {
-                this.dataList = res.data.result
-              } else {
-                this.dataList = this.dataList.concat(res.data.result)
-              }
-              this.pageIndex++
-            }
-            this.noMore = res.data.result.length === 0
-          } else {
-            this.refreshList()
-          }
-        })
-        .catch(() => {
-          this.noMore = true
-          this.loading = false
-        })
+      systemMessageListAPI(params).then(res => {
+        this.loading = false
+        this.dataList = this.dataList.concat(res.data.result)
+        this.pageIndex++
+        this.noMore = res.data.result.length === 0
+      }).catch(() => {
+        this.noMore = true
+        this.loading = false
+      })
     },
 
     /**
