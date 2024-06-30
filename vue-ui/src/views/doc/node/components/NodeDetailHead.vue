@@ -1,5 +1,5 @@
 <template>
-  <flexbox class="main-top">
+  <flexbox class="main-top" v-loading="loading">
     <flexbox-item class="title">
       <span>{{ nodeDetail.name }}</span><span>{{ nodeDetail.creator.name }}于{{ nodeDetail.createTime }}创建</span>
     </flexbox-item>
@@ -18,6 +18,14 @@
         class="control-btn"
         @click="handleCollection">
         {{ !collectCode ? '收藏' :'取消收藏' }}
+      </el-button>
+      <el-button
+        v-if="nodeDetail.type === 'page'"
+        icon="lego lego-export"
+        type="text"
+        class="control-btn"
+        @click="handleCommandClick('export')">
+        导出
       </el-button>
       <el-dropdown
         v-if="nodeDetail.editable"
@@ -62,6 +70,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       collectCode: ''
     }
   },
@@ -117,6 +126,9 @@ export default {
             this.$emit('onDeleteSuccess')
           })
         })
+      }
+      if (command === 'export') {
+        this.$emit('onExport')
       }
     }
   }

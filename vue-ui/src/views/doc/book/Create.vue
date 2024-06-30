@@ -54,10 +54,10 @@ export default {
   methods: {
     init() {
       this.actionType = this.action.type
-      this.detailData = objDeepCopy(this.action.detailData)
-      this.fieldForm.code = this.detailData.code
+      this.detailData = this.action.detailData
       this.dataFieldList = objDeepCopy(this.fieldList)
       this.initValue()
+      this.fieldForm.code = this.detailData.code
     }
   }
 }

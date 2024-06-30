@@ -1,9 +1,10 @@
 <template>
-  <div class="page-container" :loading="loading">
+  <div class="page-container" v-loading="loading">
     <node-detail-head
       :node-detail="nodePage"
       @onClickEdit="openEdit = !openEdit"
       @onDeleteSuccess="handleDelete"
+      @onExport="handleExport"
     />
     <div class="content">
       <div
@@ -38,6 +39,7 @@ import { fileUploadAPI, filePreviewUrl } from '@/api/doc/file'
 import NodeDetailHead from './NodeDetailHead'
 import NodePageEditor from './NodePageEditor'
 import Tinymce from '@/components/Tinymce'
+import { exportToWord } from './exportToWord'
 
 export default {
   name: 'DocpageDetail',
@@ -104,6 +106,15 @@ export default {
     },
     handleDelete() {
       this.$emit('onDelete')
+    },
+    handleExport() {
+      this.loading = true
+      exportToWord(this.pageDetail.name, this.pageDetail.content).then(() => {
+        this.loading = false
+      }).catch(res => {
+        this.loading = false
+        this.$message.error(res)
+      })
     },
     getEditConfig() {
       return {

@@ -175,8 +175,14 @@ export default {
   overflow: auto;
   flex-shrink: 0;
 
-  .scrollbar-wrapper {
+  ::v-deep *::-webkit-scrollbar {
+    width: 0px !important;
+    height: 0px !important;
+  }
+
+  ::v-deep .scrollbar-wrapper {
     overflow-x: hidden !important;
+    margin: 0px !important;
   }
 
   .el-scrollbar {
@@ -277,7 +283,6 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  // height: 48px;
 
   &-content {
     position: relative;
