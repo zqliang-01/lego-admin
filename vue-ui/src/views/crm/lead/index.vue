@@ -1,5 +1,8 @@
 <template>
-  <div>
+  <div
+    v-empty="formErrorMsg != null || !auth.read"
+    xs-empty-icon="nopermission"
+    :xs-empty-text="auth.read ? formErrorMsg : '暂无权限'">
     <lego-list-head
       :search.sync="search"
       :menu-code="menuCode"
@@ -10,11 +13,7 @@
       @on-handle="listHeadHandle"
       @on-search="commonSearch"
       @on-export="exportInfos" />
-    <div
-      v-empty="formErrorMsg != null || !auth.read"
-      xs-empty-icon="nopermission"
-      :xs-empty-text="auth.read ? formErrorMsg : '暂无权限'"
-      class="lego-container">
+    <div class="lego-container">
       <lego-table-head
         ref="legoTableHead"
         :sort-data="sortData"
@@ -27,7 +26,6 @@
       <el-table
         v-loading="loading"
         id="lego-table"
-        :row-height="40"
         :data="pageList"
         :height="tableHeight"
         :cell-class-name="cellClassName"

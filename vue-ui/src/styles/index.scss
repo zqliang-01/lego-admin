@@ -301,26 +301,6 @@ div[lazy=loading] {
   overflow: hidden;
 }
 
-// 项目下的侧滑框
-.project-drawer {
-  user-select: none;
-  .el-drawer__header {
-    display: none;
-  }
-
-  .el-drawer__body {
-    padding: 15px;
-    overflow: auto;
-  }
-}
-
-#project-container {
-  .el-dialog__wrapper,
-  .v-modal {
-    position: absolute;
-  }
-}
-
 // 帮助提示符
 .lego-help-tips {
   cursor: pointer;
@@ -370,4 +350,9 @@ div[lazy=loading] {
   .el-picker-panel__sidebar {
     padding-bottom: 40px;
   }
+}
+
+.el-popup-parent--hidden {
+  padding-right: 0px !important;
+  overflow: hidden !important;
 }

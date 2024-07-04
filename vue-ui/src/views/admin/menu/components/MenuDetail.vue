@@ -173,8 +173,8 @@ export default {
           if (field.fieldCode === 'type') {
             field.setting = this.permissionTypes
           }
-          if (field.fieldCode === 'code' && this.operationType !== 'add') {
-            field.disabled = true
+          if (field.fieldCode === 'code') {
+            this.$set(field, 'disabled', this.operationType === 'update')
           }
           this.fieldRule[field.fieldCode] = this.getRules(field)
           field.value = this.menuData[field.fieldCode]
@@ -227,9 +227,9 @@ export default {
       })
     },
     submitRequest() {
-      console.log(this.fieldForm)
       this.requestAPI(this.fieldForm).then(() => {
         this.loading = false
+        this.resetForm()
         this.$message.success('提交成功！')
         this.$emit('success')
       }).catch(() => {
@@ -241,16 +241,13 @@ export default {
       this.operationType = 'add'
       this.baseFieldList.forEach(fields => {
         fields.forEach(field => {
-          if (field.fieldCode === 'routeType' && this.menuData.code) {
-            this.$set(field, 'disabled', false)
+          if (field.fieldCode === 'code') {
+            this.$set(field, 'disabled', this.operationType === 'update')
           }
           if (field.fieldCode === 'parentCode') {
             field.value = this.menuData.code
             this.$set(this.fieldForm, field.fieldCode, this.menuData.code)
           } else {
-            if (field.fieldCode === 'code') {
-              field.disabled = false
-            }
             field.value = ''
             this.$set(this.fieldForm, field.fieldCode, '')
           }

@@ -1,6 +1,5 @@
 package com.lego.report.service.impl;
 
-import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.data.mybatis.MybatisDynamicExecutor;
@@ -17,6 +16,7 @@ import com.lego.report.entity.ReportDefinition;
 import com.lego.report.service.IReportOpenService;
 import com.lego.report.vo.ReportExportVO;
 import com.lego.report.vo.ReportOpenPageVO;
+import com.lego.sharding.config.ShardingHintConfig;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class ReportOpenService extends BusService<IReportDefinitionDao, ReportDe
         BusinessException.check(definition.isEnable(), "报表[{0}]已停用，暂时无法提供查询操作！", definition.getName());
         List<ReportCondition> conditions = conditionDao.findBy(definition);
         Map<String, Object> params = conditionAssembler.convertParams(conditions, vo.getParam());
-        DynamicDataSourceContextHolder.push(definition.getDataSource());
+        ShardingHintConfig.setDataSource(definition.getDataSource());
         return executor.selectPage(sqlSessionTemplate, definition.getSqlText(), params, vo.getPageSize(), vo.getPageIndex());
     }
 
@@ -57,7 +57,7 @@ public class ReportOpenService extends BusService<IReportDefinitionDao, ReportDe
 
         ReportDefinition dataDefinition = condition.getDataDefinition();
         BusinessException.check(dataDefinition != null, "报表条件[{0}]未定义数据，获取报表条件结果失败！", condition.getName());
-        DynamicDataSourceContextHolder.push(definition.getDataSource());
+        ShardingHintConfig.setDataSource(definition.getDataSource());
         long count = executor.selectCount(sqlSessionTemplate, dataDefinition.getSqlText(), new HashMap<>());
         BusinessException.check(count <= 100, "报表条件[{0}]结果集超过100，请缩小查询范围！", dataDefinition.getName());
         return executor.select(sqlSessionTemplate, dataDefinition.getSqlText(), new HashMap<>());

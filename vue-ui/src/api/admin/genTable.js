@@ -34,12 +34,6 @@ export function genTableNameListAPI(data) {
   })
 }
 
-export function genTableDataSourceListAPI(data) {
-  return request({
-    url: '/back-end/sys-gen-table/list-data-source'
-  })
-}
-
 export function genTableAddAPI(data) {
   return request({
     url: '/back-end/sys-gen-table/add',

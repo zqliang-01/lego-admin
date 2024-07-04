@@ -1,8 +1,6 @@
 package com.lego.report.service.impl;
 
-import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lego.core.data.DynamicDataSourceConfig;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.data.mybatis.MybatisDynamicExecutor;
 import com.lego.core.dto.TypeInfo;
@@ -23,6 +21,7 @@ import com.lego.report.service.IReportDefinitionService;
 import com.lego.report.vo.ReportConditionVO;
 import com.lego.report.vo.ReportDefinitionCreateVO;
 import com.lego.report.vo.ReportDefinitionModifyVO;
+import com.lego.sharding.config.ShardingHintConfig;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,8 +44,6 @@ public class ReportDefinitionService extends BusService<IReportDefinitionDao, Re
     private SqlSessionTemplate sqlSessionTemplate;
     @Autowired
     private MybatisDynamicExecutor executor;
-    @Autowired
-    private DynamicDataSourceConfig dynamicDataSourceConfig;
 
     @Override
     public List<TypeInfo> findSimpleType(String code, String name, Boolean enable) {
@@ -90,14 +87,9 @@ public class ReportDefinitionService extends BusService<IReportDefinitionDao, Re
 
     @Override
     public <M> IPage<M> openTestSql(String dataSource, String sqlText, List<ReportConditionVO> vos) {
-        DynamicDataSourceContextHolder.push(dataSource);
+        ShardingHintConfig.setDataSource(dataSource);
         Map<String, Object> params = conditionAssembler.convertParams(vos);
         return executor.selectPage(sqlSessionTemplate, sqlText, params, 1, 1);
-    }
-
-    @Override
-    public List<TypeInfo> findDataSource() {
-        return dynamicDataSourceConfig.getNames();
     }
 
 }

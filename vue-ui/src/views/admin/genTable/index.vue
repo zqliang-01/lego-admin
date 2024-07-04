@@ -68,9 +68,9 @@ import {
   genTableListAPI,
   genTablePreviewAPI,
   genTableDownloadAPI,
-  genTableNameListAPI,
-  genTableDataSourceListAPI
+  genTableNameListAPI
 } from '@/api/admin/genTable'
+import { dataSourceSimpleListAPI } from '@/api/admin/sharding/dataSource'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import FieldView from '@/components/Common/Form/FieldView'
@@ -203,7 +203,7 @@ export default {
         })
       }
       if (field.fieldCode === 'dataSource') {
-        await genTableDataSourceListAPI().then(res => {
+        await dataSourceSimpleListAPI().then(res => {
           field.setting = res.data
         })
       }

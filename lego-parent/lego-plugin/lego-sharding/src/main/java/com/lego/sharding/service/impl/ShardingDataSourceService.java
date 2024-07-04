@@ -40,7 +40,9 @@ public class ShardingDataSourceService extends BusService<IShardingDataSourceDao
         GenericConditionVO vo = GenericConditionVO.create()
             .addItem(GenericConditionItemVO.createEqual("enable", true));
         List<ShardingDataSource> dataSources = dao.findBy(vo);
-        return assembler.createTypeInfo(dataSources);
+        List<TypeInfo> typeInfo = assembler.createTypeInfo(dataSources);
+        typeInfo.add(0, new TypeInfo("", "默认"));
+        return typeInfo;
     }
 
     @Override

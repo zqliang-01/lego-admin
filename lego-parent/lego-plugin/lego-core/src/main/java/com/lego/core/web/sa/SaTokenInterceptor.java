@@ -4,7 +4,6 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.strategy.SaStrategy;
-import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.lego.core.common.Constants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.ILegoInterceptor;
@@ -27,7 +26,6 @@ public class SaTokenInterceptor extends SaInterceptor implements ILegoIntercepto
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        DynamicDataSourceContextHolder.clear();
         checkAuth(handler);
         Constants.currentIp.remove();
         Constants.currentIp.set(getIpAddress(request));

@@ -9,4 +9,5 @@ CALL add_sharding_template('CLASS_BASED', '自定义类分片算法模板', 'Sha
 
 CALL add_sharding_template('standard', '标准分片表配置模板', 'ShardingStrategy', null, '分片列名（单列）');
 CALL add_sharding_template('complex', '复合分片表配置模板', 'ShardingStrategy', null, '分片列名（多列，逗号分隔）');
+CALL add_sharding_template('hint', '强制分片表配置模板', 'ShardingStrategy', null, null);
 CALL add_sharding_template('none', '不分片表配置模板', 'ShardingStrategy', null, null);

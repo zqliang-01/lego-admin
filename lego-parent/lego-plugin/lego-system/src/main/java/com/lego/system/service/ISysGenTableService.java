@@ -32,5 +32,4 @@ public interface ISysGenTableService {
 
     void sync(String operatorCode, String code, List<MetaTableColumnInfo> tableColumns);
 
-    List<TypeInfo> findDataSource();
 }

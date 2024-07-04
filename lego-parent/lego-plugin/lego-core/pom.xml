@@ -82,11 +82,6 @@
             <artifactId>druid</artifactId>
             <version>1.2.3</version>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-            <version>4.3.0</version>
-        </dependency>
 
         <!-- Sa-Token -->
         <dependency>
@@ -167,11 +162,6 @@
             <groupId>org.apache.groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>4.0.10</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>javax.annotation</groupId>

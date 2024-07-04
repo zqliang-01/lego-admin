@@ -9,7 +9,7 @@
   </div>
 </template>
 <script>
-import { definitionDataSourceListAPI } from '@/api/report/definition'
+import { dataSourceSimpleListAPI } from '@/api/admin/sharding/dataSource'
 import FormItems from '@/components/Common/Form/FormItems'
 import GenerateRulesMixin from '@/components/Mixins/GenerateRules'
 
@@ -40,7 +40,7 @@ export default {
     }
   },
   created() {
-    definitionDataSourceListAPI().then(res => {
+    dataSourceSimpleListAPI().then(res => {
       this.fieldList.forEach(fields => {
         fields.forEach(field => {
           if (field.fieldCode === 'dataSource') {

@@ -3,7 +3,6 @@ package com.lego.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.io.IORuntimeException;
 import cn.hutool.core.io.IoUtil;
-import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.lego.core.common.Constants;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.MetaTableColumnInfo;
@@ -71,15 +70,8 @@ public class SysGenTableController extends BaseController {
         return JsonResponse.success(tableService.findAll());
     }
 
-    @GetMapping("/list-data-source")
-    @SaCheckPermission("report_definition_add")
-    public JsonResponse<List<TypeInfo>> listDataSource(String code, String name) {
-        return JsonResponse.success(tableService.findDataSource());
-    }
-
     @GetMapping("/list-name")
     public JsonResponse<List<TypeInfo>> listName(String dataSource) {
-        DynamicDataSourceContextHolder.push(dataSource);
         return JsonResponse.success(tableService.findTableName(dataSource));
     }
 

@@ -1,12 +1,12 @@
 package com.lego.sharding.config;
 
-import com.baomidou.dynamic.datasource.spring.boot.autoconfigure.DynamicDataSourceProperties;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
 import com.lego.core.data.DataSourceConfig;
 import com.lego.core.data.mybatis.MybatisDynamicExecutor;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.exception.CoreException;
 import com.lego.core.util.StringUtil;
 import com.lego.sharding.dto.config.ShardingMetaAlgorithmInfo;
 import com.lego.sharding.dto.config.ShardingMetaDataSourceInfo;
@@ -54,6 +54,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.TreeMap;
 
 @Slf4j
 @Configuration
@@ -64,9 +65,6 @@ public class ShardingDataSourceConfig {
     @Value("${sharding.jdbc.show-sql:false}")
     private boolean showSql;
 
-    @Value("${sharding.open:false}")
-    private boolean openSharding;
-
     @Autowired
     private DataSourceConfig dataSourceUtil;
 
@@ -74,12 +72,8 @@ public class ShardingDataSourceConfig {
     private MybatisDynamicExecutor mybatisExecutor;
 
     @Bean
-    @ConditionalOnProperty(prefix = DynamicDataSourceProperties.PREFIX, name = "enabled", havingValue = "false", matchIfMissing = true)
+    @ConditionalOnProperty(name = "sharding.open", havingValue = "true")
     public DataSource getDataSource() throws Exception {
-        if (!openSharding) {
-            log.info("未开启分表数据源sharding.open");
-            return dataSourceUtil.getDataSource();
-        }
         return createDataSource(null);
     }
 
@@ -96,7 +90,7 @@ public class ShardingDataSourceConfig {
         Map<String, DataSource> dataSourceMap = createDataSourceMap(session);
         Set<RuleConfiguration> ruleConfiguration = new HashSet<>();
         ruleConfiguration.add(createShardingRuleConfiguration(session, configId));
-        ruleConfiguration.add(createSingleRuleConfiguration());
+        ruleConfiguration.add(createSingleRuleConfiguration(dataSourceMap));
         ruleConfiguration.add(createSQLFederationRuleConfiguration());
         session.close();
         Properties props = new Properties();
@@ -104,9 +98,10 @@ public class ShardingDataSourceConfig {
         return ShardingSphereDataSourceFactory.createDataSource(dataSourceMap, ruleConfiguration, props);
     }
 
-    private static SingleRuleConfiguration createSingleRuleConfiguration() {
+    private static SingleRuleConfiguration createSingleRuleConfiguration(Map<String, DataSource> dataSourceMap) {
         SingleRuleConfiguration singleRuleConfiguration = new SingleRuleConfiguration();
         singleRuleConfiguration.setTables(Arrays.asList("*.*"));
+        singleRuleConfiguration.setDefaultDataSource(dataSourceMap.keySet().iterator().next());
         return singleRuleConfiguration;
     }
 
@@ -141,6 +136,7 @@ public class ShardingDataSourceConfig {
             createTableRuleConfig(session, config, id);
             createAlgorithms(session, config, id);
         }
+
         config.setDefaultDatabaseShardingStrategy(new NoneShardingStrategyConfiguration());
         config.setDefaultTableShardingStrategy(new NoneShardingStrategyConfiguration());
         config.getKeyGenerators().put("snowflake", new AlgorithmConfiguration("SNOWFLAKE", new Properties()));
@@ -185,13 +181,11 @@ public class ShardingDataSourceConfig {
         ShardingAlgorithmMapper algorithmMapper = session.getMapper(ShardingAlgorithmMapper.class);
         List<ShardingMetaAlgorithmInfo> algorithms = algorithmMapper.selectValidBy(configId);
         for (ShardingMetaAlgorithmInfo algorithm : algorithms) {
-            log.info("表分片算法：{}", algorithm);
             String code = algorithm.getCode();
             String templateCode = algorithm.getTemplateCode();
             List<TypeInfo> dictionaries = getProperties(session, algorithm.getId(), templateCode, algorithm.getConfigCode());
             Properties props = new Properties();
             for (TypeInfo dictionary : dictionaries) {
-                log.info("表分片算法配置：{}", dictionary);
                 props.setProperty(dictionary.getCode(), dictionary.getName());
             }
             config.getShardingAlgorithms().put(code, new AlgorithmConfiguration(templateCode, props));
@@ -199,7 +193,7 @@ public class ShardingDataSourceConfig {
     }
 
     private Map<String, DataSource> createDataSourceMap(SqlSession session) throws SQLException {
-        Map<String, DataSource> dataSourceMap = new HashMap<String, DataSource>();
+        Map<String, DataSource> dataSourceMap = new TreeMap<>();
         ShardingDataSourceMapper dataSourceMapper = session.getMapper(ShardingDataSourceMapper.class);
         List<ShardingMetaDataSourceInfo> dataSources = dataSourceMapper.selectValid();
         for (ShardingMetaDataSourceInfo dataSource : dataSources) {
@@ -207,13 +201,13 @@ public class ShardingDataSourceConfig {
             Map<String, Object> dataSourceProps = new HashMap<String, Object>();
             List<TypeInfo> properties = getProperties(session, dataSource.getId(), null, null);
             for (TypeInfo property : properties) {
-                log.info("数据源配置：{}", property);
                 dataSourceProps.put(property.getCode(), property.getName());
             }
             DataSource shardingDataSource = createShardingDataSource(dataSourceProps);
             log.info("数据源装配成功：{}", shardingDataSource.getConnection().getSchema());
             dataSourceMap.put(dataSource.getCode(), shardingDataSource);
         }
+        CoreException.check(!dataSourceMap.isEmpty(), "无可用的分区数据源，请配置！");
         return dataSourceMap;
     }
 

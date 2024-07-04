@@ -108,7 +108,7 @@ export default {
   background: white;
   border-top: 1px solid #e1e1e1;
   font-size: 13px;
-  overflow-x: scroll;
+  overflow-x: auto;
   color: #aaa;
   @include left;
   .list {

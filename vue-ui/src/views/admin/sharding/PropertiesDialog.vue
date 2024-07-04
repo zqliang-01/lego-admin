@@ -3,6 +3,7 @@
     <el-dialog
       v-loading="loading"
       :visible="visible"
+      :close-on-click-modal="false"
       title="属性更新"
       class="new-dialog-form"
       @close="handleCancel">
@@ -73,9 +74,7 @@ export default {
     init() {
       if (this.templateCode) {
         templateJsonGetAPI(this.templateCode).then(res => {
-          if (res.data) {
-            this.templateProperties = JSON.parse(res.data)
-          }
+          this.templateProperties = JSON.parse(res.data)
         })
         propertiesListAPI({
           entityId: this.entityId
@@ -110,14 +109,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.new-dialog-form {
-  overflow-y: auto;
-  padding: 20px;
-}
 .new-dialog-form ::v-deep .el-form-item {
   margin: 0;
 }
 .new-dialog-form ::v-deep .el-form-item .el-form-item__label {
   padding: 0;
+}
+.new-dialog-form ::v-deep .el-dialog__body {
+  max-height: 60vh;
+  overflow-y: auto;
 }
 </style>

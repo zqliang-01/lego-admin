@@ -1,7 +1,6 @@
 package com.lego.report.action;
 
 import com.alibaba.fastjson.JSON;
-import com.baomidou.dynamic.datasource.toolkit.DynamicDataSourceContextHolder;
 import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
 import com.lego.core.data.mybatis.MybatisDynamicExecutor;
@@ -17,6 +16,7 @@ import com.lego.report.entity.ReportCondition;
 import com.lego.report.entity.ReportDefinition;
 import com.lego.report.entity.ReportTitle;
 import com.lego.report.vo.ReportExportVO;
+import com.lego.sharding.config.ShardingHintConfig;
 import org.mybatis.spring.SqlSessionTemplate;
 
 import java.text.MessageFormat;
@@ -63,7 +63,7 @@ public class ExportReportAction extends MaintainAction {
     protected void doRun() {
         List<List<String>> head = new ArrayList<>();
         List<ReportTitle> titles = titleDao.findBy(definition);
-        DynamicDataSourceContextHolder.push(definition.getDataSource());
+        ShardingHintConfig.setDataSource(definition.getDataSource());
         List<Map<String, Object>> results = executor.select(sqlSessionTemplate, definition.getSqlText(), params);
 
         for (ReportTitle title : titles) {

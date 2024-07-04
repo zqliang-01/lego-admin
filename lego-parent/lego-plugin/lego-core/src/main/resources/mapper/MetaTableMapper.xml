@@ -13,13 +13,17 @@
     </resultMap>
 
     <select id="selectDBName" resultType="java.lang.String">
-        SELECT t.SCHEMA_NAME FROM information_schema.SCHEMATA t
+        SELECT t.SCHEMA_NAME FROM sys_schema_db t
         WHERE t.SCHEMA_NAME NOT IN ('mysql', 'information_schema', 'sys', 'performance_schema')
+    </select>
+
+    <select id="selectCurrentDBName" resultType="java.lang.String">
+        SELECT database()
     </select>
 
     <select id="selectByDBName" resultType="com.lego.core.dto.TypeInfo">
         SELECT t.table_name code, CONCAT(t.table_name, '(', t.table_comment, ')') name, t.create_time, t.update_time
-        FROM information_schema.tables t
+        FROM sys_schema_table t
         <where>
             <if test="@com.lego.core.util.StringUtil@isBlank(dbName)">
                 AND t.table_schema = (select database())
@@ -42,7 +46,7 @@
 
     <select id="selectCommentByName" resultType="String">
         SELECT t.table_comment
-        FROM information_schema.tables t
+        FROM sys_schema_table t
         <where>
             AND t.table_name = #{tableName}
             AND t.table_schema = (select database())
@@ -51,7 +55,7 @@
 
     <select id="selectColumnsName" parameterType="String" resultType="com.lego.core.dto.TypeInfo">
         select column_name code, column_comment name
-        from information_schema.columns where table_schema = (select database()) and table_name = (#{tableName})
+        from sys_schema_column where table_schema = (select database()) and table_name = (#{tableName})
         order by ordinal_position
     </select>
 
@@ -65,7 +69,7 @@
         (case when column_key = 'PRI' then 1 else 0 end) as is_pk,
         (case when column_key = 'UNI' then 1 else 0 end) as is_unique,
         (case when extra = 'auto_increment' then 1 else 0 end) as is_increment
-        from information_schema.columns where table_schema = (select database()) and table_name = (#{tableName})
+        from sys_schema_column where table_schema = (select database()) and table_name = (#{tableName})
         order by ordinal_position
     </select>
 </mapper>

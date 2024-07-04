@@ -9,6 +9,8 @@ public interface MetaTableMapper {
 
     List<String> selectDBName();
 
+    String selectCurrentDBName();
+
     List<TypeInfo> selectByDBName(String dbName);
 
     List<TypeInfo> selectColumnsName(String tableName);

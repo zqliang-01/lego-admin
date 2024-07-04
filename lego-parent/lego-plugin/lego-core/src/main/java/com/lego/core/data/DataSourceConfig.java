@@ -2,7 +2,7 @@ package com.lego.core.data;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -24,7 +24,7 @@ public class DataSourceConfig {
     private String password;
 
     @Bean
-    @ConditionalOnMissingBean
+    @ConditionalOnProperty(name = "sharding.open", havingValue = "false", matchIfMissing = true)
     public DataSource getDataSource() {
         DruidDataSource result = new DruidDataSource();
         result.setDriverClassName(className);

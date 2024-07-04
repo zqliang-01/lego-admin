@@ -64,12 +64,6 @@ public class ReportDefinitionController extends BaseController {
         return JsonResponse.success(definitionService.findSimpleType(code, name, true));
     }
 
-    @GetMapping("/list-data-source")
-    @SaCheckPermission("report_definition_add")
-    public JsonResponse<List<TypeInfo>> listDataSource(String code, String name) {
-        return JsonResponse.success(definitionService.findDataSource());
-    }
-
     @GetMapping("/get/{code}")
     @SaCheckPermission("report_definition_add")
     public JsonResponse<ReportDefinitionInfo> getByCode(@PathVariable String code) {

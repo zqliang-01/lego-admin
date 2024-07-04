@@ -62,6 +62,8 @@
 }
 
 .el-table__fixed-right {
+  height: auto !important;
+  bottom: 7px;
   td::before {
     display: none;
   }
@@ -121,4 +123,15 @@
 
 .el-table-column--selection .cell {
   padding-left: 12px !important;
+}
+
+// 处理固定列滚动条覆盖问题
+.el-table .el-table__fixed {
+  height: auto !important;
+  bottom: 7px;
+}
+.el-table__fixed-body-wrapper {
+  .el-table__body {
+    padding-bottom: 7px;
+  }
 }

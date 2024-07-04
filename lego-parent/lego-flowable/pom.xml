@@ -24,11 +24,6 @@
             <artifactId>flowable-spring-boot-starter-process</artifactId>
             <version>6.8.0</version>
         </dependency>
-        <dependency>
-            <groupId>com.baomidou</groupId>
-            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-            <version>4.3.0</version>
-        </dependency>
     </dependencies>
 
     <build>

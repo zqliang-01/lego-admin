@@ -27,7 +27,7 @@ export default {
   data() {
     return {
       loading: false, // 加载动画
-      tableHeight: document.documentElement.clientHeight - 215, // 表的高度
+      tableHeight: document.documentElement.clientHeight - 216, // 表的高度
       pageList: [],
       pageCodes: [],
       relativeEntity: {
@@ -246,7 +246,7 @@ export default {
       }
       this.filterList = data
       var offsetHei = document.documentElement.clientHeight
-      var removeHeight = this.filterList.length > 0 ? 295 : 235
+      var removeHeight = this.filterList.length > 0 ? 266 : 216
       this.tableHeight = offsetHei - removeHeight
       this.currentPage = 1
       this.getList()
@@ -409,7 +409,7 @@ export default {
      */
     updateTableHeight() {
       var offsetHei = document.documentElement.clientHeight
-      var removeHeight = this.filterList.length > 0 ? 285 : 235
+      var removeHeight = this.filterList.length > 0 ? 266 : 216
       this.tableHeight = offsetHei - removeHeight
     }
   }
