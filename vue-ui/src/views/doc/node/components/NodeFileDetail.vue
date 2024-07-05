@@ -1,9 +1,10 @@
 <template>
-  <div class="page-container" :loading="loading">
+  <div class="page-container" v-loading="loading">
     <node-detail-head
       :node-detail="nodeFile"
       @onClickEdit="handleEdit"
       @onDeleteSuccess="handleDelete"
+      @onDownload="handleDownload"
     />
     <div class="content">
       <div
@@ -15,6 +16,7 @@
         v-else
         class="file-icon">
         <img v-src="fileIcon"/>
+        <p>{{ nodeFile.name + fileSize }}</p>
         <p>暂未支持该类型文件预览，敬请期待！</p>
       </div>
     </div>
@@ -25,8 +27,15 @@ import {
   nodeGetAPI,
   nodeModifyAPI
 } from '@/api/doc/node'
-import { filePreviewUrl } from '@/api/doc/file'
-import { getFileIconWithSuffix } from '@/utils'
+import {
+  filePreviewUrl,
+  fileDownloadAPI
+} from '@/api/doc/file'
+import {
+  fileSize,
+  getFileIconWithSuffix,
+  downloadFileWithBuffer
+} from '@/utils'
 import NodeDetailHead from './NodeDetailHead'
 
 export default {
@@ -61,6 +70,9 @@ export default {
         ext = temps[temps.length - 1]
       }
       return getFileIconWithSuffix(ext)
+    },
+    fileSize() {
+      return '（' + fileSize(this.nodeFile.file.size) + '）'
     }
   },
   data() {
@@ -122,6 +134,15 @@ export default {
     },
     handleDelete() {
       this.$emit('onDelete')
+    },
+    handleDownload() {
+      this.loading = true
+      fileDownloadAPI(this.nodeFile.file.code).then(res => {
+        downloadFileWithBuffer(res.data, this.nodeFile.name)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div class="page-container" :loading="loading">
+  <div class="page-container" v-loading="loading">
     <node-detail-head
       :node-detail="nodeFolder"
       @onClickEdit="handleEdit"

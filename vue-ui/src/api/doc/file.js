@@ -17,3 +17,11 @@ export function fileUploadAPI(data, config = {}) {
     }
   })
 }
+
+export function fileDownloadAPI(code) {
+  return request({
+    url: `/back-end/doc-file/download/${code}`,
+    method: 'get',
+    responseType: 'blob'
+  })
+}

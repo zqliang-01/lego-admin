@@ -1,5 +1,5 @@
 <template>
-  <div :loading="loading">
+  <div v-loading="loading">
     <el-popover
       placement="top"
       title="操作记录"

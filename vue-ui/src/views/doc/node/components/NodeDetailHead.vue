@@ -27,6 +27,14 @@
         @click="handleCommandClick('export')">
         导出
       </el-button>
+      <el-button
+        v-if="nodeDetail.type === 'file'"
+        icon="lego lego-download"
+        type="text"
+        class="control-btn"
+        @click="handleCommandClick('download')">
+        下载
+      </el-button>
       <el-dropdown
         v-if="nodeDetail.editable"
         trigger="click"
@@ -129,6 +137,9 @@ export default {
       }
       if (command === 'export') {
         this.$emit('onExport')
+      }
+      if (command === 'download') {
+        this.$emit('onDownload')
       }
     }
   }
