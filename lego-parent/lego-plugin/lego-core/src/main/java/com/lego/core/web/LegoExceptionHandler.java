@@ -15,6 +15,7 @@ import feign.codec.DecodeException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -40,6 +41,9 @@ public class LegoExceptionHandler {
 
     @Autowired(required = false)
     private List<ILegoExceptionHandler> handlers;
+
+    @Value("${open-detail-tips:false}")
+    private boolean openDetailTips;
 
     @ExceptionHandler(Throwable.class)
     public ModelAndView defaultErrorHandler(HttpServletResponse response, Throwable e) throws IOException {
@@ -73,7 +77,7 @@ public class LegoExceptionHandler {
             errorMsg = "全局未知异常，请联系技术人员处理！";
         }
         log.error(errorMsg, e);
-        return handlerResponse(response, errorMsg, errorCode);
+        return handlerResponse(response, errorMsg, errorCode, e);
     }
 
     @ExceptionHandler(DecodeException.class)
@@ -90,7 +94,7 @@ public class LegoExceptionHandler {
     public ModelAndView fileError(HttpServletResponse response, MaxUploadSizeExceededException e) throws IOException {
         Integer errorCode = ExceptionEnum.PARAM_INVALID.getCode();
         String errorMsg = StringUtil.format("文件过大，上传失败!");
-        return handlerResponse(response, errorMsg, errorCode);
+        return handlerResponse(response, errorMsg, errorCode, e);
     }
 
     @ExceptionHandler(NotPermissionException.class)
@@ -98,29 +102,32 @@ public class LegoExceptionHandler {
         Integer errorCode = ExceptionEnum.AUTHORIZATION_INVALID.getCode();
         String errorMsg = ExceptionEnum.AUTHORIZATION_INVALID.getMsg();
         log.error(e.getMessage());
-        return handlerResponse(response, errorMsg, errorCode);
+        return handlerResponse(response, errorMsg, errorCode, e);
     }
 
     @ExceptionHandler(NotLoginException.class)
     public ModelAndView loginError(HttpServletResponse response, NotLoginException e) throws IOException {
         Integer errorCode = ExceptionEnum.SESSION_INVALID.getCode();
         String errorMsg = ExceptionEnum.SESSION_INVALID.getMsg();
-        return handlerResponse(response, errorMsg, errorCode);
+        return handlerResponse(response, errorMsg, errorCode, e);
     }
 
     @ExceptionHandler(value = BusinessException.class)
     public ModelAndView businessErrorHandler(HttpServletResponse response, BusinessException e) throws IOException {
         Integer errorCode = e.getCode();
         String errorMsg = e.getMessage();
-        return handlerResponse(response, errorMsg, errorCode);
+        return handlerResponse(response, errorMsg, errorCode, e);
     }
 
-    protected ModelAndView handlerResponse(HttpServletResponse response, String errorMsg, Integer errorCode) throws IOException {
+    protected ModelAndView handlerResponse(HttpServletResponse response, String errorMsg, Integer errorCode, Throwable e) throws IOException {
         response.setContentType(Constants.JSON_MEDIA_TYPE_NAME);
         response.setCharacterEncoding(Constants.DEFAULT_CHARSET_NAME);
         response.setStatus(HttpStatus.OK.value());
         PrintWriter writer = null;
         try {
+            if (openDetailTips) {
+                errorMsg = StringUtil.format("发生[{0}]异常，异常码[{1,number,#}]，异常信息[{2}]", errorMsg, errorCode, e.getMessage());
+            }
             JsonResponse<Object> result = JsonResponse.failed(errorCode, errorMsg);
             messageConverter.write(result, Constants.JSON_MEDIA_TYPE, new ServletServerHttpResponse(response));
         } catch (Throwable ex) {

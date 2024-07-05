@@ -19,9 +19,9 @@ public class ${ClassName}Assembler extends BusAssembler<${ClassName}Info, ${Clas
     #if($column.formType == 'boolean_value')
     	info.set${column.firstUpperField}(entity.is${column.firstUpperField}());
     #elseif($column.formType == 'user')
-    	info.set${column.firstUpperField}(create(CustomFieldTypeEnum.EMPLOYEE, entity.get${column.firstUpperField}()));
+    	info.set${column.firstUpperField}(createEmployee(entity.get${column.firstUpperField}()));
     #elseif($column.formType == 'structure')
-    	info.set${column.firstUpperField}(create(CustomFieldTypeEnum.DEPT, entity.get${column.firstUpperField}()));
+    	info.set${column.firstUpperField}(createDept(entity.get${column.firstUpperField}()));
     #elseif($column.typeInfo)
     	info.set${column.firstUpperField}(createTypeInfo(entity.get${column.firstUpperField}()));
     #else
