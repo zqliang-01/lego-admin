@@ -88,11 +88,11 @@ public class ShardingConfigController extends BaseController {
         ExcelUtil.exportExcel(datas, "分片规则数据", ShardingConfigInfo.class, response);
     }
 
-    @PostMapping("/test/{id}")
+    @PostMapping("/test/{code}")
     @SaCheckPermission("manage_sharding_config_update")
-    public JsonResponse<List> test(@PathVariable Long id, String sql) throws Exception {
+    public JsonResponse<List> test(@PathVariable String code, String sql) throws Exception {
         BusinessException.check(StringUtil.isNotBlank(sql), "执行SQL不能为空！");
-        return JsonResponse.success(shardingDataSourceConfig.test(id, sql));
+        return JsonResponse.success(shardingDataSourceConfig.test(code, sql));
     }
 
 }

@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lego.sharding.mapper.ShardingRuleConfigMapper">
+<mapper namespace="com.lego.sharding.mapper.ShardingConfigMapper">
 
     <select id="selectValid" resultType="java.lang.Long">
 		SELECT t.id FROM sharding_config t
-		WHERE t.ENABLE = 1
+		<where>
+			AND t.ENABLE = 1
+			<if test="code != '' and code != null">
+				AND t.code = #{code}
+			</if>
+		</where>
 	</select>
 </mapper>

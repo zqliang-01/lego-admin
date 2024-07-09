@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ShardingMetaTableRuleConfigInfo extends DTO {
+public class ShardingMetaTableInfo extends DTO {
 
     private static final long serialVersionUID = 1L;
 

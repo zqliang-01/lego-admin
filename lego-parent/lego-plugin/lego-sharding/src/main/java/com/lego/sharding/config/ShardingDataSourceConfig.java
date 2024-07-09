@@ -1,5 +1,6 @@
 package com.lego.sharding.config;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.MybatisConfiguration;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.core.toolkit.GlobalConfigUtils;
@@ -10,12 +11,12 @@ import com.lego.core.exception.CoreException;
 import com.lego.core.util.StringUtil;
 import com.lego.sharding.dto.config.ShardingMetaAlgorithmInfo;
 import com.lego.sharding.dto.config.ShardingMetaDataSourceInfo;
-import com.lego.sharding.dto.config.ShardingMetaTableRuleConfigInfo;
+import com.lego.sharding.dto.config.ShardingMetaTableInfo;
 import com.lego.sharding.mapper.ShardingAlgorithmMapper;
+import com.lego.sharding.mapper.ShardingConfigMapper;
 import com.lego.sharding.mapper.ShardingDataSourceMapper;
 import com.lego.sharding.mapper.ShardingPropertiesMapper;
-import com.lego.sharding.mapper.ShardingRuleConfigMapper;
-import com.lego.sharding.mapper.ShardingTableRuleConfigMapper;
+import com.lego.sharding.mapper.ShardingTableMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.logging.stdout.StdOutImpl;
 import org.apache.ibatis.mapping.Environment;
@@ -65,6 +66,9 @@ public class ShardingDataSourceConfig {
     @Value("${sharding.jdbc.show-sql:false}")
     private boolean showSql;
 
+    @Value("${sharding.config-code:}")
+    private String configCode;
+
     @Autowired
     private DataSourceConfig dataSourceUtil;
 
@@ -74,22 +78,22 @@ public class ShardingDataSourceConfig {
     @Bean
     @ConditionalOnProperty(name = "sharding.open", havingValue = "true")
     public DataSource getDataSource() throws Exception {
-        return createDataSource(null);
+        return createDataSource(configCode);
     }
 
-    public List test(Long configId, String sql) throws Exception {
-        DataSource dataSource = createDataSource(configId);
+    public List test(String configCode, String sql) throws Exception {
+        DataSource dataSource = createDataSource(configCode);
         SqlSessionFactory sessionFactory = metaSqlSessionFactory(dataSource);
         SqlSessionTemplate sessionTemplate = new SqlSessionTemplate(sessionFactory);
         return mybatisExecutor.select(sessionTemplate, sql, new HashMap<>());
     }
 
-    private DataSource createDataSource(Long configId) throws Exception {
+    private DataSource createDataSource(String configCode) throws Exception {
         DataSource defaultDataSource = dataSourceUtil.getDataSource();
         SqlSession session = metaSqlSessionFactory(defaultDataSource).openSession();
         Map<String, DataSource> dataSourceMap = createDataSourceMap(session);
         Set<RuleConfiguration> ruleConfiguration = new HashSet<>();
-        ruleConfiguration.add(createShardingRuleConfiguration(session, configId));
+        ruleConfiguration.add(createShardingRuleConfiguration(session, configCode));
         ruleConfiguration.add(createSingleRuleConfiguration(dataSourceMap));
         ruleConfiguration.add(createSQLFederationRuleConfiguration());
         session.close();
@@ -124,15 +128,13 @@ public class ShardingDataSourceConfig {
         return builder.build(configuration);
     }
 
-    private ShardingRuleConfiguration createShardingRuleConfiguration(SqlSession session, Long configId) {
+    private ShardingRuleConfiguration createShardingRuleConfiguration(SqlSession session, String configCode) {
         ShardingRuleConfiguration config = new ShardingRuleConfiguration();
-        ShardingRuleConfigMapper ruleConfigMapper = session.getMapper(ShardingRuleConfigMapper.class);
-        List<Long> configIds = ruleConfigMapper.selectValid();
+        ShardingConfigMapper ruleConfigMapper = session.getMapper(ShardingConfigMapper.class);
+        List<Long> configIds = ruleConfigMapper.selectValid(configCode);
+        CoreException.check(CollectionUtil.isNotEmpty(configIds), "已启用分表数据源但未找到正常可用的分片规则，系统启动失败！", configCode);
 
         for (Long id : configIds) {
-            if (configId != null && !configId.equals(id)) {
-                continue;
-            }
             createTableRuleConfig(session, config, id);
             createAlgorithms(session, config, id);
         }
@@ -144,10 +146,10 @@ public class ShardingDataSourceConfig {
     }
 
     private void createTableRuleConfig(SqlSession session, ShardingRuleConfiguration config, Long configId) {
-        ShardingTableRuleConfigMapper tableRuleConfigMapper = session.getMapper(ShardingTableRuleConfigMapper.class);
-        List<ShardingMetaTableRuleConfigInfo> metaTableRuleConfigs = tableRuleConfigMapper.selectValidBy(configId);
+        ShardingTableMapper tableRuleConfigMapper = session.getMapper(ShardingTableMapper.class);
+        List<ShardingMetaTableInfo> metaTableRuleConfigs = tableRuleConfigMapper.selectValidBy(configId);
 
-        for (ShardingMetaTableRuleConfigInfo metaTableRuleConfig : metaTableRuleConfigs) {
+        for (ShardingMetaTableInfo metaTableRuleConfig : metaTableRuleConfigs) {
             log.info("表分片规则：{}", metaTableRuleConfig);
             String templateCode = metaTableRuleConfig.getTemplateCode();
             String algorithmCode = metaTableRuleConfig.getAlgorithmCode();
@@ -197,14 +199,13 @@ public class ShardingDataSourceConfig {
         ShardingDataSourceMapper dataSourceMapper = session.getMapper(ShardingDataSourceMapper.class);
         List<ShardingMetaDataSourceInfo> dataSources = dataSourceMapper.selectValid();
         for (ShardingMetaDataSourceInfo dataSource : dataSources) {
-            log.info("数据源：{}", dataSource);
             Map<String, Object> dataSourceProps = new HashMap<String, Object>();
             List<TypeInfo> properties = getProperties(session, dataSource.getId(), null, null);
             for (TypeInfo property : properties) {
                 dataSourceProps.put(property.getCode(), property.getName());
             }
             DataSource shardingDataSource = createShardingDataSource(dataSourceProps);
-            log.info("数据源装配成功：{}", shardingDataSource.getConnection().getSchema());
+            log.info("数据源装配成功：{}", dataSource.getCode());
             dataSourceMap.put(dataSource.getCode(), shardingDataSource);
         }
         CoreException.check(!dataSourceMap.isEmpty(), "无可用的分区数据源，请配置！");

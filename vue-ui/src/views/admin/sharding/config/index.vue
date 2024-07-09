@@ -122,7 +122,7 @@ export default {
       if (type === 'test') {
         this.$prompt('执行SQL:', '输入测试脚本').then(({ value }) => {
           this.loading = true
-          configTestAPI(row.id, { sql: value }).then(res => {
+          configTestAPI(row.code, { sql: value }).then(res => {
             this.loading = false
             this.$confirm('测试分片数据源成功：' + JSON.stringify(res.data))
           }).catch(() => {

@@ -14,7 +14,6 @@ CALL add_sharding_algorithm('timeOrder', '时间范围日志表分表算法', 'T
 /** =======分表配置数据====== */
 CALL add_sharding_table('InlineOrderTable', '行表达式订单表分表规则', 'test_order', 'test_order_${[0, 1]}', 'id', 'inlineOrder', 'TestRule', 'standard', 'sharding');
 CALL add_sharding_table('InlineLogTable', '行表达式日志表分表规则', 'test_log', 'test_log_${202304..202306}', 'create_time', 'timeOrder', 'TestRule', 'standard', 'sharding');
-CALL add_sharding_table('dual', '虚拟表', 'dual', 'dual', NULL, NULL, 'TestRule', 'none', 'sharding');
 
 /** =======属性数据====== */
 CALL add_sharding_algorithm_properties('algorithm-expression', 'test_order_$->{id % 2}', 'inlineOrder', 'TestRule');
