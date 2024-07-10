@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，
+当设置成trace时，可以看到log4j2内部各种详细输出
+monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身，设置间隔秒数
+-->
+<Configuration status="INFO" monitorInterval="180" packages="com.evan" disableAnsi="false" >
+    <!--日志级别以及优先级排序:
+    OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL
+    -->
+    <properties>
+        <!-- 文件日志在当前项目目录下 -->
+        <property name="LOG_HOME">./logs</property>
+        <!--日志输出格式 -->
+        <!--<property name="ENCODER_PATTERN_CONSOLE">%blue{%d{HH:mm:ss.SSS}}|%highlight{%level}{ERROR=Bright RED, WARN=Bright Yellow, INFO=Bright Green, DEBUG=Bright Cyan, TRACE=Bright White}|%yellow{%t}|%cyan{%l}: %white{%msg%n}</property>-->
+        <!--<property name="ENCODER_PATTERN_CONSOLE">%blue{%d{HH:mm:ss.SSS}} [%yellow{%t}]%cyan{%c{1.}:%line}: %white{%msg%n}</property>-->
+        <property name="ENCODER_PATTERN_CONSOLE">%d{HH:mm:ss.SSS} [%c:%line] - &lt;%msg&gt;%n</property>
+        <property name="ENCODER_PATTERN">%date{YYYY-MM-dd HH:mm:ss,SSS}[%thread][%l] - %msg%n%throwable</property>
+    </properties>
+    <Appenders>
+        <!--*********************控制台日志***********************-->
+        <Console name="consoleAppender" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${ENCODER_PATTERN_CONSOLE}" noConsoleNoAnsi="false"/>
+        </Console>
+
+        <!--*********************文件日志***********************-->
+        <!--debug级别日志-->
+        <RollingFile name="debugFileAppender"
+                     fileName="${LOG_HOME}/debug/lego-crm-debug.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-crm-debug-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <!--过滤掉info及更高级别日志-->
+                <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <!--设置日志格式-->
+            <PatternLayout>
+                <pattern>${ENCODER_PATTERN}</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 设置日志文件切分参数 -->
+                <!--<OnStartupTriggeringPolicy/>-->
+                <!--设置日志基础文件大小，超过该大小就触发日志文件滚动更新-->
+                <SizeBasedTriggeringPolicy size="100MB"/>
+                <!--设置日志文件滚动更新的时间，依赖于文件命名filePattern的设置-->
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <!--设置日志的文件个数上限，不设置默认为7个，超过大小后会被覆盖；依赖于filePattern中的%i-->
+            <DefaultRolloverStrategy max="100"/>
+        </RollingFile>
+
+        <!--info级别日志-->
+        <RollingFile name="infoFileAppender"
+                     fileName="${LOG_HOME}/info/lego-crm-info.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-crm-info-%d{yyyy-MM-dd}-%i.log.gz">
+            <Filters>
+                <!--过滤掉warn及更高级别日志-->
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <!--设置日志格式-->
+            <PatternLayout>
+                <pattern>${ENCODER_PATTERN}</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 设置日志文件切分参数 -->
+                <!--<OnStartupTriggeringPolicy/>-->
+                <!--设置日志基础文件大小，超过该大小就触发日志文件滚动更新-->
+                <SizeBasedTriggeringPolicy size="100MB"/>
+                <!--设置日志文件滚动更新的时间，依赖于文件命名filePattern的设置-->
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <!--设置日志的文件个数上限，不设置默认为7个，超过大小后会被覆盖；依赖于filePattern中的%i-->
+            <!--<DefaultRolloverStrategy max="100"/>-->
+        </RollingFile>
+
+        <!--error及更高级别日志-->
+        <RollingFile name="errorFileAppender"
+                     fileName="${LOG_HOME}/error/lego-crm-error.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-crm-error-%d{yyyy-MM-dd}-%i.log.gz">
+            <!--设置日志格式-->
+            <PatternLayout>
+                <pattern>${ENCODER_PATTERN}</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- 设置日志文件切分参数 -->
+                <!--<OnStartupTriggeringPolicy/>-->
+                <!--设置日志基础文件大小，超过该大小就触发日志文件滚动更新-->
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+                <!--设置日志文件滚动更新的时间，依赖于文件命名filePattern的设置-->
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <!--设置日志的文件个数上限，不设置默认为7个，超过大小后会被覆盖；依赖于filePattern中的%i-->
+            <DefaultRolloverStrategy max="100"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- 根日志设置 -->
+        <Root level="DEBUG">
+            <AppenderRef ref="consoleAppender" level="INFO"/>
+            <AppenderRef ref="debugFileAppender" level="DEBUG"/>
+            <AppenderRef ref="infoFileAppender" level="INFO"/>
+            <AppenderRef ref="errorFileAppender" level="ERROR"/>
+        </Root>
+
+        <!--spring日志-->
+        <Logger name="org.springframework" level="ERROR"/>
+        <!--druid数据源日志-->
+        <Logger name="druid.sql.Statement" level="OFF"/>
+        <!-- mybatis日志 -->
+        <Logger name="com.mybatis" level="ERROR"/>
+        <Logger name="org.mybatis.spring" level="ERROR"/>
+        <Logger name="com.baomidou" level="DEBUG"/>
+        <Logger name="org.hibernate" level="ERROR"/>
+        <Logger name="net.sf.ehcache" level="ERROR"/>
+        <Logger name="com.alibaba" level="ERROR"/>
+        <Logger name="springfox.documentation" level="ERROR"/>
+        <Logger name="com.zaxxer.hikari" level="ERROR"/>
+        <Logger name="io.lettuce.core" level="ERROR"/>
+        <Logger name="io.lettuce.core" level="ERROR"/>
+        <Logger name="io.netty" level="ERROR"/>
+        <Logger name="com.netflix" level="ERROR"/>
+        <Logger name="com.lego.core.data.mapper" level="ERROR"/>
+        <Logger name="org.flowable" level="ERROR"/>
+        <Logger name="liquibase" level="ERROR"/>
+    </Loggers>
+</Configuration>
