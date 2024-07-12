@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
+import com.lego.flowable.vo.FlowableCommentType;
 import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.system.vo.SysPermissionCode;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
@@ -47,7 +48,7 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
         }
         // 添加审批意见
         if (StringUtil.isNotBlank(vo.getComment())) {
-            taskService.addComment(vo.getId(), task.getProcessInstanceId(), vo.getComment());
+            taskService.addComment(vo.getId(), task.getProcessInstanceId(), FlowableCommentType.REJECT.getCode(), vo.getComment());
         }
         taskService.setAssignee(vo.getId(), operatorCode);
         List<String> finishedTaskIds = new ArrayList<>();

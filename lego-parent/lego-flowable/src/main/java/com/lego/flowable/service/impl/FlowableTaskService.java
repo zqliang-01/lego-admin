@@ -10,10 +10,12 @@ import com.lego.flowable.action.DelegateFlowableTaskAction;
 import com.lego.flowable.action.RejectFlowableTaskAction;
 import com.lego.flowable.action.SaveFlowableTaskAction;
 import com.lego.flowable.action.TransferFlowableTaskAction;
+import com.lego.flowable.assembler.FlowableCommentAssembler;
 import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.assembler.FlowableTaskAssembler;
 import com.lego.flowable.dto.FlowableTaskFormDetailInfo;
 import com.lego.flowable.dto.FlowableTaskInfo;
+import com.lego.flowable.mapper.FlowableCommentMapper;
 import com.lego.flowable.service.IFlowableTaskService;
 import com.lego.flowable.vo.FLowbaleTaskClaimVO;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
@@ -42,7 +44,13 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
     private ISysEmployeeDao employeeDao;
 
     @Autowired
+    private FlowableCommentMapper commentMapper;
+
+    @Autowired
     private FlowableModelAssembler modelAssembler;
+
+    @Autowired
+    private FlowableCommentAssembler commentAssembler;
 
     @Override
     public LegoPage<FlowableTaskInfo> findUndoBy(String employeeCode, FlowableTaskSearchVO vo) {
@@ -109,16 +117,12 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         String formKey = task.getFormKey();
         Map<String, Object> taskLocalVariables = task.getTaskLocalVariables();
         String code = StringUtil.toString(taskLocalVariables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
-        List<Comment> comments = taskService.getTaskComments(taskId);
-        String commentMsg = comments.stream()
-            .map(Comment::getFullMessage)
-            .reduce((s1, s2) -> s1 + " " + s2)
-            .orElse("");
+        List<Comment> comments = commentMapper.selectCommentsByTaskId(taskId);
         FlowableTaskFormDetailInfo detailInfo = new FlowableTaskFormDetailInfo(task.getId(), task.getName(), code);
         detailInfo.setVariables(taskLocalVariables);
-        detailInfo.setComment(commentMsg);
         detailInfo.setFormKey(formKey);
         detailInfo.setFinished(task instanceof HistoricTaskInstance);
+        detailInfo.setComments(commentAssembler.create(comments));
         return detailInfo;
     }
 

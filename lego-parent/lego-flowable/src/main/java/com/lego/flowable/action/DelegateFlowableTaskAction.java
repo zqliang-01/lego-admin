@@ -4,6 +4,7 @@ import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.flowable.vo.FlowableCommentType;
 import com.lego.flowable.vo.FlowableTaskDelegateVO;
 import com.lego.system.entity.SysEmployee;
 import com.lego.system.vo.SysPermissionCode;
@@ -34,7 +35,7 @@ public class DelegateFlowableTaskAction extends FlowableTaskAction {
             commentBuilder.append(": ").append(vo.getComment());
         }
         // 添加审批意见
-        taskService.addComment(vo.getId(), task.getProcessInstanceId(), commentBuilder.toString());
+        taskService.addComment(vo.getId(), task.getProcessInstanceId(), FlowableCommentType.DELEGATE.getCode(), commentBuilder.toString());
         // 设置办理人为当前登录人
         taskService.setOwner(vo.getId(), operatorCode);
         // 执行委派

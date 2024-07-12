@@ -44,7 +44,7 @@
       <el-pagination
         :current-page="currentPage"
         :page-sizes="pageSizes"
-        :page-size.sync="pageSize"
+        :page-size="pageSize"
         :total="total"
         class="p-bar"
         background
@@ -92,9 +92,9 @@ export default {
       selectedCodes: [],
       employeeList: [],
       currentPage: 1,
-      pageSize: 1,
+      pageSize: 10,
       total: 0,
-      pageSizes: [1, 15, 30, 45, 60],
+      pageSizes: [10, 15, 30, 45],
       tableHeight: window.innerHeight,
       fieldList: [
         { fieldCode: 'code', name: '工号', formType: 'text', width: '100' },
@@ -124,7 +124,6 @@ export default {
       }).then(res => {
         this.employeeList = res.data.result
         this.total = res.data.totalCount
-        this.pageSize = res.data.pageSize
         this.currentPage = res.data.pageIndex
         this.handleInitSelect()
         this.loading = false

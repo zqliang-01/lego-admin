@@ -8,6 +8,7 @@ import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
 import com.lego.flowable.handler.FlowableTaskCompleteHandler;
+import com.lego.flowable.vo.FlowableCommentType;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.entity.SysCustomForm;
@@ -45,9 +46,9 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
     @Override
     protected void doRun() {
         processBusinessCallback();
+        String commentType = FlowableCommentType.GENERIC.getCode();
         if (StringUtil.isNotBlank(vo.getComment())) {
-            taskService.deleteComments(vo.getId(), null);
-            taskService.addComment(vo.getId(), task.getProcessInstanceId(), vo.getComment());
+            taskService.addComment(vo.getId(), task.getProcessInstanceId(), commentType, vo.getComment());
         }
         if (DelegationState.PENDING.equals(task.getDelegationState())) {
             taskService.resolveTask(vo.getId());

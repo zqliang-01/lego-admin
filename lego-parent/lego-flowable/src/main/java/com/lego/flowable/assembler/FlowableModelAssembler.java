@@ -65,6 +65,20 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
         return taskIds;
     }
 
+    public List<String> getAfterUserTaskId(FlowNode userTask, List<String> finishedTaskIds) {
+        List<String> taskIds = new ArrayList<>();
+        for (SequenceFlow outgoingFlow : userTask.getOutgoingFlows()) {
+            FlowElement flowElement = outgoingFlow.getTargetFlowElement();
+            if ((flowElement instanceof UserTask || flowElement instanceof StartEvent)
+                && finishedTaskIds.contains(flowElement.getId())) {
+                taskIds.add(flowElement.getId());
+            } else if (flowElement instanceof FlowNode) {
+                taskIds.addAll(getAfterUserTaskId((FlowNode) flowElement, finishedTaskIds));
+            }
+        }
+        return taskIds;
+    }
+
     public EndEvent getEndEvent(BpmnModel bpmnModel) {
         Process process = bpmnModel.getMainProcess();
         for (FlowElement flowElement : process.getFlowElements()) {

@@ -4,7 +4,9 @@ import com.lego.core.dto.DTO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -18,6 +20,7 @@ public class FlowableTaskFormDetailInfo extends DTO {
     private String comment;
     private boolean finished;
     private Map<String, Object> variables = new HashMap<>();
+    private List<FlowableCommentInfo> comments = new ArrayList<>();
 
     public FlowableTaskFormDetailInfo(String id, String name, String code) {
         this.id = id;

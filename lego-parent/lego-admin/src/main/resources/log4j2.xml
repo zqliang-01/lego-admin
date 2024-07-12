@@ -21,7 +21,7 @@ monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身
         <!--*********************控制台日志***********************-->
         <Console name="consoleAppender" target="SYSTEM_OUT">
             <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch） -->
-            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
             <PatternLayout pattern="${ENCODER_PATTERN_CONSOLE}" noConsoleNoAnsi="false"/>
         </Console>
 
@@ -122,6 +122,7 @@ monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身
         <Logger name="io.netty" level="ERROR"/>
         <Logger name="com.netflix" level="ERROR"/>
         <Logger name="com.lego.core.data.mapper" level="ERROR"/>
+        <Logger name="com.lego.job" level="ERROR"/>
         <Logger name="org.flowable" level="ERROR"/>
         <Logger name="liquibase" level="ERROR"/>
     </Loggers>

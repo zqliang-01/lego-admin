@@ -126,6 +126,7 @@ public class LegoExceptionHandler {
         PrintWriter writer = null;
         try {
             if (openDetailTips) {
+                errorMsg = ExceptionEnum.getMsgBy(errorCode);
                 errorMsg = StringUtil.format("发生[{0}]异常，异常码[{1,number,#}]，异常信息[{2}]", errorMsg, errorCode, e.getMessage());
             }
             JsonResponse<Object> result = JsonResponse.failed(errorCode, errorMsg);

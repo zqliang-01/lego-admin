@@ -56,11 +56,6 @@ public class SaveFlowableTaskAction extends FlowableTaskAction {
 
         Object code = vo.getVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
         taskService.setVariableLocal(vo.getId(), FlowableProcessConstants.FORM_UNIQUE_KEY, code);
-
-        if (StringUtil.isNotBlank(vo.getComment())) {
-            taskService.deleteComments(vo.getId(), null);
-            taskService.addComment(vo.getId(), task.getProcessInstanceId(), vo.getComment());
-        }
     }
 
     @Override

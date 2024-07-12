@@ -19,6 +19,10 @@ flowable:
   #history-cleaning-cycle: 0/1 * * * * ?
   #history-cleaning-after: 365
   #history-cleaning-batchSize: 100
+  common:
+    engine:
+      history-logging-enabled: true
+      enable-historic-task-logging: true
   idm:
     enabled: false
   label-font-name: 宋体

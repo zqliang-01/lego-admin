@@ -33,6 +33,7 @@
       </create-sections>
       <create-sections title="审批信息">
         <el-form
+          v-if="!isView"
           ref="otherFrom"
           :model="otherFieldForm"
           :rules="otherFieldRules"
@@ -47,6 +48,8 @@
             :disabled="isView"
           />
         </el-form>
+        <task-comment
+          :commentList="commentList"/>
       </create-sections>
     </div>
     <template
@@ -73,8 +76,6 @@
     </template>
     <user-select
       required
-      multiple
-      :value="['test']"
       :visible.sync="showSelectEmployee"
       @selected="handleEmployeeSelect"/>
   </fade-view>
@@ -92,13 +93,17 @@ import {
 import { createFieldListAPI } from '@/api/admin/formField'
 import CreateMixin from '@/components/lego/mixins/LegoCreate'
 import UserSelect from '@/components/Common/UserSelect'
+import TaskComment from './TaskComment'
 import { showFormErrorMessage } from '@/components/Common/Form/utils'
 import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'TaskDetail',
   mixins: [CreateMixin],
-  components: { UserSelect },
+  components: {
+    UserSelect,
+    TaskComment
+  },
   props: {
     taskId: String
   },
@@ -132,6 +137,7 @@ export default {
       auth: {},
       taskName: '',
       selectUser: [],
+      commentList: [],
       showSelectEmployee: false,
       otherFieldForm: {},
       otherFieldRules: {
@@ -155,11 +161,13 @@ export default {
   },
   methods: {
     init() {
+      this.fieldForm = {}
+      this.detailData = {}
+      this.dataFieldList = []
       taskFormDetailGetAPI(this.taskId).then(taskResponse => {
         const task = taskResponse.data
         this.taskName = task.name
-        this.detailData = {}
-        this.dataFieldList = []
+        this.commentList = task.comments
         this.$set(this.otherFieldForm, 'comment', task.comment)
         this.actionType = task.finished ? 'view' : this.action.type
         if (task.formKey) {
@@ -204,21 +212,15 @@ export default {
           showFormErrorMessage(this.$refs.createForm)
           return
         }
-        this.$refs.otherFrom.validate(validOther => {
-          if (!validOther) {
-            showFormErrorMessage(this.$refs.otherFrom)
-            return
-          }
-          this.loading = true
-          this.otherFieldForm.id = this.taskId
-          this.otherFieldForm.variables = this.fieldForm
-          taskSaveAPI(this.otherFieldForm).then(() => {
-            this.loading = false
-            this.actionType = 'update'
-            this.$emit('handle', { type: 'save-success', msg: '任务保存！' })
-          }).catch(() => {
-            this.loading = false
-          })
+        this.loading = true
+        this.otherFieldForm.id = this.taskId
+        this.otherFieldForm.variables = this.fieldForm
+        taskSaveAPI(this.otherFieldForm).then(() => {
+          this.loading = false
+          this.actionType = 'update'
+          this.$emit('handle', { type: 'save-success', msg: '任务保存！' })
+        }).catch(() => {
+          this.loading = false
         })
       })
     },
@@ -249,10 +251,10 @@ export default {
       })
     },
     handleEmployeeSelect(val) {
+      this.loading = true
+      this.otherFieldForm.id = this.taskId
+      this.otherFieldForm.employeeCode = val
       if (this.handleType === 'delegate') {
-        this.loading = true
-        this.otherFieldForm.id = this.taskId
-        this.otherFieldForm.employeeCode = val
         taskDelegateAPI(this.otherFieldForm).then(() => {
           this.loading = false
           this.$emit('handle', { type: 'delegate-success', msg: '任务委派成功！' })
@@ -263,9 +265,6 @@ export default {
         return
       }
       if (this.handleType === 'transfer') {
-        this.loading = true
-        this.otherFieldForm.id = this.taskId
-        this.otherFieldForm.employeeCode = val
         taskTransferAPI(this.otherFieldForm).then(() => {
           this.loading = false
           this.$emit('handle', { type: 'delegate-success', msg: '任务转办成功！' })
