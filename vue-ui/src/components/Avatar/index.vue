@@ -3,8 +3,8 @@
     v-if="disabled"
     slot="reference"
     v-bind="$attrs"
-    :src="imageCache[src]"
-    :key="src"
+    :src="imageCache[imageCode]"
+    :key="imageCode"
     :style="{ fontSize: fontSize, background: background }"
     :class="{ 'cursor-pointer': !disabled }"
     :size="size"
@@ -22,12 +22,12 @@
     <user-view
       v-loading="loading"
       :data="userData"
-      :src="imageCache[src]" />
+      :imageCode="imageCode" />
     <el-avatar
       slot="reference"
       v-bind="$attrs"
-      :src="imageCache[src]"
-      :key="src"
+      :src="imageCache[imageCode]"
+      :key="imageCode"
       :style="{ fontSize: fontSize, background: background }"
       :class="{ 'cursor-pointer': !disabled }"
       :size="size"
@@ -54,7 +54,7 @@ export default {
       type: [Number, String],
       default: 38
     },
-    src: String,
+    imageCode: String,
     disabled: {
       type: Boolean,
       default: true
@@ -83,11 +83,9 @@ export default {
       }
       return '14px'
     },
-
     showName() {
       return this.name && this.name.length > 2 ? this.name.slice(-2) : this.name
     },
-
     popoverDisabled() {
       if (this.disabled) {
         return true
@@ -101,7 +99,7 @@ export default {
         this.getUserData()
       }
     },
-    src: {
+    imageCode: {
       handler() {
         this.handleImage()
       },
@@ -109,17 +107,17 @@ export default {
     }
   },
   created() {},
-
   beforeDestroy() {},
   methods: {
     handleImage() {
-      if (this.src) {
-        if (!this.imageCache.hasOwnProperty(this.src)) {
-          getImageData(this.src).then(data => {
-            this.$set(this.imageCache, this.src, data.src)
+      if (this.imageCode) {
+        if (!this.imageCache.hasOwnProperty(this.imageCode)) {
+          getImageData(this.imageCode).then(data => {
+            this.imageCache[this.imageCode] = data.src
             this.$store.commit('SET_IMAGECACHE', this.imageCache)
+            this.$forceUpdate()
           }).catch(() => {
-            delete this.imageCache[this.src]
+            delete this.imageCache[this.imageCode]
             this.$store.commit('SET_IMAGECACHE', this.imageCache)
           })
         }

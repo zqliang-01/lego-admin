@@ -13,7 +13,7 @@
         </div>
 
         <xr-avatar
-          :src="dataSrc"
+          :imageCode="dataImageCode"
           :name="userData.name"
           :size="44"
           class="user-img"/>
@@ -35,9 +35,9 @@
           <div class="info-cell__value text-one-line">{{ userData.enable ? '在网' : '离网' }}</div>
         </flexbox>
         <flexbox class="info-cell">
-          <i :class="'b-mobile' | iconPre" />
-          <div class="info-cell__label">手机</div>
-          <div :title="userData.mobile" class="info-cell__value text-one-line">{{ userData.mobile }}</div>
+          <i :class="'icon-Member-management' | iconPre" />
+          <div class="info-cell__label">角色</div>
+          <div :title="userData.mobile" class="info-cell__value text-one-line">{{ roleName }}</div>
         </flexbox>
       </div>
     </div>
@@ -54,7 +54,7 @@ export default {
   props: {
     code: [String, Number],
     data: Object,
-    src: String
+    imageCode: String
   },
   data() {
     return {
@@ -71,13 +71,17 @@ export default {
       }
       return ''
     },
-
-    dataSrc() {
-      return this.src || this.userData.imageCode
+    dataImageCode() {
+      return this.imageCode || this.userData.imageCode
     },
-
     userData() {
       return this.userInfo || this.data
+    },
+    roleName() {
+      if (this.userData) {
+        return this.userData.roles.map(r => r.name).join(',')
+      }
+      return ''
     }
   },
   watch: {

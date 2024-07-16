@@ -17,14 +17,14 @@
           <xr-avatar
             :name="userInfo.name"
             :size="70"
-            :src="userInfo.imageCode"
+            :imageCode="form.imageCode"
             class="user-img" />
           <div class="change-avatar" @click="handleChangeAvatar">
             更换头像
           </div>
         </flexbox>
       </el-form-item>
-      <el-form-item prop="code" label="编码">
+      <el-form-item prop="code" label="账号">
         <el-input v-model="form.code" :maxlength="30" :disabled="true" />
       </el-form-item>
       <el-form-item prop="name" label="姓名">
@@ -33,8 +33,8 @@
       <el-form-item label="部门">
         <el-input v-model="userInfo.dept.name" :maxlength="30" :disabled="true" />
       </el-form-item>
-      <el-form-item label="开户时间">
-        <el-input v-model="userInfo.createTime" :maxlength="30" :disabled="true" />
+      <el-form-item label="角色">
+        <el-input v-model="roleName" :maxlength="30" :disabled="true" />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="handleSave">保存</el-button>
@@ -76,7 +76,6 @@ export default {
       rules: {
         name: [{ required: true, message: '请填写姓名', trigger: 'blur' }]
       },
-      imageCode: '',
       form: {},
       loading: false,
       showEditImage: false,
@@ -87,7 +86,13 @@ export default {
   computed: {
     ...mapGetters([
       'userInfo'
-    ])
+    ]),
+    roleName() {
+      if (this.userInfo && this.userInfo.roles) {
+        return this.userInfo.roles.map(r => r.name).join(',')
+      }
+      return ''
+    }
   },
   watch: {
     userInfo: {
@@ -143,10 +148,8 @@ export default {
         entityCode: 'manage',
         permissionCode: 'manage'
       }).then(res => {
-        this.imageCode = res.data || ''
-        this.$set(this.userInfo, 'imageCode', res.data || '')
+        this.form['imageCode'] = res.data || ''
         this.loading = false
-        this.$emit('change')
       }).catch(() => {
         this.loading = false
       })
@@ -155,9 +158,6 @@ export default {
      * 个人信息编辑
      */
     handleSave() {
-      if (this.imageCode) {
-        this.form.imageCode = this.imageCode
-      }
       this.$refs.userForm.validate(valid => {
         if (valid) {
           this.loading = true

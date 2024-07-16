@@ -21,5 +21,5 @@ public class SysOperationLogInfo extends DTO {
     private String description;
     private Date createTime;
     private TypeInfo permission;
-    private TypeInfo operator;
+    private SysEmployeeSimpleInfo operator;
 }
