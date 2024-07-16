@@ -49,6 +49,10 @@ import TaskDetail from './TaskDetail.vue'
 export default {
   name: 'ProcessViewer',
   props: {
+    visible: {
+      type: Boolean,
+      default: false
+    },
     instanceId: String
   },
   components: {
@@ -64,6 +68,13 @@ export default {
       createShow: false,
       detailShow: false,
       taskId: ''
+    }
+  },
+  watch: {
+    visible(val) {
+      if (val) {
+        this.init()
+      }
     }
   },
   mounted() {

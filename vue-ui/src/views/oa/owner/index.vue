@@ -31,7 +31,8 @@
     <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
       <process-viewer
         :key="instanceId"
-        :instance-id="instanceId" />
+        :instance-id="instanceId"
+        :visible="processVisible" />
     </el-dialog>
   </div>
 </template>

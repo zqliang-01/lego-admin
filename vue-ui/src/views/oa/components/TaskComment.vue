@@ -1,28 +1,43 @@
 <template>
   <div class="comment">
-    <template v-for="comment in commentList">
-      <div class="comment-section__title">
-        <span class="section-title"><span class="section-title__time">{{ comment.createTime }}</span></span>
-      </div>
-      <div class="comment-cell activity-cell">
-        <i
-          :class="handleIcon(comment.type)"
-          class="comment-cell__mark"
-          :style="{ backgroundColor: handleIconColor(comment.type) }"/>
-        <div class="activity-cell">
-          <span class="activity-cell__content">{{ comment.type.name }}</span>:
-          <span class="activity-cell__label">{{ comment.content }}</span>
+    <template v-if="commentList.length > 0">
+      <div v-for="comment in commentList">
+        <div class="comment-section__title">
+          <span class="section-title"><span class="section-title__time">{{ comment.createTime }}</span></span>
         </div>
+        <div class="comment-cell activity-cell">
+          <i
+            :class="handleIcon(comment.type)"
+            class="comment-cell__mark"
+            :style="{ backgroundColor: handleIconColor(comment.type) }"/>
+          <div class="activity-cell">
+            <span class="activity-cell__content">{{ comment.type.name }}</span>:
+            <span class="activity-cell__label">{{ comment.content }}</span>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template v-else-if="isView">
+      <div
+        v-empty="true"
+        xs-empty-text="暂无内容">
       </div>
     </template>
   </div>
 </template>
 <script>
 export default {
-  components: {
-  },
   props: {
-    commentList: Array
+    commentList: {
+      type: Array,
+      default: () => {
+        return []
+      }
+    },
+    isView: {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {

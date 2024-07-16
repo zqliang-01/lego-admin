@@ -1,16 +1,20 @@
 package com.lego.flowable.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.action.StartFlowableTaskAction;
 import com.lego.flowable.assembler.FlowableDefinitionAssembler;
 import com.lego.flowable.dto.FlowableDefinitionInfo;
+import com.lego.flowable.mapper.FlowableDefinitionMapper;
 import com.lego.flowable.service.IFlowableDefinitionService;
 import com.lego.flowable.vo.FlowableDefinitionSearchVO;
 import org.flowable.common.engine.impl.db.SuspensionState;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
@@ -19,17 +23,14 @@ import java.util.Map;
 @Service
 public class FlowableDefinitionService extends FlowableService<FlowableDefinitionAssembler> implements IFlowableDefinitionService {
 
+    @Autowired
+    private FlowableDefinitionMapper definitionMapper;
+
     @Override
     public LegoPage<FlowableDefinitionInfo> findBy(FlowableDefinitionSearchVO vo) {
-        ProcessDefinitionQuery query = repositoryService.createProcessDefinitionQuery()
-            .latestVersion()
-            .orderByProcessDefinitionKey()
-            .desc();
-        if (StringUtil.isNotBlank(vo.getName())) {
-            query.processDefinitionNameLike("%" + vo.getName() + "%");
-        }
-        LegoPage<ProcessDefinition> definitions = createPage(query, vo, ProcessDefinition.class);
-        return assembler.create(definitions);
+        IPage<FlowableDefinitionInfo> page = new Page(vo.getPageIndex(), vo.getPageSize());
+        page = definitionMapper.selectByName(vo.getName(), page);
+        return new LegoPage<>(page);
     }
 
     @Override

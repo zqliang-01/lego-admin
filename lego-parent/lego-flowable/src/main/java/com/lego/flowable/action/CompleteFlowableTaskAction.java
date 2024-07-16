@@ -12,6 +12,7 @@ import com.lego.flowable.vo.FlowableCommentType;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.entity.SysCustomForm;
+import com.lego.system.entity.SysEmployee;
 import com.lego.system.entity.SysGenTable;
 import com.lego.system.vo.SysPermissionCode;
 import org.flowable.bpmn.model.BpmnModel;
@@ -48,7 +49,12 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
         processBusinessCallback();
         String commentType = FlowableCommentType.GENERIC.getCode();
         if (StringUtil.isNotBlank(vo.getComment())) {
-            taskService.addComment(vo.getId(), task.getProcessInstanceId(), commentType, vo.getComment());
+            String comment = vo.getComment();
+            if (DelegationState.PENDING.equals(task.getDelegationState())) {
+                SysEmployee employee = employeeDao.findByCode(operatorCode);
+                comment = employee.getName() + ":" + comment;
+            }
+            taskService.addComment(vo.getId(), task.getProcessInstanceId(), commentType, comment);
         }
         if (DelegationState.PENDING.equals(task.getDelegationState())) {
             taskService.resolveTask(vo.getId());

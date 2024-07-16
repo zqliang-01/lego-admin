@@ -13,6 +13,7 @@ import com.lego.flowable.action.TransferFlowableTaskAction;
 import com.lego.flowable.assembler.FlowableCommentAssembler;
 import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.assembler.FlowableTaskAssembler;
+import com.lego.flowable.dto.FlowableCommentInfo;
 import com.lego.flowable.dto.FlowableTaskFormDetailInfo;
 import com.lego.flowable.dto.FlowableTaskInfo;
 import com.lego.flowable.mapper.FlowableCommentMapper;
@@ -20,6 +21,7 @@ import com.lego.flowable.service.IFlowableTaskService;
 import com.lego.flowable.vo.FLowbaleTaskClaimVO;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
 import com.lego.flowable.vo.FlowableTaskDelegateVO;
+import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
@@ -31,11 +33,14 @@ import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.TaskQuery;
 import org.flowable.task.api.history.HistoricTaskInstance;
 import org.flowable.task.api.history.HistoricTaskInstanceQuery;
+import org.flowable.task.api.history.HistoricTaskLogEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> implements IFlowableTaskService {
@@ -117,12 +122,22 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         String formKey = task.getFormKey();
         Map<String, Object> taskLocalVariables = task.getTaskLocalVariables();
         String code = StringUtil.toString(taskLocalVariables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
+
+        String logType = FlowableTaskLogType.REJECT.getCode();
+        List<HistoricTaskLogEntry> taskLogs = historyService.createHistoricTaskLogEntryQuery()
+            .taskId(taskId).type(logType).list();
         List<Comment> comments = commentMapper.selectCommentsByTaskId(taskId);
+        List<FlowableCommentInfo> commentInfos = commentAssembler.create(comments);
+        commentInfos.addAll(commentAssembler.createByLog(taskLogs));
+        commentInfos = commentInfos.stream()
+            .sorted(Comparator.comparing(FlowableCommentInfo::getCreateTime, Comparator.naturalOrder()))
+            .collect(Collectors.toList());
+
         FlowableTaskFormDetailInfo detailInfo = new FlowableTaskFormDetailInfo(task.getId(), task.getName(), code);
         detailInfo.setVariables(taskLocalVariables);
         detailInfo.setFormKey(formKey);
         detailInfo.setFinished(task instanceof HistoricTaskInstance);
-        detailInfo.setComments(commentAssembler.create(comments));
+        detailInfo.setComments(commentInfos);
         return detailInfo;
     }
 

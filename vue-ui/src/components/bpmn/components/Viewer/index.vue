@@ -39,8 +39,12 @@ export default {
     this.createDiagram()
   },
   watch: {
-    xml() {
-      this.createDiagram()
+    processNodeInfo: {
+      handler() {
+        this.createDiagram()
+      },
+      deep: true,
+      immediate: true
     }
   },
   methods: {

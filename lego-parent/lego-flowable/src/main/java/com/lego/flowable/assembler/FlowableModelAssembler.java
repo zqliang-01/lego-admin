@@ -65,15 +65,28 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
         return taskIds;
     }
 
-    public List<String> getAfterUserTaskId(FlowNode userTask, List<String> finishedTaskIds) {
+    public List<String> getAfterUserTaskId(FlowNode userTask) {
         List<String> taskIds = new ArrayList<>();
         for (SequenceFlow outgoingFlow : userTask.getOutgoingFlows()) {
             FlowElement flowElement = outgoingFlow.getTargetFlowElement();
-            if ((flowElement instanceof UserTask || flowElement instanceof StartEvent)
-                && finishedTaskIds.contains(flowElement.getId())) {
+            if (flowElement instanceof UserTask) {
                 taskIds.add(flowElement.getId());
             } else if (flowElement instanceof FlowNode) {
-                taskIds.addAll(getAfterUserTaskId((FlowNode) flowElement, finishedTaskIds));
+                taskIds.addAll(getAfterUserTaskId((FlowNode) flowElement));
+            }
+        }
+        return taskIds;
+    }
+
+    public List<String> getAllAfterUserTaskId(FlowNode userTask, List<String> finishedTaskIds) {
+        List<String> taskIds = new ArrayList<>();
+        for (SequenceFlow outgoingFlow : userTask.getOutgoingFlows()) {
+            FlowElement flowElement = outgoingFlow.getTargetFlowElement();
+            if (flowElement instanceof UserTask && finishedTaskIds.contains(flowElement.getId())) {
+                taskIds.add(flowElement.getId());
+                taskIds.addAll(getAllAfterUserTaskId((FlowNode) flowElement, finishedTaskIds));
+            } else if (flowElement instanceof FlowNode) {
+                taskIds.addAll(getAllAfterUserTaskId((FlowNode) flowElement, finishedTaskIds));
             }
         }
         return taskIds;
@@ -90,7 +103,7 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
         throw new BusinessException("流程定义[{0}]未获取到结束节点！", process.getName());
     }
 
-    public Set<String> getRejectTask(BpmnModel bpmnModel, Set<String> finishedTaskSet, Set<String> finishedSequenceFlowSet, Set<String> runningTaskSet) {
+    public Set<String> getRejectFlow(BpmnModel bpmnModel, Set<String> finishedTaskSet, Set<String> finishedSequenceFlowSet, Set<String> runningTaskSet) {
         Set<String> rejectTaskSet = new HashSet<>();
         Process process = bpmnModel.getMainProcess();
         for (String taskKey : runningTaskSet) {
@@ -103,6 +116,7 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
         return rejectTaskSet;
     }
 
+    // 往后节点查找已完成的节点作为拒绝节点
     public void iteratorFindRejects(FlowElement source, Set<String> finishedTaskSet, Set<String> finishedSequenceFlowSet, Set<String> rejectedSet) {
         List<SequenceFlow> sequenceFlows = getElementOutgoingFlows(source);
         for (SequenceFlow sequenceFlow : sequenceFlows) {

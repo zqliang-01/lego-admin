@@ -1,9 +1,11 @@
 package com.lego.flowable.config;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.handler.FlowableTaskCompleteHandler;
+import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.ProcessStatus;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.entity.SysCustomForm;
@@ -15,12 +17,13 @@ import org.flowable.engine.RuntimeService;
 import org.flowable.engine.delegate.event.AbstractFlowableEngineEventListener;
 import org.flowable.engine.runtime.ProcessInstance;
 import org.flowable.task.api.history.HistoricTaskInstance;
+import org.flowable.task.api.history.HistoricTaskLogEntry;
+import org.flowable.task.api.history.HistoricTaskLogEntryQuery;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,21 +71,17 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
             .orderByHistoricTaskInstanceEndTime()
             .desc()
             .list();
-        List<String> keys = new ArrayList<>();
+        String logType = FlowableTaskLogType.REJECT.getCode();
+        HistoricTaskLogEntryQuery taskLogQuery = historyService.createHistoricTaskLogEntryQuery();
         for (HistoricTaskInstance task : tasks) {
-            String formKey = task.getFormKey();
-            String taskDefinitionKey = task.getTaskDefinitionKey();
-            if (keys.contains(taskDefinitionKey + ":" + formKey)) {
-                // TODO 该部分为被拒绝或多次创建的表单，后续考虑作废相关表单数据
-                continue;
+            List<HistoricTaskLogEntry> taskLogs = taskLogQuery.taskId(task.getId()).type(logType).list();
+            if (CollectionUtil.isEmpty(taskLogs)) {
+                SysCustomForm form = formDao.findByCode(task.getFormKey());
+                SysGenTable table = form.getTable();
+                Object code = task.getTaskLocalVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
+                completeHandler.doProcessCompleted(table.getAppCode(), table.getCode(), StringUtil.toString(code));
             }
-            keys.add(taskDefinitionKey + ":" + formKey);
-            SysCustomForm form = formDao.findByCode(formKey);
-            SysGenTable table = form.getTable();
-            String appCode = table.getAppCode();
-            String tableCode = table.getCode();
-            Object code = task.getTaskLocalVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
-            completeHandler.doProcessCompleted(appCode, tableCode, StringUtil.toString(code));
+            // TODO else部分为被取消回退的节点，后续考虑增加表单数据作废流程
         }
     }
 

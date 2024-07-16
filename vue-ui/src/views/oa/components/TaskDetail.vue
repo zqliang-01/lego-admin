@@ -49,6 +49,7 @@
           />
         </el-form>
         <task-comment
+          :isView="isView"
           :commentList="commentList"/>
       </create-sections>
     </div>
@@ -130,6 +131,11 @@ export default {
   watch: {
     taskId() {
       this.init()
+    },
+    visible(val) {
+      if (val) {
+        this.init()
+      }
     }
   },
   data() {
@@ -164,6 +170,7 @@ export default {
       this.fieldForm = {}
       this.detailData = {}
       this.dataFieldList = []
+      this.actionType = this.action.type
       taskFormDetailGetAPI(this.taskId).then(taskResponse => {
         const task = taskResponse.data
         this.taskName = task.name

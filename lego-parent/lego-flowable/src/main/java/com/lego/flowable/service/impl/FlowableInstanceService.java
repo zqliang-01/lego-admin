@@ -1,6 +1,6 @@
 package com.lego.flowable.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.IoUtil;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
@@ -59,7 +59,7 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
         HistoricActivityInstanceQuery query = historyService.createHistoricActivityInstanceQuery()
             .processInstanceId(id);
         List<HistoricActivityInstance> allActivityInstanceList = query.list();
-        if (CollUtil.isEmpty(allActivityInstanceList)) {
+        if (CollectionUtil.isEmpty(allActivityInstanceList)) {
             return nodeInfo;
         }
         Set<String> runningTaskSet = taskService.createTaskQuery()
@@ -73,7 +73,8 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
             .filter(item -> item.getEndTime() != null).collect(Collectors.toList());
         finishedElementList.forEach(item -> {
             if (!runningTaskSet.contains(item.getActivityId())) {
-                if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(item.getActivityType())) {
+                if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(item.getActivityType())
+                    || BpmnXMLConstants.ELEMENT_FLOW_CONDITION.equals(item.getActivityType())) {
                     nodeInfo.addFinishedFlow(item.getActivityId());
                 } else {
                     nodeInfo.addFinishedTask(item.getActivityId());
@@ -89,7 +90,7 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
         nodeInfo.setXml(StringUtil.toString(bpmnBytes));
 
         BpmnModel bpmnModel = repositoryService.getBpmnModel(instance.getProcessDefinitionId());
-        nodeInfo.setRejectedTaskSet(modelAssembler.getRejectTask(bpmnModel, nodeInfo.getFinishedTaskSet(), nodeInfo.getFinishedSequenceFlowSet(), runningTaskSet));
+        nodeInfo.setRejectedTaskSet(modelAssembler.getRejectFlow(bpmnModel, nodeInfo.getFinishedTaskSet(), nodeInfo.getFinishedSequenceFlowSet(), runningTaskSet));
         return nodeInfo;
     }
 

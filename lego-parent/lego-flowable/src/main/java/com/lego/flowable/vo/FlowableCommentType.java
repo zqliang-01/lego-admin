@@ -24,4 +24,8 @@ public enum FlowableCommentType {
         }
         return TypeInfo.NULL;
     }
+
+    public static TypeInfo createRejectTypeInfo() {
+        return new TypeInfo(REJECT.getCode(), REJECT.getName());
+    }
 }

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lego.flowable.mapper.FlowableDefinitionMapper">
+
+    <resultMap id="definitionResultMap" type="com.lego.flowable.dto.FlowableDefinitionInfo">
+        <result property="id" column="ID_" jdbcType="VARCHAR" />
+        <result property="name" column="NAME_" jdbcType="VARCHAR" />
+        <result property="category" column="CATEGORY_" jdbcType="VARCHAR" />
+        <result property="key" column="KEY_" jdbcType="VARCHAR" />
+        <result property="version" column="VERSION_" jdbcType="VARCHAR" />
+        <result property="active" column="SUSPENSION_STATE_" jdbcType="VARCHAR" />
+        <result property="deploymentTime" column="DEPLOY_TIME_" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="selectByName" resultMap="definitionResultMap">
+        SELECT t.ID_, d.NAME_, t.KEY_, t.CATEGORY_ category, CONCAT('v',t.VERSION_) VERSION_,
+            t.SUSPENSION_STATE_, d.DEPLOY_TIME_
+        FROM act_re_procdef t
+        JOIN act_re_deployment d ON d.ID_ = t.DEPLOYMENT_ID_
+        <where>
+            <if test="name != null and name != ''">
+                WHERE d.NAME_ LIKE CONCAT('%', #{name}, '%')
+            </if>
+        </where>
+        ORDER BY d.DEPLOY_TIME_ desc
+    </select>
+
+</mapper>
