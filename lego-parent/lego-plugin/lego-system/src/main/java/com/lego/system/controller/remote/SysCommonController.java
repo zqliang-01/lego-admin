@@ -70,6 +70,7 @@ public class SysCommonController extends BaseController implements ISystemAPI {
     }
 
     @Override
+    @GetMapping("/list-data-permission-employee-code")
     public JsonResponse<List<String>> findDataPermissionEmployeeCode() {
         return JsonResponse.success(commonService.findDataPermissionEmployeeCode());
     }
