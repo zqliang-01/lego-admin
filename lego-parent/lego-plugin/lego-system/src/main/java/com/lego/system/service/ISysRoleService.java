@@ -2,6 +2,7 @@ package com.lego.system.service;
 
 import com.lego.core.dto.TypeInfo;
 import com.lego.system.dto.SysRoleInfo;
+import com.lego.system.vo.SysDataScopeAuthVO;
 import com.lego.system.vo.SysPermissionAuthVO;
 import com.lego.system.vo.SysRoleCreateVO;
 import com.lego.system.vo.SysRoleModifyVO;
@@ -17,7 +18,11 @@ public interface ISysRoleService {
 
     void auth(String operatorCode, SysPermissionAuthVO vo);
 
+    void authDataScope(String operatorCode, SysDataScopeAuthVO vo);
+
     List<SysRoleInfo> findBy(SysRoleSearchVO vo);
+
+    SysRoleInfo findByCode(String code);
 
     void deleteBy(String code);
 

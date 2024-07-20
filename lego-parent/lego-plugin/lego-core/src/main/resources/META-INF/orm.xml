@@ -1,3 +1,9 @@
 <?xml version="1.0"?>
 <hibernate-mapping>
+    <filter-def name="creatorCodeFilter">
+        <filter-param name="filterCodes" type="string"/>
+    </filter-def>
+    <filter-def name="deptCodeFilter">
+        <filter-param name="filterCodes" type="string"/>
+    </filter-def>
 </hibernate-mapping>

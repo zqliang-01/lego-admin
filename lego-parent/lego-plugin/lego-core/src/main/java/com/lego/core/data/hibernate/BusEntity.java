@@ -3,11 +3,14 @@ package com.lego.core.data.hibernate;
 import com.lego.core.flowable.FlowableCheckStatus;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Filter;
 
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 @MappedSuperclass
+@Filter(name = IJpaFilterName.CREATOR_CODE, condition = "creator_code IN (:filterCodes)")
+@Filter(name = IJpaFilterName.DEPT_CODE, condition = "dept_code IN (:filterCodes)")
 public class BusEntity extends BaseEntity {
 
     @Getter

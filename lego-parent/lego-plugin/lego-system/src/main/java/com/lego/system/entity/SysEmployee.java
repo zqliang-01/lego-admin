@@ -5,6 +5,7 @@ import com.lego.core.data.IdGenerator;
 import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.system.vo.DataScopeType;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Cache;
@@ -90,5 +91,15 @@ public class SysEmployee extends BaseEntity {
             }
         }
         return false;
+    }
+
+    public DataScopeType getDataScope() {
+        int dataScope = 0;
+        for (SysRole role : roles) {
+            if (role.getDataScope() > dataScope) {
+                dataScope = role.getDataScope();
+            }
+        }
+        return DataScopeType.get(dataScope);
     }
 }

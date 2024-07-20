@@ -24,4 +24,6 @@ public interface ICommonService {
     List<String> findPermissionCodesBy(String employeeCode);
 
     List<String> findRoleCodesBy(String employeeCode);
+
+    List<String> findDataPermissionEmployeeCode();
 }

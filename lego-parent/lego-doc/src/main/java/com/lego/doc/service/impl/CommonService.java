@@ -53,4 +53,9 @@ public class CommonService implements ICommonService {
     public List<String> findRoleCodesBy(String employeeCode) {
         return systemClient.findRoleCodesBy(employeeCode).getData();
     }
+
+    @Override
+    public List<String> findDataPermissionEmployeeCode() {
+        return systemClient.findDataPermissionEmployeeCode().getData();
+    }
 }

@@ -490,6 +490,7 @@ CREATE TABLE SYS_ROLE
    VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
    CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
    DELETED              INT NOT NULL DEFAULT 0 COMMENT '逻辑删除状态：1已删除、0未删除',
+   DATA_SCOPE           INT NOT NULL DEFAULT 0 COMMENT '数据权限：0、本人，1、本部门，2、本部门及下级部门，3、全部 ',
    PRIMARY KEY (ID)
 );
 

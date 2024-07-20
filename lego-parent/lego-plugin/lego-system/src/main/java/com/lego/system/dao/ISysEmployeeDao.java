@@ -14,4 +14,5 @@ public interface ISysEmployeeDao extends IGenericDao<SysEmployee> {
 
     List<SysEmployee> findBy(List<SysDept> depts);
 
+    List<String> findCodesBy(SysDept dept);
 }

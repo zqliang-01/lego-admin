@@ -8,6 +8,13 @@ export function roleListAPI(data) {
   })
 }
 
+export function roleGetAPI(data) {
+  return request({
+    url: '/back-end/sys-role/get/' + data,
+    method: 'get'
+  })
+}
+
 export function roleSimpleListAPI(data) {
   return request({
     url: '/back-end/sys-role/list-simple',
@@ -57,3 +64,14 @@ export function roleAuthAPI(data) {
   })
 }
 
+
+export function roleAuthDataScopeAPI(data) {
+  return request({
+    url: '/back-end/sys-role/auth-data-scope',
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
+  })
+}

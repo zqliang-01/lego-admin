@@ -2,6 +2,10 @@ spring:
   jpa:
     database: MYSQL
     show-sql: false
+  properties:
+    hibernate:
+      format_sql: true
+      dialect: org.hibernate.dialect.MySQL5Dialect
   hibernate:
     naming:
       implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
@@ -11,5 +15,3 @@ spring:
       use_second_level_cache: true
       region:
         factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory
-    dialect: org.hibernate.dialect.MySQL5Dialect
-    format_sql: true

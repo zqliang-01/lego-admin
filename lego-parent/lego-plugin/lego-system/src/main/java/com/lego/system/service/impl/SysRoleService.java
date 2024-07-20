@@ -7,6 +7,7 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.system.action.AddSysRoleAction;
 import com.lego.system.action.AuthRoleAction;
+import com.lego.system.action.AuthRoleDataScopeAction;
 import com.lego.system.action.ModifySysRoleAction;
 import com.lego.system.assembler.SysRoleAssembler;
 import com.lego.system.dao.ISysEmployeeDao;
@@ -15,6 +16,7 @@ import com.lego.system.dto.SysRoleInfo;
 import com.lego.system.entity.SysEmployee;
 import com.lego.system.entity.SysRole;
 import com.lego.system.service.ISysRoleService;
+import com.lego.system.vo.SysDataScopeAuthVO;
 import com.lego.system.vo.SysPermissionAuthVO;
 import com.lego.system.vo.SysRoleCreateVO;
 import com.lego.system.vo.SysRoleModifyVO;
@@ -48,9 +50,20 @@ public class SysRoleService extends BusService<ISysRoleDao, SysRoleAssembler> im
     }
 
     @Override
+    public void authDataScope(String operatorCode, SysDataScopeAuthVO vo) {
+        new AuthRoleDataScopeAction(operatorCode, vo).run();
+    }
+
+    @Override
     public List<SysRoleInfo> findBy(SysRoleSearchVO vo) {
         List<SysRole> roles = dao.findBy(vo);
         return assembler.create(roles);
+    }
+
+    @Override
+    public SysRoleInfo findByCode(String code) {
+        SysRole role = dao.findByCode(code);
+        return assembler.create(role);
     }
 
     @Override

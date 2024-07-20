@@ -14,15 +14,24 @@
         :role-code="roleCode"
       />
     </el-tab-pane>
+    <el-tab-pane
+      label="数据权限"
+      name="data">
+      <role-data-auth
+        :role-code="roleCode"
+      />
+    </el-tab-pane>
   </el-tabs>
 </template>
 <script>
 import RoleEmployeeList from './RoleEmployeeList'
 import RoleAuthList from './RoleAuthList'
+import RoleDataAuth from './RoleDataAuth'
 export default {
   components: {
     RoleEmployeeList,
-    RoleAuthList
+    RoleAuthList,
+    RoleDataAuth
   },
   props: {
     roleCode: String

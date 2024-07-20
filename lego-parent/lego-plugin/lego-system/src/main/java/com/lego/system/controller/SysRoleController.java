@@ -6,6 +6,7 @@ import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysRoleInfo;
 import com.lego.system.service.ISysRoleService;
+import com.lego.system.vo.SysDataScopeAuthVO;
 import com.lego.system.vo.SysPermissionAuthVO;
 import com.lego.system.vo.SysRoleCreateVO;
 import com.lego.system.vo.SysRoleModifyVO;
@@ -48,6 +49,13 @@ public class SysRoleController extends BaseController {
         return JsonResponse.success();
     }
 
+    @PostMapping("/auth-data-scope")
+    @SaCheckPermission("manage_role_auth")
+    public JsonResponse<Object> authDataScope(@RequestBody SysDataScopeAuthVO vo) {
+        roleService.authDataScope(getLoginCode(), vo);
+        return JsonResponse.success();
+    }
+
     @GetMapping("/list-simple")
     public JsonResponse<List<TypeInfo>> listSimpleType(String name) {
         return JsonResponse.success(roleService.findSimpleType(name, getLoginCode()));
@@ -56,6 +64,11 @@ public class SysRoleController extends BaseController {
     @GetMapping("/list")
     public JsonResponse<List<SysRoleInfo>> list(SysRoleSearchVO vo) {
         return JsonResponse.success(roleService.findBy(vo));
+    }
+
+    @GetMapping("/get/{code}")
+    public JsonResponse<SysRoleInfo> get(@PathVariable String code) {
+        return JsonResponse.success(roleService.findByCode(code));
     }
 
     @PostMapping("/delete/{code}")

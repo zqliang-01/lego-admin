@@ -69,4 +69,9 @@ public class SysCommonController extends BaseController implements ISystemAPI {
         return JsonResponse.success(commonService.findRoleCodesBy(employeeCode));
     }
 
+    @Override
+    public JsonResponse<List<String>> findDataPermissionEmployeeCode() {
+        return JsonResponse.success(commonService.findDataPermissionEmployeeCode());
+    }
+
 }

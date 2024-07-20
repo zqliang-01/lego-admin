@@ -36,6 +36,7 @@ public class RepositoryFactoryBean<R extends JpaRepository<T, Long>, T> extends 
 
         public BaseRepositoryFactory(EntityManager em) {
             super(em);
+            addRepositoryProxyPostProcessor(new LegoRepositoryProxyProcessor(em));
         }
 
         @Override

@@ -8,7 +8,9 @@
       type="primary"
       class="jurisdiction-edit"
       @click="ruleSubmit"> 保存 </el-button>
-    <el-tabs v-model="currentAppCode">
+    <el-tabs
+      v-model="currentAppCode"
+      class="app-tabs">
       <el-tab-pane
         v-for="(item, index) in menuList"
         :key="index"
@@ -170,12 +172,10 @@ export default {
 <style lang="scss" scoped>
 .jurisdiction-box {
   padding-bottom: 25px;
-  height: calc(100% - 61px);
   overflow: hidden;
   position: relative;
 }
 .jurisdiction-content {
-  height: calc(100% - 61px);
   position: relative;
   overflow: hidden;
 }
@@ -225,5 +225,10 @@ export default {
 }
 .node-auth {
   display: inline-block;
+}
+.app-tabs {
+  ::v-deep .el-tabs__header {
+    padding-right: 110px !important;
+  }
 }
 </style>

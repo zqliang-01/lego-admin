@@ -45,4 +45,11 @@ public class SysEmployeeDao extends GenericDao<SysEmployee> implements ISysEmplo
         return query.findList();
     }
 
+    @Override
+    public List<String> findCodesBy(SysDept dept) {
+        QueryHandler<String> query = createQueryHandler("SELECT e.code FROM FROM sys_employee e", String.class);
+        query.condition("e.dept_id = :deptId").param("deptId", dept.getId());
+        return query.findSqlList();
+    }
+
 }

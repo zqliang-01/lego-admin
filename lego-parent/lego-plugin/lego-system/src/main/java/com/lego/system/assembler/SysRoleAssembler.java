@@ -13,6 +13,7 @@ public class SysRoleAssembler extends EntityAssembler<SysRoleInfo, SysRole> {
         SysRoleInfo info = new SysRoleInfo();
         info.setCode(entity.getCode());
         info.setName(entity.getName());
+        info.setDataScope(entity.getDataScope());
         info.setCreateTime(entity.getCreateTime());
         return info;
     }

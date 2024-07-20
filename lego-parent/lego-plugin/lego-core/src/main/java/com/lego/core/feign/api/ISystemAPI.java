@@ -37,4 +37,7 @@ public interface ISystemAPI {
 
     @GetMapping("/back-end/sys-common/list-role-code")
     JsonResponse<List<String>> findRoleCodesBy(@RequestParam("employeeCode") String employeeCode);
+
+    @GetMapping("/back-end/sys-common/list-data-permission-employee-code")
+    JsonResponse<List<String>> findDataPermissionEmployeeCode();
 }

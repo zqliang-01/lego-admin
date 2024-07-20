@@ -1,5 +1,6 @@
 package com.lego.core.data.hibernate;
 
+import com.lego.core.data.DataPermission;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.GenericConditionVO;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,6 +17,7 @@ public interface IGenericDao<T extends BaseEntity> extends JpaRepository<T, Long
 
     List<T> findAll();
 
+    @DataPermission
     LegoPage<T> findPageBy(GenericConditionVO vo);
 
     List<T> findBy(GenericConditionVO vo);
