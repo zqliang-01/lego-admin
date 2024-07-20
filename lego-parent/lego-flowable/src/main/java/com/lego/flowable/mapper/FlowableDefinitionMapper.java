@@ -5,5 +5,5 @@ import com.lego.flowable.dto.FlowableDefinitionInfo;
 
 public interface FlowableDefinitionMapper {
 
-    IPage<FlowableDefinitionInfo> selectByName(String name, IPage page);
+    IPage<FlowableDefinitionInfo> selectLatestByName(String name, IPage page);
 }

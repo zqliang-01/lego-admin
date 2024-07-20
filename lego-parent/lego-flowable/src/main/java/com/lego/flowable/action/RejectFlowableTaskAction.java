@@ -49,11 +49,14 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
         BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
         UserTask element = modelAssembler.getUserTaskByKey(bpmnModel, task.getTaskDefinitionKey());
         List<String> beforeTaskIds = modelAssembler.getBeforeUserTaskId(element, finishedTaskIds);
-        processRejectLog(bpmnModel, beforeTaskIds, finishedTaskIds);
-        Set<String> afterTaskIds = getAfterTaskIds(bpmnModel, beforeTaskIds);
-        if (beforeTaskIds.size() == 1 && afterTaskIds.size() > 1) {
+        BusinessException.check(CollectionUtil.isNotEmpty(beforeTaskIds), "当前任务节点为起始任务节点，无法拒绝任务！");
+
+        Set<String> rejectTaskIds = processRejectLog(bpmnModel, beforeTaskIds, finishedTaskIds);
+        if (beforeTaskIds.size() == 1 && hasMoreThanOneAfterTask(bpmnModel, beforeTaskIds)) {
             List<Execution> executions = runtimeService.createExecutionQuery().parentId(processInstanceId).list();
-            List<String> executionIds = executions.stream().map(Execution::getId).collect(Collectors.toList());
+            List<String> executionIds = executions.stream()
+                .filter(e -> rejectTaskIds.contains(e.getActivityId()))
+                .map(Execution::getId).collect(Collectors.toList());
             runtimeService.createChangeActivityStateBuilder()
                 .processInstanceId(processInstanceId)
                 .moveExecutionsToSingleActivityId(executionIds, beforeTaskIds.iterator().next())
@@ -86,20 +89,20 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
         return finishedTaskIds;
     }
 
-    private void processRejectLog(BpmnModel bpmnModel, List<String> beforeTaskIds, List<String> finishedTaskIds) {
-        Set<String> afterTaskIds = getRejectTaskIds(bpmnModel, beforeTaskIds, finishedTaskIds);
+    private Set<String> processRejectLog(BpmnModel bpmnModel, List<String> beforeTaskIds, List<String> finishedTaskIds) {
+        Set<String> rejectTaskIds = getRejectTaskIds(bpmnModel, beforeTaskIds, finishedTaskIds);
         String logType = FlowableTaskLogType.REJECT.getCode();
         String logData = StringUtil.format("任务[{0}]拒绝关联取消", task.getId());
         List<Task> runningTasks = taskService.createTaskQuery()
             .processInstanceId(task.getProcessInstanceId())
-            .taskDefinitionKeys(afterTaskIds)
+            .taskDefinitionKeys(rejectTaskIds)
             .list();
         for (Task runningTask : runningTasks) {
             addTaskLog(runningTask, logType, logData);
         }
         List<HistoricTaskInstance> historyTasks = historyService.createHistoricTaskInstanceQuery()
             .processInstanceId(task.getProcessInstanceId())
-            .taskDefinitionKeys(afterTaskIds)
+            .taskDefinitionKeys(rejectTaskIds)
             .list();
         HistoricTaskLogEntryQuery taskLogQuery = historyService.createHistoricTaskLogEntryQuery();
         for (HistoricTaskInstance historyTask : historyTasks) {
@@ -108,6 +111,7 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
                 addTaskLog(historyTask, logType, logData);
             }
         }
+        return rejectTaskIds;
     }
 
     private Set<String> getRejectTaskIds(BpmnModel bpmnModel, List<String> beforeTaskIds, List<String> finishedTaskIds) {
@@ -124,15 +128,13 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
         return rejectTaskIds;
     }
 
-    private Set<String> getAfterTaskIds(BpmnModel bpmnModel, List<String> beforeTaskIds) {
-        List<UserTask> beforeTasks = beforeTaskIds.stream().map(taskId -> {
-            return modelAssembler.getUserTaskByKey(bpmnModel, taskId);
-        }).collect(Collectors.toList());
-        Set<String> rejectTaskIds = new HashSet<>();
-        for (UserTask beforeTask : beforeTasks) {
-            rejectTaskIds.addAll(modelAssembler.getAfterUserTaskId(beforeTask));
+    private boolean hasMoreThanOneAfterTask(BpmnModel bpmnModel, List<String> beforeTaskIds) {
+        Set<String> afterTaskIds = new HashSet<>();
+        for (String beforeTaskId : beforeTaskIds) {
+            UserTask beforeTask = modelAssembler.getUserTaskByKey(bpmnModel, beforeTaskId);
+            afterTaskIds.addAll(modelAssembler.getAfterUserTaskId(beforeTask));
         }
-        return rejectTaskIds;
+        return afterTaskIds.size() > 1;
     }
 
     @Override

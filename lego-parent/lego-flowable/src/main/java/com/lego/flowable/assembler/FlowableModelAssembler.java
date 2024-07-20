@@ -10,7 +10,6 @@ import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.FlowNode;
 import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.SequenceFlow;
-import org.flowable.bpmn.model.StartEvent;
 import org.flowable.bpmn.model.SubProcess;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.repository.Model;
@@ -55,7 +54,7 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
         List<String> taskIds = new ArrayList<>();
         for (SequenceFlow incomingFlow : userTask.getIncomingFlows()) {
             FlowElement flowElement = incomingFlow.getSourceFlowElement();
-            if ((flowElement instanceof UserTask || flowElement instanceof StartEvent)
+            if ((flowElement instanceof UserTask)
                 && finishedTaskIds.contains(flowElement.getId())) {
                 taskIds.add(flowElement.getId());
             } else if (flowElement instanceof FlowNode) {

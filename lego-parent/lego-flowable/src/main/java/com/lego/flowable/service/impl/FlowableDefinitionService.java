@@ -29,7 +29,7 @@ public class FlowableDefinitionService extends FlowableService<FlowableDefinitio
     @Override
     public LegoPage<FlowableDefinitionInfo> findBy(FlowableDefinitionSearchVO vo) {
         IPage<FlowableDefinitionInfo> page = new Page(vo.getPageIndex(), vo.getPageSize());
-        page = definitionMapper.selectByName(vo.getName(), page);
+        page = definitionMapper.selectLatestByName(vo.getName(), page);
         return new LegoPage<>(page);
     }
 

@@ -124,11 +124,13 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         String code = StringUtil.toString(taskLocalVariables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
 
         String logType = FlowableTaskLogType.REJECT.getCode();
-        List<HistoricTaskLogEntry> taskLogs = historyService.createHistoricTaskLogEntryQuery()
-            .taskId(taskId).type(logType).list();
         List<Comment> comments = commentMapper.selectCommentsByTaskId(taskId);
         List<FlowableCommentInfo> commentInfos = commentAssembler.create(comments);
-        commentInfos.addAll(commentAssembler.createByLog(taskLogs));
+        if (!commentInfos.stream().anyMatch(FlowableCommentInfo::isReject)) {
+            List<HistoricTaskLogEntry> taskLogs = historyService.createHistoricTaskLogEntryQuery()
+                .taskId(taskId).type(logType).list();
+            commentInfos.addAll(commentAssembler.createByLog(taskLogs));
+        }
         commentInfos = commentInfos.stream()
             .sorted(Comparator.comparing(FlowableCommentInfo::getCreateTime, Comparator.naturalOrder()))
             .collect(Collectors.toList());
