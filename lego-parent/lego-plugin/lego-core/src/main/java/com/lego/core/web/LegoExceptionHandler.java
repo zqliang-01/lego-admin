@@ -125,7 +125,7 @@ public class LegoExceptionHandler {
         response.setStatus(HttpStatus.OK.value());
         PrintWriter writer = null;
         try {
-            if (openDetailTips) {
+            if (openDetailTips && !ExceptionEnum.isBusiness(errorCode)) {
                 errorMsg = ExceptionEnum.getMsgBy(errorCode);
                 errorMsg = StringUtil.format("发生[{0}]异常，异常码[{1,number,#}]，异常信息[{2}]", errorMsg, errorCode, e.getMessage());
             }

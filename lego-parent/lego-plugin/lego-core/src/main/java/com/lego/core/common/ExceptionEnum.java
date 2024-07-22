@@ -35,4 +35,8 @@ public enum ExceptionEnum {
         }
         return UNKNOW_ERROR.getMsg();
     }
+
+    public static boolean isBusiness(Integer code) {
+        return BUSINESS_INVALID.getCode().equals(code);
+    }
 }
