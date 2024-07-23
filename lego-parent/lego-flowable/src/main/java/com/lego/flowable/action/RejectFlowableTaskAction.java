@@ -51,6 +51,7 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
         List<String> beforeTaskIds = modelAssembler.getBeforeUserTaskId(element, finishedTaskIds);
         BusinessException.check(CollectionUtil.isNotEmpty(beforeTaskIds), "当前任务节点为起始任务节点，无法拒绝任务！");
 
+        beforeTaskIds = filterRejectHisTask(beforeTaskIds);
         Set<String> rejectTaskIds = processRejectLog(bpmnModel, beforeTaskIds, finishedTaskIds);
         if (beforeTaskIds.size() == 1 && hasMoreThanOneAfterTask(bpmnModel, beforeTaskIds)) {
             List<Execution> executions = runtimeService.createExecutionQuery().parentId(processInstanceId).list();
@@ -67,6 +68,23 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
             .processInstanceId(processInstanceId)
             .moveSingleActivityIdToActivityIds(task.getTaskDefinitionKey(), beforeTaskIds)
             .changeState();
+    }
+
+    private List<String> filterRejectHisTask(List<String> beforeTaskIds) {
+        List<HistoricTaskInstance> historyTasks = historyService.createHistoricTaskInstanceQuery()
+            .processInstanceId(task.getProcessInstanceId())
+            .taskDefinitionKeys(beforeTaskIds)
+            .list();
+        List<String> results = new ArrayList<>();
+        String logType = FlowableTaskLogType.REJECT.getCode();
+        HistoricTaskLogEntryQuery taskLogQuery = historyService.createHistoricTaskLogEntryQuery();
+        for (HistoricTaskInstance historyTask : historyTasks) {
+            List<HistoricTaskLogEntry> taskLogs = taskLogQuery.taskId(historyTask.getId()).type(logType).list();
+            if (CollectionUtil.isEmpty(taskLogs) && !results.contains(historyTask.getTaskDefinitionKey())) {
+                results.add(historyTask.getTaskDefinitionKey());
+            }
+        }
+        return results;
     }
 
     private List<String> getFinishedTaskIds() {

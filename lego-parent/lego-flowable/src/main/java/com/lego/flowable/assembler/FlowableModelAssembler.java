@@ -54,9 +54,10 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
         List<String> taskIds = new ArrayList<>();
         for (SequenceFlow incomingFlow : userTask.getIncomingFlows()) {
             FlowElement flowElement = incomingFlow.getSourceFlowElement();
-            if ((flowElement instanceof UserTask)
-                && finishedTaskIds.contains(flowElement.getId())) {
-                taskIds.add(flowElement.getId());
+            if (flowElement instanceof UserTask) {
+                if (finishedTaskIds.contains(flowElement.getId())) {
+                    taskIds.add(flowElement.getId());
+                }
             } else if (flowElement instanceof FlowNode) {
                 taskIds.addAll(getBeforeUserTaskId((FlowNode) flowElement, finishedTaskIds));
             }
