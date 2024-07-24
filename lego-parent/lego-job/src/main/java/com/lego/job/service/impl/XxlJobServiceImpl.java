@@ -28,6 +28,7 @@ import com.lego.job.service.XxlJobService;
 import com.lego.job.vo.JobConfigSearchVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -49,6 +50,8 @@ public class XxlJobServiceImpl implements XxlJobService {
 
     private static Logger logger = LoggerFactory.getLogger(XxlJobServiceImpl.class);
 
+    @Value("${xxl.job.admin.addresses:}")
+    private String adminAddress;
     @Resource
     private XxlJobGroupMapper xxlJobGroupMapper;
     @Resource
@@ -288,6 +291,7 @@ public class XxlJobServiceImpl implements XxlJobService {
 
     @Override
     public void start(int id) {
+        BusinessException.check(StringUtil.isNotBlank(adminAddress), "未配置调度中心地址xxl.job.admin.addresses");
         XxlJobInfo xxlJobInfo = xxlJobInfoMapper.loadById(id);
 
         // valid
@@ -317,6 +321,7 @@ public class XxlJobServiceImpl implements XxlJobService {
 
     @Override
     public void stop(int id) {
+        BusinessException.check(StringUtil.isNotBlank(adminAddress), "未配置调度中心地址xxl.job.admin.addresses");
         XxlJobInfo xxlJobInfo = xxlJobInfoMapper.loadById(id);
 
         xxlJobInfo.setTriggerStatus(0);
@@ -330,6 +335,7 @@ public class XxlJobServiceImpl implements XxlJobService {
 
     @Override
     public void trigger(int jobId, String executorParam, String addressList) {
+        BusinessException.check(StringUtil.isNotBlank(adminAddress), "未配置调度中心地址xxl.job.admin.addresses");
         XxlJobInfo xxlJobInfo = xxlJobInfoMapper.loadById(jobId);
         BusinessException.check(xxlJobInfo != null, "任务ID({0})非法", jobId);
         // force cover job param
