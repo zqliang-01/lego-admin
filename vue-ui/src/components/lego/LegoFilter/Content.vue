@@ -21,12 +21,12 @@
 </template>
 
 <script>
-import FilterConditionMixin from '../Mixins/FilterConditionMixin'
-import { getConditionShowValue } from '../Common/Form/utils'
+import LegoConditionMixin from '../mixins/LegoCondition'
+import { getConditionShowValue } from '@/components/Common/Form/utils'
 
 export default {
-  name: 'FilterContent',
-  mixins: [FilterConditionMixin],
+  name: 'LegoFilterContent',
+  mixins: [LegoConditionMixin],
   props: {
     filterObj: {
       type: Object,

@@ -31,7 +31,7 @@
 import { sceneVisibleListAPI } from '@/api/scene'
 
 export default {
-  name: 'SceneList', // 客户管理下 重要提醒 回款计划提醒
+  name: 'LegoSceneList',
   components: {
   },
   props: {
@@ -42,7 +42,6 @@ export default {
   },
   data() {
     return {
-      // 场景列表
       sceneSelectId: 'all',
       sceneList: [{ id: 'all', name: '查询全部', bydata: '' }]
     }

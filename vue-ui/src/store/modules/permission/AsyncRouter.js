@@ -11,7 +11,7 @@ const forCheckPermission = function(router, auth) {
     if (auth.icon) {
       router.meta.icon = auth.icon
     }
-    return true
+    return !auth.dynamicRoute || auth.childrens.length > 0
   }
   return auth.childrens.some(children => forCheckPermission(router, children))
 }

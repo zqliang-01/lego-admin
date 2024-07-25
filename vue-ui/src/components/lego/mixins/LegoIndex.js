@@ -5,8 +5,8 @@ import { tableHeaderFieldListAPI } from '@/api/admin/formField'
 import LegoCommonMixin from './LegoCommon'
 import LegoListHead from '../LegoListHead'
 import LegoTableHead from '../LegoTableHead'
+import LegoTableSort from '../LegoTableSort'
 import Empty from '@/components/Empty'
-import FieldSet from '@/components/FieldSet'
 import FieldView from '@/components/Common/Form/FieldView'
 
 import Lockr from 'lockr'
@@ -19,7 +19,7 @@ export default {
   components: {
     LegoListHead,
     LegoTableHead,
-    FieldSet,
+    LegoTableSort,
     Empty,
     FieldView
   },
@@ -136,9 +136,7 @@ export default {
             this.initRequest(res.data.form)
             this.fieldList = []
             res.data.fields.forEach(field => {
-              if (!field.width) {
-                field.width = 100
-              }
+              field.minWidth = 100
               this.initSettingValue(field)
               this.fieldList.push(field)
             })
@@ -189,7 +187,6 @@ export default {
       }
       // 只有点击高亮列才触发打开详情信息
       if (column.property === this.unionKey) {
-        this.$set(this.relativeEntity, 'main', true)
         this.$set(this.relativeEntity, 'show', true)
         this.$set(this.relativeEntity, 'code', row[this.unionKey])
         this.$set(this.relativeEntity, 'formCode', this.formCode)
@@ -199,7 +196,6 @@ export default {
     },
 
     handleEntityClick(data) {
-      this.$set(this.relativeEntity, 'main', false)
       this.$set(this.relativeEntity, 'show', true)
       this.$set(this.relativeEntity, 'code', data.value.code)
       this.$set(this.relativeEntity, 'formCode', data.field.relativeForm.code)
@@ -369,21 +365,14 @@ export default {
      * 当拖动表头改变了列的宽度的时候会触发该事件
      */
     handleHeaderDragend(newWidth, oldWidth, column, event) {
-      if (column.property) {
+      if (column.property && newWidth !== oldWidth) {
         var field = this.fieldList.find(field => field.fieldCode === column.property)
-        console.log(field)
-        if (!field) {
-          return
+        if (field) {
+          columnWidthModifyAPI({
+            fieldCode: field.code,
+            width: newWidth
+          }).then(() => {})
         }
-        if (!field.sortCode) {
-          return
-        }
-        const params = {
-          code: field.sortCode,
-          width: newWidth
-        }
-        console.log(params)
-        columnWidthModifyAPI(params).then(() => {})
       }
     },
 

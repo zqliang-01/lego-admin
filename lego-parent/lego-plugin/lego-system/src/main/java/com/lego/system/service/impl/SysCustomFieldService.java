@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,8 +46,6 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
     @Override
     public List<SysCustomFieldInfo> findValidBy(String employeeCode, String formCode) {
         List<SysCustomField> fields = dao.findValidBy(formCode);
-        Collections.sort(fields);
-
         List<SysColumnSort> columnSorts = columnSortDao.findByForm(formCode, employeeCode);
         return assembler.create(fields, columnSorts);
     }
@@ -56,7 +53,6 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
     @Override
     public List<String> findCodesByForm(String formCode) {
         List<SysCustomField> fields = dao.findBy(formCode);
-        Collections.sort(fields);
         return assembler.createCodes(fields);
     }
 
@@ -74,7 +70,6 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
             SysCustomFieldInfo field = fields.get(i);
             field.setXAxis(i / 2);
             field.setYAxis(i % 2);
-            field.resetFormPosition();
             result.add(field);
         }
         return results;

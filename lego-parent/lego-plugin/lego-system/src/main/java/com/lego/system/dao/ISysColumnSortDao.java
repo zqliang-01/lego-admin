@@ -8,4 +8,6 @@ import java.util.List;
 public interface ISysColumnSortDao extends IGenericDao<SysColumnSort> {
 
     List<SysColumnSort> findByForm(String formCode, String employeeCode);
+
+    SysColumnSort findByField(String fieldCode, String employeeCode);
 }

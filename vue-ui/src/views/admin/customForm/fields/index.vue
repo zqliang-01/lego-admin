@@ -182,24 +182,19 @@ export default {
           this.loading = false
         })
     },
-
     /**
      * 点击左侧字段库进行添加
-     * @param field {Object}
      */
     handleLibFieldClick(field) {
       this.movedField = field
       this.dragLeftEnd()
     },
-
     /**
      * 左侧字段库拖拽
-     * @param field {Object}
      */
     dragLeftMove(field) {
       this.movedField = field
     },
-
     /**
      * 左侧字段库拖拽结束
      */
@@ -211,10 +206,12 @@ export default {
       const newField = new Field({
         name: this.movedField.name,
         formType: this.movedField.formType,
+        stylePercent: 100,
         componentName: this.movedField.componentName
       })
-      newField.stylePercent = 100
-      newField.optionDataType = 'dict'
+      if (this.movedField.formType === 'select') {
+        newField.optionDataType = 'dict'
+      }
       if (this.movedField.formType === 'desc_text') {
         newField.name = ''
       }
@@ -417,18 +414,16 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      })
-        .then(() => {
-          this.selectedPoint = [null, null]
-          this.selectedField = null
+      }).then(() => {
+        this.selectedPoint = [null, null]
+        this.selectedField = null
 
-          this.fieldList[point[0]].splice([point[1]], 1)
-          // 如果当前行已经没有元素则删除
-          if (this.fieldList[point[0]].length === 0) {
-            this.fieldList.splice(point[0], 1)
-          }
-        })
-        .catch(() => {})
+        this.fieldList[point[0]].splice([point[1]], 1)
+        // 如果当前行已经没有元素则删除
+        if (this.fieldList[point[0]].length === 0) {
+          this.fieldList.splice(point[0], 1)
+        }
+      }).catch(() => {})
     },
 
     /**
@@ -512,16 +507,16 @@ export default {
         this.$message.error('表单未初始化，保存失败！')
         return
       }
+      let sn = 0
       const arr = []
-      // 追加坐标
       objDeepCopy(this.fieldList).forEach((father, fatherIndex) => {
         father.forEach((child, childIndex) => {
+          child.sn = sn++
           if (child.relativeForm) {
             child.relativeFormCode = child.relativeForm.code
           }
           arr.push({
             ...child,
-            formPosition: `${fatherIndex},${childIndex}`,
             xAxis: fatherIndex,
             yAxis: childIndex
           })

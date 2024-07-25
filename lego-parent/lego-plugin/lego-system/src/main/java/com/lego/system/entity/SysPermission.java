@@ -51,6 +51,7 @@ public class SysPermission extends TreeEntity<SysPermission> {
     protected void doBuildReadableSnapshot(Map<String, String> attributes) {
         attributes.put("编码", getCode());
         attributes.put("名称", getName());
+        attributes.put("上级菜单", EntityUtil.toString(getParent()));
         attributes.put("序号", StringUtil.toString(sn));
         attributes.put("类型", EntityUtil.getName(type));
         attributes.put("路由类型", EntityUtil.getName(routeType));

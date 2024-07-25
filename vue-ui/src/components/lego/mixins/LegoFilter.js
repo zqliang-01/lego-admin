@@ -1,11 +1,11 @@
 import Field from '@/components/Common/Form/Field'
-import FilterConditionMixin from '@/components/Mixins/FilterConditionMixin'
+import LegoConditionMixin from './LegoCondition'
 export default {
   name: 'Index',
   components: {
     Field
   },
-  mixins: [FilterConditionMixin],
+  mixins: [LegoConditionMixin],
   props: {
     filterObj: {
       type: Object,

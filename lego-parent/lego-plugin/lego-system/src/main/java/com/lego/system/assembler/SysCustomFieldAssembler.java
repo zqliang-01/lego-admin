@@ -34,7 +34,6 @@ public class SysCustomFieldAssembler extends EntityAssembler<SysCustomFieldInfo,
         info.setName(entity.getName());
         info.setComponentName(entity.getComponentName());
         info.setDefaultValue(buildDefaultValue(entity));
-        info.setFormPosition(entity.getFormPosition());
         info.setFormType(entity.getFormType());
         info.setHidden(entity.isHidden());
         info.setInputTips(entity.getInputTips());

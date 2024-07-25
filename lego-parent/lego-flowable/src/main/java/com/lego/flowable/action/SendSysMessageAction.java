@@ -32,11 +32,15 @@ public class SendSysMessageAction extends MaintainAction {
         ICommonService commonService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
         list.stream().forEach(task -> {
             String assignee = task.getAssignee();
+            String taskName = task.getName();
+            if (StringUtil.isBlank(taskName)) {
+                taskName = "未命名的任务";
+            }
             if (StringUtil.isNotBlank(assignee)) {
                 SysMessageCreateVO messageVO = new SysMessageCreateVO();
+                messageVO.setName(taskName);
                 messageVO.setRecipient(assignee);
                 messageVO.setCreator(operatorCode);
-                messageVO.setName(task.getName());
                 messageVO.setEntityCode(task.getId());
                 messageVO.setFormCode(task.getFormKey());
                 messageVO.setType(SysMessageTypeEnum.FLOWABLE.getCode());

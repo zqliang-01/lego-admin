@@ -8,15 +8,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class SysColumnSortAssembler extends EntityAssembler<SysColumnSortInfo, SysColumnSort> {
 
-  @Override
-  protected SysColumnSortInfo doCreate(SysColumnSort entity) {
-    SysColumnSortInfo info = new SysColumnSortInfo();
-    info.setCode(entity.getCode());
-    info.setName(entity.getName());
-    info.setVisible(entity.isVisible());
-    info.setSn(entity.getSn());
-    info.setWidth(entity.getWidth());
-    return info;
-  }
+    @Override
+    protected SysColumnSortInfo doCreate(SysColumnSort entity) {
+        SysColumnSortInfo info = new SysColumnSortInfo();
+        info.setCode(entity.getCode());
+        info.setName(entity.getName());
+        info.setVisible(entity.isVisible());
+        info.setSn(entity.getSn());
+        return info;
+    }
 
 }

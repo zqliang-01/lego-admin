@@ -37,7 +37,6 @@ public class ModifySysCustomFieldAction extends ModifyAction<SysCustomField, ISy
         entity.setName(vo.getName());
         entity.setComponentName(vo.getComponentName());
         entity.setDefaultValue(JSON.toJSONString(vo.getDefaultValue()));
-        entity.setFormPosition(vo.getFormPosition());
         entity.setFormType(vo.getFormType());
         entity.setHidden(vo.isHidden());
         entity.setInputTips(vo.getInputTips());
@@ -52,6 +51,7 @@ public class ModifySysCustomFieldAction extends ModifyAction<SysCustomField, ISy
         entity.setUniqueness(vo.isUnique());
         entity.setXAxis(vo.getXAxis());
         entity.setYAxis(vo.getYAxis());
+        entity.setSn(vo.getSn());
         entity.setRelativeForm(formDao.findByUnsureCode(vo.getRelativeFormCode()));
         entity.setCodeGenerator(generatorDao.findByUnsureCode(vo.getGeneratorCode()));
     }

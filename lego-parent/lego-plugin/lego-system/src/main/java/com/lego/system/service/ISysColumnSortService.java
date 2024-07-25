@@ -2,16 +2,15 @@ package com.lego.system.service;
 
 import com.lego.system.dto.SysColumnSortInfo;
 import com.lego.system.vo.SysColumnSortModifyVO;
+import com.lego.system.vo.SysColumnWidthModifyVO;
 
 import java.util.List;
 
 public interface ISysColumnSortService {
 
-    List<SysColumnSortInfo> findBy(String formCode, String employeeCode);
-
-    void updateBy(String formCode, String employeeCode, List<String> fieldCodes);
+    List<SysColumnSortInfo> findAndInitBy(String formCode, String employeeCode);
 
     void update(String employeeCode, List<SysColumnSortModifyVO> vos);
 
-    void update(String employeeCode, SysColumnSortModifyVO vo);
+    void updateWidth(String loginCode, SysColumnWidthModifyVO vo);
 }

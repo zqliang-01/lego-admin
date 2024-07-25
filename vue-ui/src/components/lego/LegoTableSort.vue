@@ -11,7 +11,6 @@
         class="field-set__search"
         placeholder="搜索字段（拖拽字段进行排序）"
         @input="searchClick" />
-
       <div v-loading="loading" class="field-set__content">
         <draggable
           v-model="fields"
@@ -26,7 +25,6 @@
           </div>
         </draggable>
       </div>
-
       <div class="field-set__ft">
         <el-button type="text" @click="reSet">重置</el-button>
         <el-button type="primary" @click="save">保存</el-button>
@@ -50,8 +48,7 @@ import { objDeepCopy } from '@/utils'
 import Draggable from 'vuedraggable'
 
 export default {
-  /** 字段管理 */
-  name: 'FieldSet',
+  name: 'LegoTableSort',
   components: {
     Draggable
   },
@@ -81,23 +78,19 @@ export default {
      */
     getList() {
       this.loading = this.fields.length == 0
-      columnSortListAPI({ formCode: this.formCode })
-        .then(res => {
-          const resData = res.data || {}
-          const list = resData.map(function(item, index) {
-            item.left = ''
-            item.center = ''
-            item.right = ''
-            return item
-          })
-
-          this.fields = list
-          this.copyfields = objDeepCopy(this.fields)
-          this.loading = false
+      columnSortListAPI({ formCode: this.formCode }).then(res => {
+        const resData = res.data || {}
+        this.fields = resData.map(function(item, index) {
+          item.left = ''
+          item.center = ''
+          item.right = ''
+          return item
         })
-        .catch(() => {
-          this.loading = false
-        })
+        this.copyfields = objDeepCopy(this.fields)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
 
     /**
@@ -129,16 +122,14 @@ export default {
         this.$message.error('至少要显示两列')
         return
       }
-      columnSortModifyAPI(this.fields)
-        .then(res => {
-          this.$message.success('操作成功')
-          this.show = false
-          this.loading = false
-          this.$emit('change')
-        })
-        .catch(() => {
-          this.loading = false
-        })
+      columnSortModifyAPI(this.fields).then(res => {
+        this.$message.success('操作成功')
+        this.show = false
+        this.loading = false
+        this.$emit('change')
+      }).catch(() => {
+        this.loading = false
+      })
     },
 
     /**

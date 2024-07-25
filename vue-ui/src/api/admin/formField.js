@@ -153,7 +153,7 @@ export function columnSortModifyAPI(data) {
  */
 export function columnWidthModifyAPI(data) {
   return request({
-    url: '/back-end/sys-column-sort/modify',
+    url: '/back-end/sys-column-sort/modify-width',
     method: 'post',
     data: data,
     headers: {

@@ -26,7 +26,6 @@
       <el-table
         v-loading="loading"
         id="lego-table"
-        :row-height="40"
         :data="pageList"
         :height="tableHeight"
         :cell-class-name="cellClassName"
@@ -35,7 +34,6 @@
         stripe
         border
         highlight-current-row
-        style="width: 100%;z-index: 1;"
         @row-click="handleRowClick"
         @sort-change="sortChange"
         @header-dragend="handleHeaderDragend"
@@ -52,7 +50,8 @@
           :fixed="index==0"
           :prop="item.fieldCode"
           :label="item.name"
-          :min-width="item.width"
+          :min-width="item.minWidth"
+          :width="item.width"
           sortable="custom"
           show-overflow-tooltip>
           <template slot-scope="{ row, column }">
@@ -68,7 +67,7 @@
           fixed="right"
           width="40">
           <template slot="header">
-            <field-set
+            <lego-table-sort
               :form-code="formCode"
               @change="setSave"/>
           </template>
@@ -119,8 +118,6 @@ import IndexMixin from './mixins/LegoIndex'
 export default {
   name: 'LegoIndex',
   mixins: [IndexMixin],
-  components: {
-  },
   data() {
     return {
       createShow: false,

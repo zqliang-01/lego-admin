@@ -5,23 +5,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import cache from '@/utils/cache'
 
 export default {
   name: 'App',
-  components: {},
-  mixins: [],
-  data() {
-    return {}
-  },
-  computed: {
-    ...mapGetters(['activeIndex', 'userInfo'])
-  },
-  watch: {
-    $route(to, from) {
-    }
-  },
   mounted() {
     this.addDocumentVisibilityChange()
     this.setMinHeight()

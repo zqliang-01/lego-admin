@@ -1,5 +1,5 @@
 
-import 'highlight.js/styles/atom-one-dark-reasonable.css'
+import 'highlight.js/styles/vs.css'
 const hljs = require('highlight.js/lib/core')
 hljs.registerLanguage('xml', require('highlight.js/lib/languages/xml'))
 hljs.registerLanguage('json', require('highlight.js/lib/languages/json'))

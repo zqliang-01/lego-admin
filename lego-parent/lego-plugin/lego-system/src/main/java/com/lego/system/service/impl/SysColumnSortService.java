@@ -1,58 +1,69 @@
 package com.lego.system.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.data.hibernate.impl.BusService;
-import com.lego.core.util.StringUtil;
 import com.lego.system.action.AddSysColumnSortAction;
 import com.lego.system.action.ModifySysColumnSortAction;
+import com.lego.system.action.ModifySysColumnWidthAction;
 import com.lego.system.assembler.SysColumnSortAssembler;
 import com.lego.system.dao.ISysColumnSortDao;
+import com.lego.system.dao.ISysCustomFieldDao;
+import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.dto.SysColumnSortInfo;
 import com.lego.system.entity.SysColumnSort;
+import com.lego.system.entity.SysCustomField;
+import com.lego.system.entity.SysEmployee;
 import com.lego.system.service.ISysColumnSortService;
 import com.lego.system.vo.SysColumnSortModifyVO;
+import com.lego.system.vo.SysColumnWidthModifyVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class SysColumnSortService extends BusService<ISysColumnSortDao, SysColumnSortAssembler> implements ISysColumnSortService {
 
-    @Override
-    public List<SysColumnSortInfo> findBy(String formCode, String employeeCode) {
-        List<SysColumnSort> tableColumnSorts = dao.findByForm(formCode, employeeCode);
-        return assembler.create(tableColumnSorts);
-    }
+    @Autowired
+    private ISysCustomFieldDao fieldDao;
+
+    @Autowired
+    private ISysEmployeeDao employeeDao;
 
     @Override
-    public void updateBy(String formCode, String employeeCode, List<String> fieldCodes) {
-        List<SysColumnSort> tableColumnSorts = dao.findByForm(formCode, employeeCode);
-        Optional<SysColumnSort> tableColumnSort = tableColumnSorts.stream().max(Comparator.comparing(SysColumnSort::getSn));
-        int maxSn = 1;
-        if (tableColumnSort.isPresent()) {
-            maxSn = tableColumnSort.get().getSn() + 1;
-        }
-        for (String fieldCode : fieldCodes) {
-            boolean exists = tableColumnSorts.stream().anyMatch(s -> StringUtil.equals(s.getField().getCode(), fieldCode));
-            if (!exists) {
-                new AddSysColumnSortAction(employeeCode, fieldCode, maxSn).run();
-                maxSn++;
+    public List<SysColumnSortInfo> findAndInitBy(String formCode, String employeeCode) {
+        List<SysCustomField> fields = fieldDao.findValidBy(formCode);
+        List<SysColumnSort> columnSorts = dao.findByForm(formCode, employeeCode);
+        for (SysColumnSort columnSort : columnSorts) {
+            Optional<SysCustomField> field = fields.stream()
+                .filter(f -> f.equals(columnSort.getField()))
+                .findAny();
+            if (field.isPresent()) {
+                fields.remove(field.get());
             }
         }
+        if (CollectionUtil.isNotEmpty(fields)) {
+            SysEmployee operator = employeeDao.findByCode(employeeCode);
+            int maxSn = columnSorts.stream()
+                .map(SysColumnSort::getSn)
+                .max(Integer::compare)
+                .orElse(0);
+            AddSysColumnSortAction addSortAction = new AddSysColumnSortAction(operator, fields, maxSn);
+            addSortAction.run();
+            columnSorts.addAll(addSortAction.getSorts());
+        }
+        return assembler.create(columnSorts);
     }
 
     @Override
     public void update(String employeeCode, List<SysColumnSortModifyVO> vos) {
-        int sn = 1;
-        for (SysColumnSortModifyVO vo : vos) {
-            vo.setSn(sn++);
-            new ModifySysColumnSortAction(employeeCode, vo).run();
-        }
+        new ModifySysColumnSortAction(employeeCode, vos).run();
     }
 
     @Override
-    public void update(String employeeCode, SysColumnSortModifyVO vo) {
-        new ModifySysColumnSortAction(employeeCode, vo).run();
+    public void updateWidth(String loginCode, SysColumnWidthModifyVO vo) {
+        new ModifySysColumnWidthAction(loginCode, vo).run();
     }
+
 }

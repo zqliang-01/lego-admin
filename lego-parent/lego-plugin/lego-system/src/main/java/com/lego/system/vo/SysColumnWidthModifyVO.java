@@ -6,10 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SysColumnSortModifyVO extends VO {
+public class SysColumnWidthModifyVO extends VO {
 
     private static final long serialVersionUID = 1L;
 
-    private String code;
-    private boolean visible = true;
+    private String fieldCode;
+    private Integer width;
 }

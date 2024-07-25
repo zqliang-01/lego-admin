@@ -343,15 +343,12 @@ export function regexIsMoneyNumber(nubmer) {
 
 /** 判断输入的是电话*/
 export function regexIsMobile(mobile) {
-  var regex = /^(\+?0?\d{2,4}\-?)?\d{6,11}$/
+  var regex = /^1\d{10}$/
   if (!regex.test(mobile)) {
     return false
   }
   return true
 }
-
-// 中国手机号
-export const chinaMobileRegex = /^1\d{10}$/
 
 /** 判断输入的是邮箱*/
 export function regexIsEmail(email) {

@@ -8,14 +8,13 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class SysCustomFieldInfo extends DTO implements Comparable<SysCustomFieldInfo> {
+public class SysCustomFieldInfo extends DTO {
 
     private static final long serialVersionUID = 1L;
 
     private String code;
     private String fieldCode;
     private String name;
-    private String formPosition;
     private String componentName;
     private Object defaultValue;
     private String formType;
@@ -38,20 +37,6 @@ public class SysCustomFieldInfo extends DTO implements Comparable<SysCustomField
     private TypeInfo codeGenerator;
 
     @Override
-    public int compareTo(SysCustomFieldInfo o) {
-        if (o == null) {
-            return 0;
-        }
-        if (this.getXAxis() == o.getXAxis()) {
-            return this.getYAxis().compareTo(o.getYAxis());
-        }
-        if (this.getXAxis() > o.getXAxis()) {
-            return 1;
-        }
-        return -1;
-    }
-
-    @Override
     public int hashCode() {
         if (StringUtil.isNotBlank(code)) {
             return code.hashCode();
@@ -59,7 +44,4 @@ public class SysCustomFieldInfo extends DTO implements Comparable<SysCustomField
         return super.hashCode();
     }
 
-    public void resetFormPosition() {
-        this.formPosition = xAxis + "," + yAxis;
-    }
 }

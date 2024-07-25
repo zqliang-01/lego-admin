@@ -130,10 +130,10 @@ import {
   sceneVisibleModifyAPI
 } from '@/api/scene'
 import draggable from 'vuedraggable'
-import SceneCreate from './SceneCreate' // 新建编辑场景
+import SceneCreate from './Create'
 
 export default {
-  name: 'SceneSet', // 场景 设置
+  name: 'LegoSceneSet',
   components: {
     draggable,
     SceneCreate

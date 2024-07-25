@@ -6,18 +6,14 @@ import com.lego.core.dto.TypeInfo;
 import com.lego.core.dto.VersionDTO;
 import com.lego.core.util.EntityUtil;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class EntityAssembler<D extends DTO, E extends BaseEntity> extends BaseAssembler<D, E> {
 
     public List<String> createCodes(List<E> entities) {
-        List<String> codes = new ArrayList<String>();
-        for (E entity : entities) {
-            codes.add(entity.getCode());
-        }
-        return codes;
+        return entities.stream().map(BaseEntity::getCode).collect(Collectors.toList());
     }
 
     public D create(E entity) {

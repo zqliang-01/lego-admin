@@ -10,18 +10,6 @@ import { isEmpty, isObject, isArray } from '@/utils/types'
 export default {
   methods: {
     /**
-     * 唯一性校验
-     * @param data
-     * @returns {Promise<unknown>}
-     * @constructor
-     */
-    UniquePromise(data) {
-      return new Promise(resolve => {
-        resolve()
-      })
-    },
-
-    /**
      * 生成单个字段的验证规则
      * @param item 字段信息
      * @returns {[]}
@@ -53,36 +41,8 @@ export default {
         }
       }
 
-      // 验证唯一
-      if (item.unique && this.UniquePromise) {
-        const validateUnique = (rule, value, callback) => {
-          if (isEmpty(value)) {
-            callback()
-          } else {
-            // 验证唯一
-            this.UniquePromise({
-              field: item,
-              rule: rule,
-              value: value
-            }).then(() => {
-              callback()
-            }).catch(msg => {
-              callback(new Error(msg || '验证出错'))
-            })
-          }
-        }
-        tempList.push({
-          validator: validateUnique,
-          item: item,
-          trigger:
-            item.formType == 'checkbox' || item.formType == 'select'
-              ? ['change', 'blur']
-              : ['blur']
-        })
-      }
-
       // 特殊类型
-      if (item.formType === 'number' || item.formType === 'percent') {
+      if (['percent', 'number'].includes(item.formType)) {
         const validateNumber = (rule, value, callback) => {
           if (item.hasOwnProperty('precisions')) {
             this._getNumberRule(rule, value, callback)

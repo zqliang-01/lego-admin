@@ -1,25 +1,16 @@
 <template>
   <el-dialog
-    :title="edit_id ? '编辑场景' : '新建场景'"
     :visible.sync="visible"
     :close-on-click-modal="false"
-    :append-to-body="true"
-    width="800px"
+    title="高级筛选"
+    width="900px"
     @close="handleCancel">
-    <div class="scene-name-container">
-      <div class="scene-name">场景名称</div>
-      <el-input
-        v-model.trim="saveName"
-        :maxlength="10"
-        class="scene-input"
-        placeholder="请输入场景名称，最多10个字符"/>
-    </div>
-    <div class="scene-name">筛选条件</div>
+    <div style="margin-bottom: 10px;">筛选条件</div>
     <el-form
-      id="scene-filter-container"
+      id="filter-container"
       class="filter-container">
       <el-form-item>
-        <div v-for="(formItem, index) in filterForm">
+        <div v-for="(formItem, index) in filterForm" :key="index">
           <el-row :key="index">
             <el-col :span="8">
               <el-select
@@ -74,61 +65,51 @@
       type="text"
       @click="handleAdd">+ 添加筛选条件</el-button>
     <div
+      v-if="saveScene"
+      class="save">
+      <el-checkbox v-model="saveChecked">保存为场景</el-checkbox>
+      <el-input
+        v-show="saveChecked"
+        v-model.trim="saveName"
+        :maxlength="10"
+        class="name"
+        placeholder="请输入场景名称，最多10个字符"/>
+    </div>
+    <div
       slot="footer"
       class="dialog-footer">
       <el-button @click="handleCancel">取 消</el-button>
       <el-button
-        v-debounce="handleConfirm"
-        type="primary">确 定</el-button>
+        type="primary"
+        @click="handleConfirm">确 定</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import { sceneAddAPI, sceneModifyAPI } from '@/api/scene'
-
 import { objDeepCopy } from '@/utils'
-import { isEmpty } from '@/utils/types'
-import FilterMixin from '../FilterForm/FilterMixin'
+import { isEmpty, isArray } from '@/utils/types'
+import FilterMixin from '../mixins/LegoFilter'
+
 export default {
-  name: 'SceneCreate',
+  name: 'LegoFilterForm',
   mixins: [FilterMixin],
   props: {
-    formCode: {
-      type: String,
-      default: ''
-    },
-    name: {
-      type: String,
-      default: ''
-    },
-    edit_id: {
-      type: String,
-      default: ''
+    saveScene: {
+      type: Boolean,
+      default: true
     }
   },
-  computed: {
-    requestAPI() {
-      return isEmpty(this.edit_id) ? sceneAddAPI : sceneModifyAPI
+  data() {
+    return {
+      saveChecked: false // 展示场景
     }
   },
   watch: {
     dialogVisible: {
       handler(val) {
         if (val) {
-          this.saveName = this.name
           this.filterForm = objDeepCopy(this.filterObj.form)
-          this.filterForm.forEach(formItem => {
-            this.$set(formItem, 'fieldForm', { [formItem.fieldCode]: formItem.values })
-            const field = this.fieldList.find(field => field.fieldCode === formItem.fieldCode)
-            if (field) {
-              this.$set(formItem, 'setting', field.setting)
-              if (formItem.formType === 'entity') {
-                this.$set(formItem, 'request', field.request)
-                this.$set(formItem, 'relativeForm', field.relativeForm)
-              }
-            }
-          })
           if (this.filterForm.length === 0) {
             this.filterForm.push({
               name: '',
@@ -139,26 +120,28 @@ export default {
               setting: []
             })
           }
+          this.saveChecked = false
+          this.saveName = null
         }
         this.visible = this.dialogVisible
       },
       deep: true,
       immediate: true
     },
-
     form() {
       this.$nextTick(() => {
-        var container = document.getElementById('scene-filter-container')
+        var container = document.getElementById('filter-container')
         container.scrollTop = container.scrollHeight
       })
     }
   },
   methods: {
     handleConfirm() {
-      if (isEmpty(this.saveName)) {
+      if (this.saveChecked && isEmpty(this.saveName)) {
         this.$message.error('场景名称不能为空！')
         return
       }
+      const formItems = []
       const sceneList = []
       for (let i = 0; i < this.filterForm.length; i++) {
         const formItem = this.filterForm[i]
@@ -166,13 +149,13 @@ export default {
           this.$message.error('筛选的字段名称不能为空！')
           return
         }
-        if (['isNull', 'isNotNull'].includes(formItem.type)) {
-          continue
-        }
         const value = formItem.fieldForm[formItem.fieldCode]
-        if (isEmpty(value)) {
+        if (!['isNull', 'isNotNull'].includes(formItem.type) && isEmpty(value)) {
           this.$message.error('筛选内容不能为空！')
           return
+        }
+        if (formItem.formType != 'entity') {
+          formItem.value = value
         }
         sceneList.push({
           fieldCode: formItem.fieldCode,
@@ -181,18 +164,25 @@ export default {
           value: formItem.value,
           values: value
         })
+        let values = []
+        if (!isArray(value) && !isEmpty(value)) {
+          values = [value]
+        }
+        formItems.push({
+          fieldCode: formItem.fieldCode,
+          formType: formItem.formType,
+          type: formItem.type,
+          values: values
+        })
       }
-      this.requestAPI({
-        code: this.edit_id,
-        enable: true,
-        name: this.saveName,
-        formCode: this.formCode,
-        data: JSON.stringify(sceneList)
-      }).then(res => {
-        this.$message.success('操作成功')
-        this.$emit('save-success')
-        this.handleCancel()
-      })
+      const data = {
+        scenes: sceneList,
+        form: this.filterForm,
+        filterList: formItems,
+        saveChecked: this.saveChecked,
+        saveName: this.saveName
+      }
+      this.$emit('filter', data)
     }
   }
 }
@@ -208,7 +198,7 @@ export default {
   text-align: left;
 }
 .filter-container {
-  max-height: 200px;
+  max-height: 300px;
   overflow-y: auto;
 }
 
@@ -273,15 +263,5 @@ export default {
   .desc {
     padding-left: 8px;
   }
-}
-
-.scene-name-container {
-  padding-bottom: 15px;
-  .scene-input {
-    width: 300px;
-  }
-}
-.scene-name {
-  margin-bottom: 10px;
 }
 </style>

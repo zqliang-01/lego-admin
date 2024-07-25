@@ -34,7 +34,6 @@
         stripe
         border
         highlight-current-row
-        style="width: 100%;z-index: 1;"
         @row-click="handleRowClick"
         @sort-change="sortChange"
         @header-dragend="handleHeaderDragend"
@@ -51,7 +50,8 @@
           :fixed="index==0"
           :prop="item.fieldCode"
           :label="item.name"
-          :min-width="item.width"
+          :min-width="item.minWidth"
+          :width="item.width"
           sortable="custom"
           show-overflow-tooltip>
           <template slot-scope="{ row, column }">
@@ -67,7 +67,7 @@
           fixed="right"
           width="40">
           <template slot="header">
-            <field-set
+            <lego-table-sort
               :form-code="formCode"
               @change="setSave"/>
           </template>
@@ -75,7 +75,7 @@
         <empty
           slot="empty"
           :props="{
-            buttonTitle: '新建线索',
+            buttonTitle: `新建${auth.title}`,
             showButton: auth.add
           }"
           @click="createClick"
@@ -95,7 +95,7 @@
           @current-change="handleCurrentChange"/>
       </div>
     </div>
-    <Lego-all-detail
+    <lego-all-detail
       :visible.sync="relativeEntity.show"
       :detail-code.sync="relativeEntity.code"
       :form-code="relativeEntity.formCode"

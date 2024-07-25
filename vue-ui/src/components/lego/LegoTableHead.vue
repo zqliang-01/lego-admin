@@ -17,7 +17,7 @@
           class="scene-select">
           <i slot="suffix" :class="['el-input__icon', 'el-icon-' + iconClass]" />
         </el-input>
-        <scene-list
+        <lego-scene-list
           ref="sceneList"
           :form-code="formCode"
           @scene="sceneSelect"
@@ -37,7 +37,7 @@
         @click="handleCallBack({type: 'clear-sort'})">
         {{ `${sortData.column.label}${{ascending: '升序', descending: '降序'}[sortData.order]}` }}<i style="margin-left: 5px;" class="el-icon-close"/>
       </el-button>
-      <filter-form
+      <lego-filter-form
         v-if="showFilterView"
         :field-list="fieldList"
         :dialog-visible.sync="showFilter"
@@ -59,18 +59,18 @@
           @click.native="selectionBarClick(item.type)">{{ item.name }}</el-button>
       </flexbox>
     </flexbox>
-    <filter-content
+    <lego-filter-content
       v-if="filterObj.form && filterObj.form.length > 0"
       :filter-obj="filterObj"
       @delete="handleDeleteField" />
 
-    <scene-set
+    <lego-scene-set
       :field-list="fieldList"
       :dialog-visible.sync="showSetScene"
       :form-code="formCode"
       @save-success="updateSceneList" />
 
-    <scene-create
+    <lego-scene-create
       :field-list="fieldList"
       :form-code="formCode"
       :dialog-visible.sync="showCreateScene"
@@ -81,11 +81,11 @@
 <script type="text/javascript">
 import { sceneAddAPI } from '@/api/scene'
 
-import FilterForm from '../FilterForm'
-import FilterContent from '../FilterForm/FilterContent'
-import SceneList from '../SceneForm/SceneList'
-import SceneSet from '../SceneForm/SceneSet'
-import SceneCreate from '../SceneForm/SceneCreate'
+import LegoFilterForm from './LegoFilter'
+import LegoFilterContent from './LegoFilter/Content'
+import LegoSceneList from './LegoScene/List'
+import LegoSceneSet from './LegoScene/Set'
+import LegoSceneCreate from './LegoScene/Create'
 import { Loading } from 'element-ui'
 import { isArray } from '@/utils/types'
 import { getMenuAuth } from '@/utils/auth'
@@ -93,11 +93,11 @@ import { getMenuAuth } from '@/utils/auth'
 export default {
   name: 'LegoTableHead',
   components: {
-    FilterForm,
-    FilterContent,
-    SceneList,
-    SceneCreate,
-    SceneSet
+    LegoFilterForm,
+    LegoFilterContent,
+    LegoSceneList,
+    LegoSceneCreate,
+    LegoSceneSet
   },
   props: {
     title: {

@@ -68,7 +68,7 @@ export default {
 .empty-mask {
   position: absolute;
   z-index: 101;
-  background-color: rgba(255, 255, 255, 0.98);
+  background-color: rgba(255, 255, 255);
   margin: 0;
   top: 0;
   right: 0;
@@ -79,6 +79,7 @@ export default {
 .empty-content {
   top: 50%;
   width: 100%;
+  transform: translateY(-50%);
   text-align: center;
   position: absolute;
 }

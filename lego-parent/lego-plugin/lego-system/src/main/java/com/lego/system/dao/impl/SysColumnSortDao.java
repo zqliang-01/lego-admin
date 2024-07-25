@@ -19,4 +19,13 @@ public class SysColumnSortDao extends GenericDao<SysColumnSort> implements ISysC
         return query.findList();
     }
 
+    @Override
+    public SysColumnSort findByField(String fieldCode, String employeeCode) {
+        QueryHandler<SysColumnSort> query = createQueryHandler();
+        query.condition("t.field.code = :fieldCode").param("fieldCode", fieldCode);
+        query.condition("t.employee.code = :employeeCode").param("employeeCode", employeeCode);
+        query.order("t.sn");
+        return query.findUnique();
+    }
+
 }
