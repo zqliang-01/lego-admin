@@ -135,6 +135,9 @@ export default {
       }
     }
   }
+  ::v-deep .empty-content {
+    height: 100%;
+  }
 }
 .activity-cell {
   font-size: 12px;
