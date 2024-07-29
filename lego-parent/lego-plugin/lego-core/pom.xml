@@ -89,16 +89,21 @@
             <artifactId>sa-token-spring-boot-starter</artifactId>
             <version>${sa-token.version}</version>
         </dependency>
+        <!-- Redisson -->
         <dependency>
-            <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-jwt</artifactId>
-            <version>${sa-token.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>cn.hutool</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-redis</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-data-33</artifactId>
+            <version>${redisson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson</artifactId>
+            <version>${redisson.version}</version>
         </dependency>
 
         <!-- log4j -->

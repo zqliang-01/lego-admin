@@ -11,7 +11,7 @@ import com.lego.job.mapper.XxlJobRegistryMapper;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -25,9 +25,10 @@ import java.util.Arrays;
  */
 
 @Component
-@ConditionalOnProperty("xxl.job.admin.addresses")
+@Conditional(JobAdminStartConditional.class)
 public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
+    private static boolean started;
     private static XxlJobAdminConfig adminConfig = null;
 
     public static XxlJobAdminConfig getAdminConfig() {
@@ -45,11 +46,13 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
 
         xxlJobScheduler = new XxlJobScheduler();
         xxlJobScheduler.init();
+        started = true;
     }
 
     @Override
     public void destroy() throws Exception {
         xxlJobScheduler.destroy();
+        started = false;
     }
 
     // ---------------------- XxlJobScheduler ----------------------
@@ -155,4 +158,7 @@ public class XxlJobAdminConfig implements InitializingBean, DisposableBean {
         return jobAlarmer;
     }
 
+    public static boolean isStarted() {
+        return started;
+    }
 }

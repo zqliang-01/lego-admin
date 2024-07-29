@@ -3,7 +3,6 @@ server:
     maxThreads: 500
     uri-encoding: UTF-8
     maxConnections: 2000
-
 spring:
   servlet:
     multipart:
@@ -13,7 +12,6 @@ spring:
   resources:
     static-locations:
       - file:public/
-
 flowable:
   #enable-history-cleaning: true
   #history-cleaning-cycle: 0/1 * * * * ?
@@ -26,7 +24,6 @@ flowable:
   annotation-font-name: 宋体
   database-schema-update: false
   async-executor-activate: false
-
 # 文件上传配置:local 本地存储、aliOss 阿里云对象存储
 lego:
   file:
@@ -39,13 +36,12 @@ lego:
       accessKeySecret:
       publicUrl:
       bucketName:
-
 # sa-token配置
 sa-token:
   # token有效期，单位s 默认30天, -1代表永不过期 
   timeout: 2592000
   # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
-  activity-timeout: -1
+  active-timeout: -1
   # 是否允许同一账号并发登录 (为true时允许一起登录, 为false时新登录挤掉旧登录) 
   is-concurrent: true
   # 在多人登录同一账号时，是否共用一个token (为true时所有登录共用一个token, 为false时每次登录新建一个token) 
@@ -55,7 +51,6 @@ sa-token:
   # 是否输出操作日志 
   is-log: false
   is-print: false
-
 # xxl-job定时任务
 xxl:
   job:

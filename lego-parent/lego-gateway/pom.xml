@@ -31,10 +31,6 @@
                     <groupId>cn.dev33</groupId>
                     <artifactId>sa-token-spring-boot-starter</artifactId>
                 </exclusion>
-                <exclusion>
-                    <groupId>com.baomidou</groupId>
-                    <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-                </exclusion>
             </exclusions>
         </dependency>
         <!-- Sa-Token 权限认证（Reactor响应式集成） -->

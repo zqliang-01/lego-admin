@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Slf4j
 @UtilityClass
-public class MybatisUtils {
+public class MybatisUtil {
 
     /**
      * 普通查询
@@ -68,7 +68,7 @@ public class MybatisUtils {
     }
 
     private static String buildSelectStatementId(SqlSession session, String sql) {
-        String statementId = "Huge-SQL." + sql.hashCode();
+        String statementId = "Lego-SQL." + sql.hashCode();
         log.debug("语句id: {}", statementId);
         final Configuration config = session.getConfiguration();
 
@@ -79,7 +79,7 @@ public class MybatisUtils {
             MappedStatement.Builder statementBuilder = new MappedStatement.Builder(config, statementId, sqlSource, SqlCommandType.SELECT);
 
             ArrayList<ResultMap> resultMaps = new ArrayList<ResultMap>();
-            resultMaps.add(new ResultMap.Builder(config, "HugeResultMap", LinkedHashMap.class, new ArrayList<ResultMapping>()).build());
+            resultMaps.add(new ResultMap.Builder(config, "LegoResultMap", LinkedHashMap.class, new ArrayList<ResultMapping>()).build());
 
             statementBuilder.resultMaps(resultMaps);
             config.addMappedStatement(statementBuilder.build());
@@ -91,7 +91,7 @@ public class MybatisUtils {
 
     public static void insert(SqlSession session, String sql, Map<String, Object> parameter) {
 
-        String statementId = "Huge-SQL." + sql.hashCode();
+        String statementId = "Lego-SQL." + sql.hashCode();
         log.debug("语句id: {}", statementId);
         Configuration config = session.getConfiguration();
 
@@ -108,7 +108,7 @@ public class MybatisUtils {
     }
 
     public static void delete(SqlSession session, String sql, Map<String, Object> parameter) {
-        String statementId = "Huge-SQL." + sql.hashCode();
+        String statementId = "Lego-SQL." + sql.hashCode();
         log.debug("语句id: {}", statementId);
         Configuration config = session.getConfiguration();
 

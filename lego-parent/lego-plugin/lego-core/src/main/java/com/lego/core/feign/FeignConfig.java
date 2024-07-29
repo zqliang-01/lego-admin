@@ -1,5 +1,6 @@
 package com.lego.core.feign;
 
+import cn.dev33.satoken.same.SaSameUtil;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.lego.core.common.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
@@ -13,7 +14,6 @@ import feign.codec.Decoder;
 import okhttp3.ConnectionPool;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.cloud.openfeign.support.ResponseEntityDecoder;
 import org.springframework.cloud.openfeign.support.SpringDecoder;
@@ -31,9 +31,6 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class FeignConfig implements RequestInterceptor {
-
-    @Value("${sa-token.token-name}")
-    private String tokenName;
 
     @Autowired
     private FastJsonHttpMessageConverter messageConverter;
@@ -59,6 +56,7 @@ public class FeignConfig implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
+        requestTemplate.header(SaSameUtil.SAME_TOKEN, SaSameUtil.getToken());
         ServletRequestAttributes attributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
         if (attributes != null) {
             // 赋值服务间调用时的请求头参数

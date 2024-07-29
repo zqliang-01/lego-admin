@@ -1,5 +1,7 @@
 package com.lego;
 
+import cn.dev33.satoken.jwt.StpLogicJwtForStateless;
+import cn.dev33.satoken.stp.StpLogic;
 import com.lego.core.data.hibernate.jpa.RepositoryFactoryBean;
 import com.lego.core.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
@@ -22,6 +25,11 @@ import java.net.UnknownHostException;
 @MapperScan({"com.lego.**.mapper"})
 @EnableJpaRepositories(value = "com.lego.**.dao", repositoryFactoryBeanClass = RepositoryFactoryBean.class)
 public class LegoAdminApplication extends SpringBootServletInitializer {
+
+    @Bean
+    public StpLogic getStpLogicJwt() {
+        return new StpLogicJwtForStateless();
+    }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

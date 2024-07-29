@@ -7,6 +7,7 @@ import com.lego.core.job.glue.GlueTypeEnum;
 import com.lego.core.job.util.XxlDateUtil;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.cron.CronExpression;
 import com.lego.job.core.model.XxlJobGroup;
 import com.lego.job.core.model.XxlJobInfo;
@@ -28,7 +29,6 @@ import com.lego.job.service.XxlJobService;
 import com.lego.job.vo.JobConfigSearchVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,8 +50,6 @@ public class XxlJobServiceImpl implements XxlJobService {
 
     private static Logger logger = LoggerFactory.getLogger(XxlJobServiceImpl.class);
 
-    @Value("${xxl.job.admin.addresses:}")
-    private String adminAddress;
     @Resource
     private XxlJobGroupMapper xxlJobGroupMapper;
     @Resource
@@ -291,7 +289,7 @@ public class XxlJobServiceImpl implements XxlJobService {
 
     @Override
     public void start(int id) {
-        BusinessException.check(StringUtil.isNotBlank(adminAddress), "未配置调度中心地址xxl.job.admin.addresses");
+        BusinessException.check(XxlJobAdminConfig.isStarted(), "调度中心未启用，任务启动失败！");
         XxlJobInfo xxlJobInfo = xxlJobInfoMapper.loadById(id);
 
         // valid
@@ -321,7 +319,7 @@ public class XxlJobServiceImpl implements XxlJobService {
 
     @Override
     public void stop(int id) {
-        BusinessException.check(StringUtil.isNotBlank(adminAddress), "未配置调度中心地址xxl.job.admin.addresses");
+        BusinessException.check(XxlJobAdminConfig.isStarted(), "调度中心未启用，任务停止失败！");
         XxlJobInfo xxlJobInfo = xxlJobInfoMapper.loadById(id);
 
         xxlJobInfo.setTriggerStatus(0);
@@ -332,10 +330,9 @@ public class XxlJobServiceImpl implements XxlJobService {
         xxlJobInfoMapper.update(xxlJobInfo);
     }
 
-
     @Override
     public void trigger(int jobId, String executorParam, String addressList) {
-        BusinessException.check(StringUtil.isNotBlank(adminAddress), "未配置调度中心地址xxl.job.admin.addresses");
+        BusinessException.check(XxlJobAdminConfig.isStarted(), "调度中心未启用，触发任务执行失败！");
         XxlJobInfo xxlJobInfo = xxlJobInfoMapper.loadById(jobId);
         BusinessException.check(xxlJobInfo != null, "任务ID({0})非法", jobId);
         // force cover job param

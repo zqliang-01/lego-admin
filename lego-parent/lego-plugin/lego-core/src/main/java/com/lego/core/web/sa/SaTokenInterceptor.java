@@ -1,7 +1,9 @@
 package com.lego.core.web.sa;
 
 import cn.dev33.satoken.annotation.SaIgnore;
+import cn.dev33.satoken.context.SaHolder;
 import cn.dev33.satoken.interceptor.SaInterceptor;
+import cn.dev33.satoken.same.SaSameUtil;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.strategy.SaStrategy;
 import com.lego.core.common.Constants;
@@ -46,6 +48,12 @@ public class SaTokenInterceptor extends SaInterceptor implements ILegoIntercepto
             }
 
             if (StpUtil.hasRole(Constants.ADMIN_ROLE_CODE)) {
+                return;
+            }
+
+            String sameToken = SaHolder.getRequest().getHeader(SaSameUtil.SAME_TOKEN);
+            if (StringUtil.isNotBlank(sameToken)) {
+                SaSameUtil.checkToken(sameToken);
                 return;
             }
 

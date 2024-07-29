@@ -1,0 +1,48 @@
+spring:
+  redis:
+    enable: true
+    # redis集群配置
+    #cluster:
+    #  nodes: ${lego.redis-host:}
+    # Redis数据库索引（默认为0）
+    database: 1
+    # Redis服务器地址
+    host: ${lego.redis-host:localhost}
+    # Redis服务器连接端口
+    port: ${lego.redis-port:6379}
+    # Redis服务器连接密码（默认为空）
+    password: ${lego.redis-password:}
+    # 连接超时时间
+    timeout: 10s
+    ssl: false
+    lettuce:
+      pool:
+        # 连接池最大连接数
+        max-active: 200
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1ms
+        # 连接池中的最大空闲连接
+        max-idle: 10
+        # 连接池中的最小空闲连接
+        min-idle: 0
+redisson:
+  # redis key前缀
+  keyPrefix:
+  # 线程池数量
+  threads: 4
+  # Netty线程池数量
+  nettyThreads: 8
+  # 单节点配置
+  singleServerConfig:
+    # 客户端名称
+    clientName: ${spring.application.name:lego-admin}
+    # 最小空闲连接数
+    connectionMinimumIdleSize: 8
+    # 连接池大小
+    connectionPoolSize: 32
+    # 连接空闲超时，单位：毫秒
+    idleConnectionTimeout: 10000
+    # 命令等待超时，单位：毫秒
+    timeout: 3000
+    # 发布和订阅连接池大小
+    subscriptionConnectionPoolSize: 50

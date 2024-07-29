@@ -1,7 +1,7 @@
 package com.lego.core.data.mybatis;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lego.core.util.MybatisUtils;
+import com.lego.core.util.MybatisUtil;
 import com.lego.core.util.StringUtil;
 import org.apache.ibatis.session.SqlSession;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -24,7 +24,7 @@ public class MybatisDynamicExecutor {
         try {
             sql = sql.substring(sql.toUpperCase().indexOf("FROM"));
             String countSql = StringUtil.format(COUNT_SQL, sql);
-            List<Map<String, Long>> select = MybatisUtils.select(sqlSession, countSql, parameter);
+            List<Map<String, Long>> select = MybatisUtil.select(sqlSession, countSql, parameter);
             if (select.isEmpty()) {
                 return 0;
             }
@@ -37,7 +37,7 @@ public class MybatisDynamicExecutor {
     public <M> IPage<M> selectPage(SqlSessionTemplate sqlSessionTemplate, String sql, Map<String, Object> parameter, int pageSize, int pageIndex) {
         SqlSession sqlSession = getSqlSession(sqlSessionTemplate);
         try {
-            return MybatisUtils.selectPage(sqlSession, sql, parameter, pageSize, pageIndex);
+            return MybatisUtil.selectPage(sqlSession, sql, parameter, pageSize, pageIndex);
         } finally {
             closeSqlSession(sqlSession, sqlSessionTemplate);
         }
@@ -46,7 +46,7 @@ public class MybatisDynamicExecutor {
     public <M> List<M> select(SqlSessionTemplate sqlSessionTemplate, String sql, Map<String, Object> parameter) {
         SqlSession sqlSession = getSqlSession(sqlSessionTemplate);
         try {
-            return MybatisUtils.select(sqlSession, sql, parameter);
+            return MybatisUtil.select(sqlSession, sql, parameter);
         } finally {
             closeSqlSession(sqlSession, sqlSessionTemplate);
         }
