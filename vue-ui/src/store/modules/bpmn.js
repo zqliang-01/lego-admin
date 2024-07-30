@@ -1,5 +1,5 @@
 import { unObserver } from '@/utils/bpmn/tool'
-import { defaultSettings } from '@/components/bpmn/preset-configuration/editor.config'
+import { defaultSettings } from '@/components/Bpmn/preset-configuration/editor.config'
 
 const bpmn = {
   state: {

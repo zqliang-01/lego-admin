@@ -27,7 +27,7 @@ import {
   bookAddAPI,
   bookModifyAPI
 } from '@/api/doc/book'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 import { objDeepCopy } from '@/utils'
 
 export default {

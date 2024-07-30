@@ -4,7 +4,7 @@
       <el-button @click.native="editCancel">取消</el-button>
       <el-button v-debounce="editConfirm" type="primary">保存</el-button>
     </div>
-    <sections
+    <lego-sections
       title="基本信息"
       class="b-cells"
       content-height="auto">
@@ -46,8 +46,8 @@
           </flexbox>
         </el-form-item>
       </el-form>
-    </sections>
-    <sections
+    </lego-sections>
+    <lego-sections
       title="系统信息"
       class="b-cells"
       content-height="auto">
@@ -74,12 +74,12 @@
           </flexbox>
         </el-form-item>
       </el-form>
-    </sections>
+    </lego-sections>
   </div>
 </template>
 
 <script>
-import Sections from '../Sections'
+import LegoSections from './LegoSections'
 import FieldView from '../Common/Form/FieldView'
 import Field from '../Common/Form/Field'
 import { objDeepCopy } from '@/utils'
@@ -90,7 +90,7 @@ import GenerateRulesMixin from '../Mixins/GenerateRules'
 export default {
   name: 'LegoditBaseInfo',
   components: {
-    Sections,
+    LegoSections,
     FieldView,
     Field
   },

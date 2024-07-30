@@ -129,7 +129,7 @@ import {
 import { executorGetAPI } from '@/api/job/executor'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import Create from './Create'
 
 export default {

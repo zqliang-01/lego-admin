@@ -27,7 +27,7 @@ import {
   modelAddAPI,
   modelUpdateAPI
 } from '@/api/admin/workflow/model'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'WorkflowModelCreate',

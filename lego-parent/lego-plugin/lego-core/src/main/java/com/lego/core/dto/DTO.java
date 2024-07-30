@@ -1,24 +1,25 @@
 package com.lego.core.dto;
 
-import java.io.Serializable;
-import java.io.StringWriter;
+import com.alibaba.fastjson.JSON;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-
-import com.alibaba.fastjson.JSON;
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
+import java.io.Serializable;
+import java.io.StringWriter;
 
 @Slf4j
 @Getter
 @Setter
+@ToString
 public class DTO implements Serializable {
+
     private static final long serialVersionUID = 8478873767622245823L;
 
-	public String toJson() {
+    public String toJson() {
         String json = JSON.toJSONString(this);
         log.debug("生成JSON数据：" + json);
         return json;
@@ -36,10 +37,5 @@ public class DTO implements Serializable {
         StringWriter writer = new StringWriter();
         marshaller.marshal(this.getClass(), writer);
         return writer.toString();
-    }
-
-    @Override
-    public String toString() {
-        return toJson();
     }
 }

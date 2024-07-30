@@ -146,7 +146,7 @@ import {
 } from '@/api/job/log'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import FieldView from '@/components/Common/Form/FieldView'
 
 export default {

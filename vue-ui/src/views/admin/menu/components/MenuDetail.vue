@@ -38,7 +38,7 @@
         :validate-on-rule-change="false"
         class="form"
         label-position="top">
-        <create-sections title="基本信息">
+        <lego-create-sections title="基本信息">
           <form-items
             v-for="(children, index) in baseFieldList"
             :key="index"
@@ -46,7 +46,7 @@
             :field-list="children"
             @change="handleChangeValue"
           />
-        </create-sections>
+        </lego-create-sections>
         <content-detail
           v-if="showContentDetail"
           :menu-type="menuType"
@@ -65,7 +65,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import CreateSections from '@/components/CreateSections'
+import LegoCreateSections from '@/components/Lego/LegoCreateSections'
 import FormItems from '@/components/Common/Form/FormItems'
 import ExtendDetail from './ExtendDetail'
 import ContentDetail from './ContentDetail'
@@ -81,7 +81,7 @@ import { customFormGetAPI } from '@/api/admin/formField'
 
 export default {
   components: {
-    CreateSections,
+    LegoCreateSections,
     FormItems,
     ExtendDetail,
     ContentDetail

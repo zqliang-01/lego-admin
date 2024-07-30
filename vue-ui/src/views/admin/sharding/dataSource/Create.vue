@@ -27,7 +27,7 @@ import {
   dataSourceAddAPI,
   dataSourceUpdateAPI
 } from '@/api/admin/sharding/dataSource'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'ShardingDataSourceCreate',

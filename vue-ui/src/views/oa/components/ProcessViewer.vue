@@ -43,7 +43,7 @@ import {
 import {
   taskHistoryListAPI
 } from '@/api/admin/workflow/task'
-import BpmnViewer from '@/components/bpmn/components/Viewer'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
 import TaskDetail from './TaskDetail.vue'
 
 export default {

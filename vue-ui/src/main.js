@@ -9,7 +9,7 @@ import '@/permission'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss'
 import 'vue2-animate/dist/vue2-animate.min.css'
-import '@/components/bpmn/theme/index.scss'
+import '@/components/Bpmn/theme/index.scss'
 
 import config from '@/config'
 window.SystemConfig = config
@@ -39,14 +39,14 @@ Vue.use(empty)
 import debounce from './directives/clickDebounce'
 Vue.use(debounce)
 
-import { Flexbox, FlexboxItem } from '@/components/Flexbox'
+import { Flexbox, FlexboxItem } from '@/components/Layout/Flexbox'
 Vue.component('flexbox', Flexbox)
 Vue.component('flexbox-item', FlexboxItem)
 import Avatar from '@/components/Avatar'
 Vue.component('xr-avatar', Avatar)
-import LegoAllDetail from '@/components/lego/LegoAllDetail'
+import LegoAllDetail from '@/components/Lego/LegoAllDetail'
 Vue.component('LegoAllDetail', LegoAllDetail)
-import LegoAllCreate from '@/components/lego/LegoAllCreate'
+import LegoAllCreate from '@/components/Lego/LegoAllCreate'
 Vue.component('LegoAllCreate', LegoAllCreate)
 
 /** 懒加载图片 */

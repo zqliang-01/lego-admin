@@ -57,9 +57,9 @@
 
 <script>
 import { employeeListAPI } from '@/api/admin/employee'
-import SashFormLayout from '@/components/layout/SashFormLayout'
+import SashFormLayout from '@/components/Layout/SashFormLayout'
 import FieldView from '@/components/Common/Form/FieldView'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import XrHeader from '@/components/XrHeader'
 
 export default {

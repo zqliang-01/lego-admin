@@ -10,7 +10,7 @@
 
 <script>
 import { isEmpty } from '@/utils/types'
-import LegoRelativeCell from '@/components/lego/LegoRelativeCell'
+import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
 
 export default {
   name: 'SettingRelative',

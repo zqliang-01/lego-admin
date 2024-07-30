@@ -100,7 +100,7 @@ import {
   leadDeleteAPI
 } from '@/api/crm/lead'
 
-import DetailMixin from '@/components/lego/mixins/LegoDetail'
+import DetailMixin from '@/components/Lego/mixins/LegoDetail'
 import RelativeHandle from '@/components/Relative/RelativeHandle'
 import RelativeFile from '@/components/Relative/RelativeFile'
 import RelativePrint from '@/components/Relative/RelativePrint'

@@ -51,7 +51,7 @@
 
 <script>
 import { deptListAPI } from '@/api/admin/dept'
-import SashFormLayout from '@/components/layout/SashFormLayout'
+import SashFormLayout from '@/components/Layout/SashFormLayout'
 import UserList from './UserList'
 
 export default {

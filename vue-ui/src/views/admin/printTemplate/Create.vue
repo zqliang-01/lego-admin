@@ -28,7 +28,7 @@ import {
   printTemplateModifyAPI
 } from '@/api/admin/printTemplate'
 import { customFormSimpleListAPI } from '@/api/admin/formField'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'PrintTemplateCreate',

@@ -5,7 +5,7 @@
     :title="createTitle"
     @close="close"
     @save="saveClick">
-    <create-sections title="基本信息">
+    <lego-create-sections title="基本信息">
       <el-form
         ref="createForm"
         :model="fieldForm"
@@ -20,7 +20,7 @@
           :field-list="children"
         />
       </el-form>
-    </create-sections>
+    </lego-create-sections>
   </fade-view>
 </template>
 
@@ -29,7 +29,7 @@ import {
   leadAddAPI,
   leadUpdateAPI
 } from '@/api/crm/lead'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'CrmLeadCreate',

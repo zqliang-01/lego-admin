@@ -92,7 +92,7 @@ import {
 import { customFieldTypeListAPI } from '@/api/admin/formField'
 import { Loading } from 'element-ui'
 import { mapGetters } from 'vuex'
-import LegoRelativeCell from '@/components/lego/LegoRelativeCell'
+import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
 
 export default {
   name: 'GenEdit',

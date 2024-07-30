@@ -43,8 +43,8 @@ import {
 } from '@/api/admin/workflow/definition'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
-import BpmnViewer from '@/components/bpmn/components/Viewer'
+import LegoTable from '@/components/Lego/LegoTable'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
 
 export default {
   name: 'WorkflowDefinition',
@@ -124,7 +124,7 @@ export default {
           definitionId: item.id
         }).then(() => {
           this.loading = false
-          this.$message.success('任务发布成功！')
+          this.$message.success('审批发起成功，请到“我的流程”中查看发起的审批！')
           this.getList()
         }).catch(() => {
           this.loading = false

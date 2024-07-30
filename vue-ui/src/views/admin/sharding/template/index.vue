@@ -47,7 +47,7 @@ import {
   templateTypeListAPI
 } from '@/api/admin/sharding/template'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import Create from './Create'
 import { mapGetters } from 'vuex'
 

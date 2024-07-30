@@ -46,7 +46,7 @@
 
 <script>
 import hljs from '@/components/highlight'
-import SashFormLayout from '@/components/layout/SashFormLayout'
+import SashFormLayout from '@/components/Layout/SashFormLayout'
 
 export default {
   name: 'CustomField',

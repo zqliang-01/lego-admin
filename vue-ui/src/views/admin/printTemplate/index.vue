@@ -57,7 +57,7 @@ import {
 import { customFormSimpleListAPI } from '@/api/admin/formField'
 import Create from './Create'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import { mapGetters } from 'vuex'
 
 export default {

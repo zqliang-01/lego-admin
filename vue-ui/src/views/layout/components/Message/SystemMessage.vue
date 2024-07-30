@@ -92,7 +92,7 @@ import {
   systemMessageReadAllAPI,
   systemMessageDeleteAPI,
   systemMessageDeleteAllAPI } from '@/api/systemMessage'
-import SlideView from '@/components/SlideView'
+import SlideView from '@/components/Layout/SlideView'
 import MessageCell from './SystemMessageCell'
 import { getMaxIndex } from '@/utils/index'
 

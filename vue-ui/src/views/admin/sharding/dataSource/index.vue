@@ -60,7 +60,7 @@ import {
 } from '@/api/admin/sharding/template'
 import { dataSourceListAPI } from '@/api/admin/sharding/dataSource'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import Create from './Create'
 import PropertiesDialog from '../PropertiesDialog'
 import { mapGetters } from 'vuex'

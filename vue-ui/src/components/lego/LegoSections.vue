@@ -35,7 +35,7 @@
 </template>
 <script type="text/javascript">
 export default {
-  name: 'Sections',
+  name: 'LegoSections',
   components: {},
   props: {
     title: {

@@ -12,7 +12,7 @@
       v-empty="!hasAuth"
       xs-empty-icon="nopermission"
       xs-empty-text="无操作权限">
-      <create-sections
+      <lego-create-sections
         v-if="dataFieldList.length > 0"
         title="基本信息">
         <el-form
@@ -30,8 +30,8 @@
             :disabled="isView"
           />
         </el-form>
-      </create-sections>
-      <create-sections title="审批信息">
+      </lego-create-sections>
+      <lego-create-sections title="审批信息">
         <el-form
           v-if="!isView"
           ref="otherFrom"
@@ -51,7 +51,7 @@
         <task-comment
           :isView="isView"
           :commentList="commentList"/>
-      </create-sections>
+      </lego-create-sections>
     </div>
     <template
       v-if="!isView && hasAuth"
@@ -92,7 +92,7 @@ import {
   taskFormDetailGetAPI
 } from '@/api/admin/workflow/task'
 import { createFieldListAPI } from '@/api/admin/formField'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 import UserSelect from '@/components/Common/UserSelect'
 import TaskComment from './TaskComment'
 import { showFormErrorMessage } from '@/components/Common/Form/utils'

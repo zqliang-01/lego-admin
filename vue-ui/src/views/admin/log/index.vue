@@ -69,7 +69,7 @@ import {
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 
 export default {
   name: 'WorkflowModel',

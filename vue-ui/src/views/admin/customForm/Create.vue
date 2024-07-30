@@ -29,7 +29,7 @@ import {
   customFormAddAPI,
   customFormInitGetAPI
 } from '@/api/admin/formField'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'CustomFieldCreate',

@@ -27,7 +27,7 @@ import {
   templateAddAPI,
   templateUpdateAPI
 } from '@/api/admin/sharding/template'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'ShardingTemplateCreate',

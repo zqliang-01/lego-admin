@@ -1,5 +1,5 @@
-import FadeView from '@/components/FadeView'
-import CreateSections from '@/components/CreateSections'
+import FadeView from '@/components/Layout/FadeView'
+import LegoCreateSections from '@/components/Lego/LegoCreateSections'
 import FormItems from '@/components/Common/Form/FormItems'
 
 import LegoCommonMixin from './LegoCommon'
@@ -11,7 +11,7 @@ export default {
   // 新建编辑
   components: {
     FadeView,
-    CreateSections,
+    LegoCreateSections,
     FormItems
   },
   mixins: [GenerateRulesMixin, LegoCommonMixin],

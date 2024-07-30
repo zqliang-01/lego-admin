@@ -119,7 +119,7 @@ import {
   leadExcelExportAPI,
   leadExcelAllExportAPI
 } from '@/api/crm/lead'
-import IndexMixin from '@/components/lego/mixins/LegoIndex'
+import IndexMixin from '@/components/Lego/mixins/LegoIndex'
 
 export default {
   name: 'CrmLeadIndex',

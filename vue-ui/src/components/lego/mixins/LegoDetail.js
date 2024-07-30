@@ -6,9 +6,9 @@ import { getMenuAuth } from '@/utils/auth'
 
 import LegoCommonMixin from './LegoCommon'
 import ImportInfo from '@/components/ImportInfo'
-import SlideView from '@/components/SlideView'
-import LegoDetailHead from '@/components/lego/LegoDetailHead'
-import LegoEditBaseInfo from '@/components/lego/LegoEditBaseInfo'
+import SlideView from '@/components/Layout/SlideView'
+import LegoDetailHead from '@/components/Lego/LegoDetailHead'
+import LegoEditBaseInfo from '@/components/Lego/LegoEditBaseInfo'
 
 export default {
   components: {

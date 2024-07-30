@@ -29,7 +29,7 @@ import {
   executorUpdateAPI
 } from '@/api/job/executor'
 import { objDeepCopy } from '@/utils'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'JobExecutorCreate',

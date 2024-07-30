@@ -4,7 +4,7 @@
     :validate-on-rule-change="false"
     class="form"
     label-position="top">
-    <create-sections title="内容信息">
+    <lego-create-sections title="内容信息">
       <form-items
         v-for="(children, index) in fieldList"
         :key="index"
@@ -12,11 +12,11 @@
         :field-list="children"
         @change="handleChangeValue"
       />
-    </create-sections>
+    </lego-create-sections>
   </el-form>
 </template>
 <script>
-import CreateSections from '@/components/CreateSections'
+import LegoCreateSections from '@/components/Lego/LegoCreateSections'
 import FormItems from '@/components/Common/Form/FormItems'
 import GenerateRulesMixin from '@/components/Mixins/GenerateRules'
 import { getFormFieldValue } from '@/components/Common/Form/utils'
@@ -26,7 +26,7 @@ import { definitionSimpleValidListAPI } from '@/api/report/definition'
 
 export default {
   components: {
-    CreateSections,
+    LegoCreateSections,
     FormItems
   },
   mixins: [GenerateRulesMixin],

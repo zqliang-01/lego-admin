@@ -4,25 +4,25 @@
     :validate-on-rule-change="false"
     class="form"
     label-position="top">
-    <create-sections title="扩展信息">
+    <lego-create-sections title="扩展信息">
       <form-items
         v-for="(children, i) in fieldList"
         :key="i"
         :field-form="fieldForm"
         :field-list="children"
       />
-    </create-sections>
+    </lego-create-sections>
   </el-form>
 </template>
 <script>
-import CreateSections from '@/components/CreateSections'
+import LegoCreateSections from '@/components/Lego/LegoCreateSections'
 import FormItems from '@/components/Common/Form/FormItems'
 import { customFormGetAPI } from '@/api/admin/formField'
 import { getFormFieldValue } from '@/components/Common/Form/utils'
 
 export default {
   components: {
-    CreateSections,
+    LegoCreateSections,
     FormItems
   },
   props: {

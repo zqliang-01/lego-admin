@@ -30,7 +30,7 @@ import {
   genTableInitGetAPI,
   genTableNameListAPI
 } from '@/api/admin/genTable'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 import { objDeepCopy } from '@/utils'
 
 export default {

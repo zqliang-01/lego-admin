@@ -48,7 +48,7 @@ import { algorithmSimpleListAPI } from '@/api/admin/sharding/algorithm'
 import { configSimpleListAPI } from '@/api/admin/sharding/config'
 import { tableListAPI } from '@/api/admin/sharding/table'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import Create from './Create'
 import { mapGetters } from 'vuex'
 

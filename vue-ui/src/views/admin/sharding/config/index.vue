@@ -53,7 +53,7 @@ import {
   configTestAPI
 } from '@/api/admin/sharding/config'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import Create from './Create'
 import { mapGetters } from 'vuex'
 

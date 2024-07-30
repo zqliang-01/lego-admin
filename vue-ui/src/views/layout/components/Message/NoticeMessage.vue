@@ -66,7 +66,7 @@ import {
   noticeMessageReadAllAPI,
   noticeMessageDeleteAPI,
   noticeMessageDeleteAllAPI } from '@/api/noticeMessage'
-import SlideView from '@/components/SlideView'
+import SlideView from '@/components/Layout/SlideView'
 import MessageCell from './NoticeMessageCell'
 import { getMaxIndex } from '@/utils/index'
 

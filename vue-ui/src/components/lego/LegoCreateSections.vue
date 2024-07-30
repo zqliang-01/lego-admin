@@ -1,5 +1,5 @@
 <template>
-  <div class="section create-sections">
+  <div class="section lego-create-sections">
     <div
       v-if="title && title.length > 0"
       class="section-header">
@@ -9,7 +9,7 @@
       <div class="section-title">{{ title }}</div>
       <el-dropdown
         v-if="dropdownItems && dropdownItems.length > 0"
-        class="create-sections__more"
+        class="lego-create-sections__more"
         trigger="click"
         @command="handleTypeClick">
         <i
@@ -25,14 +25,14 @@
       </el-dropdown>
       <slot name="header"/>
     </div>
-    <div class="content create-sections-content">
+    <div class="content lego-create-sections-content">
       <slot/>
     </div>
   </div>
 </template>
 <script type="text/javascript">
 export default {
-  name: 'CreateSections',
+  name: 'LegoCreateSections',
   components: {},
   props: {
     title: {
@@ -87,7 +87,7 @@ export default {
   flex-shrink: 0;
 }
 
-.create-sections__more {
+.lego-create-sections__more {
   position: absolute;
   right: 15px;
 }

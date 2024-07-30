@@ -27,8 +27,8 @@ import {
   noticeAddAPI,
   noticeModifyAPI
 } from '@/api/admin/noticeTemplate'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
-import LegoPopover from '@/components/lego/LegoPopover'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
+import LegoPopover from '@/components/Lego/LegoPopover'
 
 export default {
   name: 'NoticeCreate',

@@ -75,7 +75,7 @@ import {
   definitionBpmnXmlGetAPI
 } from '@/api/admin/workflow/definition'
 import FieldView from '@/components/Common/Form/FieldView'
-import BpmnViewer from '@/components/bpmn/components/Viewer'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
 import { mapGetters } from 'vuex'
 
 export default {

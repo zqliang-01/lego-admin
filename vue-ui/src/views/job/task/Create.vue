@@ -12,38 +12,38 @@
       :validate-on-rule-change="false"
       class="form"
       label-position="top">
-      <create-sections title="基本信息">
+      <lego-create-sections title="基本信息">
         <form-items
           v-for="(children, index) in baseFieldList"
           :key="index"
           :field-form="fieldForm"
           :field-list="children"
         />
-      </create-sections>
-      <create-sections title="调度配置">
+      </lego-create-sections>
+      <lego-create-sections title="调度配置">
         <form-items
           v-for="(children, index) in scheduleFieldList"
           :key="index"
           :field-form="fieldForm"
           :field-list="children"
         />
-      </create-sections>
-      <create-sections title="任务配置">
+      </lego-create-sections>
+      <lego-create-sections title="任务配置">
         <form-items
           v-for="(children, index) in taskFieldList"
           :key="index"
           :field-form="fieldForm"
           :field-list="children"
         />
-      </create-sections>
-      <create-sections title="高级配置">
+      </lego-create-sections>
+      <lego-create-sections title="高级配置">
         <form-items
           v-for="(children, index) in advancedFiledList"
           :key="index"
           :field-form="fieldForm"
           :field-list="children"
         />
-      </create-sections>
+      </lego-create-sections>
     </el-form>
   </fade-view>
 </template>
@@ -54,7 +54,7 @@ import {
   taskUpdateAPI,
   conditionListAPI
 } from '@/api/job/task'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: 'JobTaskCreate',

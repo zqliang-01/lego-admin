@@ -56,9 +56,9 @@ import {
 } from '@/api/admin/workflow/definition'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/lego/LegoTable'
+import LegoTable from '@/components/Lego/LegoTable'
 import VersionDialog from './VersionDialog'
-import BpmnViewer from '@/components/bpmn/components/Viewer'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
 
 export default {
   name: 'WorkflowDefinition',

@@ -70,7 +70,7 @@
 <script>
 import { deptChildrenListAPI } from '@/api/admin/dept'
 import PinyinMatch from 'pinyin-match'
-import LegoPopover from '@/components/lego/LegoPopover'
+import LegoPopover from '@/components/Lego/LegoPopover'
 
 export default {
   name: 'DeptSelect',

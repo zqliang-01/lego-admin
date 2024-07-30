@@ -9,6 +9,24 @@
         <slot />
       </el-button-group>
     </el-row>
+    <!-- 自定义箭头样式，用于成功状态下流程连线箭头 -->
+    <defs ref="customSuccessDefs">
+      <marker id="sequenceflow-end-white-success" viewBox="0 0 20 20" refX="11" refY="10" markerWidth="10" markerHeight="10" orient="auto">
+        <path class="success-arrow" d="M 1 5 L 11 10 L 1 15 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;"></path>
+      </marker>
+      <marker id="conditional-flow-marker-white-success" viewBox="0 0 20 20" refX="-1" refY="10" markerWidth="10" markerHeight="10" orient="auto">
+        <path class="success-conditional" d="M 0 10 L 8 6 L 16 10 L 8 14 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;"></path>
+      </marker>
+    </defs>
+    <!-- 自定义箭头样式，用于失败状态下流程连线箭头 -->
+    <defs ref="customFailDefs">
+      <marker id="sequenceflow-end-white-fail" viewBox="0 0 20 20" refX="11" refY="10" markerWidth="10" markerHeight="10" orient="auto">
+        <path class="fail-arrow" d="M 1 5 L 11 10 L 1 15 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;"></path>
+      </marker>
+      <marker id="conditional-flow-marker-white-fail" viewBox="0 0 20 20" refX="-1" refY="10" markerWidth="10" markerHeight="10" orient="auto">
+        <path class="fail-conditional" d="M 0 10 L 8 6 L 16 10 L 8 14 Z" style="stroke-width: 1px; stroke-linecap: round; stroke-dasharray: 10000, 1;"></path>
+      </marker>
+    </defs>
     <div id="view" ref="processCanvas" style="height: 450px;"></div>
   </div>
 </template>
@@ -81,10 +99,10 @@ export default {
             warnings.forEach(warn => console.warn(warn))
           }
           this.bpmnModerler.get('canvas').zoom('fit-viewport', 'auto')
-          // this.addCustomDefs()
+          this.addCustomDefs()
           this.setProcessStatus()
-        }).catch(err => {
-          console.log(err)
+        }).catch(() => {
+          // console.log(err)
         })
       }
     },

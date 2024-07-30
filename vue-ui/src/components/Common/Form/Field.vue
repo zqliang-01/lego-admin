@@ -146,7 +146,7 @@
 </template>
 
 <script>
-import LegoRelativeCell from '@/components/lego/LegoRelativeCell'
+import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
 import SignaturePad from '@/components/Common/SignaturePad'
 import DescText from '@/components/Common/DescText'
 import PercentInput from '@/components/Common/PercentInput'

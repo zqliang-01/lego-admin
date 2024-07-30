@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import BpmnDesigner from '@/components/bpmn/components/Designer'
-import BpmnSettings from '@/components/bpmn/components/Settings'
-import BpmnToolbar from '@/components/bpmn/components/Toolbar'
-import BpmnPanel from '@/components/bpmn/components/Panel'
-import '@/components/bpmn/bpmn-icons'
+import BpmnDesigner from '@/components/Bpmn/components/Designer'
+import BpmnSettings from '@/components/Bpmn/components/Settings'
+import BpmnToolbar from '@/components/Bpmn/components/Toolbar'
+import BpmnPanel from '@/components/Bpmn/components/Panel'
+import '@/components/Bpmn/bpmn-icons'
 import { mapGetters } from 'vuex'
 import { modelDesignAPI, modelBpmnXmlGetAPI } from '@/api/admin/workflow/model'
 import EventEmitter from '@/utils/bpmn/EventEmitter'

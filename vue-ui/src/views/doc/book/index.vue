@@ -96,7 +96,7 @@ import { mapGetters } from 'vuex'
 import Create from './Create'
 import XrHeader from '@/components/XrHeader'
 import FieldView from '@/components/Common/Form/FieldView'
-import BpmnViewer from '@/components/bpmn/components/Viewer'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
 
 export default {
   name: 'DocBook',
