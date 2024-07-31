@@ -61,7 +61,7 @@ public class DocPage extends BaseEntity {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("名称", StringUtil.toString(name));
         attributes.put("是否生效", enable ? "是" : "否");
-        attributes.put("内容", StringUtil.toString(content));
+        attributes.put("内容", StringUtil.getMD5(content));
         attributes.put("图书", EntityUtil.toString(book));
         attributes.put("参与人", StringUtil.toString(getUserCodes()));
         attributes.put("参与部门", StringUtil.toString(getDeptCodes()));
