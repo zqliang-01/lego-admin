@@ -6,9 +6,25 @@
       icon-color="#2362fb"
       label="公共知识库"
       placeholder="请输入知识库名称搜索"
-      @search="onSearch"/>
+      @search="onSearch">
+      <template v-slot:ft>
+        <el-radio-group v-model="showType" fill="#ff6a00">
+          <el-tooltip content="网格展示" placement="bottom-start">
+            <el-radio-button label="grid">
+                <i class="el-icon-s-grid"/>
+            </el-radio-button>
+          </el-tooltip>
+          <el-tooltip content="表格展示" placement="bottom-start">
+            <el-radio-button label="table">
+              <i class="el-icon-s-operation"/>
+            </el-radio-button>
+          </el-tooltip>
+        </el-radio-group>
+      </template>
+    </xr-header>
     <div class="doc-content">
       <el-table
+        v-if="showType === 'table'"
         v-loading="loading"
         :data="dataList"
         :height="tableHeight"
@@ -42,6 +58,31 @@
           </template>
         </template>
       </el-table>
+      <div
+        v-else
+        v-loading="loading"
+        :style="{ height: tableHeight + 'px' }"
+        class="grid-content">
+        <div
+          v-for="(item, index) in dataList"
+          @click="handleDetail(item.code)">
+          <el-card
+            :key="index"
+            :body-style="{ padding: '0px' }"
+            shadow="hover"
+            class="grid-book">
+            <el-image :src="handleCover(item)"/>
+            <div class="grid-book-body">
+              <div class="grid-book-feature">
+                <span>{{ item.name }}</span>
+                <p><i :class="'icon-Member-management' | iconPre" />{{ item.creator.name }}</p>
+                <p><i :class="'edit' | iconPre" />{{ item.createTime }}</p>
+                <p><i :class="'label' | iconPre" />{{ item.description }}</p>
+              </div>
+            </div>
+          </el-card>
+        </div>
+      </div>
       <div class="p-contianer">
         <el-pagination
           :current-page="currentPage"
@@ -79,6 +120,7 @@ export default {
     return {
       loading: false,
       dataList: [],
+      showType: 'grid',
       currentPage: 1,
       pageSize: 15,
       total: 0,
@@ -126,6 +168,7 @@ export default {
       this.getList()
     },
     handleDetail(code) {
+      console.log(code)
       this.$router.push({
         name: 'DocBook',
         params: {
@@ -172,6 +215,52 @@ export default {
       margin-left: 8px;
       font-weight: bold;
       color: $xr-color-primary;
+    }
+  }
+}
+
+.grid {
+  &-content {
+    padding: 10px;
+    background-color: #fff;
+    overflow-y: auto;
+  }
+  &-book {
+    float: left;
+    width: 30%;
+    margin: 15px;
+    cursor: pointer;
+    &-body {
+      padding: 14px;
+    }
+    &-feature {
+      overflow: hidden;
+    }
+    &-feature>span {
+      margin-bottom: 5px;
+      position: relative;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    &-feature>p {
+      margin-bottom: 5px;
+      position: relative;
+      font-size: 12px;
+      color: #666a75;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    &-feature>p>i {
+      font-size: 12px;
+      padding-right: 5px;
+      color: #999;
     }
   }
 }
