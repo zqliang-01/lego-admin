@@ -4,6 +4,7 @@ import com.lego.core.data.hibernate.QueryHandler;
 import com.lego.core.data.hibernate.jpa.GenericDao;
 import com.lego.system.dao.ISysColumnSortDao;
 import com.lego.system.entity.SysColumnSort;
+import com.lego.system.entity.SysCustomField;
 
 import java.util.List;
 
@@ -26,6 +27,13 @@ public class SysColumnSortDao extends GenericDao<SysColumnSort> implements ISysC
         query.condition("t.employee.code = :employeeCode").param("employeeCode", employeeCode);
         query.order("t.sn");
         return query.findUnique();
+    }
+
+    @Override
+    public List<SysColumnSort> findByField(SysCustomField field) {
+        QueryHandler<SysColumnSort> query = createQueryHandler();
+        query.condition("t.field = :field").param("field", field);
+        return query.findList();
     }
 
 }
