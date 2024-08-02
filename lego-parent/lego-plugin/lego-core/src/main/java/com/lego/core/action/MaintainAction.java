@@ -32,8 +32,7 @@ public abstract class MaintainAction {
     }
 
     protected void createLog() {
-        ICommonService commonService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
-        if (StringUtil.isNotBlank(description) && commonService != null) {
+        if (StringUtil.isNotBlank(description)) {
             ActionVO actionVO = new ActionVO();
             actionVO.setEntityCode(getEntityCode());
             actionVO.setEntityName(getEntityName());
@@ -41,7 +40,7 @@ public abstract class MaintainAction {
             actionVO.setDescription(description);
             actionVO.setOperatorCode(operatorCode);
             actionVO.setPermissionCode(permissionCode);
-            commonService.addLog(actionVO);
+            LegoBeanFactory.getBean(ICommonService.class).addLog(actionVO);
         }
     }
 

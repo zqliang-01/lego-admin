@@ -29,7 +29,7 @@ public class SendSysMessageAction extends MaintainAction {
         List<Task> list = taskService.createTaskQuery()
             .processInstanceId(instanceId)
             .list();
-        ICommonService commonService = LegoBeanFactory.getBeanWithNull(ICommonService.class);
+        ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
         list.stream().forEach(task -> {
             String assignee = task.getAssignee();
             String taskName = task.getName();

@@ -1,6 +1,5 @@
 package com.lego.flowable.handler;
 
-import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.common.ServiceStartType;
 import com.lego.core.feign.api.ITaskCompletedAPI;
 import com.lego.core.feign.vo.TaskCompletedVO;
@@ -20,8 +19,8 @@ public class FlowableTaskCompleteHandler {
     @Autowired(required = false)
     private List<ITaskCompletedAPI> completedClients;
 
-    @Autowired(required = false)
-    private List<IFlowableTaskCompletedService> completedServices;
+    @Autowired
+    private IFlowableTaskCompletedService completedService;
 
     public void doCompleted(String appCode, TaskCompletedVO vo) {
         if (ServiceStartType.microservice.equals(startType)) {
@@ -32,15 +31,7 @@ public class FlowableTaskCompleteHandler {
             }
             return;
         }
-        if (CollectionUtil.isEmpty(completedServices)) {
-            return;
-        }
-        for (IFlowableTaskCompletedService completedService : completedServices) {
-            if (completedService.accept(appCode)) {
-                completedService.completed(vo);
-                return;
-            }
-        }
+        completedService.completed(vo);
     }
 
     public void doProcessCompleted(String appCode, String tableCode, String code) {
@@ -52,14 +43,6 @@ public class FlowableTaskCompleteHandler {
             }
             return;
         }
-        if (CollectionUtil.isEmpty(completedServices)) {
-            return;
-        }
-        for (IFlowableTaskCompletedService completedService : completedServices) {
-            if (completedService.accept(appCode)) {
-                completedService.processCompleted(tableCode, code);
-                return;
-            }
-        }
+        completedService.processCompleted(tableCode, code);
     }
 }

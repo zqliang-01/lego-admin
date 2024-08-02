@@ -9,26 +9,21 @@ import com.lego.core.dto.TreeInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
-import com.lego.core.web.LegoBeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class BaseAssembler<D extends DTO, E> {
 
+    @Autowired
+    private ICommonService commonService;
+
     protected TypeInfo createEmployee(String code) {
-        ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
-        if (commonService == null) {
-            return TypeInfo.NULL;
-        }
         return commonService.findEmployeeBy(code);
     }
 
     protected TypeInfo createDept(String code) {
-        ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
-        if (commonService == null) {
-            return TypeInfo.NULL;
-        }
         return commonService.findDeptBy(code);
     }
 

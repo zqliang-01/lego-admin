@@ -8,7 +8,6 @@ import com.lego.core.util.EntityUtil;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.SysMessageCreateVO;
 import com.lego.system.action.AddSysMessageAction;
-import com.lego.system.assembler.SysDeptAssembler;
 import com.lego.system.dao.ISysDeptDao;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.dao.ISysOperationLogDao;
@@ -29,7 +28,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class CommonService implements ICommonService {
+public class SysCommonService implements ICommonService {
 
     @Resource
     private ISysOperationLogDao operationDao;
@@ -51,9 +50,6 @@ public class CommonService implements ICommonService {
 
     @Autowired
     private SysEmployeeMapper employeeMapper;
-
-    @Autowired
-    private SysDeptAssembler deptAssembler;
 
     @Override
     public void addLog(ActionVO vo) {
@@ -111,7 +107,7 @@ public class CommonService implements ICommonService {
             return CollectionUtil.newArrayList(employeeMapper.selectCodesByDepts(deptCodes));
         }
         if (dataScope == DataScopeType.DEPT_AND_CHILD) {
-            List<String> deptCodes = deptAssembler.createChildrenCodes(employee.getDept());
+            List<String> deptCodes = deptDao.findAllChildrenCode(employee.getDept());
             return CollectionUtil.newArrayList(employeeMapper.selectCodesByDepts(deptCodes));
         }
         return CollectionUtil.newArrayList(employee.getCode());

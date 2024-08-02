@@ -41,8 +41,8 @@ public class LegoRepositoryProxyProcessor implements RepositoryProxyPostProcesso
             DataPermission dataPermission = invocation.getMethod().getAnnotation(DataPermission.class);
             if (dataPermission != null) {
                 List<String> codes = new ArrayList<>();
-                ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
                 if (dataPermission.type() == DataPermission.Type.EMPLOYEE) {
+                    ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
                     codes = commonService.findDataPermissionEmployeeCode();
                 }
                 if (CollectionUtil.isEmpty(codes)) {

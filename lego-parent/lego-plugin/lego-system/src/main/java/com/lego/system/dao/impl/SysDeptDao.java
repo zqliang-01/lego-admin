@@ -7,6 +7,7 @@ import com.lego.system.dao.ISysDeptDao;
 import com.lego.system.entity.SysDept;
 import com.lego.system.vo.SysDeptSearchVO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SysDeptDao extends GenericDao<SysDept> implements ISysDeptDao {
@@ -32,6 +33,17 @@ public class SysDeptDao extends GenericDao<SysDept> implements ISysDeptDao {
             query.condition("t.parent.code = :parentCode").param("parentCode", parentCode);
         }
         return query.findList();
+    }
+
+    @Override
+    public List<String> findAllChildrenCode(SysDept dept) {
+        List<String> codes = new ArrayList<>();
+        for (SysDept child : dept.getChildren()) {
+            codes.add(child.getCode());
+            codes.addAll(findAllChildrenCode(child));
+        }
+        codes.add(dept.getCode());
+        return codes;
     }
 
 }

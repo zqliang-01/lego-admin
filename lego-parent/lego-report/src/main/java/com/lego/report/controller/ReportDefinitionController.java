@@ -30,7 +30,7 @@ public class ReportDefinitionController extends BaseController {
     @Autowired
     private IReportDefinitionService definitionService;
 
-    @Autowired(required = false)
+    @Autowired
     private ICommonService commonService;
 
     @PostMapping("/add")

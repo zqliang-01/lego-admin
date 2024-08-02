@@ -1,19 +1,14 @@
-package com.lego.report.service.impl;
+package com.lego.core.feign;
 
-import com.lego.core.common.ServiceStartType;
 import com.lego.core.data.ICommonService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.feign.client.ISystemClient;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.SysMessageCreateVO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-@ConditionalOnProperty(name = "lego.start-type", havingValue = ServiceStartType.microservice)
 public class CommonService implements ICommonService {
 
     @Autowired
@@ -58,4 +53,5 @@ public class CommonService implements ICommonService {
     public List<String> findDataPermissionEmployeeCode() {
         return systemClient.findDataPermissionEmployeeCode().getData();
     }
+
 }

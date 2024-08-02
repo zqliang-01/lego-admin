@@ -7,6 +7,4 @@ public interface IFlowableTaskCompletedService {
     void completed(TaskCompletedVO vo);
 
     void processCompleted(String tableCode, String code);
-
-    boolean accept(String appCode);
 }

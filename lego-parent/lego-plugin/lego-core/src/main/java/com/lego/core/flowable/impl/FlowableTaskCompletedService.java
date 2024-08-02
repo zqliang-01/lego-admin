@@ -1,6 +1,5 @@
-package com.lego.crm.service.impl;
+package com.lego.core.flowable.impl;
 
-import com.lego.core.common.AppCode;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.feign.vo.TaskCompletedVO;
 import com.lego.core.flowable.IFlowableTaskCompletedListener;
@@ -13,7 +12,7 @@ import java.util.List;
 @Service
 public class FlowableTaskCompletedService implements IFlowableTaskCompletedService {
 
-    @Autowired
+    @Autowired(required = false)
     private List<IFlowableTaskCompletedListener> listeners;
 
     @Override
@@ -26,11 +25,6 @@ public class FlowableTaskCompletedService implements IFlowableTaskCompletedServi
     public void processCompleted(String tableCode, String code) {
         IFlowableTaskCompletedListener listener = getListener(tableCode);
         listener.processCompleted(code);
-    }
-
-    @Override
-    public boolean accept(String appCode) {
-        return AppCode.crm.equals(appCode);
     }
 
     private IFlowableTaskCompletedListener getListener(String tableCode) {

@@ -25,7 +25,7 @@ public class ReportOpenController {
     @Autowired
     private IReportOpenService openService;
 
-    @Autowired(required = false)
+    @Autowired
     private ICommonService commonService;
 
     @PostMapping(value = "/page")
