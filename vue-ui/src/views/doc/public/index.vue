@@ -65,12 +65,12 @@
         class="grid-content">
         <div
           v-for="(item, index) in dataList"
+          :key="index"
+          class="grid-book"
           @click="handleDetail(item.code)">
           <el-card
-            :key="index"
             :body-style="{ padding: '0px' }"
-            shadow="hover"
-            class="grid-book">
+            shadow="hover">
             <el-image :src="handleCover(item)"/>
             <div class="grid-book-body">
               <div class="grid-book-feature">
@@ -221,30 +221,28 @@ export default {
 
 .grid {
   &-content {
-    padding: 10px;
     background-color: #fff;
     overflow-y: auto;
   }
   &-book {
     float: left;
-    width: 30%;
-    margin: 15px;
+    width: 33.3%;
+    padding: 15px;
     cursor: pointer;
     &-body {
-      padding: 14px;
+      padding: 14px 14px 5px;
     }
     &-feature {
       overflow: hidden;
     }
     &-feature>span {
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      font-weight: bold;
       position: relative;
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+      display: block;
     }
     &-feature>p {
       margin-bottom: 5px;
@@ -254,8 +252,6 @@ export default {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
     }
     &-feature>p>i {
       font-size: 12px;
