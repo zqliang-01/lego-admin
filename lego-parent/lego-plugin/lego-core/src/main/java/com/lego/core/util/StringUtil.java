@@ -136,6 +136,9 @@ public class StringUtil {
     }
 
     public static String getMD5(String value) {
+        if (isBlank(value)) {
+            return "";
+        }
         MessageDigest md = null;
         try {
             md = MessageDigest.getInstance("MD5");

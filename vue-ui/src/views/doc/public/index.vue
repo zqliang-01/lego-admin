@@ -223,10 +223,11 @@ export default {
   &-content {
     background-color: #fff;
     overflow-y: auto;
+    display: flex;
+    flex-wrap: wrap;
   }
   &-book {
-    float: left;
-    width: 33.3%;
+    width: 33.33%;
     padding: 15px;
     cursor: pointer;
     &-body {
