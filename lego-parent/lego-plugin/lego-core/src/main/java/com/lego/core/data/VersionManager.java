@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -52,6 +53,12 @@ public class VersionManager implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         try (Connection connection = dataSourceConfig.getDataSource().getConnection()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            ResultSet tableResult = metaData.getTables(null, null, "sys_config", null);
+            if (!tableResult.next()) {
+                this.needInit = true;
+                return;
+            }
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(SELECT_VERSION_SQL);
             this.needInit = !result.next();
