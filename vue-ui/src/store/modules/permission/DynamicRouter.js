@@ -1,4 +1,4 @@
-import Layout from '@/views/layout/TableFormLayout'
+import Layout from '@/views/layout/CommonLayout'
 import LegoIndex from '@/components/Lego/LegoAllIndex'
 
 // 添加需要注册的动态路由（后期按模板适配）

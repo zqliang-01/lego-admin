@@ -6,7 +6,7 @@
       class="logo"
       @click="enterMainPage" >
     <div class="nav-title">
-      系统设置
+      管理后台
     </div>
     <div
       class="back-home"

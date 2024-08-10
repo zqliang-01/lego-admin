@@ -23,7 +23,7 @@ const cache = {
   updateAxiosCache: function() {
     axios.defaults.headers['Admin-Token'] = Lockr.get('Admin-Token')
     store.dispatch('GetUserInfo')
-    store.dispatch('SystemLogoAndName')
+    store.dispatch('GetSystemInfo')
   },
   updateAxiosHeaders: function(token) {
     const newToken = token || Lockr.get('Admin-Token')

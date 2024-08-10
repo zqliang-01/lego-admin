@@ -125,9 +125,9 @@ public class LegoExceptionHandler {
         response.setStatus(HttpStatus.OK.value());
         PrintWriter writer = null;
         try {
-            if (openDetailTips && !ExceptionEnum.isBusiness(errorCode)) {
+            if (openDetailTips && !ExceptionEnum.isUnCheck(errorCode)) {
                 errorMsg = ExceptionEnum.getMsgBy(errorCode);
-                errorMsg = StringUtil.format("发生[{0}]异常，异常码[{1,number,#}]，异常信息[{2}]", errorMsg, errorCode, e.getMessage());
+                errorMsg = StringUtil.format("发生[{0}]，异常码[{1,number,#}]，异常信息[{2}]", errorMsg, errorCode, e.getMessage());
             }
             JsonResponse<Object> result = JsonResponse.failed(errorCode, errorMsg);
             messageConverter.write(result, Constants.JSON_MEDIA_TYPE, new ServletServerHttpResponse(response));
@@ -147,7 +147,7 @@ public class LegoExceptionHandler {
 
     public Throwable getRootCause(Throwable throwable) {
         Throwable root = throwable;
-        while (root.getCause() != null) {
+        if (root.getCause() != null) {
             root = root.getCause();
         }
         return root;

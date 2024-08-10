@@ -1,7 +1,7 @@
 <template>
   <el-container>
     <el-header class="nav-container">
-      <manager-navbar nav-index="manage"/>
+      <manager-navbar app-code="manage"/>
     </el-header>
     <el-container>
       <sidebar :items="manageRouters" class="sidebar-container" />

@@ -131,7 +131,7 @@ export default {
       if (command == 'enable') {
         result()
       } else {
-        this.$confirm(`停用${item.name}后，企业所有员工将无法使用此功能。确定要停用吗？`, '提示', {
+        this.$confirm(`停用${item.name}后，用户将无法使用此功能。确定要停用吗？`, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           type: 'warning'
@@ -181,8 +181,7 @@ export default {
     padding: 20px 35px 12px 20px;
     border: 1px solid #ebeef5;
     border-radius: $xr-border-radius-base;
-    margin-right: 15px;
-    margin-bottom: 10px;
+    margin: 5px;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     vertical-align: middle;
     .item-icon {

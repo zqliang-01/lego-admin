@@ -45,8 +45,7 @@ const app = {
   },
 
   actions: {
-    // 登录
-    SystemLogoAndName({
+    GetSystemInfo({
       commit
     }) {
       return new Promise((resolve, reject) => {

@@ -8,6 +8,13 @@ export function loginAPI(params) {
   })
 }
 
+export function systemInitAPI() {
+  return request({
+    url: '/back-end/sys-index/init',
+    method: 'post'
+  })
+}
+
 export function logoutAPI() {
   return request({
     url: '/back-end/sys-index/logout'

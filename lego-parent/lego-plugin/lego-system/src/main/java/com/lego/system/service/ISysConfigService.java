@@ -1,16 +1,18 @@
 package com.lego.system.service;
 
-import java.util.List;
-
 import com.lego.system.dto.SysSystemInfo;
+
+import java.util.List;
 
 public interface ISysConfigService {
 
-	SysSystemInfo findInformation();
+    SysSystemInfo findInformation();
 
-	List<String> findListBy(String code);
+    List<String> findListBy(String code);
 
-	void update(List<String> value, String code);
+    String findValueBy(String code);
 
-	void update(String value, String code);
+    void update(List<String> value, String code);
+
+    void update(String value, String code);
 }

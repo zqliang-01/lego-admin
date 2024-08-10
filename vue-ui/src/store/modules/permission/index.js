@@ -121,7 +121,7 @@ const permission = {
           mergeDynamicRouter(res.data, asyncRouterMap)
           const routers = initRouter(asyncRouterMap)
           commit('SET_ROUTERS', routers)
-          resolve()
+          resolve(routers)
         })
       })
     }

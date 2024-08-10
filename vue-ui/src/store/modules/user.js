@@ -42,6 +42,10 @@ const user = {
       return new Promise((resolve, reject) => {
         loginAPI(userInfo).then(res => {
           const data = res.data || {}
+          if (data.needInit) {
+            resolve(res)
+            return
+          }
           commit('SET_AUTH', data)
           dispatch('GetUserInfo')
           resolve(res)
@@ -77,7 +81,7 @@ const user = {
         employeeCurrentGetAPI().then(response => {
           // 邮件信息 走之前的逻辑
           commit('SET_USERINFO', response.data)
-          dispatch('SystemLogoAndName')
+          dispatch('GetSystemInfo')
           dispatch('GetAllModule')
           dispatch('GetHeaderModule')
           resolve(response)

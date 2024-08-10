@@ -47,3 +47,4 @@ lego:
       - /back-end/sys-index/login
       - /back-end/sys-index/logout
       - /back-end/sys-index/captchaImage
+      - /back-end/sys-index/init

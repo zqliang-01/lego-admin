@@ -1,4 +1,4 @@
-import Layout from '@/views/layout/ReportLayout'
+import Layout from '@/views/layout/CommonLayout'
 
 const layout = function(menu, requiresAuth = true) {
   if (menu.meta) {

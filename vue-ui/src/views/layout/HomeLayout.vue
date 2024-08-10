@@ -1,9 +1,7 @@
 <template>
   <el-container>
     <el-header class="nav-container">
-      <navbar
-        nav-index="home"
-        @nav-items-click="navClick"/>
+      <navbar app-code="home"/>
     </el-header>
     <el-container>
       <el-main
@@ -29,7 +27,6 @@ export default {
     return {}
   },
   methods: {
-    navClick(index) {}
   }
 }
 </script>

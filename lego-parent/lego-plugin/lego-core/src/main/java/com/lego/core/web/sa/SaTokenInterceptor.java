@@ -15,16 +15,9 @@ import org.springframework.web.method.HandlerMethod;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 public class SaTokenInterceptor extends SaInterceptor implements ILegoInterceptor {
-
-    @Override
-    public List<String> getPathPatterns() {
-        return Arrays.asList("/**");
-    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -43,7 +36,7 @@ public class SaTokenInterceptor extends SaInterceptor implements ILegoIntercepto
             Method method = ((HandlerMethod) handler).getMethod();
 
             // 如果此 Method 或其所属 Class 标注了 @SaIgnore，则忽略掉鉴权
-            if (SaStrategy.me.isAnnotationPresent.apply(method, SaIgnore.class)) {
+            if (SaStrategy.instance.isAnnotationPresent.apply(method, SaIgnore.class)) {
                 return;
             }
 
@@ -57,9 +50,9 @@ public class SaTokenInterceptor extends SaInterceptor implements ILegoIntercepto
                 return;
             }
 
-            SaStrategy.me.checkElementAnnotation.accept(method.getDeclaringClass());
-            SaStrategy.me.checkElementAnnotation.accept(method.getDeclaringClass().getSuperclass());
-            SaStrategy.me.checkElementAnnotation.accept(method);
+            SaStrategy.instance.checkElementAnnotation.accept(method.getDeclaringClass());
+            SaStrategy.instance.checkElementAnnotation.accept(method.getDeclaringClass().getSuperclass());
+            SaStrategy.instance.checkElementAnnotation.accept(method);
         }
         auth.run(handler);
     }

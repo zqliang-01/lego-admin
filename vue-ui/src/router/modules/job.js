@@ -1,5 +1,5 @@
 /** 系统管理路由 */
-import Layout from '@/views/layout/JobLayout'
+import Layout from '@/views/layout/CommonLayout'
 
 const layout = function(menu, requiresAuth = true) {
   if (menu.meta) {

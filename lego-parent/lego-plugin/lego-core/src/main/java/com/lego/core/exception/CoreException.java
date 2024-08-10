@@ -14,6 +14,10 @@ public class CoreException extends RuntimeException {
         this.code = ExceptionEnum.UNKNOW_ERROR.getCode();
     }
 
+    public CoreException(String message, Object... params) {
+        this(MessageFormat.format(message, params));
+    }
+
     public CoreException(Integer code, String message) {
         super(message);
         this.code = code;
@@ -28,8 +32,14 @@ public class CoreException extends RuntimeException {
         this.code = error.getCode();
     }
 
+    public CoreException(ExceptionEnum error, Throwable e) {
+        super(error.getMsg(), e);
+        this.code = error.getCode();
+    }
+
     public CoreException(String message, Throwable e) {
         super(message, e);
+        this.code = ExceptionEnum.UNKNOW_ERROR.getCode();
     }
 
     public Integer getCode() {

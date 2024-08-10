@@ -155,7 +155,7 @@ export default {
      */
     selectClick(item) {
       if (!this.isEdit) {
-        this.$emit('select', item)
+        this.$emit('select', item.code)
       }
     }
   }

@@ -61,6 +61,7 @@
       <div
         v-else
         v-loading="loading"
+        v-empty="dataList.length === 0"
         :style="{ height: tableHeight + 'px' }"
         class="grid-content">
         <div

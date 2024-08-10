@@ -1,9 +1,7 @@
 <template>
   <el-container>
     <el-header class="nav-container">
-      <navbar
-        nav-index="user"
-        @nav-items-click="navClick"/>
+      <navbar app-code="user"/>
     </el-header>
     <el-container>
       <el-main
@@ -32,7 +30,6 @@ export default {
     ...mapGetters(['navActiveIndex'])
   },
   methods: {
-    navClick(index) {}
   }
 }
 </script>

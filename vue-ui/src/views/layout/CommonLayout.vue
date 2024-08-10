@@ -1,17 +1,17 @@
 <template>
   <el-container>
     <el-header class="nav-container">
-      <navbar :nav-index="appCode"/>
+      <navbar :app-code="appCode"/>
     </el-header>
     <el-container>
       <sidebar
         :main-router="appCode"
         :items="currentRouters"
         :add-offset="quickAddOffset"
-        :show-create-button="quickAddList.length > 0"
+        :show-create-button="showQuickAddButton"
         create-button-title="快速创建">
         <div
-          v-if="quickAddList.length > 0"
+          v-if="showQuickAddButton"
           slot="add"
           class="quick-add">
           <div class="quick-add-content">
@@ -43,20 +43,21 @@ import { isObject } from '@/utils/types'
 import { mapGetters } from 'vuex'
 
 export default {
-  name: 'CrmLayout',
-
+  name: 'CommonLayout',
+  props: {
+    currentAppCode: String
+  },
   components: {
     Navbar,
     Sidebar,
     AppMain,
     Welcome
   },
-
   data() {
     return {
       menuCode: '',
       formCode: '',
-      appCode: 'crm',
+      appCode: '',
       quickAddList: [],
       createShow: false
     }
@@ -79,6 +80,9 @@ export default {
     },
     quickAddOffset() {
       return Math.round(this.quickAddList.length / 2) * 25
+    },
+    showQuickAddButton() {
+      return this.quickAddList.length > 0
     }
   },
   watch: {
@@ -91,11 +95,20 @@ export default {
   },
   methods: {
     init() {
-      this.quickAddList = []
-      this.addQuickAddMenu(this.allAuth[this.appCode])
-      this.quickAddList.sort(function(a, b) {
-        return a.sn - b.sn
-      })
+      this.appCode = this.$route.params.model || this.navActiveIndex
+      if (!this.appCode) {
+        this.appCode = this.$route.path.split('/')[1]
+        if (this.currentAppCode) {
+          this.appCode = this.currentAppCode
+        }
+      }
+      if (this.appCode) {
+        this.quickAddList = []
+        this.addQuickAddMenu(this.allAuth[this.appCode])
+        this.quickAddList.sort(function(a, b) {
+          return a.sn - b.sn
+        })
+      }
     },
     addSkip(item) {
       this.formCode = item.formCode
@@ -116,7 +129,7 @@ export default {
           this.addQuickAddMenu(obj[key])
         }
       }
-      if (!hasChildren && obj.formCode && obj.add) {
+      if (!hasChildren && obj && obj.formCode && obj.add) {
         this.quickAddList.push({
           sn: obj.sn,
           title: obj.title,

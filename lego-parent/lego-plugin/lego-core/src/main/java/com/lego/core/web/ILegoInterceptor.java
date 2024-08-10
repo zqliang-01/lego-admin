@@ -1,9 +1,10 @@
 package com.lego.core.web;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.web.servlet.HandlerInterceptor;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public interface ILegoInterceptor extends HandlerInterceptor {
 
@@ -11,5 +12,7 @@ public interface ILegoInterceptor extends HandlerInterceptor {
         return new ArrayList<String>();
     }
 
-    List<String> getPathPatterns();
+    default List<String> getPathPatterns() {
+        return Arrays.asList("/**");
+    }
 }

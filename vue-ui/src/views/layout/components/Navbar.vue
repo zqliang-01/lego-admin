@@ -7,12 +7,12 @@
       @click="enterMainPage" >
     <div class="nav-items-container">
       <el-menu
-        :default-active="navActiveIndex"
+        :default-active="currentActiveIndex"
         mode="horizontal"
         active-text-color="#2362FB"
-        @select="navItemsClick">
+        @select="handleAppClick">
         <el-menu-item
-          v-for="(item, index) in showItems"
+          v-for="(item, index) in showTopAppList"
           :key="index"
           :index="item.code">
           <i :class="item.icon | iconPre" style="font-size: 17px;margin-right: 0.3em;" />
@@ -92,7 +92,7 @@
       ref="navManager"
       :collapse="collapse"
       @change="getTopHeaderModule"
-      @select="navManagerSelect" />
+      @select="handleAppClick" />
   </div>
 </template>
 
@@ -114,7 +114,7 @@ export default {
     NavManager
   },
   props: {
-    navIndex: {
+    appCode: {
       type: [Number, String],
       default: 0
     }
@@ -126,19 +126,19 @@ export default {
         flowable: 0,
         form: 0
       },
+      currentActiveIndex: '',
       sysMessageShow: false,
       noticeMessageShow: false,
       intervalId: null,
       type: 0,
-      items: [],
+      topAppList: [],
       homePage: {
         code: 'home',
         name: '首页',
         icon: 'customer',
         path: '/home'
       },
-      showItems: [],
-      hiddenItems: [],
+      showTopAppList: [],
       navManagerShow: false,
       isNewest: false
     }
@@ -151,6 +151,7 @@ export default {
       'navActiveIndex',
       'collapse',
       'allAuth',
+      'allModule',
       'headerModule'
     ]),
     logoUrl() {
@@ -184,10 +185,10 @@ export default {
   watch: {
     navManagerShow(val) {
       if (val == false) {
-        this.changeNavIndex()
+        this.handleAppClick(this.navActiveIndex)
       }
     },
-    navIndex() {
+    appCode() {
       this.changeNavIndex()
     }
   },
@@ -221,57 +222,65 @@ export default {
      * 获取置顶头
      */
     getTopHeaderModule() {
-      if (!this.headerModule) {
+      if (this.headerModule) {
+        this.topAppList = [...this.headerModule]
+        this.topAppList.unshift(this.homePage)
+        this.changeMenu(document.documentElement.clientWidth)
+      } else {
         this.$store.dispatch('GetHeaderModule').then(res => {
-          this.items = [...res.data]
-          this.items.unshift(this.homePage)
+          this.topAppList = [...res.data]
+          this.topAppList.unshift(this.homePage)
           this.changeMenu(document.documentElement.clientWidth)
         })
-      } else {
-        this.items = [...this.headerModule]
-        this.items.unshift(this.homePage)
-        this.changeMenu(document.documentElement.clientWidth)
       }
     },
     changeMenu(clintWidth) {
-      this.showItems = []
-      this.hiddenItems = []
-      for (let index = 0; index < this.items.length; index++) {
-        const element = this.items[index]
-        if (clintWidth - 450 - (index + 1) * 130 > 0) {
-          this.showItems.push(element)
-        } else {
-          this.hiddenItems.push(element)
+      console.log(clintWidth)
+      if (clintWidth < 1200) {
+        clintWidth = 1200
+      }
+      this.showTopAppList = []
+      for (let index = 0; index < this.topAppList.length; index++) {
+        const element = this.topAppList[index]
+        if (clintWidth - 400 - (index + 1) * 140 > 0) {
+          this.showTopAppList.push(element)
         }
       }
       this.changeNavIndex()
     },
     changeNavIndex() {
-      if (this.navIndex && this.navActiveIndex !== this.navIndex) {
-        this.$store.commit('SET_NAVACTIVEINDEX', this.navIndex)
-        if (!this.showItems.some(item => item.code === this.navIndex)) {
-          this.navItemsClick(this.navIndex)
-        }
+      this.currentActiveIndex = this.navActiveIndex
+      if (this.appCode) {
+        this.currentActiveIndex = this.appCode
+        this.handleAppClick(this.appCode)
       }
     },
-
-    navItemsClick(code) {
+    handleAppClick(code) {
       if (!code || code === '') {
         return
       }
+      this.currentActiveIndex = code
       if (code === 'other') {
         this.navManagerShow = !this.navManagerShow
       } else if (code === 'user') {
-        code = 'other'
+        this.currentActiveIndex = 'other'
         this.navManagerShow = false
+      } else if (code !== this.navActiveIndex) {
+        this.navManagerShow = false
+        const app = this.allModule.find(module => module.code === code) || { path: '/' + code }
+        this.$router.push(app.path, () => {})
       } else {
         this.navManagerShow = false
-        this.$router.push('/' + code, () => {})
       }
-      this.$store.commit('SET_NAVACTIVEINDEX', code)
-      this.$emit('nav-items-click', code)
+      if (!this.showTopAppList.some(item => item.code === code)) {
+        this.currentActiveIndex = 'other'
+      }
+      if (code !== this.navActiveIndex && code !== 'other') {
+        this.$store.commit('SET_NAVACTIVEINDEX', code)
+      }
     },
     enterSystemSet() {
+      this.$store.commit('SET_NAVACTIVEINDEX', 'manage')
       this.$router.push({ name: 'manage' })
     },
     /**
@@ -300,9 +309,6 @@ export default {
           }
         })
     },
-    /**
-     * 有客户权限点击logo 进入仪表盘
-     */
     enterMainPage() {
       this.$router.push('/')
     },
@@ -339,16 +345,6 @@ export default {
         return
       }
       this.navManagerShow = false
-    },
-    navManagerSelect({ path, code }) {
-      this.navManagerShow = false
-      this.$router.push(path)
-      const index = this.headerModule.findIndex(module => module.code === code)
-      let navActiveIndex = code
-      if (index === -1) {
-        navActiveIndex = 'other'
-      }
-      this.$store.commit('SET_NAVACTIVEINDEX', navActiveIndex)
     },
     /**
      * 查看消息详情

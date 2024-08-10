@@ -2,6 +2,7 @@ package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.alibaba.fastjson.JSONObject;
+import com.lego.core.common.Constants;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
@@ -10,6 +11,7 @@ import com.lego.system.dto.SysPermissionInfo;
 import com.lego.system.service.ISysConfigService;
 import com.lego.system.service.ISysPermissionService;
 import com.lego.system.vo.SysConfigCode;
+import com.lego.system.vo.SysPermissionCode;
 import com.lego.system.vo.SysPermissionCreateVO;
 import com.lego.system.vo.SysPermissionModifyVO;
 import com.lego.system.vo.SysPermissionTypeCode;
@@ -86,6 +88,10 @@ public class SysPermissionController extends BaseController {
     @GetMapping("/current")
     public JsonResponse<JSONObject> current() {
         List<String> validApps = configService.findListBy(SysConfigCode.APP_VALID_LIST);
+        if (Constants.ADMIN_EMPLOYEE_CODE.equals(getLoginCode())
+            && !validApps.contains(SysPermissionCode.manage)) {
+            validApps.add(SysPermissionCode.manage);
+        }
         List<SysPermissionInfo> permissions = permissionService.findByEmployee(getLoginCode());
         JSONObject auth = permissionAssembler.createAuth(permissions, validApps);
         JSONObject homeAuth = new JSONObject();

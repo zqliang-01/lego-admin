@@ -5,9 +5,8 @@ import 'nprogress/nprogress.css' // Progress 进度条样式
 import { Message } from 'element-ui'
 import { checkAuth } from '@/utils/auth' // 验权
 
-let loadAsyncRouter = false
 const whiteList = ['/login', '/welcome'] // 不重定向白名单
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   if (to.path) {
     if (window._hmt) {
       window._hmt.push(['_trackPageview', '/#' + to.fullPath])
@@ -18,74 +17,46 @@ router.beforeEach((to, from, next) => {
     return
   }
   NProgress.start()
-  /** 请求头包含授权信息 并且 页面必须授权 直接进入 */
-  if (checkAuth()) {
-    if (whiteList.includes(to.path)) {
-      next({
-        path: '/'
-      })
-      NProgress.done()
+  if (!checkAuth()) {
+    if (whiteList.indexOf(to.path) !== -1) {
+      next()
       return
     }
-    if (!loadAsyncRouter) { // 判断当前用户是否获取权限
-      loadAsyncRouter = true
-      if (store.getters.allAuth) {
-        store.dispatch('GenerateRoutes', store.getters.allAuth).then(() => { // 根据auths权限生成可访问的路由表
-          for (const r of store.getters.allRouters) { // 动态添加可访问路由表
-            router.addRoute(r)
-          }
-          if (to.path === '/404') {
-            next({
-              path: to.redirectedFrom || '/',
-              replace: true
-            })
-          } else {
-            next({
-              ...to,
-              replace: true
-            })
-          }
-        })
-        return
-      }
-      store.dispatch('getAuth').then(auths => { // 拉取user_info
-        store.dispatch('GenerateRoutes', auths).then(() => { // 根据auths权限生成可访问的路由表
-          for (const r of store.getters.allRouters) { // 动态添加可访问路由表
-            router.addRoute(r)
-          }
-          if (to.path === '/404') {
-            next({
-              path: to.redirectedFrom || '/',
-              replace: true
-            })
-          } else {
-            next({
-              ...to,
-              replace: true
-            })
-          }
-        })
-      }).catch((err) => {
-        loadAsyncRouter = false
-        store.dispatch('LogOut').then(() => {
-          Message.error(err.msg || '获取用户信息失败')
-          next({
-            path: '/'
-          })
-        })
-      })
-      return
-    }
+    next(`/login?redirect=${to.path}`)
+    NProgress.done()
+    return
+  }
+  if (to.path === '/login') {
+    next({ path: '/' })
+    return
+  }
+  if (store.getters.allRouters && store.getters.allRouters.length > 0) {
     next()
     return
   }
-  if (whiteList.indexOf(to.path) !== -1) {
-    next()
-    return
+  try {
+    const auths = await store.dispatch('getAuth')
+    const { allRouters } = await store.dispatch('GenerateRoutes', auths)
+    authNext(to, next, allRouters)
+  } catch (error) {
+    await store.dispatch('LogOut')
+    Message.error(error || '获取用户信息失败')
+    next(`/login?redirect=${to.path}`)
+    NProgress.done()
   }
-  next(`/login`) // 否则全部重定向到登录页
-  NProgress.done()
 })
+
+const authNext = function(to, next, allRouters) {
+  // 动态添加可访问路由表
+  for (const r of allRouters) {
+    router.addRoute(r)
+  }
+  if (to.path === '/404') {
+    next({ path: to.redirectedFrom || '/', replace: true })
+  } else {
+    next({ ...to, replace: true })
+  }
+}
 
 router.afterEach(() => {
   NProgress.done() // 结束Progress

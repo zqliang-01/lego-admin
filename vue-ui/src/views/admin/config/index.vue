@@ -14,6 +14,25 @@
       <div class="section">
         <div class="section-title">系统基本信息设置</div>
         <div class="section-content">
+          <div class="name">
+            系统版本
+            <el-tooltip
+              effect="dark"
+              placement="top"
+              content="显示系统版本信息，检查更新会自动检测是否有需要执行的SQL脚本">
+              <i :class="'help lego-help-tips' | iconPre"/>
+            </el-tooltip>
+          </div>
+          <el-input v-model="version">
+            <el-button
+              plain
+              slot="append"
+              type="primary"
+              icon="el-icon-refresh"
+              @click="handleCheckUpdate">检查更新</el-button>
+          </el-input>
+        </div>
+        <div class="section-content">
           <div class="name">系统名称</div>
           <el-input
             v-model="companyName"
@@ -35,13 +54,11 @@
             v-else
             class="upload-show">
             <img v-src="logoUrl">
-            <i
-              class="el-icon-remove icon-delete"
+            <i class="el-icon-remove icon-delete"
               @click="deleteCompanyLogo"/>
           </div>
         </div>
       </div>
-
       <el-button
         v-if="systemSaveAuth"
         class="save-button"
@@ -65,7 +82,11 @@
 </template>
 
 <script>
-import { systemInfoModifyAPI } from '@/api/admin/config'
+import {
+  systemInfoModifyAPI,
+  systemCheckUpdateAPI,
+  systemUpdateAPI
+} from '@/api/admin/config'
 import { fileUploadAPI, filePreviewUrl } from '@/api/common'
 
 import RadialProgressBar from 'vue-radial-progress'
@@ -88,7 +109,8 @@ export default {
       editImage: null,
       editFile: null,
       companyName: '',
-      companyLogo: ''
+      companyLogo: '',
+      version: ''
     }
   },
   computed: {
@@ -124,32 +146,54 @@ export default {
       }
       reader.readAsDataURL(content.file)
     },
-
     /**
      * 删除图片
      */
     deleteCompanyLogo() {
       this.companyLogo = ''
     },
-
     /**
      * 获取详情
      */
     getDetail() {
       this.loading = true
-      this.$store
-        .dispatch('SystemLogoAndName')
-        .then(res => {
-          this.loading = false
-          const data = res.data || {}
-          this.companyName = data.companyName ? data.companyName : ''
-          this.companyLogo = data.companyLogo
-        })
-        .catch(() => {
-          this.loading = false
-        })
+      this.$store.dispatch('GetSystemInfo').then(res => {
+        this.loading = false
+        const data = res.data || {}
+        this.version = data.version
+        this.companyLogo = data.companyLogo
+        this.companyName = data.companyName ? data.companyName : ''
+      }).catch(() => {
+        this.loading = false
+      })
     },
-
+    handleCheckUpdate() {
+      this.loading = true
+      systemCheckUpdateAPI().then(res => {
+        this.loading = false
+        if (res.data.needUpdate) {
+          this.$confirm('发现新版本' + res.data.newVersion + '，是否执行更新！', '提示').then(() => {
+            this.handleUpdate()
+          }).catch(() => {})
+          return
+        }
+        this.version = res.data.version
+        this.$message.success('当前已经是最新版本！')
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    handleUpdate() {
+      this.loading = true
+      systemUpdateAPI().then(res => {
+        this.getDetail()
+        this.loading = false
+        this.$message.success('更新成功，已更新到版本' + newVersion)
+        return
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     submiteImage(data) {
       this.loading = true
       fileUploadAPI({
@@ -163,7 +207,6 @@ export default {
         this.loading = false
       })
     },
-
     /**
      * 保存
      */
@@ -175,15 +218,13 @@ export default {
         systemInfoModifyAPI({
           name: this.companyName,
           logo: this.companyLogo
+        }).then(res => {
+          this.loading = false
+          this.$message.success('操作成功')
+          this.getDetail()
+        }).catch(() => {
+          this.loading = false
         })
-          .then(res => {
-            this.loading = false
-            this.$message.success('操作成功')
-            this.getDetail()
-          })
-          .catch(() => {
-            this.loading = false
-          })
       }
     }
   }

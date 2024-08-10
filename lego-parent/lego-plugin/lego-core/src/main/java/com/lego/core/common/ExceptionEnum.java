@@ -4,8 +4,9 @@ public enum ExceptionEnum {
     SUCCESS(200, "成功"),
     UNKNOW_ERROR(9999, "未知异常"),
     SQL_ERROR(6000, "数据脚本异常"),
+    UPDATE_ERROR(6001, "系统更新异常"),
     BUSINESS_INVALID(3000, "业务异常"),
-    TOKEN_INVALID(4000, "Token校验不通过"),
+    TOKEN_INVALID(4000, "Token非法异常"),
     AUTHORIZATION_INVALID(5000, "功能未授权"),
     METHOD_INVALID(5001, "请求方法类型错误"),
     PARAM_INVALID(5002, "请求参数类型错误"),
@@ -36,7 +37,8 @@ public enum ExceptionEnum {
         return UNKNOW_ERROR.getMsg();
     }
 
-    public static boolean isBusiness(Integer code) {
-        return BUSINESS_INVALID.getCode().equals(code);
+    public static boolean isUnCheck(Integer code) {
+        return BUSINESS_INVALID.getCode().equals(code)
+            || SESSION_INVALID.getCode().equals(code);
     }
 }

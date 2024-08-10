@@ -66,7 +66,10 @@
 </template>
 
 <script>
-import { getCodeImg } from '@/api/login'
+import {
+  getCodeImg,
+  systemInitAPI
+} from '@/api/login'
 import { Loading } from 'element-ui'
 
 import Mixins from './Mixins'
@@ -152,16 +155,31 @@ export default {
       const loading = Loading.service({
         target: document.querySelector('.login-main-content')
       })
-      this.$store
-        .dispatch('Login', this.form)
-        .then((res) => {
-          this.$router.push({ path: this.redirect || '/' })
-        })
-        .catch(() => {
+      this.$store.dispatch('Login', this.form).then((res) => {
+        if (res.data.needInit) {
           loading.close()
-        })
+          this.$confirm('检测到系统尚未初始化，是否执行初始化操作，注意！初始化操作将重置系统数据，请确认是否继续！', '提示').then(() => {
+            this.handleInit()
+          }).catch(() => {})
+          return
+        }
+        this.$router.push({ path: this.redirect || '/' })
+      }).catch(() => {
+        loading.close()
+      })
     },
-
+    handleInit() {
+      const loading = Loading.service({
+        text: '系统初始化中，请稍后。。。'
+      })
+      systemInitAPI().then(res => {
+        loading.close()
+        this.$alert('系统初始化成功，当前系统版本' + res.data + '，请重新登陆！', '提示')
+        return
+      }).catch(() => {
+        loading.close()
+      })
+    },
     /**
      * 校验登录表单
      */

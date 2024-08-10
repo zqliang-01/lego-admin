@@ -1,10 +1,12 @@
 package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.lego.core.data.VersionManager;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysAppInfo;
 import com.lego.system.dto.SysSystemInfo;
+import com.lego.system.dto.SysVersionInfo;
 import com.lego.system.service.ISysConfigService;
 import com.lego.system.service.ISysPermissionService;
 import com.lego.system.vo.SysConfigCode;
@@ -29,18 +31,37 @@ public class SysConfigController extends BaseController {
     @Autowired
     private ISysPermissionService permissionService;
 
+    @Autowired
+    private VersionManager versionManager;
+
     @GetMapping("/get-information")
     public JsonResponse<SysSystemInfo> getInformation() {
         return JsonResponse.success(configService.findInformation());
     }
 
     @PostMapping("/update-information")
+    @SaCheckPermission("manage_system_update")
     public JsonResponse<Object> updateInformation(String name, String logo) {
         SysSystemInfo info = configService.findInformation();
         info.setCompanyName(name);
         info.setCompanyLogo(logo);
         configService.update(info.toJson(), SysConfigCode.APP_CONFIG);
         return JsonResponse.success();
+    }
+
+    @GetMapping("/check-update")
+    @SaCheckPermission("manage_system_update")
+    public JsonResponse<SysVersionInfo> checkUpdate() {
+        String currentVersion = configService.findValueBy(SysConfigCode.APP_VERSION);
+        String newVersion = versionManager.getNewVersion(currentVersion);
+        return JsonResponse.success(new SysVersionInfo(currentVersion, newVersion));
+    }
+
+    @GetMapping("/update")
+    @SaCheckPermission("manage_system_update")
+    public JsonResponse<Object> update() {
+        String newVersion = versionManager.execUpdate();
+        return JsonResponse.success(newVersion);
     }
 
     @GetMapping("/list-app")

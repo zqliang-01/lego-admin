@@ -4,6 +4,7 @@ import cn.dev33.satoken.annotation.SaIgnore;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.captcha.AbstractCaptcha;
 import cn.hutool.captcha.CaptchaUtil;
+import com.lego.core.data.VersionManager;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.JsonResponse;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class SysIndexController {
 
     @Autowired
+    private VersionManager versionManager;
+
+    @Autowired
     private ISysEmployeeService employeeService;
 
     @Autowired
@@ -34,6 +38,9 @@ public class SysIndexController {
         BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "验证码不能为空！");
         BusinessException.check(StringUtil.isNotBlank(vo.getToken()), "验证码已失效，请刷新重试！");
         captchaValidator.validCode(vo.getToken(), vo.getCode());
+        if (versionManager.needInit()) {
+            return JsonResponse.success(new SysLoginInfo());
+        }
         return JsonResponse.success(employeeService.login(vo.getUsername(), vo.getPassword()));
     }
 
@@ -41,6 +48,11 @@ public class SysIndexController {
     public JsonResponse<Object> logout() {
         StpUtil.logout();
         return JsonResponse.success();
+    }
+
+    @PostMapping("/init")
+    public JsonResponse<String> init() {
+        return JsonResponse.success(versionManager.execInit());
     }
 
     @GetMapping("/captchaImage")

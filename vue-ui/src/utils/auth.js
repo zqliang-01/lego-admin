@@ -18,7 +18,6 @@ export function removeAuth() {
 export function addAuth(adminToken) {
   return new Promise((resolve, reject) => {
     axios.defaults.headers['Admin-Token'] = adminToken
-    // store.dispatch('SystemLogoAndName')
     resolve(true)
   })
 }
