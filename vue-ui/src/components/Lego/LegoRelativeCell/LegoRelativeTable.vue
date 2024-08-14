@@ -19,14 +19,22 @@
       border
       highlight-current-row
       style="width: 100%"
-      @select-all="selectAll"
-      @selection-change="handleSelectionChange"
-      @row-click="handleRowClick">
+      @current-change="handleCurrentChange"
+      @selection-change="handleSelectionChange">
       <el-table-column
-        show-overflow-tooltip
+        v-if="multiple"
+        reserve-selection
         type="selection"
+        width="55">
+      </el-table-column>
+      <el-table-column
+        v-else
         align="center"
-        width="55"/>
+        width="35">
+        <template slot-scope="scope">
+          <el-radio :label="scope.row.code" v-model="selectedCode"></el-radio>
+        </template>
+      </el-table-column>
       <el-table-column
         v-for="(item, index) in fieldList"
         :key="index"
@@ -68,17 +76,23 @@ export default {
         return []
       }
     },
-    /** 多选框 只能选一个 */
-    radio: {
-      type: Boolean,
-      default: true
+    searchKey: {
+      type: String,
+      default: 'search'
     },
-    /** 已选信息 */
+    multiple: {
+      type: Boolean,
+      default: false
+    },
     selectedData: {
       type: Array,
       default: () => {
         return []
       }
+    },
+    showPopover: {
+      type: Boolean,
+      default: false
     },
     queryApiUrl: String
   },
@@ -89,18 +103,31 @@ export default {
       dataList: [], // 表数据
       currentPage: 1, // 当前页数
       totalPage: 1, // 总页数
-      otherItems: []
+      selectedCode: '',
+      selectedCodes: []
     }
   },
   computed: {
   },
   watch: {
+    showPopover: function(val) {
+      if (val) {
+        this.refreshList()
+      }
+    }
   },
   mounted() {
     this.refreshList()
   },
   methods: {
     refreshList() {
+      if (this.selectedData.length > 0) {
+        if (this.multiple) {
+          this.selectedCodes = this.selectedData.map(val => val.code)
+        } else {
+          this.selectedCode = this.selectedData[0].code
+        }
+      }
       this.currentPage = 1
       this.getList()
     },
@@ -110,79 +137,46 @@ export default {
       }
       this.loading = true
       const params = {
-        search: this.searchContent,
         pageIndex: this.currentPage,
         pageSize: 10
       }
+      params[this.searchKey] = this.searchContent
       postRequest(this.queryApiUrl, params).then(res => {
         this.dataList = res.data.result
-        if (this.selectedData && this.selectedData.length > 0) {
-          this.checkItemsWithSelectedData()
-        } else {
-          this.dataList = res.data.result
-        }
+        this.handleInitSelect()
         this.totalPage = Math.ceil(res.data.totalCount / 10)
         this.loading = false
       }).catch(() => {
         this.loading = false
       })
     },
-    // 标记选择数据
-    checkItemsWithSelectedData() {
-      const selectedArray = this.selectedData ? this.selectedData.map(item => {
-        item.has = false
-        return item
-      }) : []
-
-      const selectedRows = []
-      this.dataList.forEach((item, index) => {
-        selectedArray.forEach((selectedItem, selectedIndex) => {
-          if (item.code == selectedItem.code) {
-            selectedItem.has = true
-            selectedRows.push(item)
-          }
+    handleInitSelect() {
+      if (this.multiple) {
+        this.$nextTick(() => {
+          this.dataList.forEach(data => {
+            if (this.selectedCodes.some(code => code === data.code)) {
+              this.$refs.relativeTable.toggleRowSelection(data, true)
+            }
+          })
         })
-      })
-
-      this.otherItems = []
-      selectedArray.forEach((selectedItem, selectedIndex) => {
-        if (!selectedItem.has) {
-          this.otherItems.push(selectedItem)
-        }
-      })
-
-      this.$nextTick(() => {
-        this.$refs.relativeTable.clearSelection()
-        selectedRows.forEach(row => {
-          this.$refs.relativeTable.toggleRowSelection(row, true)
-        })
-      })
-    },
-    /** 列表操作 */
-    // 当某一行被点击时会触发该事件
-    handleRowClick(row, column, event) {},
-    // 当选择项发生变化时会触发该事件
-    handleSelectionChange(val) {
-      let selectedItem = []
-      if (this.radio) {
-        val.forEach((row, index) => {
-          if (index === val.length - 1) return
-          this.$refs.relativeTable.toggleRowSelection(row, false)
-        })
-        if (val.length > 0) {
-          selectedItem = val.length === 1 ? val : [val[val.length - 1]]
-        }
-      } else {
-        selectedItem = this.otherItems.concat(val)
       }
-      this.$emit('changeCheckout', selectedItem)
+    },
+    // 当选择项发生变化时会触发该事件
+    handleSelectionChange(values) {
+      if (this.multiple) {
+        this.selectedCodes = values.map(val => val.code)
+        this.$emit('changeCheckout', values)
+      }
+    },
+    handleCurrentChange(val) {
+      if (!this.multiple && val) {
+        this.selectedCode = val.code
+        this.$emit('changeCheckout', [val])
+      }
     },
     clearAll() {
       this.$refs.relativeTable.clearSelection()
     },
-    // 	当用户手动勾选全选 Checkbox 时触发的事件
-    selectAll() {},
-    // 进行搜索操作
     searchInput() {
       this.currentPage = 1
       this.totalPage = 1
@@ -266,5 +260,8 @@ body .el-table th.gutter {
 }
 .el-table--border {
   border-left: none;
+}
+::v-deep .el-radio__label {
+  display: none;
 }
 </style>

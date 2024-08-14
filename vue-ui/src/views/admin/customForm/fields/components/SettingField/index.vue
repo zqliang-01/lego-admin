@@ -69,8 +69,10 @@
           </div>
         </template>
 
-        <div v-if="field.formType === 'entity'" class="item-section">
-          <div class="name input-tips">
+        <div v-if="canDefault" class="item-section">
+          <div
+            v-if="field.formType === 'entity'"
+            class="name input-tips">
             <span>*</span>关联表单
             <el-tooltip
               content="所关联的表单需与代码生成功能中的字段关联表一致，如修改需重新生成代码"
@@ -79,11 +81,7 @@
               <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
             </el-tooltip>
           </div>
-          <setting-relative :field="field" />
-        </div>
-
-        <div v-if="canDefault" class="item-section">
-          <div class="name">
+          <div v-else class="name">
             默认值
             <el-tooltip
               v-if="field.unique"
@@ -162,7 +160,6 @@ import SettingPrecisions from './SettingPrecisions'
 import SettingDescText from './SettingDescText'
 import SettingLogicForm from './SettingLogicForm'
 import SettingDictType from './SettingDictType'
-import SettingRelative from './SettingRelative'
 
 import FieldTypeLib from '../../fieldTypeLib'
 
@@ -176,8 +173,7 @@ export default {
     SettingPrecisions,
     SettingDescText,
     SettingLogicForm,
-    SettingDictType,
-    SettingRelative
+    SettingDictType
   },
   props: {
     field: { // 要编辑的字段信息
@@ -223,8 +219,7 @@ export default {
       return ![
         'user',
         'structure',
-        'handwriting_sign',
-        'entity'
+        'handwriting_sign'
       ].includes(this.field.formType)
     },
     // 是否允许设置选项内容

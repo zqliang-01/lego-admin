@@ -4,7 +4,10 @@ export function genTableListAPI(data) {
   return request({
     url: '/back-end/sys-gen-table/list',
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 

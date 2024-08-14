@@ -56,7 +56,7 @@ public class SysGenTableController extends BaseController {
 
     @PostMapping("/list")
     @SaCheckPermission("manage_genTable_read")
-    public JsonResponse<LegoPage<SysGenTableInfo>> list(SysGenTableSearchVO vo) {
+    public JsonResponse<LegoPage<SysGenTableInfo>> list(@RequestBody SysGenTableSearchVO vo) {
         return JsonResponse.success(tableService.findPageBy(vo));
     }
 

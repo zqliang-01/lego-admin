@@ -28,13 +28,13 @@
               <el-input v-model="scope.row.sn"/>
             </template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" label="字段列名" prop="name" min-width="10%" />
-          <el-table-column label="字段描述" min-width="10%">
+          <el-table-column :show-overflow-tooltip="true" label="字段列名" prop="name" min-width="8%" />
+          <el-table-column label="字段描述" min-width="8%">
             <template slot-scope="scope">
               <el-input v-model="scope.row.comment"/>
             </template>
           </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" label="物理类型" prop="dataType" min-width="10%" />
+          <el-table-column :show-overflow-tooltip="true" label="物理类型" prop="dataType" min-width="5%" />
           <el-table-column label="表单类型" min-width="11%">
             <template slot-scope="scope">
               <el-select v-model="scope.row.formType" @change="formTypeChange($event, scope.row)">
@@ -51,6 +51,7 @@
               <template v-if="scope.row.editJavaFiledType">
                 <lego-relative-cell
                   v-if="scope.row.formType == 'entity'"
+                  search-key="code"
                   query-api="/back-end/sys-gen-table/list"
                   :value="scope.row.relativeTable"
                   :field-list="fieldList"
@@ -65,12 +66,12 @@
               <el-input v-model="scope.row.javaField"/>
             </template>
           </el-table-column>
-          <el-table-column label="必填" min-width="5%">
+          <el-table-column label="必填" min-width="5%" align="center">
             <template slot-scope="scope">
               <el-checkbox v-model="scope.row.required"/>
             </template>
           </el-table-column>
-          <el-table-column label="唯一" min-width="5%">
+          <el-table-column label="唯一" min-width="5%" align="center">
             <template slot-scope="scope">
               <el-checkbox v-model="scope.row.unique"/>
             </template>
@@ -117,8 +118,7 @@ export default {
         { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150' },
         { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100' },
         { fieldCode: 'className', name: '类名', formType: 'text', width: '100' },
-        { fieldCode: 'permissionCode', name: '菜单编码', formType: 'text', width: '100' },
-        { fieldCode: 'path', name: '生成路径', formType: 'text', width: '150' }
+        { fieldCode: 'permissionCode', name: '菜单编码', formType: 'text', width: '100' }
       ]
     }
   },
@@ -179,6 +179,17 @@ export default {
       }).catch(res => {
         this.loading = false
       })
+    },
+    handleDelete(row) {
+      if (row.unique) {
+        this.$message.error('唯一字段不能删除！')
+        return
+      }
+      if (row.required) {
+        this.$message.error('必填字段不能删除！')
+        return
+      }
+      this.dataList = this.dataList.filter(data => data.code !== row.code)
     },
     handleCancel() {
       this.$router.go(-1)

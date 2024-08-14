@@ -4,7 +4,10 @@ export function customFormListAPI(data) {
   return request({
     url: '/back-end/sys-custom-form/list',
     method: 'post',
-    data: data
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    }
   })
 }
 

@@ -29,7 +29,7 @@ public class SysCustomFormController extends BaseController {
 
     @PostMapping("/list")
     @SaCheckPermission("manage_customForm_read")
-    public JsonResponse<LegoPage<SysCustomFormInfo>> list(SysCustomFormSearchVO vo) {
+    public JsonResponse<LegoPage<SysCustomFormInfo>> list(@RequestBody SysCustomFormSearchVO vo) {
         return JsonResponse.success(customFormService.findBy(vo));
     }
 

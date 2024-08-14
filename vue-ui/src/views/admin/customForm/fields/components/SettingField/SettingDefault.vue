@@ -6,6 +6,13 @@
       :field-code="field.code"
       @value-change="handleCodeGenerator($event)"/>
 
+    <lego-relative-cell
+      v-else-if="type === 'entity'"
+      :value="field.relativeForm"
+      :field-list="formFieldList"
+      search-key="name"
+      query-api="/back-end/sys-custom-form/list"
+      @value-change="entityChange(field, $event)"/>
     <el-input
       v-else-if="type === 'text'"
       v-model="field.defaultValue"
@@ -78,6 +85,7 @@
 
 <script>
 import { dictSimpleListAPI } from '@/api/dictionary'
+import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
 import LegoCodeGenerator from '@/components/Lego/LegoCodeGenerator'
 
 import { isEmpty } from '@/utils/types'
@@ -86,6 +94,7 @@ import { regexIsMobile, regexIsEmail } from '@/utils'
 export default {
   name: 'SettingDefault',
   components: {
+    LegoRelativeCell,
     LegoCodeGenerator
   },
   props: {
@@ -100,7 +109,12 @@ export default {
   data() {
     return {
       oldPrecisions: null,
-      options: []
+      options: [],
+      formFieldList: [
+        { fieldCode: 'name', name: '模块', formType: 'text', width: '150' },
+        { fieldCode: 'table', name: '数据表', formType: 'select', width: '150' },
+        { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150' }
+      ]
     }
   },
   computed: {
@@ -125,6 +139,9 @@ export default {
         'jsonEditor'
       ].includes(formType)) return formType
       if (formType === 'boolean_value') return 'switch'
+      if (formType === 'entity') {
+        return 'entity'
+      }
       return 'text'
     }
   },
@@ -143,6 +160,15 @@ export default {
     this.getOptions()
   },
   methods: {
+    entityChange(field, value) {
+      if (!isEmpty(value)) {
+        this.$set(this.field, 'relativeForm', value)
+        this.$set(this.field, 'relativeFormCode', value.code)
+        return
+      }
+      this.$set(this.field, 'relativeForm', null)
+      this.$set(this.field, 'relativeFormCode', '')
+    },
     getOptions() {
       const field = this.field
       if (this.appCode && field.optionDataType === 'dict' && field.optionDictType) {

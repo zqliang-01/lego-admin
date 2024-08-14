@@ -12,7 +12,9 @@
       xs-empty-icon="nopermission"
       xs-empty-text="无操作权限"
       ref="legoRelative"
-      :radio="radio"
+      :multiple="multiple"
+      :search-key="searchKey"
+      :show-popover="showPopover"
       :field-list="tableFieldList"
       :selected-data="selectedData"
       :query-api-url="queryApiUrl"
@@ -67,6 +69,14 @@ export default {
         return {}
       }
     },
+    searchKey: {
+      type: String,
+      default: 'search'
+    },
+    multiple: {
+      type: Boolean,
+      default: false
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -78,7 +88,6 @@ export default {
       auth: {},
       showPopover: false,
       showSelectView: false,
-      radio: true,
       dataValue: [],
       tableFieldList: []
     }
@@ -96,29 +105,15 @@ export default {
   },
   watch: {
     value: function(val) {
-      if (isEmpty(val)) {
-        this.dataValue = []
-        this.checkInfos(this.dataValue)
-      }
-      if (!isEmpty(val) && val.code) {
-        this.dataValue = [val]
-        this.checkInfos(this.dataValue)
-      }
+      this.initValue()
     },
     formCode: function(val) {
       this.initFields()
     }
   },
   mounted() {
-    if (isEmpty(this.value)) {
-      this.dataValue = []
-      this.checkInfos(this.dataValue)
-    }
-    if (!isEmpty(this.value) && this.value.code) {
-      this.dataValue = [this.value]
-      this.checkInfos(this.dataValue)
-    }
     this.initFields()
+    this.initValue()
   },
   methods: {
     initFields() {
@@ -133,16 +128,30 @@ export default {
         this.tableFieldList = objDeepCopy(this.fieldList)
       }
     },
+    initValue() {
+      if (isEmpty(this.value)) {
+        this.dataValue = []
+      } else if (this.multiple) {
+        this.dataValue = this.value
+      } else {
+        this.dataValue = [this.value]
+      }
+      this.checkInfos(this.dataValue)
+    },
     /** 选中 */
     checkInfos(data) {
       this.dataValue = data
-      const value = data && data.length > 0 ? data[0] : []
+      if (this.multiple) {
+        this.$emit('value-change', data)
+        return
+      }
+      const value = data && data.length > 0 ? data[0] : {}
       this.$emit('value-change', value)
     },
     /** 删除 */
     deleteinfo(index) {
       if (this.disabled) return
-      if (this.radio && this.$refs.legoRelative) {
+      if (!this.multiple && this.$refs.legoRelative) {
         this.$refs.legoRelative.clearAll()
       }
       if (this.dataValue.length === 1) {
@@ -150,7 +159,7 @@ export default {
       } else {
         this.dataValue.splice(index, 1)
       }
-      this.$emit('value-change', this.dataValue)
+      this.checkInfos(this.dataValue)
     }
   }
 }

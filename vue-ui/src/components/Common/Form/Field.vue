@@ -131,7 +131,7 @@
     :disabled="disableStatus"/>
   <lego-relative-cell
     v-else-if="item.formType == 'entity'"
-    :value="fieldForm[item.fieldCode]"
+    :value="item.value"
     :form-code="relativeFormCode"
     :disabled="disableStatus"
     @value-change="entityChange(item, index, $event)"/>

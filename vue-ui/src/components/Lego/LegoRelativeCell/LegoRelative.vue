@@ -4,8 +4,10 @@
     <div style="height: 100%;position: relative;">
       <lego-relative-table
         ref="legoRelativeTable"
-        :radio="radio"
+        :multiple="multiple"
+        :search-key="searchKey"
         :field-list="fieldList"
+        :show-popover="showPopover"
         :query-api-url="queryApiUrl"
         :selected-data="currentSelectedData"
         @changeCheckout="checkSelectInfos" />
@@ -36,10 +38,13 @@ export default {
         return []
       }
     },
-    /** 多选框 只能选一个 */
-    radio: {
+    searchKey: {
+      type: String,
+      default: 'search'
+    },
+    multiple: {
       type: Boolean,
-      default: true
+      default: false
     },
     /** 已选信息 */
     selectedData: {
@@ -47,6 +52,10 @@ export default {
       default: () => {
         return []
       }
+    },
+    showPopover: {
+      type: Boolean,
+      default: false
     },
     queryApiUrl: String
   },
@@ -59,6 +68,11 @@ export default {
   watch: {
     selectedData: function(data) {
       this.handleCurrentSelectData(data)
+    },
+    showPopover: function(val) {
+      if (val) {
+        this.currentSelectedData = objDeepCopy(this.selectedData)
+      }
     }
   },
   mounted() {

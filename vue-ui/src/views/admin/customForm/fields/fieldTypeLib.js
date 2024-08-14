@@ -112,11 +112,11 @@ export default [
     formType: 'entity',
     name: '关联表',
     icon: 'icon-relate'
+  },
+  {
+    componentName: 'FieldInput',
+    formType: 'pic',
+    name: '图片',
+    icon: 'icon-picture '
   }
 ]
-export const picField = {
-  componentName: 'FieldInput',
-  formType: 'pic',
-  name: '图片',
-  icon: 'lego '
-}

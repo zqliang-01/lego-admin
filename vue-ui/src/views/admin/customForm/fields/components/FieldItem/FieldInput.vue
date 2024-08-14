@@ -6,28 +6,57 @@
     class="field-input"
     @click="emitClick"
     @action="handleAction">
-
-    <flexbox align="center" class="box">
+    <lego-relative-cell
+      v-if="field.formType === 'entity'"
+      :value="field.relativeForm"
+      :field-list="formFieldList"
+      search-key="name"
+      query-api="/back-end/sys-custom-form/list"
+      @value-change="entityChange(field, $event)"/>
+    <flexbox
+      v-else
+      align="center"
+      class="box">
       <span class="default-val">
         <i v-if="fieldIcon" :class="fieldIcon | iconPre" class="item-icon" />
         {{ typeof field.defaultValue == 'string' ? field.defaultValue : '' }}
       </span>
     </flexbox>
-
   </field-wrapper>
 </template>
 
 <script>
 import FieldWrapper from './FieldWrapper'
+import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
 import mixins from './mixins'
+import { isEmpty } from '@/utils/types'
 
 export default {
   name: 'FieldInput',
   components: {
-    FieldWrapper
+    FieldWrapper,
+    LegoRelativeCell
   },
   mixins: [mixins],
+  data() {
+    return {
+      formFieldList: [
+        { fieldCode: 'name', name: '模块', formType: 'text', width: '150' },
+        { fieldCode: 'table', name: '数据表', formType: 'select', width: '150' },
+        { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150' }
+      ]
+    }
+  },
   methods: {
+    entityChange(field, value) {
+      if (!isEmpty(value)) {
+        this.$set(this.field, 'relativeForm', value)
+        this.$set(this.field, 'relativeFormCode', value.code)
+        return
+      }
+      this.$set(this.field, 'relativeForm', null)
+      this.$set(this.field, 'relativeFormCode', '')
+    }
   }
 }
 </script>
