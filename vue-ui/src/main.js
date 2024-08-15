@@ -27,6 +27,8 @@ import FileUpload from '@/components/FileUpload/index.js'
 Vue.use(FileUpload)
 import PreviewFile from '@/components/PreviewFile/main.js'
 Vue.use(PreviewFile)
+import PreviewImage from '@/components/PreviewImage/main.js'
+Vue.use(PreviewImage)
 // 限制数据数值
 import inputLimit from './directives/inputLimit'
 Vue.use(inputLimit)

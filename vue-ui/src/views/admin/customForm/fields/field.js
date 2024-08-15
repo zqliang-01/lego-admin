@@ -8,6 +8,7 @@ export default class Field {
     this.required = obj.required || 0 // 是否必填
     this.hidden = obj.hidden || 0 // 是否隐藏字段
     this.inputTips = obj.inputTips || '' // 输入提示
+    this.stylePercent = obj.stylePercent || 100 // 输入提示
     if (this.formType === 'textarea') {
       this.maxLength = obj.maxLength || 800 // textarea 多行文本有最大数量
     }

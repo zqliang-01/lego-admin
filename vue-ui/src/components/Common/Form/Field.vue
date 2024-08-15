@@ -8,8 +8,15 @@
     :placeholder="item.placeholder"
     type="text"
     @input="commonChange(item, index, $event)"/>
-  <doc-image
-    v-else-if="item.formType == 'doc_image'"
+  <cover-upload
+    v-else-if="isCoverUpload"
+    v-model="fieldForm[item.fieldCode]"
+    :disabled="disableStatus"
+    :fileUploadAPI="coverUploadAPI"
+    :filePreviewUrl="coverPreviewUrl"
+    @value-change="commonChange(item, index, $event)"/>
+  <image-upload
+    v-else-if="item.formType == 'picture'"
     v-model="fieldForm[item.fieldCode]"
     :disabled="disableStatus"
     @value-change="commonChange(item, index, $event)"/>
@@ -157,10 +164,16 @@ import SelectTree from '@/components/Common/SelectTree'
 import SelectIcon from '@/components/Common/SelectIcon'
 import RichTextEditor from '@/components/Common/RichTextEditor'
 import DeptSelect from '@/components/Common/DeptSelect'
-import DocImage from '@/components/Common/DocImage'
+import CoverUpload from '@/components/Common/CoverUpload'
+import ImageUpload from '@/components/Common/ImageUpload'
 import CronInput from '@/components/Common/CronInput'
 
 import Mixin from './Mixin'
+import {
+  fileUploadAPI as docFileUploadAPI,
+  filePreviewUrl as docFilePreviewUrl
+} from '@/api/doc/file'
+import { fileUploadAPI, filePreviewUrl } from '@/api/common'
 
 export default {
   name: 'Field',
@@ -176,7 +189,8 @@ export default {
     LegoRelativeCell,
     RichTextEditor,
     DeptSelect,
-    DocImage,
+    CoverUpload,
+    ImageUpload,
     CronInput
   },
   mixins: [Mixin],
@@ -199,6 +213,21 @@ export default {
     }
   },
   computed: {
+    isCoverUpload() {
+      return ['doc_cover'].includes(this.item.formType)
+    },
+    coverUploadAPI() {
+      if (this.item.formType === 'doc_cover') {
+        return docFileUploadAPI
+      }
+      return fileUploadAPI
+    },
+    coverPreviewUrl() {
+      if (this.item.formType === 'doc_cover') {
+        return docFilePreviewUrl
+      }
+      return filePreviewUrl
+    },
     relativeFormCode() {
       if (this.item.relativeForm) {
         return this.item.relativeForm.code

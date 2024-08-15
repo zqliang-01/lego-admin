@@ -4,6 +4,7 @@
       v-if="!imageCode"
       :show-file-list="false"
       :http-request="fileUpload"
+      :disabled="disabled"
       drag
       class="upload"
       action="http"
@@ -13,8 +14,9 @@
     <div
       v-else
       class="upload-show">
-      <img v-src="logoUrl">
+      <img v-src="coverUrl">
       <i
+        v-if="!disabled"
         class="el-icon-remove icon-delete"
         @click="deleteImage"/>
     </div>
@@ -35,17 +37,18 @@
 </template>
 
 <script>
-import { fileUploadAPI, filePreviewUrl } from '@/api/doc/file'
 import EditImage from '@/components/EditImage'
 import { isEmpty } from '@/utils/types'
 
 export default {
-  name: 'SystemConfig',
+  name: 'CoverUpload',
   components: {
     EditImage
   },
   props: {
     value: [String, Number],
+    fileUploadAPI: Function,
+    filePreviewUrl: String,
     disabled: Boolean
   },
   data() {
@@ -72,8 +75,8 @@ export default {
     }
   },
   computed: {
-    logoUrl() {
-      return filePreviewUrl + this.imageCode
+    coverUrl() {
+      return this.filePreviewUrl + this.imageCode
     }
   },
   created() {
@@ -102,7 +105,7 @@ export default {
     },
     submiteImage(data) {
       this.loading = true
-      fileUploadAPI({
+      this.fileUploadAPI({
         file: new File([data.blob], data.file.name)
       }).then(res => {
         this.imageCode = res.data || ''

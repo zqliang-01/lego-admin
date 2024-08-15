@@ -50,6 +50,11 @@ export default {
   computed: {
     auth() {
       return getMenuAuth(this.$route.params.menuCode || this.menuCode)
+    },
+    filterFieldList() {
+      return this.fieldList.filter(field => {
+        return !['picture', 'handwriting_sign'].includes(field.formType)
+      })
     }
   },
   watch: {

@@ -93,10 +93,6 @@ export default {
     field: {
       type: Object,
       required: true
-    },
-    isTableChild: {
-      type: Boolean,
-      default: false
     }
   },
   data() {

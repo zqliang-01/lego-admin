@@ -9,8 +9,8 @@
       :active-value="props.activeValue"
       :inactive-value="props.inactiveValue"
       disabled />
-    <signature-image
-      v-else-if="formType == 'handwriting_sign'"
+    <image-view
+      v-else-if="['handwriting_sign', 'picture'].includes(formType)"
       :src="value"
       :height="config.signatureHeight" />
     <desc-text
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import SignatureImage from '@/components/Common/SignaturePad/Image'
+import ImageView from '@/components/Common/ImageView'
 import DescText from '@/components/Common/DescText'
 import MapView from '@/components/Common/MapView' // 地图详情
 
@@ -57,7 +57,7 @@ export default {
   name: 'FieldView',
 
   components: {
-    SignatureImage,
+    ImageView,
     DescText,
     MapView
   },

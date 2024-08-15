@@ -149,8 +149,6 @@ export default {
     }
   }
 
-  .field-item_body {}
-
   .control-btn {
     position: absolute;
     z-index: 1;

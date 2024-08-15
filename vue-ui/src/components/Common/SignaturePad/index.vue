@@ -1,6 +1,6 @@
 <template>
   <div ref="signaturePad" class="signature-pad">
-    <signature-image
+    <image-view
       v-if="disabled"
       :src="value"
       :height="height"
@@ -27,7 +27,7 @@ import { fileGetAPI } from '@/api/common'
 import { fileUploadAPI } from '@/api/common'
 
 import VueSignaturePad from './VueSignaturePad'
-import SignatureImage from './Image'
+import ImageView from '@/components/Common/ImageView'
 
 import { valueEquals } from 'element-ui/lib/utils/util'
 import { getImageData } from '@/utils'
@@ -37,7 +37,7 @@ export default {
   name: 'SignaturePad',
   components: {
     VueSignaturePad,
-    SignatureImage
+    ImageView
   },
   props: {
     value: String,

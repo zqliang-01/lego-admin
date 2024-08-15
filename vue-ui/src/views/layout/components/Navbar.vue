@@ -235,7 +235,6 @@ export default {
       }
     },
     changeMenu(clintWidth) {
-      console.log(clintWidth)
       if (clintWidth < 1200) {
         clintWidth = 1200
       }

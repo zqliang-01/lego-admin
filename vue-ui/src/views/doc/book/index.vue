@@ -130,7 +130,7 @@ export default {
       search: '',
       fieldList: [
         [
-          { fieldCode: 'cover', name: '封面', formType: 'doc_image', width: '150' }
+          { fieldCode: 'cover', name: '封面', formType: 'doc_cover', width: '150' }
         ],
         [
           { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '100', editable: false },

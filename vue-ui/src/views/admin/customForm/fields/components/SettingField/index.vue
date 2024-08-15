@@ -60,8 +60,7 @@
             </div>
             <setting-options
               v-if="dataResourceRadio == 'custom'"
-              :field="field"
-              :is-table-child="isTableChild" />
+              :field="field"/>
             <setting-dict-type
               v-if="dataResourceRadio == 'dict'"
               :app-code="appCode"
@@ -219,7 +218,8 @@ export default {
       return ![
         'user',
         'structure',
-        'handwriting_sign'
+        'handwriting_sign',
+        'picture'
       ].includes(this.field.formType)
     },
     // 是否允许设置选项内容
@@ -267,11 +267,6 @@ export default {
     // 是否为描述文字类型
     isDescText() {
       return this.field.formType === 'desc_text'
-    },
-
-    // 是否为明细表格内部字段
-    isTableChild() {
-      return false
     }
   },
   watch: {

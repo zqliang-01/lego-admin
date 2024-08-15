@@ -114,8 +114,8 @@ export default [
     icon: 'icon-relate'
   },
   {
-    componentName: 'FieldInput',
-    formType: 'pic',
+    componentName: 'FieldPicture',
+    formType: 'picture',
     name: '图片',
     icon: 'icon-picture '
   }

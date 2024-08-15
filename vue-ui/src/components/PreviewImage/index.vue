@@ -5,17 +5,12 @@
     ref="vuePictureViewer"
     :style="maskContainer"
     @mouseup="removeMove()">
-    <!-- 头部 -->
-    <div class="perview-header">
-      <span>{{ title }}</span>
-    </div>
     <!-- 图片容器 -->
     <div
       ref="imgContainer"
       class="imgContainer">
       <img
         v-src="bigImageUrl"
-        v-if="currentFile.type.code == 'image'"
         ref="bigImg"
         :style="
           'transform: scale(' +
@@ -32,29 +27,6 @@
         alt=""
         @click.stop=""
         @mousedown="addMove">
-      <div
-        v-if="currentFile.type.code == 'file'"
-        class="file-show">
-        <div v-if="!showPreviewBtn" class="title">该附件格式不支持预览，请下载后查看</div>
-        <i
-          class="el-icon-close"
-          @click="closeViewer" />
-        <div class="content">
-          <img
-            :src="fileIcon"
-            class="file-icon">
-          <div class="file-handle">
-            <el-button
-              v-if="showPreviewBtn"
-              type="primary"
-              plain
-              @click.native="previewFile">预览</el-button>
-            <el-button
-              type="primary"
-              @click.native="downloadFile">下载</el-button>
-          </div>
-        </div>
-      </div>
       <!-- tips -->
       <transition name="fade">
         <div
@@ -64,9 +36,7 @@
     </div>
     <div class="fixedHandle">
       <!-- 操作按钮 -->
-      <flexbox
-        v-if="currentFile.type.code == 'image'"
-        class="handleContainer">
+      <flexbox class="handleContainer">
         <div class="handle-box">
           <i
             :class="'zoom-in' | iconPre"
@@ -77,9 +47,6 @@
           <i
             :class="'rotate' | iconPre"
             @click="rotate" />
-          <i
-            :class="'download' | iconPre"
-            @click="downloadFile" />
         </div>
 
         <div
@@ -95,24 +62,18 @@
         class="thumbnailContainer">
         <ul>
           <li
-            v-for="(item, index) in imgData"
+            v-for="(item, index) in imageCodeList"
             ref="thumbnailItem"
             :key="index"
             @click="switchImgUrl(index, $event)">
-            <img
-              v-src="getItemImageUrl(item)"
-              v-if="item.type.code == 'image'"
-              alt="">
-            <img
-              v-else
-              :src="getFileIcon(item.name)"
-              alt="">
+            <img v-src="getItemImageUrl(item)" />
           </li>
         </ul>
       </div>
     </div>
     <!-- 左边箭头 -->
     <div
+      v-if="imgLength > 1"
       class="leftArrowCon"
       @click="handlePrev"
       @mouseenter="enterLeft"
@@ -125,6 +86,7 @@
     </div>
     <!-- 右边箭头 -->
     <div
+      v-if="imgLength > 1"
       class="rightArrowCon"
       @click="handleNext"
       @mouseenter="enterRight"
@@ -140,29 +102,24 @@
 
 <script>
 import {
-  getMaxIndex,
-  getFileIconWithSuffix,
-  downloadFileWithBuffer,
-  canPreviewFile
+  getMaxIndex
 } from '@/utils'
-import { fileDownloadAPI, filePreviewUrl } from '@/api/common'
+import { filePreviewUrl } from '@/api/common'
 
 export default {
-  name: 'PreviewFile',
-  props: {},
+  name: 'PreviewImage',
+  props: {
+  },
   data() {
     return {
       visible: false,
-      imgData: [],
+      imageCodeList: [],
       background: 'rgba(0,0,0,0.4)',
       // 选择的索引
-      selectIndex: -1,
       // 默认不显示左右切换箭头
       leftArrowShow: false,
       rightArrowShow: false,
       // 图片容器数据
-      fileIcon: '',
-      bigImgName: '',
       imgLength: 0,
       imgIndex: 0,
       showTips: false,
@@ -187,24 +144,11 @@ export default {
     }
   },
   computed: {
-    title() {
-      const fileName = this.bigImgName.slice(0, this.bigImgName.indexOf('.'))
-      return `${fileName} （${this.imgIndex + 1} / ${this.imgLength}）`
-    },
-
-    currentFile() {
-      return this.imgData[this.imgIndex]
-    },
-
     bigImageUrl() {
-      if (this.currentFile.type.code == 'image') {
-        return filePreviewUrl + this.currentFile.code
-      }
-      return ''
+      return filePreviewUrl + this.currentImageCode
     },
-
-    showPreviewBtn() {
-      return canPreviewFile(this.currentFile.name)
+    currentImageCode() {
+      return this.imageCodeList[this.imgIndex]
     }
   },
   methods: {
@@ -212,16 +156,17 @@ export default {
      * 预览
      */
     preview(data) {
-      this.selectIndex = data.index
-      this.imgData = data.data
-      this.imgLength = this.imgData.length
-      this.imgIndex = this.selectIndex
+      this.imageCodeList = data.data
+      this.imgLength = this.imageCodeList.length
+      this.imgIndex = data.index ? data.index : 0
       this.maskContainer['z-index'] = getMaxIndex()
       this.visible = true
 
       this.$nextTick(() => {
         const _dom = document.getElementById('vue-picture-viewer')
-        _dom.onmousewheel = this.scrollFunc
+        if (_dom) {
+          _dom.onmousewheel = this.scrollFunc
+        }
         // 火狐浏览器没有onmousewheel事件，用DOMMouseScroll代替(滚轮事件)
         document.body.addEventListener('DOMMouseScroll', this.scrollFunc)
         // 禁止火狐浏览器下拖拽图片的默认事件
@@ -233,8 +178,6 @@ export default {
             e.stopPropagation()
           })
         this.$nextTick(() => {
-          this.bigImgName = this.imgData[this.imgIndex].name
-          this.fileIcon = this.getFileIcon(this.bigImgName)
           if (this.imgLength > 1) {
             // 大于1的时候才会展示缩略图
             var item = this.$refs.thumbnailItem
@@ -244,8 +187,8 @@ export default {
         })
       })
     },
-    getItemImageUrl(item) {
-      return filePreviewUrl + item.code
+    getItemImageUrl(code) {
+      return filePreviewUrl + code
     },
     /**
      * init
@@ -292,12 +235,8 @@ export default {
         i.className = ''
       })
       this.imgIndex = num
-      this.bigImgName = this.imgData[num].name
-      this.fileIcon = this.getFileIcon(this.bigImgName)
       e.currentTarget.className = 'borderActive'
-      if (this.imgData[num].type.code == 'image') {
-        this.init()
-      }
+      this.init()
     },
 
     /**
@@ -309,8 +248,6 @@ export default {
         this.imgIndex = 0
       } else {
         this.imgIndex--
-        this.bigImgName = this.imgData[this.imgIndex].name
-        this.fileIcon = this.getFileIcon(this.bigImgName)
 
         var item = this.$refs.thumbnailItem
         item.forEach(function(i) {
@@ -327,12 +264,10 @@ export default {
      * 切换到下一张
      */
     handleNext() {
-      if (this.imgIndex + 1 >= this.imgData.length) {
+      if (this.imgIndex + 1 >= this.imageCodeList.length) {
         this.tips('已经是最后一张了!')
       } else {
         this.imgIndex++
-        this.bigImgName = this.imgData[this.imgIndex].name
-        this.fileIcon = this.getFileIcon(this.bigImgName)
 
         var item = this.$refs.thumbnailItem
         item.forEach(function(i) {
@@ -394,31 +329,8 @@ export default {
       }
 
       this.visible = false
-      this.imgData = []
-      this.selectIndex = -1
+      this.imageCodeList = []
       this.showTips = false
-    },
-
-    /**
-     * 附件逻辑
-     */
-    downloadFile() {
-      fileDownloadAPI(this.currentFile.code).then(res => {
-        const blob = new Blob([res.data], { type: '' })
-        downloadFileWithBuffer(blob, this.currentFile.name)
-      }).catch(() => {})
-    },
-    previewFile() {
-      this.$message.error('暂未支持非图片类型文件预览！')
-      return
-    },
-    getFileIcon(name) {
-      var ext = ''
-      const temps = name ? name.split('.') : []
-      if (temps.length > 0) {
-        ext = temps[temps.length - 1]
-      }
-      return getFileIconWithSuffix(ext)
     },
     removeMove() {
       this.$refs.vuePictureViewer.onmousemove = null
@@ -473,22 +385,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.perview-header {
-  width: 100%;
-  height: 40px;
-  background: rgba(0, 0, 0, 0.6);
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 40px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 101;
-  padding: 10px;
-  text-align: center;
-  padding: 0 20px;
-  cursor: pointer;
-}
-
 .leftArrowCon {
   width: 30%;
   height: calc(100% - 40px);
