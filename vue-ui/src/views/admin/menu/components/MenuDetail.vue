@@ -130,7 +130,7 @@ export default {
           { fieldCode: 'parentCode', name: '上级菜单', formType: 'structure', stylePercent: 100 }
         ],
         [
-          { fieldCode: 'code', name: '编码', formType: 'text', unique: true, required: true, inputTips: '编码格式：模块_一级菜单_二级菜单' },
+          { fieldCode: 'code', name: '编码', formType: 'text', unique: true, required: true, tipType: 'tooltip', inputTips: '需与代码生成的权限编码一致，编码格式：模块_一级菜单_二级菜单' },
           { fieldCode: 'name', name: '名称', formType: 'text', required: true }
         ],
         [

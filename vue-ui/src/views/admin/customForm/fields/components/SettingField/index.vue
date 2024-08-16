@@ -3,24 +3,39 @@
     v-clickoutside="clickOutSide"
     v-if="typeObj"
     class="field-setting">
-    <div class="setting-title">
-      {{ typeObj.name }}
-    </div>
 
     <div class="setting-body">
       <div class="item-section">
-        <div class="name input-tips"><span>*</span> 标识编码</div>
+        <div class="name input-tips"><span>*</span>表单类型</div>
+        <el-select
+          v-model="field.formType"
+          style="width: 100%;"
+          filterable
+          placeholder="请选择表单类型"
+          @change="handleChangeType">
+          <el-option
+            v-for="item in allTypeList"
+            :key="item.formType"
+            :label="item.name"
+            :value="item.formType" />
+        </el-select>
+        <div class="name input-tips">
+          <span>*</span> 标识编码
+          <el-tooltip
+            content="与代码生成功能中表字段的java属性对应，同时也是任务审批流程条件中的参数名"
+            placement="top">
+            <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
+          </el-tooltip>
+        </div>
         <el-select
           v-model="field.fieldCode"
           style="width: 100%;"
-          clearable
           filterable
-          placeholder="请选择/创建编码"
+          placeholder="请选择编码"
           @change="changeCode">
           <el-option
             v-for="item in columnList"
             :key="item.code"
-            :label="item.name + '(' + item.code + ')'"
             :value="item.code" />
         </el-select>
         <div class="name input-tips"><span>*</span> 标识名称</div>
@@ -213,6 +228,9 @@ export default {
       const field = FieldTypeLib.find(o => o.formType === this.field.formType)
       return field || this.field
     },
+    allTypeList() {
+      return FieldTypeLib
+    },
     // 是否允许设置字段默认值
     canDefault() {
       return ![
@@ -284,6 +302,11 @@ export default {
     }
   },
   methods: {
+    handleChangeType(value) {
+      const item = FieldTypeLib.find(o => o.formType === value)
+      this.$set(this.field, 'formType', item.formType)
+      this.$set(this.field, 'componentName', item.componentName)
+    },
     changeCode(code) {
       const column = this.columnList.find(column => column.code == code)
       if (column) {

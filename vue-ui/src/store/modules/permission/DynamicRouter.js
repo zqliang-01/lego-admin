@@ -33,6 +33,9 @@ export function addDynamicRouter(routers) {
 
 // 给菜单路由增加动态路由
 const addDynamicMenu = function(auth, routers) {
+  if (!routers) {
+    return
+  }
   let router = routers.find(router => router.code === auth.code)
   if (!router) {
     router = {
@@ -52,7 +55,9 @@ const addDynamicMenu = function(auth, routers) {
   auth.childrens.forEach(children => {
     if (children.menu && children.dynamicRoute) {
       addDynamicMenu(children, router.children)
-      router.children = router.children.sort((a, b) => a.meta.sn - b.meta.sn)
+      if (router.children) {
+        router.children = router.children.sort((a, b) => a.meta.sn - b.meta.sn)
+      }
     }
   })
 }
