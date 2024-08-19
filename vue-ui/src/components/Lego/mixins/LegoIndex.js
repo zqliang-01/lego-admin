@@ -139,8 +139,12 @@ export default {
           this.formCode = res.data.form.code
           tableHeaderFieldListAPI(this.formCode).then(res => {
             this.initRequest(res.data.form)
+            this.unionKey = []
             this.fieldList = []
             res.data.fields.forEach(field => {
+              if (field.unique) {
+                this.unionKey.push(field.fieldCode)
+              }
               field.minWidth = 100
               this.initSettingValue(field)
               this.fieldList.push(field)
@@ -173,7 +177,7 @@ export default {
      * 控制表格需要高亮的列
      */
     cellClassName({ row, column, rowIndex, columnIndex }) {
-      if (column.property === this.unionKey) {
+      if (this.unionKey.includes(column.property)) {
         return 'can-visit--underline can-visit--bold'
       } else {
         return ''
@@ -191,9 +195,9 @@ export default {
         this.$store.commit('SET_COLLAPSE', this.relativeEntity.show)
       }
       // 只有点击高亮列才触发打开详情信息
-      if (column.property === this.unionKey) {
+      if (this.unionKey.includes(column.property)) {
         this.$set(this.relativeEntity, 'show', true)
-        this.$set(this.relativeEntity, 'code', row[this.unionKey])
+        this.$set(this.relativeEntity, 'code', row.code)
         this.$set(this.relativeEntity, 'formCode', this.formCode)
         this.$set(this.relativeEntity, 'pageCodes', this.pageCodes)
         return

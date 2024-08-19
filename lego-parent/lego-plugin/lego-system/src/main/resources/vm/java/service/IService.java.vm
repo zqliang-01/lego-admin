@@ -24,7 +24,7 @@ public interface I${ClassName}Service extends IBusService {
 
     void update(String operatorCode, ${ClassName}ModifyVO vo);
 
-    void add(String operatorCode, ${ClassName}CreateVO vo);
+    String add(String operatorCode, ${ClassName}CreateVO vo);
 
     void delete(String operatorCode, List<String> codes);
 }

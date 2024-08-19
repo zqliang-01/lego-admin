@@ -1,5 +1,9 @@
 package com.lego.crm.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
@@ -14,9 +18,6 @@ import com.lego.crm.entity.CrmLead;
 import com.lego.crm.service.ICrmLeadService;
 import com.lego.crm.vo.CrmLeadCreateVO;
 import com.lego.crm.vo.CrmLeadModifyVO;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CrmLeadService extends BusService<ICrmLeadDao, CrmLeadAssembler> implements ICrmLeadService {
@@ -57,8 +58,10 @@ public class CrmLeadService extends BusService<ICrmLeadDao, CrmLeadAssembler> im
     }
 
     @Override
-    public void add(String operatorCode, CrmLeadCreateVO vo) {
-        new AddCrmLeadAction(operatorCode, vo).run();
+    public String add(String operatorCode, CrmLeadCreateVO vo) {
+        AddCrmLeadAction addCrmLeadAction = new AddCrmLeadAction(operatorCode, vo);
+        addCrmLeadAction.run();
+        return addCrmLeadAction.getEntityCode();
     }
 
     @Override

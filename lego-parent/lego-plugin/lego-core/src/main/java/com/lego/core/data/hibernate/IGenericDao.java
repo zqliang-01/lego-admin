@@ -24,5 +24,7 @@ public interface IGenericDao<T extends BaseEntity> extends JpaRepository<T, Long
 
     long findCountBy(GenericConditionVO vo);
 
+    boolean exists(GenericConditionVO vo);
+
     boolean exists(String code);
 }

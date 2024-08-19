@@ -1,5 +1,9 @@
 package com.lego.crm.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
@@ -14,9 +18,6 @@ import com.lego.crm.entity.CrmContract;
 import com.lego.crm.service.ICrmContractService;
 import com.lego.crm.vo.CrmContractCreateVO;
 import com.lego.crm.vo.CrmContractModifyVO;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CrmContractService extends BusService<ICrmContractDao, CrmContractAssembler> implements ICrmContractService {
@@ -57,8 +58,10 @@ public class CrmContractService extends BusService<ICrmContractDao, CrmContractA
     }
 
     @Override
-    public void add(String operatorCode, CrmContractCreateVO vo) {
-        new AddCrmContractAction(operatorCode, vo).run();
+    public String add(String operatorCode, CrmContractCreateVO vo) {
+        AddCrmContractAction addCrmContractAction = new AddCrmContractAction(operatorCode, vo);
+        addCrmContractAction.run();
+        return addCrmContractAction.getEntityCode();
     }
 
     @Override

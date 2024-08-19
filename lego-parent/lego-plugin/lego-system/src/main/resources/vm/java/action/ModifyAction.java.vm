@@ -42,7 +42,7 @@ public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${Clas
         entity.set${column.firstUpperField}(findByCode(${column.className}.class, vo.get${column.firstUpperField}()));
     #elseif($column.entityType)
         entity.set${column.firstUpperField}(findByUnsureCode(${column.className}.class, vo.get${column.firstUpperField}()));
-    #elseif(!$column.unique)
+    #elseif($column.javaField != 'code')
         entity.set${column.firstUpperField}(vo.get${column.firstUpperField}());
     #end
 #end

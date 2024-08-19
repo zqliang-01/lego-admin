@@ -1,20 +1,25 @@
 package com.lego.crm.entity;
 
-import com.lego.core.data.hibernate.BusEntity;
-import com.lego.core.util.DateUtil;
-import com.lego.core.util.EntityUtil;
-import com.lego.core.util.StringUtil;
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Map;
+
+import com.lego.core.data.hibernate.BusEntity;
+import com.lego.crm.entity.CrmDictionary;
+import com.lego.crm.entity.CrmCustomer;
+import com.lego.crm.entity.CrmLead;
+import com.lego.core.util.DateUtil;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Setter
 @Getter
@@ -39,8 +44,7 @@ public class CrmContract extends BusEntity {
     @JoinColumn(name = "type_id")
     private CrmDictionary type;
 
-    protected CrmContract() {
-    }
+    protected CrmContract() { }
 
     public CrmContract(String code, String name) {
         super(code, name);

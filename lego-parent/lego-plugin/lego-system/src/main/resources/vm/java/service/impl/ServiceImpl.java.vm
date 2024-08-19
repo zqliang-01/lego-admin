@@ -58,8 +58,10 @@ public class ${ClassName}Service extends BusService<I${ClassName}Dao, ${ClassNam
     }
 
     @Override
-    public void add(String operatorCode, ${ClassName}CreateVO vo) {
-        new Add${ClassName}Action(operatorCode, vo).run();
+    public String add(String operatorCode, ${ClassName}CreateVO vo) {
+        Add${ClassName}Action add${ClassName}Action = new Add${ClassName}Action(operatorCode, vo);
+        add${ClassName}Action.run();
+        return add${ClassName}Action.getEntityCode();
     }
 
     @Override

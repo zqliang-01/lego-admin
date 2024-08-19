@@ -5,9 +5,10 @@
     :title="createTitle"
     @close="close"
     @save="saveClick">
-    <create-sections title="基本信息">
+    <lego-create-sections title="基本信息">
       <el-form
         ref="createForm"
+        v-if="!loading"
         :model="fieldForm"
         :rules="fieldRules"
         :validate-on-rule-change="false"
@@ -20,7 +21,7 @@
           :field-list="children"
         />
       </el-form>
-    </create-sections>
+    </lego-create-sections>
   </fade-view>
 </template>
 
@@ -29,7 +30,7 @@ import {
   ${FieldName}AddAPI,
   ${FieldName}UpdateAPI
 } from '@/api/${AppCode}/${FieldName}'
-import CreateMixin from '@/components/lego/mixins/LegoCreate'
+import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 
 export default {
   name: '${ClassName}Create',

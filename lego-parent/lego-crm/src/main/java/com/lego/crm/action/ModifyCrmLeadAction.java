@@ -4,10 +4,10 @@ import com.lego.core.action.ModifyAction;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.crm.dao.ICrmLeadDao;
-import com.lego.crm.entity.CrmCustomer;
-import com.lego.crm.entity.CrmDictionary;
 import com.lego.crm.entity.CrmLead;
 import com.lego.crm.vo.CrmLeadModifyVO;
+import com.lego.crm.entity.CrmDictionary;
+import com.lego.crm.entity.CrmCustomer;
 
 public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
 
@@ -21,10 +21,9 @@ public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
 
     @Override
     protected void preprocess() {
-        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，线索修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索修改失败！");
+    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索修改失败！");
+    	BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索修改失败！");
+    	BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索修改失败！");
     }
 
     @Override

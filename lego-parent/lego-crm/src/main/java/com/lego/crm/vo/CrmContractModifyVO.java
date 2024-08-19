@@ -1,11 +1,12 @@
 package com.lego.crm.vo;
 
-import com.lego.core.vo.ModifyVO;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.lego.core.vo.ModifyVO;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter

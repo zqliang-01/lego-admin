@@ -1,20 +1,24 @@
 package com.lego.crm.entity;
 
-import com.lego.core.data.hibernate.BusEntity;
-import com.lego.core.util.DateUtil;
-import com.lego.core.util.EntityUtil;
-import com.lego.core.util.StringUtil;
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Map;
+
+import com.lego.core.data.hibernate.BusEntity;
+import com.lego.crm.entity.CrmDictionary;
+import com.lego.crm.entity.CrmCustomer;
+import com.lego.core.util.DateUtil;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Setter
 @Getter
@@ -27,7 +31,7 @@ public class CrmLead extends BusEntity {
     private Date brithday;
     private String address;
     private int age;
-    private BigDecimal size;
+    private String size;
     private boolean status;
     private String email;
     private String employee;
@@ -41,8 +45,7 @@ public class CrmLead extends BusEntity {
     @JoinColumn(name = "customer_id")
     private CrmCustomer customer;
 
-    protected CrmLead() {
-    }
+    protected CrmLead() { }
 
     public CrmLead(String code, String name) {
         super(code, name);

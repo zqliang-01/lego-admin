@@ -11,7 +11,6 @@ import com.lego.crm.vo.CrmLeadCreateVO;
 import com.lego.crm.vo.CrmLeadModifyVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.Map;
 
 @Component

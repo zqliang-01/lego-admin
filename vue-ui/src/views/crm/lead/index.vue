@@ -17,7 +17,7 @@
       <lego-table-head
         ref="legoTableHead"
         :sort-data="sortData"
-        :field-list="fieldList"
+        :field-list="filterFieldList"
         :form-code="formCode"
         :menu-code="menuCode"
         @filter="handleFilter"
@@ -29,7 +29,7 @@
         :data="pageList"
         :height="tableHeight"
         :cell-class-name="cellClassName"
-        :row-key="unionKey"
+        row-key="code"
         class="n-table--border"
         stripe
         border
@@ -128,7 +128,7 @@ export default {
     return {
       createShow: false,
       menuCode: 'crm_lead', // 菜单编码
-      unionKey: 'code', // 表格对象唯一键
+      unionKey: [], // 表格对象唯一键
       listRequest: leadListAPI,
       deleteRequest: leadDeleteAPI,
       exportRequest: leadExcelExportAPI,

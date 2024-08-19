@@ -1,5 +1,9 @@
 package com.lego.crm.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
@@ -14,9 +18,6 @@ import com.lego.crm.entity.CrmCustomer;
 import com.lego.crm.service.ICrmCustomerService;
 import com.lego.crm.vo.CrmCustomerCreateVO;
 import com.lego.crm.vo.CrmCustomerModifyVO;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class CrmCustomerService extends BusService<ICrmCustomerDao, CrmCustomerAssembler> implements ICrmCustomerService {
@@ -57,8 +58,10 @@ public class CrmCustomerService extends BusService<ICrmCustomerDao, CrmCustomerA
     }
 
     @Override
-    public void add(String operatorCode, CrmCustomerCreateVO vo) {
-        new AddCrmCustomerAction(operatorCode, vo).run();
+    public String add(String operatorCode, CrmCustomerCreateVO vo) {
+        AddCrmCustomerAction addCrmCustomerAction = new AddCrmCustomerAction(operatorCode, vo);
+        addCrmCustomerAction.run();
+        return addCrmCustomerAction.getEntityCode();
     }
 
     @Override

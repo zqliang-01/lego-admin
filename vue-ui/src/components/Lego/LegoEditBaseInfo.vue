@@ -187,6 +187,7 @@ export default {
     editConfirm() {
       this.$refs.editForm.validate(valid => {
         if (valid) {
+          this.editForm['code'] = this.detailCode
           this.fieldList.forEach(field => {
             if (!this.editForm.hasOwnProperty(field.fieldCode)) {
               this.editForm[field.fieldCode] = getFormFieldValue(field)

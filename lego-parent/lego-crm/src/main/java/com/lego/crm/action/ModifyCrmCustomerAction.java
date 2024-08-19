@@ -5,8 +5,8 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.crm.dao.ICrmCustomerDao;
 import com.lego.crm.entity.CrmCustomer;
-import com.lego.crm.entity.CrmDictionary;
 import com.lego.crm.vo.CrmCustomerModifyVO;
+import com.lego.crm.entity.CrmDictionary;
 
 public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCustomerDao> {
 
@@ -20,8 +20,8 @@ public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCusto
 
     @Override
     protected void preprocess() {
-        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，客户修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，客户修改失败！");
+    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，客户修改失败！");
+    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，客户修改失败！");
     }
 
     @Override

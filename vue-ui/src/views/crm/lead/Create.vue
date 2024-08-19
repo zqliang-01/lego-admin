@@ -8,6 +8,7 @@
     <lego-create-sections title="基本信息">
       <el-form
         ref="createForm"
+        v-if="!loading"
         :model="fieldForm"
         :rules="fieldRules"
         :validate-on-rule-change="false"

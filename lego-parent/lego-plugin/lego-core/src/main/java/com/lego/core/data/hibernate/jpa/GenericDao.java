@@ -104,6 +104,12 @@ public class GenericDao<T extends BaseEntity> extends LegoJpaRepository<T, Long>
     }
 
     @Override
+    public boolean exists(GenericConditionVO vo) {
+        long count = findCountBy(vo);
+        return count > 0;
+    }
+
+    @Override
     public boolean exists(String code) {
         CriteriaBuilder criteriaBuilder = this.entityManager.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);

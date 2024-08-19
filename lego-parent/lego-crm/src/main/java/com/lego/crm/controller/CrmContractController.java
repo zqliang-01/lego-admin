@@ -1,6 +1,17 @@
 package com.lego.crm.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.flowable.FlowableCheckStatus;
@@ -12,16 +23,8 @@ import com.lego.crm.dto.CrmContractInfo;
 import com.lego.crm.service.ICrmContractService;
 import com.lego.crm.vo.CrmContractCreateVO;
 import com.lego.crm.vo.CrmContractModifyVO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import cn.dev33.satoken.annotation.SaCheckPermission;
 
 @RestController
 @RequestMapping("/back-end/crm-contract")
@@ -33,8 +36,8 @@ public class CrmContractController extends BaseController {
     @PostMapping("/add")
     @SaCheckPermission("crm_contract_add")
     public JsonResponse<Object> add(@RequestBody CrmContractCreateVO vo) {
-        contractService.add(getLoginCode(), vo);
-        contractService.updateCheckStatus(vo.getCode(), FlowableCheckStatus.completed);
+        String code = contractService.add(getLoginCode(), vo);
+        contractService.updateCheckStatus(code, FlowableCheckStatus.completed);
         return JsonResponse.success();
     }
 

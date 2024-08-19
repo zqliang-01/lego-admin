@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.lego.core.data.hibernate.BusEntity;
-import com.lego.core.flowable.FlowableCheckStatus;
 #foreach ($import in $EntityImportList)
 import ${import};
 #end

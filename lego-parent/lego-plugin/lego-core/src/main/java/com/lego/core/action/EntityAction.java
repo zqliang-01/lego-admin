@@ -7,6 +7,9 @@ import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.EntityUtil;
+import com.lego.core.vo.CustomFieldTypeEnum;
+import com.lego.core.vo.GenericConditionItemVO;
+import com.lego.core.vo.GenericConditionVO;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -44,8 +47,20 @@ public abstract class EntityAction<E extends BaseEntity, D extends IGenericDao<E
         }
     }
 
+    protected boolean checkExists(String key, Object value) {
+        GenericConditionVO condition = GenericConditionVO.create()
+            .addItem(GenericConditionItemVO.createEqual(key, value));
+        return entityDao.exists(condition);
+    }
+
+    protected boolean checkEntityExists(String key, Object value) {
+        GenericConditionVO condition = GenericConditionVO.create()
+            .addItem(GenericConditionItemVO.createEqual(CustomFieldTypeEnum.ENTITY, key, value));
+        return entityDao.exists(condition);
+    }
+
     @Override
-    protected String getEntityCode() {
+    public String getEntityCode() {
         return EntityUtil.getCode(targetEntity);
     }
 

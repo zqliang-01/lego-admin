@@ -1,4 +1,4 @@
-import Layout from '@/views/layout/TableFormLayout'
+import Layout from '@/views/layout/CommonLayout'
 
 const layout = function(menu, requiresAuth = true) {
   if (menu.meta) {
@@ -17,11 +17,10 @@ const layout = function(menu, requiresAuth = true) {
   }
 }
 
-const ${AppCode}Router = [
+export default { type: '${AppCode}', router: [
   {
     ...layout({
       code: '${PermissionCode}',
-      name: '${FieldName}',
       path: '${FieldName}',
       component: () => import('@/views/${AppCode}/${FieldName}'),
       meta: {
@@ -29,7 +28,5 @@ const ${AppCode}Router = [
         icon: 'icon-title'
       }
     })
-  }
-]
-
-export default ${AppCode}Router
+  }]
+}

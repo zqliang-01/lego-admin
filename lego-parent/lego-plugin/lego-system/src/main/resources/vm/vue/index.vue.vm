@@ -29,7 +29,7 @@
         :data="pageList"
         :height="tableHeight"
         :cell-class-name="cellClassName"
-        :row-key="unionKey"
+        row-key="code"
         class="n-table--border"
         stripe
         border
@@ -119,7 +119,7 @@ import {
   ${FieldName}ExcelExportAPI,
   ${FieldName}ExcelAllExportAPI
 } from '@/api/${AppCode}/${FieldName}'
-import IndexMixin from '@/components/lego/mixins/LegoIndex'
+import IndexMixin from '@/components/Lego/mixins/LegoIndex'
 
 export default {
   name: 'CrmLeadIndex',
@@ -128,7 +128,7 @@ export default {
     return {
       createShow: false,
       menuCode: '${PermissionCode}', // 菜单编码
-      unionKey: '${UnionKey}', // 表格对象唯一键
+      unionKey: [], // 表格对象唯一键
       listRequest: ${FieldName}ListAPI,
       deleteRequest: ${FieldName}DeleteAPI,
       exportRequest: ${FieldName}ExcelExportAPI,

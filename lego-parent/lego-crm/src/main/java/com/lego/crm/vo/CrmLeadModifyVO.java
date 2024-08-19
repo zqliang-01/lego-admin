@@ -1,11 +1,12 @@
 package com.lego.crm.vo;
 
-import com.lego.core.vo.ModifyVO;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.Date;
+
+import com.lego.core.vo.ModifyVO;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class CrmLeadModifyVO extends ModifyVO {
     private Date brithday;
     private String address;
     private int age;
-    private BigDecimal size;
+    private String size;
     private boolean status;
     private String email;
     private String employee;

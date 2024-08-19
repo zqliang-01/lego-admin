@@ -1,5 +1,7 @@
 package com.lego.crm.service;
 
+import java.util.List;
+
 import com.lego.core.data.hibernate.IBusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
@@ -7,8 +9,6 @@ import com.lego.core.vo.GenericSearchVO;
 import com.lego.crm.dto.CrmContractInfo;
 import com.lego.crm.vo.CrmContractCreateVO;
 import com.lego.crm.vo.CrmContractModifyVO;
-
-import java.util.List;
 
 public interface ICrmContractService extends IBusService {
 
@@ -24,7 +24,7 @@ public interface ICrmContractService extends IBusService {
 
     void update(String operatorCode, CrmContractModifyVO vo);
 
-    void add(String operatorCode, CrmContractCreateVO vo);
+    String add(String operatorCode, CrmContractCreateVO vo);
 
     void delete(String operatorCode, List<String> codes);
 }

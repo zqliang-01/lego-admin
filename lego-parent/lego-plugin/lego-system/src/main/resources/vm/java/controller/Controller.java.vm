@@ -36,8 +36,8 @@ public class ${ClassName}Controller extends BaseController {
     @PostMapping("/add")
     @SaCheckPermission("${PermissionCode}_add")
     public JsonResponse<Object> add(@RequestBody ${ClassName}CreateVO vo) {
-        ${FieldName}Service.add(getLoginCode(), vo);
-        ${FieldName}Service.updateCheckStatus(vo.getCode(), FlowableCheckStatus.completed);
+        String code = ${FieldName}Service.add(getLoginCode(), vo);
+        ${FieldName}Service.updateCheckStatus(code, FlowableCheckStatus.completed);
         return JsonResponse.success();
     }
 

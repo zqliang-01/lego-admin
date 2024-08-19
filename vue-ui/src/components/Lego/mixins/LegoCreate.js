@@ -120,6 +120,9 @@ export default {
         return
       }
       this.loading = true
+      if (this.detailData && this.detailData.code) {
+        this.fieldForm['code'] = this.detailData.code
+      }
       this.saveRequest(this.fieldForm).then(() => {
         this.loading = false
         this.close()

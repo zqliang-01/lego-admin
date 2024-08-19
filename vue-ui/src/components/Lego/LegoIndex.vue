@@ -29,7 +29,7 @@
         :data="pageList"
         :height="tableHeight"
         :cell-class-name="cellClassName"
-        :row-key="unionKey"
+        row-key="code"
         class="n-table--border"
         stripe
         border
@@ -122,7 +122,7 @@ export default {
     return {
       createShow: false,
       menuCode: '', // 菜单编码
-      unionKey: 'code', // 表格对象唯一键
+      unionKey: [], // 表格对象唯一键
       listRequest: {},
       deleteRequest: {},
       exportRequest: {},
