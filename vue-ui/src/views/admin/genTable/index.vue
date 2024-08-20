@@ -10,7 +10,19 @@
       @search="onSearch"
       @create="onCreate"/>
     <div class="customer-content">
+      <flexbox
+        v-if="downloadList.length > 0"
+        class="selection-bar">
+        <div class="selected—title">已选中 <span class="selected—count">{{ downloadList.length }}</span> 项</div>
+        <flexbox class="selection-items-box">
+          <el-button
+            type="primary"
+            icon="el-icon-download"
+            @click.native="handleBatchDownloadJava">批量下载java代码</el-button>
+        </flexbox>
+      </flexbox>
       <lego-table
+        selection
         :loading="loading"
         :data-list="dataList"
         :field-list="fieldList"
@@ -18,7 +30,9 @@
         :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
-        @onList="getList">
+        :table-heigh-overly="tableHeighOverly"
+        @onList="getList"
+        @onSelectionChange="handleSelectionChange">
         <template slot-scope="scope">
           <el-button
             v-if="manage.genTable.update"
@@ -68,7 +82,8 @@ import {
   genTableListAPI,
   genTablePreviewAPI,
   genTableDownloadAPI,
-  genTableNameListAPI
+  genTableNameListAPI,
+  genTableBatchDownloadJavaAPI
 } from '@/api/admin/genTable'
 import { dataSourceSimpleListAPI } from '@/api/admin/sharding/dataSource'
 import { mapGetters } from 'vuex'
@@ -96,7 +111,9 @@ export default {
       loading: false,
       isCreate: false,
       previewVisible: false,
+      tableHeighOverly: 0,
       dataList: [],
+      downloadList: [],
       currentPage: 1,
       pageSize: 15,
       total: 0,
@@ -108,7 +125,7 @@ export default {
       previewData: [],
       fieldList: [
         [
-          { fieldCode: 'dataSource', name: '数据源', formType: 'select', filterable: true, width: '150', unique: true, tipType: 'tooltip', inputTips: '数据表所在数据库' },
+          { fieldCode: 'dataSource', name: '数据源', formType: 'select', filterable: true, width: '100', unique: true, tipType: 'tooltip', inputTips: '数据表所在数据库' },
           { fieldCode: 'code', name: '表名', formType: 'select', filterable: true, width: '150', unique: true, required: true, tipType: 'tooltip', inputTips: '数据库表名，会自动读取数据库表' }
         ],
         [
@@ -154,6 +171,27 @@ export default {
         this.dataList = res.data.result
         this.total = res.data.totalCount
         this.currentPage = res.data.pageIndex
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
+    handleSelectionChange(values) {
+      this.downloadList = values.map(val => val.code)
+      if (this.downloadList.length > 0) {
+        this.tableHeighOverly = -50
+      } else {
+        this.tableHeighOverly = 0
+      }
+    },
+    handleBatchDownloadJava() {
+      if (this.downloadList.length < 1) {
+        this.$message.error('请选择需要下载的数据表信息！')
+        return
+      }
+      this.loading = true
+      genTableBatchDownloadJavaAPI(this.downloadList).then(res => {
+        downloadFileWithBuffer(res.data, 'lego_gen_java.zip')
         this.loading = false
       }).catch(() => {
         this.loading = false
@@ -227,7 +265,52 @@ export default {
   height: 100%;
 }
 .customer-content {
+  background-color: #ffffff;
   border-top: 1px solid $xr-border-line-color;
   border-bottom: 1px solid $xr-border-line-color;
+}
+.selection-bar {
+  font-size: 12px;
+  height: 50px;
+  padding: 0 20px;
+  color: #777;
+
+  .selected—title {
+    flex-shrink: 0;
+    padding-right: 20px;
+    color: #333;
+    .selected—count {
+      color: $xr-color-primary;
+    }
+  }
+}
+.selection-items-box {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0 15px;
+
+  .el-button {
+    color: #666;
+    background-color: #f9f9f9;
+    border-color: #e5e5e5;
+    font-size: 12px;
+    height: 28px;
+    border-radius: 4px;
+    padding: 8px 12px;
+    ::v-deep i {
+      font-size: 12px;
+      margin-right: 5px;
+    }
+  }
+
+  .el-button--primary:hover {
+    background: $xr-color-primary;
+    border-color: $xr-color-primary;
+    color: #ffffff;
+  }
+
+  .el-button + .el-button {
+    margin-left: 15px;
+  }
 }
 </style>

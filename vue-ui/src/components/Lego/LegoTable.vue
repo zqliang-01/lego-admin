@@ -2,10 +2,20 @@
   <div>
     <el-table
       v-loading="loading"
+      id="legoTable"
       :data="dataList"
       :height="tableHeight + tableHeighOverly"
+      :row-key="selection ? 'code' : ''"
       highlight-current-row
-      style="width: 100%">
+      style="width: 100%"
+      @selection-change="handleSelectionChange">
+      <el-table-column
+        v-if="selection"
+        show-overflow-tooltip
+        reserve-selection
+        type="selection"
+        align="center"
+        width="55"/>
       <template v-for="(fields, r) in fieldList">
         <template v-for="(item, index) in fields">
           <el-table-column
@@ -71,6 +81,10 @@ export default {
       type: Boolean,
       default: true
     },
+    selection: {
+      type: Boolean,
+      default: false
+    },
     dataList: Array,
     fieldList: Array,
     editButtonWidth: {
@@ -129,6 +143,12 @@ export default {
     },
     handleField(data, row) {
       this.$emit('onClickField', data, row)
+    },
+    handleSelectionChange(val) {
+      this.$emit('onSelectionChange', val)
+    },
+    handleClearSelection() {
+      this.$refs.legoTable.clearSelection()
     }
   }
 }

@@ -82,3 +82,15 @@ export function genTableDownloadAPI(code) {
     responseType: 'blob'
   })
 }
+
+export function genTableBatchDownloadJavaAPI(data) {
+  return request({
+    url: `/back-end/sys-gen-table/batch-download-java`,
+    method: 'post',
+    data: data,
+    headers: {
+      'Content-Type': 'application/json;charset=UTF-8'
+    },
+    responseType: 'blob'
+  })
+}

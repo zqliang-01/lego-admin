@@ -159,4 +159,44 @@ public class SysGenTableController extends BaseController {
         IoUtil.write(response.getOutputStream(), false, data);
     }
 
+    @PostMapping("/batch-download-java")
+    @SaCheckPermission("manage_genTable_read")
+    public void batchDownloadJava(@RequestBody List<String> codes, HttpServletResponse response) throws IORuntimeException, IOException {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        ZipOutputStream zip = new ZipOutputStream(outputStream);
+        for (String code : codes) {
+            SysGenTableInfo table = tableService.findByCode(code);
+            int sn = permissionService.findMaxSn(table.getAppCode());
+            List<SysGenTableColumnInfo> columns = columnService.findByTable(code);
+            VelocityContext context = VelocityUtil.prepareContext(sn / 10 + 1, table, columns);
+
+            for (TypeInfo template : VelocityUtil.getTemplateList()) {
+                if (!template.getCode().endsWith(".java")) {
+                    continue;
+                }
+                StringWriter sw = new StringWriter();
+                Template tpl = Velocity.getTemplate(template.getName(), Constants.DEFAULT_CHARSET_NAME);
+                tpl.merge(context, sw);
+                try {
+                    zip.putNextEntry(new ZipEntry(VelocityUtil.buildFileAbsolutePath(template, table)));
+                    IoUtil.write(zip, StandardCharsets.UTF_8, false, sw.toString());
+                    IoUtil.close(sw);
+                    zip.flush();
+                    zip.closeEntry();
+                } catch (IOException e) {
+                    log.error("渲染模板失败，表名：" + table.getCode(), e);
+                }
+            }
+        }
+        IoUtil.close(zip);
+        byte[] data = outputStream.toByteArray();
+        response.reset();
+        response.addHeader("Access-Control-Allow-Origin", "*");
+        response.addHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment; filename=\"lego_gen_java_code.zip\"");
+        response.addHeader("Content-Length", "" + data.length);
+        response.setContentType("application/octet-stream; charset=UTF-8");
+        IoUtil.write(response.getOutputStream(), false, data);
+    }
+
 }
