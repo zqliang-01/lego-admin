@@ -47,6 +47,12 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
     }
 
     @Override
+    public List<SysCustomFieldInfo> findValidBy(String formCode) {
+        List<SysCustomField> fields = dao.findValidBy(formCode);
+        return assembler.create(fields);
+    }
+
+    @Override
     public List<SysCustomFieldInfo> findValidBy(String employeeCode, String formCode) {
         List<SysCustomField> fields = dao.findValidBy(formCode);
         List<SysColumnSort> columnSorts = columnSortDao.findByForm(formCode, employeeCode);

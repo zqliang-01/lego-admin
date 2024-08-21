@@ -11,6 +11,8 @@ public interface ISysCustomFieldService {
 
     List<TypeInfo> findSimpleTypeBy(String formCode);
 
+    List<SysCustomFieldInfo> findValidBy(String formCode);
+
     List<SysCustomFieldInfo> findValidBy(String employeeCode, String formCode);
 
     List<List<SysCustomFieldInfo>> findInit(String tableCode);

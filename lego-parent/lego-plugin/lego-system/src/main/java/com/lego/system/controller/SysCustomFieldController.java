@@ -79,14 +79,14 @@ public class SysCustomFieldController extends BaseController {
     public JsonResponse<SysCustomFormListInfo> listTableHeaderByForm(@PathVariable String formCode) {
         SysCustomFormInfo formInfo = customFormService.findBy(formCode);
         List<SysCustomFieldInfo> results = customFieldService.findValidBy(getLoginCode(), formCode);
-        results = results.stream().filter(f -> !f.isTips()).collect(Collectors.toList());
+        results = results.stream().filter(f -> !f.isSimpleType()).collect(Collectors.toList());
         return JsonResponse.success(new SysCustomFormListInfo(formInfo, results));
     }
 
     @GetMapping("/list-detail/{formCode}")
     public JsonResponse<SysCustomFormDetailInfo> listDetail(@PathVariable String formCode) {
         SysCustomFormInfo formInfo = customFormService.findBy(formCode);
-        List<SysCustomFieldInfo> results = customFieldService.findValidBy(getLoginCode(), formCode);
+        List<SysCustomFieldInfo> results = customFieldService.findValidBy(formCode);
         return JsonResponse.success(new SysCustomFormDetailInfo(formInfo, results));
     }
 
@@ -96,7 +96,7 @@ public class SysCustomFieldController extends BaseController {
         BusinessException.check(formInfo.getTable() != null, "表单未关联数据表！");
 
         List<List<SysCustomFieldInfo>> results = new ArrayList<List<SysCustomFieldInfo>>();
-        List<SysCustomFieldInfo> fieldInfos = customFieldService.findValidBy(getLoginCode(), formCode);
+        List<SysCustomFieldInfo> fieldInfos = customFieldService.findValidBy(formCode);
         Map<Integer, List<SysCustomFieldInfo>> fieldGroupMap = fieldInfos.stream().collect(Collectors.groupingBy(SysCustomFieldInfo::getXAxis));
         fieldGroupMap.values().stream().forEach(m -> {
             results.add(m.stream().sorted(Comparator.comparing(SysCustomFieldInfo::getYAxis)).collect(Collectors.toList()));

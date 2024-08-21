@@ -141,16 +141,13 @@ export default {
   },
   methods: {
     canEdit(item) {
-      return !item.unique && item.formType !== 'desc_text'
+      return !item.unique && !item.simpleType
     },
     /**
      * 是整行展示字段
      */
     isBlockShowField(item) {
-      return [
-        'map_address',
-        'desc_text',
-        'file'].includes(item.formType)
+      return item.simpleType
     },
 
     /**
@@ -190,7 +187,7 @@ export default {
         if (valid) {
           this.editForm['code'] = this.detailCode
           this.fieldList.forEach(field => {
-            if (!this.editForm.hasOwnProperty(field.fieldCode) && field.formType !== 'desc_text') {
+            if (!this.editForm.hasOwnProperty(field.fieldCode) && !field.simpleType) {
               this.editForm[field.fieldCode] = getFormFieldValue(field)
             }
           })

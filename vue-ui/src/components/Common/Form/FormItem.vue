@@ -7,7 +7,7 @@
     :class="[item.className || '', `is-${item.formType}`]"
     :style="{width: item.stylePercent ? `${item.stylePercent}%` : '50%'}"
     class="form-item">
-    <template v-if="item.formType !== 'desc_text'" slot="label">
+    <template v-if="!item.simpleType" slot="label">
       {{ item.name }}
       <el-tooltip
         v-if="item.tipType == 'tooltip'"

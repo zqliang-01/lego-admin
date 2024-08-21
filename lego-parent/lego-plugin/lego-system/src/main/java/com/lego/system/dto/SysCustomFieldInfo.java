@@ -45,7 +45,7 @@ public class SysCustomFieldInfo extends DTO {
         return super.hashCode();
     }
 
-    public boolean isTips() {
+    public boolean isSimpleType() {
         return CustomFieldTypeEnum.DESC_TEXT.equals(formType);
     }
 }
