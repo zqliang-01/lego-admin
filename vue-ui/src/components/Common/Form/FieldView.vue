@@ -6,8 +6,8 @@
     <el-switch
       v-if="formType == 'boolean_value'"
       :value="value"
-      :active-value="props.activeValue"
-      :inactive-value="props.inactiveValue"
+      :active-value="item.activeValue"
+      :inactive-value="item.inactiveValue"
       disabled />
     <image-view
       v-else-if="['handwriting_sign', 'picture'].includes(formType)"
@@ -15,8 +15,8 @@
       :height="config.signatureHeight" />
     <desc-text
       v-else-if="formType == 'desc_text'"
-      :key="Date.now().toString()"
-      :value="value" />
+      :value="item.defaultValue"
+      :disabled="true"/>
     <span
       v-else-if="formType == 'website'"
       :class="{'can-check': !isEmpty}"
@@ -26,7 +26,7 @@
       :class="{'can-check': !isEmpty}"
       @click="handleEntityClick(value)" >{{ getCommonShowValue() }}</span>
     <span
-      :class="[{'can-check': props.clickable}, {'can-visit--bold': props.clickable}]"
+      :class="[{'can-check': item.clickable}, {'can-visit--bold': item.clickable}]"
       @click="handleClick(value)"
       v-else>{{ getCommonShowValue() }}</span>
     <map-view
@@ -63,7 +63,7 @@ export default {
   },
 
   props: {
-    props: Object, // 自定义字段参数信息
+    item: Object, // 自定义字段参数信息
     leftContent: Object,
     formType: String,
     value: [String, Object, Array, Number, Boolean]
@@ -78,7 +78,7 @@ export default {
 
   computed: {
     config() {
-      return merge({ ...DefaultFieldView }, this.props || {})
+      return merge({ ...DefaultFieldView }, this.item || {})
     },
     isEmpty() {
       return isEmpty(this.value)
@@ -110,13 +110,13 @@ export default {
     },
 
     handleClick(value) {
-      if (this.props.clickable) {
-        this.$emit('clickValue', { field: this.props, value: value })
+      if (this.item.clickable) {
+        this.$emit('clickValue', { field: this.item, value: value })
       }
     },
 
     handleEntityClick(value) {
-      this.$emit('clickEntity', { field: this.props, value: value })
+      this.$emit('clickEntity', { field: this.item, value: value })
     }
   }
 }

@@ -79,6 +79,7 @@ public class SysCustomFieldController extends BaseController {
     public JsonResponse<SysCustomFormListInfo> listTableHeaderByForm(@PathVariable String formCode) {
         SysCustomFormInfo formInfo = customFormService.findBy(formCode);
         List<SysCustomFieldInfo> results = customFieldService.findValidBy(getLoginCode(), formCode);
+        results = results.stream().filter(f -> !f.isTips()).collect(Collectors.toList());
         return JsonResponse.success(new SysCustomFormListInfo(formInfo, results));
     }
 

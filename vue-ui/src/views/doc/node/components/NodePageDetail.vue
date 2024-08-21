@@ -16,6 +16,7 @@
       <tinymce
         v-else
         ref="createTinymce"
+        :disabled="true"
         :value="pageDetail.content"
         :toolbar="[]"
         :plugins="[]"
@@ -128,15 +129,7 @@ export default {
         contextmenu: false,
         mage_advtab: false,
         table_responsive_width: false,
-        object_resizing: false,
-        setup: (editor) => {
-          // 文档禁止编辑
-          editor.on('init', () => {
-            editor.getBody().setAttribute('contenteditable', 'false')
-          })
-          editor.on('SetContent', function() {
-          })
-        }
+        object_resizing: false
       }
     }
   }

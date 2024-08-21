@@ -134,8 +134,8 @@
     :disabled="disableStatus"/>
   <desc-text
     v-else-if="item.formType == 'desc_text'"
-    :value="fieldForm[item.fieldCode]"
-    :disabled="disableStatus"/>
+    :value="item.defaultValue"
+    :disabled="true"/>
   <lego-relative-cell
     v-else-if="item.formType == 'entity'"
     :value="item.value"

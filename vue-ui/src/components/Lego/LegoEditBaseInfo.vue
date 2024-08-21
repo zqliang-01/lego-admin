@@ -35,7 +35,7 @@
             style="width: 100%;"
             class="form-item__value">
             <field-view
-              :props="item"
+              :item="item"
               :form-type="item.formType"
               :value="item.value"
               @clickEntity="handleEntityClick"/>
@@ -68,7 +68,7 @@
             style="width: 100%;"
             class="form-item__value">
             <field-view
-              :props="item"
+              :item="item"
               :form-type="item.formType"
               :value="item.value" />
           </flexbox>
@@ -141,7 +141,7 @@ export default {
   },
   methods: {
     canEdit(item) {
-      return !item.unique
+      return !item.unique && item.formType !== 'desc_text'
     },
     /**
      * 是整行展示字段
@@ -149,6 +149,7 @@ export default {
     isBlockShowField(item) {
       return [
         'map_address',
+        'desc_text',
         'file'].includes(item.formType)
     },
 
@@ -189,7 +190,7 @@ export default {
         if (valid) {
           this.editForm['code'] = this.detailCode
           this.fieldList.forEach(field => {
-            if (!this.editForm.hasOwnProperty(field.fieldCode)) {
+            if (!this.editForm.hasOwnProperty(field.fieldCode) && field.formType !== 'desc_text') {
               this.editForm[field.fieldCode] = getFormFieldValue(field)
             }
           })

@@ -40,7 +40,10 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
     @Override
     public List<TypeInfo> findSimpleTypeBy(String formCode) {
         List<SysCustomField> fields = dao.findBy(formCode);
-        return fields.stream().map(field -> new TypeInfo(field.getFieldCode(), field.getName())).collect(Collectors.toList());
+        return fields.stream()
+            .filter(field -> !field.isTips())
+            .map(field -> new TypeInfo(field.getFieldCode(), field.getName()))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -48,12 +51,6 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
         List<SysCustomField> fields = dao.findValidBy(formCode);
         List<SysColumnSort> columnSorts = columnSortDao.findByForm(formCode, employeeCode);
         return assembler.create(fields, columnSorts);
-    }
-
-    @Override
-    public List<String> findCodesByForm(String formCode) {
-        List<SysCustomField> fields = dao.findBy(formCode);
-        return assembler.createCodes(fields);
     }
 
     @Override

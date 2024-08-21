@@ -22,7 +22,7 @@
         show-overflow-tooltip>
         <template slot-scope="scope">
           <field-view
-            :props="item"
+            :item="item"
             :form-type="item.formType"
             :value="scope.row[item.fieldCode]"
             @clickValue="handleField($event, scope.row, scope.$index)">

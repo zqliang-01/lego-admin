@@ -36,6 +36,9 @@ public class AddSysColumnSortAction extends MaintainAction {
     @Override
     protected void doRun() {
         for (SysCustomField field : fields) {
+            if (field.isTips()) {
+                continue;
+            }
             SysColumnSort columnSort = new SysColumnSort(field, operator);
             columnSort.setSn(++startSn);
             sorts.add(columnSort);

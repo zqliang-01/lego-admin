@@ -31,7 +31,8 @@ public enum CustomFieldTypeEnum {
     DESC_TEXT("desc_text", "描述文字", "FieldDescText", GenConstants.NULL, String.class),
     EMPLOYEE("user", "员工", "FieldInput", GenConstants.NULL, String.class),
     DEPT("structure", "部门", "FieldInput", GenConstants.NULL, String.class),
-    ENTITY("entity", "关联表", "FieldInput", GenConstants.COLUMNTYPE_REFERENCE_ENTITY, BusEntity.class);
+    ENTITY("entity", "关联表", "FieldInput", GenConstants.COLUMNTYPE_REFERENCE_ENTITY, BusEntity.class),
+    PICTURE("picture", "图片", "FieldPicture", GenConstants.NULL, String.class);
 
     private static final List<CustomFieldTypeEnum> ENTITY_TYPE_LIST = Arrays.asList(SELECT, CHECKBOX, ENTITY);
 

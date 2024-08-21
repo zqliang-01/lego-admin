@@ -76,7 +76,7 @@ export default {
       this.fieldForm = {}
       this.dataFieldList.forEach(fields => {
         fields.forEach(field => {
-          if (field.show !== false) {
+          if (field.show !== false && field.formType !== 'desc_text') {
             this.initSettingValue(field)
             field.value = this.detailData[field.fieldCode]
             field.disabled = this.getDisable(field, this.actionType)

@@ -42,7 +42,7 @@
                 </div>
                 <field-view
                   v-else
-                  :props="item"
+                  :item="item"
                   :form-type="item.formType"
                   :value="row[item.fieldCode]"/>
               </template>

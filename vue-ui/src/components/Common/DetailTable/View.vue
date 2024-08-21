@@ -23,7 +23,7 @@
               class="form-item">
               <div class="form-item__label">{{ item.name }}</div>
               <field-view
-                :props="item"
+                :item="item"
                 :form-type="item.formType"
                 :value="fieldForm[sectionIndex][item.field]"
               >
@@ -53,7 +53,7 @@
           :min-width="getMinWidth(item.formType)">
           <template slot-scope="{ row }">
             <field-view
-              :props="item"
+              :item="item"
               :form-type="item.formType"
               :value="row[item.field]"
             >

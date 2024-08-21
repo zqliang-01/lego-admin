@@ -56,7 +56,7 @@
           show-overflow-tooltip>
           <template slot-scope="{ row, column }">
             <field-view
-              :props="item"
+              :item="item"
               :form-type="item.formType"
               :value="row[column.property]"
               @clickEntity="handleEntityClick" />

@@ -3,6 +3,7 @@ package com.lego.system.entity;
 import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.CustomFieldTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -85,5 +86,9 @@ public class SysCustomField extends BaseEntity {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    public boolean isTips() {
+        return CustomFieldTypeEnum.DESC_TEXT.equals(formType);
     }
 }

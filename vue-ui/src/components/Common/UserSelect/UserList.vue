@@ -34,7 +34,7 @@
         show-overflow-tooltip>
         <template slot-scope="{ row }">
           <field-view
-            :props="item"
+            :item="item"
             :form-type="item.formType"
             :value="row[item.fieldCode]"/>
         </template>

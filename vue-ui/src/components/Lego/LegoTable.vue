@@ -28,7 +28,7 @@
             <template slot-scope="{ row }">
               <slot name="column" v-bind="{ row: row, item: item }">
                 <field-view
-                  :props="item"
+                  :item="item"
                   :form-type="item.formType"
                   :value="row[item.fieldCode]"
                   @clickValue="handleField($event, row)" />

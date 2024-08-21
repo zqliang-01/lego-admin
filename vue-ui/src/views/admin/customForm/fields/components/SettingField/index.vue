@@ -6,40 +6,46 @@
 
     <div class="setting-body">
       <div class="item-section">
-        <div class="name input-tips"><span>*</span>表单类型</div>
-        <el-select
-          v-model="field.formType"
-          style="width: 100%;"
-          filterable
-          placeholder="请选择表单类型"
-          @change="handleChangeType">
-          <el-option
-            v-for="item in allTypeList"
-            :key="item.formType"
-            :label="item.name"
-            :value="item.formType" />
-        </el-select>
-        <div class="name input-tips">
-          <span>*</span> 标识编码
-          <el-tooltip
-            content="与代码生成功能中表字段的java属性对应，同时也是任务审批流程条件中的参数名"
-            placement="top">
-            <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
-          </el-tooltip>
+        <div>
+          <div class="name input-tips"><span>*</span>表单类型</div>
+          <el-select
+            v-model="field.formType"
+            style="width: 100%;"
+            filterable
+            placeholder="请选择表单类型"
+            @change="handleChangeType">
+            <el-option
+              v-for="item in allTypeList"
+              :key="item.formType"
+              :label="item.name"
+              :value="item.formType" />
+          </el-select>
         </div>
-        <el-select
-          v-model="field.fieldCode"
-          style="width: 100%;"
-          filterable
-          placeholder="请选择编码"
-          @change="changeCode">
-          <el-option
-            v-for="item in columnList"
-            :key="item.code"
-            :value="item.code" />
-        </el-select>
-        <div class="name input-tips"><span>*</span> 标识名称</div>
-        <el-input v-model="field.name" />
+        <div v-if="!isDescText">
+          <div class="name input-tips">
+            <span>*</span> 标识编码
+            <el-tooltip
+              content="与代码生成功能中表字段的java属性对应，同时也是任务审批流程条件中的参数名"
+              placement="top">
+              <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
+            </el-tooltip>
+          </div>
+          <el-select
+            v-model="field.fieldCode"
+            style="width: 100%;"
+            filterable
+            placeholder="请选择编码"
+            @change="changeCode">
+            <el-option
+              v-for="item in columnList"
+              :key="item.code"
+              :value="item.code" />
+          </el-select>
+        </div>
+        <div v-if="!isDescText">
+          <div class="name input-tips"><span>*</span> 标识名称</div>
+          <el-input v-model="field.name" />
+        </div>
       </div>
       <template v-if="!isDescText">
         <div class="item-section">

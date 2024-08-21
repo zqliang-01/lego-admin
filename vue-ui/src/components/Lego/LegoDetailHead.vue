@@ -65,7 +65,7 @@
             :style="item.style"
             :class="item.icon" />
           <field-view
-            :props="item"
+            :item="item"
             :form-type="item.formType"
             :value="item.value" />
         </div>

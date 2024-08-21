@@ -7,6 +7,7 @@
     :init="showInit"
     :plugins="showPlugins"
     :toolbar="showToolbar"
+    :disabled="disabled"
     tinymce-script-src="tinymce/js/tinymce.min.js"
     v-on="$listeners"
   />
@@ -28,7 +29,10 @@ export default {
   },
   inheritAttrs: false,
   props: {
-    disabled: Boolean,
+    disabled: {
+      type: Boolean,
+      default: false
+    },
     value: String,
     init: Object,
     height: [String, Number],

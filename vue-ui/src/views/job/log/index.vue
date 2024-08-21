@@ -80,7 +80,7 @@
         @onList="getList">
         <template v-slot:column="{ row, item }">
           <field-view
-            :props="item"
+            :item="item"
             :form-type="item.formType"
             :value="handleDisplayValue(row, item)"
             @clickValue="handleFieldClick(false, row[item.fieldCode], row)" />
