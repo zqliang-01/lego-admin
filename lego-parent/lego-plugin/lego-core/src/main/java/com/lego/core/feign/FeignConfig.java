@@ -26,11 +26,15 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class FeignConfig implements RequestInterceptor {
+
+    private static final List<String> NOT_COVERED_HEADERS = Arrays.asList("content-length", "content-type");
 
     @Autowired
     private FastJsonHttpMessageConverter messageConverter;
@@ -71,7 +75,7 @@ public class FeignConfig implements RequestInterceptor {
         if (headerNames != null) {
             while (headerNames.hasMoreElements()) {
                 String headerName = headerNames.nextElement();
-                if ("content-length".equalsIgnoreCase(headerName)) {
+                if (NOT_COVERED_HEADERS.contains(headerName)) {
                     continue;
                 }
                 String header = request.getHeader(headerName);

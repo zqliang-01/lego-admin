@@ -38,6 +38,8 @@ lego:
       bucketName:
 # sa-token配置
 sa-token:
+  # token名称 (同时也是cookie名称)
+  token-name: ${lego.token-name:lego-admin}
   # token有效期，单位s 默认30天, -1代表永不过期 
   timeout: 2592000
   # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
@@ -54,7 +56,7 @@ sa-token:
 # xxl-job定时任务
 xxl:
   job:
-    accessToken: ${sa-token.jwt-secret-key}
+    accessToken: ${lego.job.accessToken:lego-admin}
     executor:
       appname: ${spring.application.name:xxl-job-executor-sample}
     i18n: zh_CN
@@ -65,3 +67,15 @@ xxl:
       slow:
         max: 100
     logretentiondays: 30
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 60000
+        read-timeout: 60000
+  sentinel:
+    enabled: true
+  httpclient:
+    enabled: false
+  okhttp:
+    enabled: true

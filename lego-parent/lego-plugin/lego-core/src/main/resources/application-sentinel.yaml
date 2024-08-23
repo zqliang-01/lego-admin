@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    sentinel:
+      filter:
+        enabled: false
+      transport:
+        dashboard: ${lego.sentinel.dashboard}
+      datasource:
+        flow:
+          nacos:
+            server-addr: ${spring.cloud.nacos.server-addr}
+            dataId: ${spring.application.name}-flow-rules.json
+            groupId: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow
