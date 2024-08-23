@@ -56,13 +56,9 @@ import {
   collectCodeGetAPI
 } from '@/api/doc/collect'
 import { nodeDisableAPI } from '@/api/doc/node'
-import Tinymce from '@/components/Tinymce'
 
 export default {
   name: 'DocNodeHead',
-  components: {
-    Tinymce
-  },
   props: {
     nodeDetail: {
       type: Object,

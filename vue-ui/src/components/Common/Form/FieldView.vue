@@ -26,7 +26,7 @@
       :class="{'can-check': !isEmpty}"
       @click="handleEntityClick(value)" >{{ getCommonShowValue() }}</span>
     <span
-      :class="[{'can-check': item.clickable}, {'can-visit--bold': item.clickable}]"
+      :class="[{'can-check': clickable}, {'can-visit--bold': clickable}]"
       @click="handleClick(value)"
       v-else>{{ getCommonShowValue() }}</span>
     <map-view
@@ -82,6 +82,12 @@ export default {
     },
     isEmpty() {
       return isEmpty(this.value)
+    },
+    clickable() {
+      if (this.item && this.item.clickable) {
+        return true
+      }
+      return false
     }
   },
   methods: {

@@ -169,7 +169,6 @@ export default {
       this.getList()
     },
     handleDetail(code) {
-      console.log(code)
       this.$router.push({
         name: 'DocBook',
         params: {

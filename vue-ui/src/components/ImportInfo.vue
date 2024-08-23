@@ -11,7 +11,7 @@
       </div>
       <div class="detail-cell__value">
         <field-view
-          :props="item"
+          :item="item"
           :form-type="item.formType"
           :value="item.value"
         >
