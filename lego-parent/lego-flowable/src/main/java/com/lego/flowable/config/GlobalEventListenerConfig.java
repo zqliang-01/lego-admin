@@ -75,7 +75,7 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
         HistoricTaskLogEntryQuery taskLogQuery = historyService.createHistoricTaskLogEntryQuery();
         for (HistoricTaskInstance task : tasks) {
             List<HistoricTaskLogEntry> taskLogs = taskLogQuery.taskId(task.getId()).type(logType).list();
-            if (CollectionUtil.isEmpty(taskLogs)) {
+            if (CollectionUtil.isEmpty(taskLogs) && StringUtil.isBlank(task.getDeleteReason())) {
                 SysCustomForm form = formDao.findByCode(task.getFormKey());
                 SysGenTable table = form.getTable();
                 Object code = task.getTaskLocalVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
