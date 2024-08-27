@@ -11,7 +11,7 @@
     <div slot="title">
       <h2>代码预览</h2>
     </div>
-    <sash-form-layout height="510px">
+    <sash-form-layout height="510px" rightBackground="#e6e6e6">
       <template v-slot:left>
         <el-tree
         :props="treeProps"
@@ -115,7 +115,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .content-box {
-  background: #fff;
   padding: 5px;
   border-radius: 5px;
   .copy-button {
@@ -127,4 +126,4 @@ export default {
     }
   }
 }
-</style>@/components/highlight
+</style>

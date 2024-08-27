@@ -21,9 +21,11 @@ public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getSource()), "来源不能为空，线索修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCustomer()), "客户不能为空，线索修改失败！");
     }
 
     @Override

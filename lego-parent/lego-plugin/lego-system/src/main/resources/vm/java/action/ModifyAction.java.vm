@@ -23,12 +23,12 @@ public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${Clas
     @Override
     protected void preprocess() {
 #foreach ($column in $columns)
-    #if($column.required && $column.javaFieldType == 'String')
-    	BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}修改失败！");
-    #elseif($column.required && $column.javaFieldType == 'BigDecimal')
+    #if($column.required && $column.javaFieldType == 'BigDecimal')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
     #elseif($column.required && $column.javaFieldType == 'Date')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
+    #elseif($column.required)
+        BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}修改失败！");
     #end
 #end
     }

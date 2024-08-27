@@ -22,21 +22,22 @@ public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}
     @Override
     protected void preprocess() {
 #foreach ($column in $columns)
-    #if($column.required && $column.javaFieldType == 'String')
-    	BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}新增失败！");
-    #elseif($column.required)
+    #if($column.required && $column.javaFieldType == 'BigDecimal')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
+    #elseif($column.required && $column.javaFieldType == 'Date')
+    	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
+    #elseif($column.required)
+        BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}新增失败！");
     #end
 #end
 #foreach ($column in $columns)
-    #if($column.unique)
-    #if($column.required)
+    #if($column.unique && $column.required)
         #if($column.entityType)
         BusinessException.check(!checkEntityExists("$column.javaField", vo.get${column.firstUpperField}()), "已存在${column.comment}为[{0}]的${FunctionName}，${FunctionName}新增失败！", vo.get${column.firstUpperField}());
         #else
         BusinessException.check(!checkExists("$column.javaField", vo.get${column.firstUpperField}()), "已存在${column.comment}为[{0}]的${FunctionName}，${FunctionName}新增失败！", vo.get${column.firstUpperField}());
         #end
-    #else
+    #elseif($column.unique)
         if (StringUtil.isNotBlank(vo.get${column.firstUpperField}())) {
             #if($column.entityType)
             BusinessException.check(!checkEntityExists("$column.javaField", vo.get${column.firstUpperField}()), "已存在${column.comment}为[{0}]的${FunctionName}，${FunctionName}新增失败！", vo.get${column.firstUpperField}());
@@ -44,7 +45,6 @@ public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}
             BusinessException.check(!checkExists("$column.javaField", vo.get${column.firstUpperField}()), "已存在${column.comment}为[{0}]的${FunctionName}，${FunctionName}新增失败！", vo.get${column.firstUpperField}());
             #end
         }
-    #end
     #end
 #end
     }

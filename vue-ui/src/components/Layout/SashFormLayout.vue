@@ -3,7 +3,7 @@
 		<el-col id="left-content" class="left-content" :span="spanLeft">
       <slot name="left"></slot>
 		</el-col>
-		<el-col id="right-content" class="right-content" :span="spanRight">
+		<el-col id="right-content" class="right-content" :style="{background: rightBackground}" :span="spanRight">
       <div id="resize" class="resize" title="收缩侧边栏">⋮</div>
       <slot name="right"></slot>
 		</el-col>
@@ -25,6 +25,10 @@ export default {
     height: {
       type: String,
       default: '420px'
+    },
+    rightBackground: {
+      type: String,
+      default: '#FFF'
     }
   },
   mounted() {

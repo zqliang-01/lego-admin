@@ -20,11 +20,11 @@ public class AddCrmLeadAction extends AddAction<CrmLead, ICrmLeadDao> {
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索新增失败！");
-    	BusinessException.check(vo.getSource() != null, "来源不能为空，线索新增失败！");
-    	BusinessException.check(vo.getCustomer() != null, "客户不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getSource()), "来源不能为空，线索新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCustomer()), "客户不能为空，线索新增失败！");
         BusinessException.check(!checkExists("code", vo.getCode()), "已存在编码为[{0}]的线索，线索新增失败！", vo.getCode());
     }
 

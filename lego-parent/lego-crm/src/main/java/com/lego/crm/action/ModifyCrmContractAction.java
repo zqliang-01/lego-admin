@@ -22,11 +22,11 @@ public class ModifyCrmContractAction extends ModifyAction<CrmContract, ICrmContr
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，合同修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，合同修改失败！");
-    	BusinessException.check(vo.getStartTime() != null, "开始时间不能为空，合同修改失败！");
-    	BusinessException.check(vo.getEndTime() != null, "结束时间不能为空，合同修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getOwnerCode()), "负责人不能为空，合同修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，合同修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，合同修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getLead()), "线索不能为空，合同修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCustomer()), "客户不能为空，合同修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getType()), "类型不能为空，合同修改失败！");
     }
 
     @Override

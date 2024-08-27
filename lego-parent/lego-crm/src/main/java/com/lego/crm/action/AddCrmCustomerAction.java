@@ -19,9 +19,9 @@ public class AddCrmCustomerAction extends AddAction<CrmCustomer, ICrmCustomerDao
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，客户新增失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，客户新增失败！");
-    	BusinessException.check(vo.getType() != null, "类型不能为空，客户新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，客户新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，客户新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getType()), "类型不能为空，客户新增失败！");
         BusinessException.check(!checkExists("code", vo.getCode()), "已存在编码为[{0}]的客户，客户新增失败！", vo.getCode());
     }
 

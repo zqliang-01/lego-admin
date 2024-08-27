@@ -20,8 +20,9 @@ public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCusto
 
     @Override
     protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，客户修改失败！");
-    	BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，客户修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，客户修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，客户修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getType()), "类型不能为空，客户修改失败！");
     }
 
     @Override
