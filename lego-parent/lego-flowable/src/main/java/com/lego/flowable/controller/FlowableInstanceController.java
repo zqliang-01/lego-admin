@@ -5,6 +5,7 @@ import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.flowable.dto.FlowableInstanceInfo;
 import com.lego.flowable.dto.FlowableProcessNodeInfo;
+import com.lego.flowable.dto.IFlowableStartFormDetailInfo;
 import com.lego.flowable.service.IFlowableInstanceService;
 import com.lego.flowable.vo.FlowableInstanceSearchVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,11 @@ public class FlowableInstanceController extends BaseController {
     public JsonResponse<Object> stop(@PathVariable String id) {
         instanceService.stop(getLoginCode(), id);
         return JsonResponse.success();
+    }
+
+    @GetMapping("/get-start-form/{id}")
+    public JsonResponse<IFlowableStartFormDetailInfo> getStartForm(@PathVariable String id) {
+        return JsonResponse.success(instanceService.findStartForm(id));
     }
 
 }

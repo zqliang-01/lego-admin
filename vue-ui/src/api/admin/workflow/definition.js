@@ -72,3 +72,8 @@ export function definitionBpmnXmlGetAPI(code) {
   })
 }
 
+export function definitionFormKeyGetAPI(code) {
+  return request({
+    url: `/back-end/flowable-definition/get-form-key/${code}`
+  })
+}

@@ -95,12 +95,13 @@ export default {
   },
   methods: {
     init() {
+      const urls = this.$route.path.split('/')
       this.appCode = this.$route.params.model || this.navActiveIndex
-      if (!this.appCode) {
-        this.appCode = this.$route.path.split('/')[1]
-        if (this.currentAppCode) {
-          this.appCode = this.currentAppCode
-        }
+      if (urls.length > 1 && urls[1] !== this.appCode) {
+        this.appCode = urls[1]
+      }
+      if (this.currentAppCode) {
+        this.appCode = this.currentAppCode
       }
       if (this.appCode) {
         this.quickAddList = []

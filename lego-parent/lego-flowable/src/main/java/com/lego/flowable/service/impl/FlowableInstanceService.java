@@ -9,6 +9,7 @@ import com.lego.flowable.assembler.FlowableInstanceAssembler;
 import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.dto.FlowableInstanceInfo;
 import com.lego.flowable.dto.FlowableProcessNodeInfo;
+import com.lego.flowable.dto.IFlowableStartFormDetailInfo;
 import com.lego.flowable.service.IFlowableInstanceService;
 import com.lego.flowable.vo.FlowableInstanceSearchVO;
 import com.lego.flowable.vo.ProcessStatus;
@@ -86,6 +87,7 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
         HistoricProcessInstance instance = historyService.createHistoricProcessInstanceQuery()
             .processInstanceId(id)
             .singleResult();
+        nodeInfo.setName(instance.getName());
         InputStream bpmnBytes = repositoryService.getProcessModel(instance.getProcessDefinitionId());
         nodeInfo.setXml(StringUtil.toString(bpmnBytes));
 
@@ -150,5 +152,16 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
             .processInstanceId(id)
             .moveExecutionsToSingleActivityId(executionIds, endEvent.getId())
             .changeState();
+    }
+
+    @Override
+    public IFlowableStartFormDetailInfo findStartForm(String id) {
+        HistoricProcessInstance processInstance = historyService.createHistoricProcessInstanceQuery()
+            .processInstanceId(id)
+            .singleResult();
+        String code = processInstance.getBusinessKey();
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
+        String formKey = modelAssembler.getStartEvent(bpmnModel).getFormKey();
+        return new IFlowableStartFormDetailInfo(formKey, code);
     }
 }

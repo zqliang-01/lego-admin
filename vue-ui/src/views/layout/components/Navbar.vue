@@ -246,12 +246,14 @@ export default {
         }
       }
       this.changeNavIndex()
+      if (this.appCode) {
+        this.handleAppClick(this.appCode)
+      }
     },
     changeNavIndex() {
       this.currentActiveIndex = this.navActiveIndex
       if (this.appCode) {
         this.currentActiveIndex = this.appCode
-        this.handleAppClick(this.appCode)
       }
     },
     handleAppClick(code) {

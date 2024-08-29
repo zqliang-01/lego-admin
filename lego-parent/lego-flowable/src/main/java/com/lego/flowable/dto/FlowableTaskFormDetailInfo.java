@@ -17,7 +17,6 @@ public class FlowableTaskFormDetailInfo extends DTO {
     private String name;
     private String formKey;
     private String code;
-    private String comment;
     private boolean finished;
     private Map<String, Object> variables = new HashMap<>();
     private List<FlowableCommentInfo> comments = new ArrayList<>();

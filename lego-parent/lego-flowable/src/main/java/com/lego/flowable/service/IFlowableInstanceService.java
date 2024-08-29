@@ -3,6 +3,7 @@ package com.lego.flowable.service;
 import com.lego.core.dto.LegoPage;
 import com.lego.flowable.dto.FlowableInstanceInfo;
 import com.lego.flowable.dto.FlowableProcessNodeInfo;
+import com.lego.flowable.dto.IFlowableStartFormDetailInfo;
 import com.lego.flowable.vo.FlowableInstanceSearchVO;
 
 public interface IFlowableInstanceService {
@@ -14,4 +15,6 @@ public interface IFlowableInstanceService {
     String getBpmnXml(String id);
 
     void stop(String operatorCode, String id);
+
+    IFlowableStartFormDetailInfo findStartForm(String id);
 }

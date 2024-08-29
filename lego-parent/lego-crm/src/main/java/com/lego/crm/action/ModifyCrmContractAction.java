@@ -40,5 +40,4 @@ public class ModifyCrmContractAction extends ModifyAction<CrmContract, ICrmContr
         entity.setCustomer(findByCode(CrmCustomer.class, vo.getCustomer()));
         entity.setType(findByCode(CrmDictionary.class, vo.getType()));
     }
-
 }

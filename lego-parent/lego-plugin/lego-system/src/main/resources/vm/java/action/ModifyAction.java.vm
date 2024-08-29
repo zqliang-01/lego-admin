@@ -47,5 +47,4 @@ public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${Clas
     #end
 #end
     }
-
 }

@@ -7,7 +7,7 @@ import com.lego.core.feign.vo.TaskCompletedVO;
 import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
-import com.lego.flowable.handler.FlowableTaskCompleteHandler;
+import com.lego.flowable.handler.IFlowableCompleteHandler;
 import com.lego.flowable.vo.FlowableCommentType;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
 import com.lego.system.dao.ISysCustomFormDao;
@@ -24,7 +24,7 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
 
     private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
 
-    private FlowableTaskCompleteHandler completeHandler = LegoBeanFactory.getBean(FlowableTaskCompleteHandler.class);
+    private IFlowableCompleteHandler completeHandler = LegoBeanFactory.getBean(IFlowableCompleteHandler.class);
 
     public CompleteFlowableTaskAction(String operatorCode, FlowableTaskCompleteVO vo) {
         super(SysPermissionCode.oaUndo, operatorCode, vo.getId());
@@ -46,7 +46,6 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
 
     @Override
     protected void doRun() {
-        processBusinessCallback();
         String commentType = FlowableCommentType.GENERIC.getCode();
         if (StringUtil.isNotBlank(vo.getComment())) {
             String comment = vo.getComment();
@@ -61,11 +60,11 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
             return;
         }
         taskService.setAssignee(vo.getId(), operatorCode);
-        if (vo.getVariables().isEmpty()) {
+        if (StringUtil.isBlank(task.getFormKey())) {
             taskService.complete(vo.getId());
             return;
         }
-        Object code = vo.getVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
+        String code = processBusinessCallback();
         taskService.setVariableLocal(vo.getId(), FlowableProcessConstants.FORM_UNIQUE_KEY, code);
 
         BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
@@ -74,18 +73,18 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
         taskService.complete(vo.getId(), vo.getVariables(), localScope);
     }
 
-    private void processBusinessCallback() {
+    private String processBusinessCallback() {
         if (StringUtil.isBlank(task.getFormKey())) {
-            return;
+            return "";
         }
         SysCustomForm form = formDao.findByCode(task.getFormKey());
         SysGenTable genTable = form.getTable();
-        BusinessException.check(genTable != null, "表单[{0}]无关联数据表，任务保存失败！", task.getFormKey());
+        BusinessException.check(genTable != null, "表单[{0}]无关联数据表，任务完工失败！", task.getFormKey());
 
         TaskCompletedVO completedVO = new TaskCompletedVO();
         completedVO.setTableCode(genTable.getCode());
         completedVO.setVariable(vo.getVariables());
-        completeHandler.doCompleted(genTable.getAppCode(), completedVO);
+        return completeHandler.doTaskCompleted(genTable.getAppCode(), completedVO);
     }
 
     @Override

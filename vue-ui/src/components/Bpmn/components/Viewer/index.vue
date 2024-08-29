@@ -87,8 +87,7 @@ export default {
       })
     },
     onSelectElement(element) {
-      const elementObj = getBusinessObject(element)
-      this.$emit('clickElement', elementObj.get('id'))
+      this.$emit('clickElement', element.id, element.type)
     },
     createDiagram() {
       if (this.xml) {

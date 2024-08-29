@@ -26,3 +26,9 @@ export function instanceStopAPI(instanceId) {
     method: 'post'
   })
 }
+
+export function instanceGetFormAPI(instanceId) {
+  return request({
+    url: '/back-end/flowable-instance/get-start-form/' + instanceId
+  })
+}

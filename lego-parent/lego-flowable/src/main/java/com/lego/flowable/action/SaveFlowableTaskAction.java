@@ -6,7 +6,7 @@ import com.lego.core.feign.vo.TaskCompletedVO;
 import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
-import com.lego.flowable.handler.FlowableTaskCompleteHandler;
+import com.lego.flowable.handler.IFlowableCompleteHandler;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.entity.SysCustomForm;
@@ -19,7 +19,7 @@ public class SaveFlowableTaskAction extends FlowableTaskAction {
 
     private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
 
-    private FlowableTaskCompleteHandler completeHandler = LegoBeanFactory.getBean(FlowableTaskCompleteHandler.class);
+    private IFlowableCompleteHandler completeHandler = LegoBeanFactory.getBean(IFlowableCompleteHandler.class);
 
     public SaveFlowableTaskAction(String operatorCode, FlowableTaskCompleteVO vo) {
         super(SysPermissionCode.oaUndo, operatorCode, vo.getId());
@@ -49,12 +49,9 @@ public class SaveFlowableTaskAction extends FlowableTaskAction {
         BusinessException.check(genTable != null, "表单[{0}]无关联数据表，任务保存失败！", task.getFormKey());
 
         TaskCompletedVO completedVO = new TaskCompletedVO();
-        completedVO.setSave(true);
         completedVO.setTableCode(genTable.getCode());
         completedVO.setVariable(vo.getVariables());
-        completeHandler.doCompleted(genTable.getAppCode(), completedVO);
-
-        Object code = vo.getVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
+        String code = completeHandler.doTaskCompleted(genTable.getAppCode(), completedVO);
         taskService.setVariableLocal(vo.getId(), FlowableProcessConstants.FORM_UNIQUE_KEY, code);
     }
 

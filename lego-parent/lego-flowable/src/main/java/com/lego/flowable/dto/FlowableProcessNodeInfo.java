@@ -12,6 +12,7 @@ import java.util.Set;
 public class FlowableProcessNodeInfo extends DTO {
 
     private String xml;
+    private String name;
     private Set<String> finishedTaskSet = new HashSet<>();
     private Set<String> finishedSequenceFlowSet = new HashSet<>();
     private Set<String> unfinishedTaskSet = new HashSet<>();

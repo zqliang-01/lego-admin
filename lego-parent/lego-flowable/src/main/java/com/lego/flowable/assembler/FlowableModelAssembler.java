@@ -10,6 +10,7 @@ import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.FlowNode;
 import org.flowable.bpmn.model.Process;
 import org.flowable.bpmn.model.SequenceFlow;
+import org.flowable.bpmn.model.StartEvent;
 import org.flowable.bpmn.model.SubProcess;
 import org.flowable.bpmn.model.UserTask;
 import org.flowable.engine.repository.Model;
@@ -101,6 +102,16 @@ public class FlowableModelAssembler extends BaseAssembler<FlowableModelInfo, Mod
             }
         }
         throw new BusinessException("流程定义[{0}]未获取到结束节点！", process.getName());
+    }
+
+    public StartEvent getStartEvent(BpmnModel bpmnModel) {
+        Process process = bpmnModel.getMainProcess();
+        for (FlowElement flowElement : process.getFlowElements()) {
+            if (flowElement instanceof StartEvent) {
+                return (StartEvent) flowElement;
+            }
+        }
+        throw new BusinessException("流程定义[{0}]未获取到开始节点！", process.getName());
     }
 
     public Set<String> getRejectFlow(BpmnModel bpmnModel, Set<String> finishedTaskSet, Set<String> finishedSequenceFlowSet, Set<String> runningTaskSet) {

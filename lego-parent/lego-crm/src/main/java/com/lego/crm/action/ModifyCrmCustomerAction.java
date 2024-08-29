@@ -33,5 +33,4 @@ public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCusto
         entity.setEmail(vo.getEmail());
         entity.setType(findByCode(CrmDictionary.class, vo.getType()));
     }
-
 }

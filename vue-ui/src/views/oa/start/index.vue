@@ -31,27 +31,36 @@
     <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
       <bpmn-viewer :key="definitionKey" :xml.sync="definitionXml"/>
     </el-dialog>
+    <start-detail
+      :visible.sync="startVisible"
+      :form-code="startFormCode"
+      :process-name="processName"
+      :definition-id="definitionId"
+      @close="startVisible = false"
+    />
   </div>
 </template>
 
 <script>
 import {
   definitionListAPI,
-  definitionDeleteAPI,
   definitionStartAPI,
+  definitionFormKeyGetAPI,
   definitionBpmnXmlGetAPI
 } from '@/api/admin/workflow/definition'
 import { mapGetters } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import LegoTable from '@/components/Lego/LegoTable'
 import BpmnViewer from '@/components/Bpmn/components/Viewer'
+import StartDetail from '../components/StartDetial'
 
 export default {
   name: 'WorkflowDefinition',
   components: {
     XrHeader,
     LegoTable,
-    BpmnViewer
+    BpmnViewer,
+    StartDetail
   },
   computed: {
     ...mapGetters(['manage'])
@@ -60,6 +69,10 @@ export default {
     return {
       loading: false,
       processVisible: false,
+      startVisible: false,
+      startFormCode: '',
+      processName: '',
+      definitionId: '',
       definitionXml: '',
       definitionKey: '',
       dataList: [],
@@ -103,31 +116,26 @@ export default {
       })
     },
     handleTable(type, item, index) {
-      if (type === 'delete') {
-        this.$confirm(`此操作将永久删除[${item.name}]的[${item.version}]版本，是否继续?`, '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.loading = true
-          definitionDeleteAPI(item.id).then(() => {
+      if (type === 'start') {
+        this.loading = true
+        this.definitionId = item.id
+        this.processName = item.name
+        definitionFormKeyGetAPI(item.id).then(res => {
+          this.startFormCode = res.data
+          if (this.startFormCode) {
             this.loading = false
-            this.$message.success('删除成功！')
+            this.startVisible = true
+            return
+          }
+          definitionStartAPI({
+            definitionId: item.id
+          }).then(() => {
+            this.loading = false
+            this.$message.success('审批发起成功，请到“我的流程”中查看发起的审批！')
             this.getList()
           }).catch(() => {
             this.loading = false
           })
-        })
-        return
-      }
-      if (type === 'start') {
-        this.loading = true
-        definitionStartAPI({
-          definitionId: item.id
-        }).then(() => {
-          this.loading = false
-          this.$message.success('审批发起成功，请到“我的流程”中查看发起的审批！')
-          this.getList()
-        }).catch(() => {
-          this.loading = false
         })
         return
       }

@@ -2,34 +2,37 @@ package com.lego.core.flowable.impl;
 
 import com.lego.core.exception.BusinessException;
 import com.lego.core.feign.vo.TaskCompletedVO;
-import com.lego.core.flowable.IFlowableTaskCompletedListener;
-import com.lego.core.flowable.IFlowableTaskCompletedService;
+import com.lego.core.flowable.IFlowableCompletedListener;
+import com.lego.core.flowable.IFlowableCompletedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class FlowableTaskCompletedService implements IFlowableTaskCompletedService {
+public class FlowableCompletedService implements IFlowableCompletedService {
 
     @Autowired(required = false)
-    private List<IFlowableTaskCompletedListener> listeners;
+    private List<IFlowableCompletedListener> listeners;
 
     @Override
-    public void completed(TaskCompletedVO vo) {
-        IFlowableTaskCompletedListener listener = getListener(vo.getTableCode());
-        listener.completed(vo.isSave(), vo.getVariable());
+    public String taskCompleted(TaskCompletedVO vo) {
+        return getListener(vo.getTableCode()).taskCompleted(vo.getVariable());
+    }
+
+    @Override
+    public void taskRejected(String tableCode, String code) {
+        getListener(tableCode).taskRejected(code);
     }
 
     @Override
     public void processCompleted(String tableCode, String code) {
-        IFlowableTaskCompletedListener listener = getListener(tableCode);
-        listener.processCompleted(code);
+        getListener(tableCode).processCompleted(code);
     }
 
-    private IFlowableTaskCompletedListener getListener(String tableCode) {
+    private IFlowableCompletedListener getListener(String tableCode) {
         BusinessException.check(listeners != null, "数据表[{0}]无匹配的任务完工处理器，任务处理失败！", tableCode);
-        for (IFlowableTaskCompletedListener listener : listeners) {
+        for (IFlowableCompletedListener listener : listeners) {
             if (listener.getTableCode().equals(tableCode)) {
                 return listener;
             }

@@ -8,7 +8,9 @@ import com.lego.core.vo.JsonResponse;
  */
 public interface ITaskCompletedAPI {
 
-    JsonResponse<Object> taskComplete(TaskCompletedVO vo);
+    JsonResponse<String> taskComplete(TaskCompletedVO vo);
+
+    JsonResponse<Object> taskReject(String tableCode, String code);
 
     JsonResponse<Object> processComplete(String tableCode, String code);
 

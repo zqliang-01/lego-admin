@@ -44,5 +44,4 @@ public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
         entity.setSource(findByCode(CrmDictionary.class, vo.getSource()));
         entity.setCustomer(findByCode(CrmCustomer.class, vo.getCustomer()));
     }
-
 }

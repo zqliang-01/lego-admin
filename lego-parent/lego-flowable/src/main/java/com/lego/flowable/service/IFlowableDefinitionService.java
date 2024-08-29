@@ -3,9 +3,8 @@ package com.lego.flowable.service;
 import com.lego.core.dto.LegoPage;
 import com.lego.flowable.dto.FlowableDefinitionInfo;
 import com.lego.flowable.vo.FlowableDefinitionSearchVO;
+import com.lego.flowable.vo.FlowableTaskStartVO;
 import org.flowable.common.engine.impl.db.SuspensionState;
-
-import java.util.Map;
 
 public interface IFlowableDefinitionService {
 
@@ -19,5 +18,7 @@ public interface IFlowableDefinitionService {
 
     void updateStatus(String id, SuspensionState status);
 
-    void start(String operatorCode, String definitionId, Map<String, Object> variables);
+    void start(String operatorCode, FlowableTaskStartVO vo);
+
+    String findStartFormKey(String id);
 }

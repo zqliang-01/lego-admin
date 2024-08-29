@@ -86,5 +86,4 @@ public class CrmContractController extends BaseController {
         List<CrmContractInfo> datas = contractService.findBy(vo);
         ExcelUtil.exportExcel(datas, "合同数据", CrmContractInfo.class, response);
     }
-
 }

@@ -4,15 +4,18 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
-import com.lego.flowable.handler.FlowableTaskCompleteHandler;
+import com.lego.flowable.assembler.FlowableModelAssembler;
+import com.lego.flowable.handler.IFlowableCompleteHandler;
 import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.ProcessStatus;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysGenTable;
+import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEntityEvent;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
 import org.flowable.engine.HistoryService;
+import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
 import org.flowable.engine.delegate.event.AbstractFlowableEngineEventListener;
 import org.flowable.engine.runtime.ProcessInstance;
@@ -38,8 +41,12 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
     private RuntimeService runtimeService;
     @Resource
     protected HistoryService historyService;
+    @Resource
+    protected RepositoryService repositoryService;
     @Autowired
-    private FlowableTaskCompleteHandler completeHandler;
+    private FlowableModelAssembler modelAssembler;
+    @Autowired
+    private IFlowableCompleteHandler completeHandler;
 
     /**
      * 流程结束监听器
@@ -52,9 +59,13 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
             .singleResult();
         BusinessException.check(instance != null, "不存在有效的流程实例[{0}]，流程完工失败！", processInstanceId);
 
-        if (ProcessStatus.RUNNING.getCode().equals(instance.getBusinessStatus())) {
-            processBusinessCallback(processInstanceId);
+        String businessStatus = instance.getBusinessStatus();
+        processStartFormCallback(instance, businessStatus);
+        if (ProcessStatus.RUNNING.getCode().equals(businessStatus)) {
+            processBusinessCompletedCallback(instance);
             runtimeService.updateBusinessStatus(event.getProcessInstanceId(), ProcessStatus.COMPLETED.getCode());
+        } else if (ProcessStatus.TERMINATED.getCode().equals(businessStatus)) {
+            processBusinessRejectedCallback(instance);
         }
         super.processCompleted(event);
     }
@@ -62,10 +73,10 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
     /**
      * 该部分逻辑会查询历史流程任务，存在耗时可能，后续自行增加表单处理信息存储进行回调
      */
-    private void processBusinessCallback(String processInstanceId) {
+    private void processBusinessCompletedCallback(ProcessInstance instance) {
         List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery()
             .includeTaskLocalVariables()
-            .processInstanceId(processInstanceId)
+            .processInstanceId(instance.getProcessInstanceId())
             .taskWithFormKey()
             .taskWithoutDeleteReason()
             .orderByHistoricTaskInstanceEndTime()
@@ -74,14 +85,58 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
         String logType = FlowableTaskLogType.REJECT.getCode();
         HistoricTaskLogEntryQuery taskLogQuery = historyService.createHistoricTaskLogEntryQuery();
         for (HistoricTaskInstance task : tasks) {
-            List<HistoricTaskLogEntry> taskLogs = taskLogQuery.taskId(task.getId()).type(logType).list();
-            if (CollectionUtil.isEmpty(taskLogs) && StringUtil.isBlank(task.getDeleteReason())) {
-                SysCustomForm form = formDao.findByCode(task.getFormKey());
-                SysGenTable table = form.getTable();
-                Object code = task.getTaskLocalVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
-                completeHandler.doProcessCompleted(table.getAppCode(), table.getCode(), StringUtil.toString(code));
+            if (StringUtil.isNotBlank(task.getDeleteReason())) {
+                continue;
             }
-            // TODO else部分为被取消回退的节点，后续考虑增加表单数据作废流程
+            Object uniqueValue = task.getTaskLocalVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
+            String code = StringUtil.toString(uniqueValue);
+            if (StringUtil.isBlank(code)) {
+                continue;
+            }
+            List<HistoricTaskLogEntry> taskLogs = taskLogQuery.taskId(task.getId()).type(logType).list();
+            SysCustomForm form = formDao.findByCode(task.getFormKey());
+            SysGenTable table = form.getTable();
+            if (CollectionUtil.isEmpty(taskLogs)) {
+                completeHandler.doProcessCompleted(table.getAppCode(), table.getCode(), code);
+            } else {
+                completeHandler.doTaskRejected(table.getAppCode(), table.getCode(), code);
+            }
+        }
+    }
+
+    private void processBusinessRejectedCallback(ProcessInstance instance) {
+        List<HistoricTaskInstance> tasks = historyService.createHistoricTaskInstanceQuery()
+            .includeTaskLocalVariables()
+            .processInstanceId(instance.getProcessInstanceId())
+            .taskWithFormKey()
+            .taskWithoutDeleteReason()
+            .orderByHistoricTaskInstanceEndTime()
+            .desc()
+            .list();
+        for (HistoricTaskInstance task : tasks) {
+            Object uniqueValue = task.getTaskLocalVariables().get(FlowableProcessConstants.FORM_UNIQUE_KEY);
+            String code = StringUtil.toString(uniqueValue);
+            if (StringUtil.isBlank(code)) {
+                continue;
+            }
+            SysCustomForm form = formDao.findByCode(task.getFormKey());
+            SysGenTable table = form.getTable();
+            completeHandler.doTaskRejected(table.getAppCode(), table.getCode(), code);
+        }
+    }
+
+    private void processStartFormCallback(ProcessInstance instance, String status) {
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(instance.getProcessDefinitionId());
+        String formKey = modelAssembler.getStartEvent(bpmnModel).getFormKey();
+        if (StringUtil.isNotBlank(formKey)) {
+            String code = instance.getBusinessKey();
+            SysCustomForm form = formDao.findByCode(formKey);
+            SysGenTable table = form.getTable();
+            if (ProcessStatus.RUNNING.getCode().equals(instance.getBusinessStatus())) {
+                completeHandler.doProcessCompleted(table.getAppCode(), table.getCode(), code);
+            } else {
+                completeHandler.doTaskRejected(table.getAppCode(), table.getCode(), code);
+            }
         }
     }
 

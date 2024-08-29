@@ -21,7 +21,7 @@ import bpmnIcons from '../../bpmn-icons'
 import getBpmnIconType from '../../bpmn-icons/getIconType'
 import { customTranslate } from '../../additional-modules/Translate'
 import { isUserTask } from '../../bo-utils/userTaskUtil'
-import { isCanbeConditional } from '../../bo-utils/conditionUtil'
+import { isCanbeConditional, isExtendStartEvent } from '../../bo-utils/conditionUtil'
 import { isJobExecutable } from '../../bo-utils/jobExecutionUtil'
 import { isExecutable } from '../../bo-utils/executionListenersUtil'
 import { isAsynchronous } from '../../bo-utils/asynchronousContinuationsUtil'
@@ -119,6 +119,7 @@ export default {
       // 重设
       isUserTask(element) && this.renderComponents.push(ElementUserTask)
       isUserTask(element) && this.renderComponents.push(ElementForm)
+      isExtendStartEvent(element) && this.renderComponents.push(ElementForm)
       this.renderComponents.push(ElementDocumentations)
       isCanbeConditional(element) && this.renderComponents.push(ElementConditional)
       isJobExecutable(element) && this.renderComponents.push(ElementJobExecution)

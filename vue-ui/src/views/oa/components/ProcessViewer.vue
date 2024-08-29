@@ -33,18 +33,28 @@
       :action="{ type: 'view' }"
       @close="createShow = false"
     />
+    <start-detail
+      :visible.sync="startVisible"
+      :form-code="startFormCode"
+      :process-name="processName"
+      :detail-code="startDetailCode"
+      :action="{type: 'view'}"
+      @close="startVisible = false"
+    />
   </div>
 </template>
 
 <script>
 import {
+  instanceGetFormAPI,
   instanceProcessNodeListAPI
 } from '@/api/admin/workflow/instance'
 import {
   taskHistoryListAPI
 } from '@/api/admin/workflow/task'
 import BpmnViewer from '@/components/Bpmn/components/Viewer'
-import TaskDetail from './TaskDetail.vue'
+import TaskDetail from './TaskDetail'
+import StartDetail from './StartDetial'
 
 export default {
   name: 'ProcessViewer',
@@ -57,11 +67,17 @@ export default {
   },
   components: {
     TaskDetail,
-    BpmnViewer
+    BpmnViewer,
+    StartDetail
   },
   data() {
     return {
       loading: false,
+      startVisible: false,
+      startDetailData: {},
+      startFormCode: '',
+      startDetailCode: '',
+      processName: '',
       taskHisList: [],
       processXml: '',
       processNodeInfo: {},
@@ -85,6 +101,7 @@ export default {
       if (this.instanceId) {
         this.loading = true
         instanceProcessNodeListAPI(this.instanceId).then(res => {
+          this.processName = res.data.name
           this.processXml = res.data.xml
           this.processNodeInfo = res.data
           this.loading = false
@@ -93,14 +110,29 @@ export default {
         })
       }
     },
-    handleElementClick(taskKey) {
-      taskHistoryListAPI({
-        instanceId: this.instanceId,
-        key: taskKey
-      }).then(res => {
-        this.taskHisList = res.data
-        this.detailShow = this.taskHisList.length > 0
-      })
+    handleElementClick(taskKey, taskType) {
+      if (taskType === 'bpmn:StartEvent') {
+        instanceGetFormAPI(this.instanceId).then(res => {
+          if (res.data.code) {
+            this.startFormCode = res.data.formKey
+            this.startDetailCode = res.data.code
+            this.startVisible = true
+          }
+        })
+        this.detailShow = false
+        return
+      }
+      if (taskType === 'bpmn:UserTask') {
+        taskHistoryListAPI({
+          instanceId: this.instanceId,
+          key: taskKey
+        }).then(res => {
+          this.taskHisList = res.data
+          this.detailShow = this.taskHisList.length > 0
+        })
+        return
+      }
+      this.detailShow = false
     },
     handlePopoClose() {
       if (this.detailShow) {

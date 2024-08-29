@@ -171,11 +171,11 @@ export default {
       this.detailData = {}
       this.dataFieldList = []
       this.actionType = this.action.type
+      this.$set(this.otherFieldForm, 'comment', '')
       taskFormDetailGetAPI(this.taskId).then(taskResponse => {
         const task = taskResponse.data
         this.taskName = task.name
         this.commentList = task.comments
-        this.$set(this.otherFieldForm, 'comment', task.comment)
         this.actionType = task.finished ? 'view' : this.action.type
         if (task.formKey) {
           createFieldListAPI(task.formKey).then(res => {

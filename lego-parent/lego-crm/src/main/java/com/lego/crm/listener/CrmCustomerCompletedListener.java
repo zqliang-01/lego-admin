@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.lego.core.common.Constants;
 import com.lego.core.flowable.FlowableCheckStatus;
 import com.lego.core.flowable.FlowableProcessConstants;
-import com.lego.core.flowable.IFlowableTaskCompletedListener;
+import com.lego.core.flowable.IFlowableCompletedListener;
 import com.lego.core.util.StringUtil;
 import com.lego.crm.service.ICrmCustomerService;
 import com.lego.crm.vo.CrmCustomerCreateVO;
@@ -14,22 +14,26 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class CrmCustomerCompletedListener implements IFlowableTaskCompletedListener {
+public class CrmCustomerCompletedListener implements IFlowableCompletedListener {
 
     @Autowired
     private ICrmCustomerService customerService;
 
     @Override
-    public void completed(boolean isSave, Map<String, Object> variables) {
+    public String taskCompleted(Map<String, Object> variables) {
         String code = StringUtil.toString(variables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
-        if (customerService.exists(code)) {
+        if (StringUtil.isNotBlank(code) && customerService.exists(code)) {
             CrmCustomerModifyVO vo = BeanUtil.toBean(variables, CrmCustomerModifyVO.class);
-            vo.setCheckDiff(isSave);
             customerService.update(Constants.loginCode.get(), vo);
-            return;
+            return code;
         }
         CrmCustomerCreateVO vo = BeanUtil.toBean(variables, CrmCustomerCreateVO.class);
-        customerService.add(Constants.loginCode.get(), vo);
+        return customerService.add(Constants.loginCode.get(), vo);
+    }
+
+    @Override
+    public void taskRejected(String code) {
+        customerService.updateCheckStatus(code, FlowableCheckStatus.rejected);
     }
 
     @Override

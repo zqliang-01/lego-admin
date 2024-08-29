@@ -118,9 +118,12 @@ export default {
   padding: 5px;
   border-radius: 5px;
   .copy-button {
-    text-align: right;
-    padding-right: 10px;
-    margin-bottom: 10px;
+    right: 0px;
+    padding: 5px;
+    background: #e6e6e6;
+    margin-right: 10px;
+    position: absolute;
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     a {
       margin-left: 10px;
     }

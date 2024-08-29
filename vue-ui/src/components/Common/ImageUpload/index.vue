@@ -16,7 +16,6 @@
       class="upload-show">
       <img v-src="imageUrl">
       <i
-        v-if="!disabled"
         class="el-icon-zoom-in icon-view"
         @click="handleView"/>
       <i

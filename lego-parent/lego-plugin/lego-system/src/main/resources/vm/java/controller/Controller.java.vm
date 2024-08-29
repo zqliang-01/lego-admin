@@ -86,5 +86,4 @@ public class ${ClassName}Controller extends BaseController {
         List<${ClassName}Info> datas = ${FieldName}Service.findBy(vo);
         ExcelUtil.exportExcel(datas, "${FunctionName}数据", ${ClassName}Info.class, response);
     }
-
 }

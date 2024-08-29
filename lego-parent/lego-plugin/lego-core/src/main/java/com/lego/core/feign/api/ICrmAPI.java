@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface ICrmAPI extends ITaskCompletedAPI {
 
     @PostMapping("/back-end/crm-flowable/task-complete")
-    JsonResponse<Object> taskComplete(@RequestBody TaskCompletedVO vo);
+    JsonResponse<String> taskComplete(@RequestBody TaskCompletedVO vo);
+
+    @PostMapping("/back-end/crm-flowable/task-reject")
+    JsonResponse<Object> taskReject(@RequestParam String tableCode, @RequestParam String code);
 
     @PostMapping("/back-end/crm-flowable/process-complete")
     JsonResponse<Object> processComplete(@RequestParam String tableCode, @RequestParam String code);

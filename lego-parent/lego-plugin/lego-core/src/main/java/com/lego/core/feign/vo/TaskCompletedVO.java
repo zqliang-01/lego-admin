@@ -10,7 +10,6 @@ import java.util.Map;
 @Setter
 public class TaskCompletedVO extends VO {
 
-    private boolean isSave;
     private String tableCode;
     private Map<String, Object> variable;
 }

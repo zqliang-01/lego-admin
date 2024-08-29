@@ -2,9 +2,11 @@ package com.lego.core.flowable;
 
 import com.lego.core.feign.vo.TaskCompletedVO;
 
-public interface IFlowableTaskCompletedService {
+public interface IFlowableCompletedService {
 
-    void completed(TaskCompletedVO vo);
+    String taskCompleted(TaskCompletedVO vo);
+
+    void taskRejected(String tableCode, String code);
 
     void processCompleted(String tableCode, String code);
 }

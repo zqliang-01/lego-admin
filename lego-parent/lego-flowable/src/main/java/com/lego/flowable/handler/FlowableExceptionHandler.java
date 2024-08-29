@@ -1,4 +1,4 @@
-package com.lego.flowable.config;
+package com.lego.flowable.handler;
 
 import com.lego.core.common.ExceptionEnum;
 import com.lego.core.web.ILegoExceptionHandler;

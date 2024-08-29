@@ -11,6 +11,7 @@ import java.util.Map;
 @Setter
 public class FlowableTaskStartVO extends VO {
 
+    private String formKey;
     private String definitionId;
     private Map<String, Object> variables = new HashedMap<>();
 }

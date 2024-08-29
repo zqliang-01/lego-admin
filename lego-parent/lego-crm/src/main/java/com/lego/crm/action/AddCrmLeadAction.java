@@ -45,5 +45,4 @@ public class AddCrmLeadAction extends AddAction<CrmLead, ICrmLeadDao> {
         entity.setCustomer(findByCode(CrmCustomer.class, vo.getCustomer()));
         return entity;
     }
-
 }

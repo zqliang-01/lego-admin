@@ -4,7 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.lego.core.common.Constants;
 import com.lego.core.flowable.FlowableCheckStatus;
 import com.lego.core.flowable.FlowableProcessConstants;
-import com.lego.core.flowable.IFlowableTaskCompletedListener;
+import com.lego.core.flowable.IFlowableCompletedListener;
 import com.lego.core.util.StringUtil;
 import ${PackageName}.service.I${ClassName}Service;
 import ${PackageName}.vo.${ClassName}CreateVO;
@@ -14,22 +14,26 @@ import org.springframework.stereotype.Component;
 import java.util.Map;
 
 @Component
-public class ${ClassName}CompletedListener implements IFlowableTaskCompletedListener {
+public class ${ClassName}CompletedListener implements IFlowableCompletedListener {
 
     @Autowired
     private I${ClassName}Service ${FieldName}Service;
 
     @Override
-    public void completed(boolean isSave, Map<String, Object> variables) {
+    public String taskCompleted(Map<String, Object> variables) {
         String code = StringUtil.toString(variables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
-        if (${FieldName}Service.exists(code)) {
+        if (StringUtil.isNotBlank(code) && ${FieldName}Service.exists(code)) {
             ${ClassName}ModifyVO vo = BeanUtil.toBean(variables, ${ClassName}ModifyVO.class);
-            vo.setCheckDiff(isSave);
             ${FieldName}Service.update(Constants.loginCode.get(), vo);
-            return;
+            return code;
         }
         ${ClassName}CreateVO vo = BeanUtil.toBean(variables, ${ClassName}CreateVO.class);
-        ${FieldName}Service.add(Constants.loginCode.get(), vo);
+        return ${FieldName}Service.add(Constants.loginCode.get(), vo);
+    }
+
+    @Override
+    public void taskRejected(String code) {
+        ${FieldName}Service.updateCheckStatus(code, FlowableCheckStatus.rejected);
     }
 
     @Override

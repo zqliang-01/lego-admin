@@ -41,5 +41,4 @@ public class AddCrmContractAction extends AddAction<CrmContract, ICrmContractDao
         entity.setType(findByCode(CrmDictionary.class, vo.getType()));
         return entity;
     }
-
 }

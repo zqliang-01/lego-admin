@@ -65,5 +65,4 @@ public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}
 #end
         return entity;
     }
-
 }
