@@ -9,11 +9,12 @@
     @close="close"
     @save="saveClick">
     <div
+      style="height: 100%;"
       v-empty="!hasAuth"
       xs-empty-icon="nopermission"
       xs-empty-text="无操作权限">
       <lego-create-sections
-        v-if="dataFieldList.length > 0"
+        v-if="dataFieldList.length > 0 && hasAuth"
         title="基本信息">
         <el-form
           ref="createForm"
@@ -129,9 +130,6 @@ export default {
     }
   },
   watch: {
-    taskId() {
-      this.init()
-    },
     visible(val) {
       if (val) {
         this.init()
@@ -180,7 +178,7 @@ export default {
         if (task.formKey) {
           createFieldListAPI(task.formKey).then(res => {
             this.dataFieldList = res.data.fields
-            this.auth = getMenuAuth(res.data.form.permission.code)
+            this.auth = getMenuAuth(res.data.form.permissionCode)
             this.initRequest(res.data.form)
             if (task.code && this.hasAuth) {
               this.actionType = task.finished ? 'view' : 'update'

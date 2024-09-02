@@ -173,7 +173,7 @@ export default {
         this.loading = false
         if (res.data.needUpdate) {
           this.$confirm('发现新版本' + res.data.newVersion + '，是否执行更新！', '提示').then(() => {
-            this.handleUpdate()
+            this.handleUpdate(res.data.newVersion)
           }).catch(() => {})
           return
         }
@@ -183,7 +183,7 @@ export default {
         this.loading = false
       })
     },
-    handleUpdate() {
+    handleUpdate(newVersion) {
       this.loading = true
       systemUpdateAPI().then(res => {
         this.getDetail()

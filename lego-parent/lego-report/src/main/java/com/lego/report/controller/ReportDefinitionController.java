@@ -81,7 +81,7 @@ public class ReportDefinitionController extends BaseController {
         if (!StpUtil.getRoleList().contains(Constants.ADMIN_ROLE_CODE)) {
             StpUtil.checkPermission(permissionCode);
         }
-        String code = commonService.findReportCodeBy(permissionCode);
+        String code = commonService.findRelateCodeBy(permissionCode);
         ReportDefinitionInfo definitionInfo = definitionService.findBy(code);
         BusinessException.check(definitionInfo.isEnable(), "报表[{0}]已停用，暂时无法提供查询操作！", definitionInfo.getName());
         return JsonResponse.success(definitionInfo);

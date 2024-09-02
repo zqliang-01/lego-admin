@@ -1,5 +1,8 @@
 package com.lego.core.flowable.impl;
 
+import cn.dev33.satoken.stp.StpUtil;
+import com.lego.core.common.Constants;
+import com.lego.core.data.ICommonService;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.feign.vo.TaskCompletedVO;
 import com.lego.core.flowable.IFlowableCompletedListener;
@@ -12,11 +15,18 @@ import java.util.List;
 @Service
 public class FlowableCompletedService implements IFlowableCompletedService {
 
+    @Autowired
+    private ICommonService commonService;
+
     @Autowired(required = false)
     private List<IFlowableCompletedListener> listeners;
 
     @Override
     public String taskCompleted(TaskCompletedVO vo) {
+        String permissionCode = commonService.findPermissionCodeByTable(vo.getTableCode());
+        if (!StpUtil.getRoleList().contains(Constants.ADMIN_ROLE_CODE)) {
+            StpUtil.checkPermission(permissionCode);
+        }
         return getListener(vo.getTableCode()).taskCompleted(vo.getVariable());
     }
 

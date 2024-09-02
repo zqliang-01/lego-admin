@@ -33,7 +33,7 @@ public class ReportOpenController {
         if (!StpUtil.getRoleList().contains(Constants.ADMIN_ROLE_CODE)) {
             StpUtil.checkPermission(vo.getPermissionCode());
         }
-        String code = commonService.findReportCodeBy(vo.getPermissionCode());
+        String code = commonService.findRelateCodeBy(vo.getPermissionCode());
         return JsonResponse.success(openService.openPageSql(code, vo));
     }
 
@@ -42,7 +42,7 @@ public class ReportOpenController {
         if (!StpUtil.getRoleList().contains(Constants.ADMIN_ROLE_CODE)) {
             StpUtil.checkPermission(permissionCode);
         }
-        String code = commonService.findReportCodeBy(permissionCode);
+        String code = commonService.findRelateCodeBy(permissionCode);
         return JsonResponse.success(openService.openConditionList(code, conditionCode));
     }
 
@@ -57,7 +57,7 @@ public class ReportOpenController {
         exportVO.setParam(vo.getParam());
         exportVO.setOperatorCode(Constants.loginCode.get());
         exportVO.setPermissionCode(permissionCode);
-        exportVO.setCode(commonService.findReportCodeBy(permissionCode));
+        exportVO.setCode(commonService.findRelateCodeBy(permissionCode));
         openService.export(exportVO);
     }
 

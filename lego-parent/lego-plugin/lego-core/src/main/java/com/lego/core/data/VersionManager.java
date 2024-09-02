@@ -5,6 +5,8 @@ import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ReUtil;
 import cn.hutool.core.util.ZipUtil;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.lego.core.common.Constants;
 import com.lego.core.common.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 @Slf4j
 @Component
@@ -62,23 +66,19 @@ public class VersionManager implements InitializingBean {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(SELECT_VERSION_SQL);
             this.needInit = !result.next();
+            if (!this.needInit) {
+                String newVersion = getNewVersion();
+                String currentVersion = result.getString("value");
+                if (!StringUtil.equals(currentVersion, newVersion)) {
+                    log.info("发现新版本[{}]，执行自动更新操作", newVersion);
+                    execUpdate();
+                }
+            }
         }
     }
 
     public boolean needInit() {
         return needInit;
-    }
-
-    public String getNewVersion(String currentVersion) {
-        BusinessException.check(StringUtil.isNotBlank(currentVersion), "当前版本过旧，未检测到版本信息，更新失败！");
-        File rootFile = getProjectBaseDir();
-        File file = getChildrenFile(rootFile, UPDATE_SQL_FOLDER);
-        for (File versionFile : file.listFiles()) {
-            if (isNew(versionFile.getName(), currentVersion)) {
-                currentVersion = versionFile.getName();
-            }
-        }
-        return currentVersion;
     }
 
     public String execUpdate() {
@@ -98,6 +98,7 @@ public class VersionManager implements InitializingBean {
                 pstmt.setString(1, newVersion);
                 pstmt.executeUpdate();
                 connection.commit();
+                log.info("系统更新完成，当前版本为[{}]", newVersion);
             }
             return newVersion;
         } catch (Exception e) {
@@ -168,6 +169,25 @@ public class VersionManager implements InitializingBean {
         } catch (IOException e) {
             throw new CoreException("读取SQL更新脚本径失败！", e);
         }
+    }
+
+    public String getNewVersion() {
+        Resource resource = resourceLoader.getResource("classpath:sql.zip");
+        try (InputStream inputStream = resource.getInputStream();
+             ZipInputStream zipInputStream = new ZipInputStream(inputStream)) {
+            ZipEntry entry = zipInputStream.getNextEntry();
+            while (entry != null) {
+                if ("version.json".equals(entry.getName())) {
+                    String versionData = IoUtil.read(zipInputStream, Constants.DEFAULT_CHARSET);
+                    JSONObject version = JSON.parseObject(versionData);
+                    return version.getString("version");
+                }
+                entry = zipInputStream.getNextEntry();
+            }
+        } catch (IOException e) {
+            log.error("读取新版本信息失败！", e);
+        }
+        return "";
     }
 
     private boolean isNew(String version1, String version2) {

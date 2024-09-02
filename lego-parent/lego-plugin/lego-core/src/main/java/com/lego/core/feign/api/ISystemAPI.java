@@ -29,8 +29,8 @@ public interface ISystemAPI {
     @PostMapping("/back-end/sys-common/add-message")
     JsonResponse<Object> addSysMessage(@RequestBody SysMessageCreateVO vo);
 
-    @GetMapping("/back-end/sys-common/get-report-code/{permissionCode}")
-    JsonResponse<String> findReportCodeBy(@PathVariable String permissionCode);
+    @GetMapping("/back-end/sys-common/get-relate-code/{permissionCode}")
+    JsonResponse<String> findRelateCodeBy(@PathVariable String permissionCode);
 
     @GetMapping("/back-end/sys-common/list-permission-code")
     JsonResponse<List<String>> findPermissionCodesBy(@RequestParam("employeeCode") String employeeCode);
@@ -40,4 +40,7 @@ public interface ISystemAPI {
 
     @GetMapping("/back-end/sys-common/list-data-permission-employee-code")
     JsonResponse<List<String>> findDataPermissionEmployeeCode();
+
+    @GetMapping(value = "/back-end/sys-common/get-permission-code")
+    JsonResponse<String> findPermissionCodeByTable(@RequestParam("tableCode") String tableCode);
 }

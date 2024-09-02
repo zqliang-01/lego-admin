@@ -39,7 +39,7 @@ public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCus
 
     @Override
     public List<TypeInfo> findSimpleTypeBy(String formCode) {
-        List<SysCustomField> fields = dao.findBy(formCode);
+        List<SysCustomField> fields = dao.findValidBy(formCode);
         return fields.stream()
             .filter(field -> !field.isTips())
             .map(field -> new TypeInfo(field.getFieldCode(), field.getName()))

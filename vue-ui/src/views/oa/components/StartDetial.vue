@@ -4,15 +4,16 @@
     :loading="loading"
     :title="processName"
     confirm-button-text="发起流程"
-    :show-confirm="action.type !== 'view'"
+    :show-confirm="action.type !== 'view' && hasAuth"
     @close="close"
     @save="saveClick">
     <div
-      v-empty="false"
+      style="height: 100%;"
+      v-empty="!hasAuth"
       xs-empty-icon="nopermission"
       xs-empty-text="无操作权限">
       <lego-create-sections
-        v-if="dataFieldList.length > 0"
+        v-if="dataFieldList.length > 0 && hasAuth"
         title="基本信息">
         <el-form
           ref="createForm"
@@ -38,9 +39,10 @@
 import { definitionStartAPI } from '@/api/admin/workflow/definition'
 import CreateMixin from '@/components/Lego/mixins/LegoCreate'
 import UserSelect from '@/components/Common/UserSelect'
+import { getMenuAuth } from '@/utils/auth'
 
 export default {
-  name: 'TaskDetail',
+  name: 'StartDetail',
   mixins: [CreateMixin],
   components: {
     UserSelect
@@ -59,6 +61,20 @@ export default {
       default: ''
     }
   },
+  computed: {
+    hasAuth() {
+      if (this.auth.detail && this.actionType === 'view') {
+        return true
+      }
+      if (this.auth.update && this.actionType === 'update') {
+        return true
+      }
+      if (this.auth.add && this.actionType === 'save') {
+        return true
+      }
+      return false
+    }
+  },
   watch: {
     visible(val) {
       if (val && this.formCode) {
@@ -68,6 +84,7 @@ export default {
   },
   data() {
     return {
+      auth: {},
       addRequest: {},
       updateRequest: {},
       detailRequest: {}
@@ -83,7 +100,8 @@ export default {
       this.initField().then(res => {
         this.initRequest(res.data.form)
         this.dataFieldList = res.data.fields
-        if (this.detailCode) {
+        this.auth = getMenuAuth(res.data.form.permissionCode)
+        if (this.detailCode && this.auth.detail) {
           this.detailRequest(this.detailCode).then(res => {
             this.detailData = res.data
             this.initValue()

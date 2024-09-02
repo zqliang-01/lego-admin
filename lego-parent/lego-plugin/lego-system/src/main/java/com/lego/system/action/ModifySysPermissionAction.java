@@ -2,7 +2,6 @@ package com.lego.system.action;
 
 import com.lego.core.action.ModifyAction;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.dao.ISysPermissionDao;
@@ -55,7 +54,7 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
         entity.setSn(vo.getSn());
         entity.setForm(formDao.findByUnsureCode(vo.getForm()));
         entity.setParent(entityDao.findByUnsureCode(vo.getParentCode()));
-        entity.setReportCode(vo.getReportCode());
+        entity.setRelateCode(vo.getRelateCode());
     }
 
     @Override
@@ -63,16 +62,6 @@ public class ModifySysPermissionAction extends ModifyAction<SysPermission, ISysP
         if (SysPermissionRouteTypeCode.DYNAMIC.equals(vo.getRouteType())) {
             SysPermissionRouteType dynamicRouterType = findByUnsureCode(SysPermissionRouteType.class, SysPermissionRouteTypeCode.DYNAMIC);
             updateParentRouteType(targetEntity.getParent(), dynamicRouterType);
-        }
-
-        List<SysCustomForm> forms = formDao.findBy(targetEntity);
-        forms.stream().forEach(form -> form.setPermission(null));
-        formDao.saveAll(forms);
-
-        SysCustomForm form = formDao.findByUnsureCode(vo.getForm());
-        if (form != null && !EntityUtil.getCode(form.getPermission()).equals(vo.getForm())) {
-            form.setPermission(targetEntity);
-            formDao.save(form);
         }
     }
 

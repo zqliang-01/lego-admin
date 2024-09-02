@@ -52,9 +52,9 @@ public class SysCommonController extends BaseController implements ISystemAPI {
     }
 
     @Override
-    @GetMapping("/get-report-code/{permissionCode}")
-    public JsonResponse<String> findReportCodeBy(String permissionCode) {
-        return JsonResponse.success(commonService.findReportCodeBy(permissionCode));
+    @GetMapping("/get-relate-code/{permissionCode}")
+    public JsonResponse<String> findRelateCodeBy(String permissionCode) {
+        return JsonResponse.success(commonService.findRelateCodeBy(permissionCode));
     }
 
     @Override
@@ -73,6 +73,11 @@ public class SysCommonController extends BaseController implements ISystemAPI {
     @GetMapping("/list-data-permission-employee-code")
     public JsonResponse<List<String>> findDataPermissionEmployeeCode() {
         return JsonResponse.success(commonService.findDataPermissionEmployeeCode());
+    }
+
+    @Override
+    public JsonResponse<String> findPermissionCodeByTable(String tableCode) {
+        return JsonResponse.success(commonService.findPermissionCodeByTable(tableCode));
     }
 
 }

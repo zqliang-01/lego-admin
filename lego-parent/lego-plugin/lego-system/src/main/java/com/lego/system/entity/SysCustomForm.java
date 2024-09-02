@@ -33,10 +33,6 @@ public class SysCustomForm extends BaseEntity {
     @JoinColumn(name = "table_id", referencedColumnName = "id")
     private SysGenTable table;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "permission_id", referencedColumnName = "id")
-    private SysPermission permission;
-
     protected SysCustomForm() {
     }
 
@@ -59,6 +55,5 @@ public class SysCustomForm extends BaseEntity {
         attributes.put("导出Api", StringUtil.toString(exportApiUrl));
         attributes.put("导出全部Api", StringUtil.toString(exportAllApiUrl));
         attributes.put("状态", enable ? "生效" : "失效");
-        attributes.put("挂载菜单", StringUtil.toString(permission));
     }
 }

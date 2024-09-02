@@ -18,5 +18,5 @@ public class SysPermissionModifyVO extends VO {
     private String icon;
     private int sn;
     private String form;
-    private String reportCode;
+    private String relateCode;
 }

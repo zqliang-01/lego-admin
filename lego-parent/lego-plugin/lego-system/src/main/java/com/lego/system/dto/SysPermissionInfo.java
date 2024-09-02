@@ -23,7 +23,7 @@ public class SysPermissionInfo extends TreeDTO<SysPermissionInfo> {
     private TypeInfo type;
     private TypeInfo routeType;
     private TypeInfo form;
-    private String reportCode;
+    private String relateCode;
 
     public String getRealm() {
         String[] codes = getCode().split("_");

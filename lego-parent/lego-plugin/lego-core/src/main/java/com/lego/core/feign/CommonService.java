@@ -35,8 +35,8 @@ public class CommonService implements ICommonService {
     }
 
     @Override
-    public String findReportCodeBy(String permissionCode) {
-        return systemClient.findReportCodeBy(permissionCode).getData();
+    public String findRelateCodeBy(String permissionCode) {
+        return systemClient.findRelateCodeBy(permissionCode).getData();
     }
 
     @Override
@@ -52,6 +52,11 @@ public class CommonService implements ICommonService {
     @Override
     public List<String> findDataPermissionEmployeeCode() {
         return systemClient.findDataPermissionEmployeeCode().getData();
+    }
+
+    @Override
+    public String findPermissionCodeByTable(String tableCode) {
+        return systemClient.findPermissionCodeByTable(tableCode).getData();
     }
 
 }

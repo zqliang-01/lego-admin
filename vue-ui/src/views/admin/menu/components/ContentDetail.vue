@@ -62,7 +62,7 @@ export default {
       ],
       reportFieldList: [
         [
-          { fieldCode: 'reportCode', name: '报表', formType: 'select', clearable: true, tipType: 'tooltip', inputTips: '选择自定义报表，需到报表管理模块进行报表维护' },
+          { fieldCode: 'relateCode', name: '报表', formType: 'select', clearable: true, tipType: 'tooltip', inputTips: '选择自定义报表，需到报表管理模块进行报表维护' },
           { fieldCode: 'routeType', name: '路由类型', formType: 'select', precisions: 1, tipType: 'tooltip', inputTips: '模块路由定义，动态路由页面内容受后台控制' }
         ]
       ]
@@ -112,7 +112,7 @@ export default {
       })
       this.reportFieldList.forEach(fields => {
         fields.forEach(field => {
-          if (field.fieldCode === 'reportCode') {
+          if (field.fieldCode === 'relateCode') {
             this.$set(field, 'setting', this.reportList)
           }
           if (field.fieldCode === 'routeType') {

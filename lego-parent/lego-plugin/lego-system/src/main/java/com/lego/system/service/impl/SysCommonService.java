@@ -10,6 +10,7 @@ import com.lego.core.vo.SysMessageCreateVO;
 import com.lego.system.action.AddSysMessageAction;
 import com.lego.system.dao.ISysDeptDao;
 import com.lego.system.dao.ISysEmployeeDao;
+import com.lego.system.dao.ISysGenTableDao;
 import com.lego.system.dao.ISysOperationLogDao;
 import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.entity.SysDept;
@@ -41,6 +42,9 @@ public class SysCommonService implements ICommonService {
 
     @Resource
     private ISysPermissionDao permissionDao;
+
+    @Resource
+    private ISysGenTableDao tableDao;
 
     @Autowired
     private SysPermissionMapper permissionMapper;
@@ -80,9 +84,9 @@ public class SysCommonService implements ICommonService {
     }
 
     @Override
-    public String findReportCodeBy(String permissionCode) {
+    public String findRelateCodeBy(String permissionCode) {
         SysPermission permission = permissionDao.findByCode(permissionCode);
-        return permission.getReportCode();
+        return permission.getRelateCode();
     }
 
     @Override
@@ -111,5 +115,10 @@ public class SysCommonService implements ICommonService {
             return CollectionUtil.newArrayList(employeeMapper.selectCodesByDepts(deptCodes));
         }
         return CollectionUtil.newArrayList(employee.getCode());
+    }
+
+    @Override
+    public String findPermissionCodeByTable(String tableCode) {
+        return tableDao.findPermissionCodeBy(tableCode);
     }
 }

@@ -8,4 +8,6 @@ import java.util.List;
 public interface ISysGenTableDao extends IGenericDao<SysGenTable> {
 
     List<SysGenTable> findNotExists();
+
+    String findPermissionCodeBy(String code);
 }

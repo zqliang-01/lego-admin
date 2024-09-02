@@ -153,7 +153,7 @@ export default {
     async initFieldList() {
       if (this.formCode) {
         await detailFieldListAPI(this.formCode).then(res => {
-          this.menuCode = res.data.form.permission.code
+          this.menuCode = res.data.form.permissionCode
           this.initRequest(res.data.form)
           this.fieldList = res.data.fields
           this.fieldList.forEach(field => {

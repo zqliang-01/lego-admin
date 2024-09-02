@@ -119,7 +119,7 @@ export default {
     initFields() {
       if (this.formCode) {
         tableHeaderFieldListAPI(this.formCode).then(res => {
-          this.auth = getMenuAuth(res.data.form.permission.code)
+          this.auth = getMenuAuth(res.data.form.permissionCode)
           this.queryApiUrl = res.data.form.queryApiUrl
           this.tableFieldList = res.data.fields
         })

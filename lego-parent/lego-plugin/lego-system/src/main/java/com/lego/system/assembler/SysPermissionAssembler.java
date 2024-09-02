@@ -29,7 +29,7 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
         if (entity.getForm() != null) {
             info.setClassName(entity.getForm().getTable().getClassName());
         }
-        info.setReportCode(entity.getReportCode());
+        info.setRelateCode(entity.getRelateCode());
         return info;
     }
 

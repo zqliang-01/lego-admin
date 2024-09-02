@@ -92,15 +92,13 @@ public class SysCustomFieldController extends BaseController {
 
     @GetMapping("/list-create/{formCode}")
     public JsonResponse<SysCustomFormCreateInfo> listCreate(@PathVariable String formCode) {
-        SysCustomFormInfo formInfo = customFormService.findBy(formCode);
-        BusinessException.check(formInfo.getTable() != null, "表单未关联数据表！");
-
         List<List<SysCustomFieldInfo>> results = new ArrayList<List<SysCustomFieldInfo>>();
         List<SysCustomFieldInfo> fieldInfos = customFieldService.findValidBy(formCode);
         Map<Integer, List<SysCustomFieldInfo>> fieldGroupMap = fieldInfos.stream().collect(Collectors.groupingBy(SysCustomFieldInfo::getXAxis));
         fieldGroupMap.values().stream().forEach(m -> {
             results.add(m.stream().sorted(Comparator.comparing(SysCustomFieldInfo::getYAxis)).collect(Collectors.toList()));
         });
+        SysCustomFormInfo formInfo = customFormService.findBy(formCode);
         return JsonResponse.success(new SysCustomFormCreateInfo(formInfo, results));
     }
 
@@ -108,14 +106,11 @@ public class SysCustomFieldController extends BaseController {
     @SaCheckPermission("manage_customForm_design")
     public JsonResponse<SysCustomFormFieldInfo> listInit(String formCode) {
         SysCustomFormInfo formInfo = customFormService.findBy(formCode);
-        BusinessException.check(formInfo.getTable() != null, "表单未关联数据表！");
-
-        TypeInfo table = formInfo.getTable();
-        String tableCode = table.getCode();
-        String tableName = table.getName();
+        String tableCode = formInfo.getTable().getCode();
+        String tableName = formInfo.getTable().getName();
         SysGenTableInfo tableInfo = tableService.findByCode(tableCode);
         List<TypeInfo> columnInfos = tableColumnService.findSimpleTypeBy(tableCode);
-        List<List<SysCustomFieldInfo>> results = customFieldService.findInit(formInfo.getTable().getCode());
+        List<List<SysCustomFieldInfo>> results = customFieldService.findInit(tableCode);
         return JsonResponse.success(new SysCustomFormFieldInfo(tableInfo.getAppCode(), tableName, columnInfos, results));
     }
 

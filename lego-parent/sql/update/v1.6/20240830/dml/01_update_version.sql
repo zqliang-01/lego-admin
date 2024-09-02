@@ -1,0 +1,1 @@
+UPDATE sys_config t SET t.VALUE = 'v1.6' WHERE t.code = 'AppVersion';

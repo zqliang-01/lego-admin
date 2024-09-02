@@ -16,4 +16,12 @@ public class SysGenTableDao extends GenericDao<SysGenTable> implements ISysGenTa
         return query.findSqlList();
     }
 
+    @Override
+    public String findPermissionCodeBy(String code) {
+        String sql = "SELECT t.permission_code FROM sys_gen_table t";
+        QueryHandler<String> query = createQueryHandler(sql, String.class);
+        query.condition("t.code = :code").param("code", code);
+        return query.findSqlUnique();
+    }
+
 }

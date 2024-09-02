@@ -52,8 +52,8 @@ public class SysConfigController extends BaseController {
     @GetMapping("/check-update")
     @SaCheckPermission("manage_system_update")
     public JsonResponse<SysVersionInfo> checkUpdate() {
+        String newVersion = versionManager.getNewVersion();
         String currentVersion = configService.findValueBy(SysConfigCode.APP_VERSION);
-        String newVersion = versionManager.getNewVersion(currentVersion);
         return JsonResponse.success(new SysVersionInfo(currentVersion, newVersion));
     }
 

@@ -19,11 +19,13 @@ public interface ICommonService {
 
     void addSysMessage(SysMessageCreateVO vo);
 
-    String findReportCodeBy(String permissionCode);
+    String findRelateCodeBy(String permissionCode);
 
     List<String> findPermissionCodesBy(String employeeCode);
 
     List<String> findRoleCodesBy(String employeeCode);
 
     List<String> findDataPermissionEmployeeCode();
+
+    String findPermissionCodeByTable(String tableCode);
 }

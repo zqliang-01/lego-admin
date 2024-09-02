@@ -2,7 +2,6 @@ package com.lego.system.action;
 
 import com.lego.core.action.AddAction;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.dao.ISysPermissionDao;
@@ -84,7 +83,7 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
         permission.setRouteType(findByUnsureCode(SysPermissionRouteType.class, vo.getRouteType()));
         permission.setParent(entityDao.findByUnsureCode(vo.getParentCode()));
         permission.setForm(formDao.findByUnsureCode(vo.getForm()));
-        permission.setReportCode(vo.getReportCode());
+        permission.setRelateCode(vo.getRelateCode());
         permission.setIcon(vo.getIcon());
         permission.setSn(vo.getSn());
         return permission;
@@ -97,15 +96,6 @@ public class AddSysPermissionAction extends AddAction<SysPermission, ISysPermiss
             updateParentRouteType(targetEntity.getParent(), dynamicRouterType);
         }
 
-        List<SysCustomForm> forms = formDao.findBy(targetEntity);
-        forms.stream().forEach(form -> form.setPermission(null));
-        formDao.saveAll(forms);
-
-        SysCustomForm form = formDao.findByUnsureCode(vo.getForm());
-        if (form != null && !EntityUtil.getCode(form.getPermission()).equals(vo.getForm())) {
-            form.setPermission(targetEntity);
-            formDao.save(form);
-        }
         if (this.targetEntity.isMenu() && vo.isCreateAuth()) {
             int sn = targetEntity.getSn() * 10;
             for (Map.Entry<String, String> entry : authList.entrySet()) {
