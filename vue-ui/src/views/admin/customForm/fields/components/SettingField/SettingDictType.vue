@@ -65,20 +65,27 @@ export default {
     }
   },
   watch: {
+    field: {
+      handler() {
+        this.handleSelected()
+      },
+      deep: true,
+      immediate: true
+    },
     appCode(value) {
       this.getDictType()
-    },
-    selectedType(value) {
-      this.$set(this.field, 'optionDictType', value)
     }
   },
   created() {
-    if (this.field && this.field.optionDictType) {
-      this.selectedType = this.field.optionDictType
-    }
+    this.handleSelected()
     this.getDictType()
   },
   methods: {
+    handleSelected() {
+      if (this.field && this.field.optionDictType) {
+        this.selectedType = this.field.optionDictType
+      }
+    },
     getDictType() {
       if (this.appCode) {
         this.loading = true
@@ -90,7 +97,8 @@ export default {
         })
       }
     },
-    onChangeType() {
+    onChangeType(value) {
+      this.$set(this.field, 'optionDictType', value)
       this.$set(this.field, 'defaultValue', '')
     }
   }
