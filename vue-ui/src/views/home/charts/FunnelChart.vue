@@ -1,10 +1,10 @@
 <template>
   <div
     v-loading="loading"
-    class="funnel-chart-canvas card">
+    class="funnel-chart-canvas-body card">
     <flexbox class="card-title">
       <span :class="[prop.icon, 'icon']" />
-      <div class="card-title-center text-one-ellipsis">{{ prop.title }}</div>
+      <div class="card-title-center text-one-ellipsis">{{ data.name }}</div>
       <div class="card-title-right">
         <el-dropdown
           trigger="click"
@@ -23,13 +23,14 @@
         </el-dropdown>
       </div>
     </flexbox>
-    <div id="funnel-chart-canvas"/>
+    <div class="funnel-chart-canvas" :id="canvaId"/>
   </div>
 </template>
 
 <script>
 import echarts from 'echarts'
 import ChartMixin from '../components/ChartMixin'
+import { openDashBoardAPI } from '@/api/report/open'
 
 export default {
   name: 'FunnelChart',
@@ -45,80 +46,11 @@ export default {
         iconColor: '#4983EF',
         image: require('@/assets/img/skeleton/sort-funnel.png')
       },
-      list: [
-        { name: '阶段一', money: 38555, count: 3 },
-        { name: '阶段二', money: 15220, count: 2 },
-        { name: '阶段三', money: 5230, count: 1 }
-      ],
-      loading: false,
-      optionName: '金额',
-      optionValue: 1,
-      options: [
-        { name: '金额', value: 1 },
-        { name: '数量', value: 2 }
-      ],
+      optionName: '',
+      options: [],
+      dataMap: new Map(),
       chartObj: null,
-      funnelOption: null,
-      /*
-      图表暂无数据提示
-       */
-      notDataOption: {
-        title: {
-          text: '暂无数据',
-          x: 'center',
-          y: 'center',
-          textStyle: {
-            fontSize: 14,
-            fontWeight: 'normal'
-          }
-        }
-      }
-    }
-  },
-  mounted() {
-  },
-  methods: {
-    /**
-     * 图表数据
-     */
-    getData() {
-      if (this.list.length == 0) {
-        this.chartObj.setOption(this.notDataOption, true)
-        return
-      }
-      var data = []
-      let sumCount = 0
-      this.list.forEach(element => {
-        if (this.optionValue == 1) {
-          data.push({
-            name: element.name,
-            value: parseFloat(element.money)
-          })
-          sumCount += parseFloat(Number(element.money))
-          this.funnelOption.tooltip.formatter = '{b} <br/> ' + this.optionName + ': {c}'
-        }
-        if (this.optionValue == 2) {
-          data.push({
-            name: element.name,
-            value: parseFloat(element.count)
-          })
-          sumCount += parseFloat(Number(element.count))
-          this.funnelOption.tooltip.formatter = '{b} <br/> ' + this.optionName + ': {c}个'
-        }
-      })
-      this.funnelOption.series[0].data = data
-      this.funnelOption.series[1].data = data
-      this.funnelOption.legend.data = data.map(o => o.name)
-      // 设置最大值
-      this.funnelOption.series[0].max = sumCount < 1 ? 1 : sumCount
-      this.funnelOption.series[1].max = sumCount < 1 ? 1 : sumCount
-      this.chartObj.setOption(this.funnelOption, true)
-    },
-    initChart() {
-      // 初始化漏斗图
-      var chartObj = echarts.init(document.getElementById('funnel-chart-canvas'))
-      // 漏斗图的属性
-      var option = {
+      chartOption: {
         toolbox: {
           showTitle: false,
           feature: {
@@ -145,7 +77,6 @@ export default {
           bottom: 0,
           top: 0
         },
-        color: this.color,
         series: [
           {
             name: '漏斗图',
@@ -212,19 +143,67 @@ export default {
             }
           }
         ]
+      },
+      /*
+      图表暂无数据提示
+       */
+      notDataOption: {
+        title: {
+          text: '暂无数据',
+          x: 'center',
+          y: 'center',
+          textStyle: {
+            fontSize: 14,
+            fontWeight: 'normal'
+          }
+        }
       }
-      chartObj.setOption(option, true)
-      this.funnelOption = option
-      this.chartObj = chartObj
+    }
+  },
+  mounted() {
+  },
+  methods: {
+    initChart() {
+      this.chartObj = echarts.init(document.getElementById(this.canvaId))
     },
     /**
-     * 下拉菜单选项选择
-     * @param index 选项序号
+     * 图表数据
      */
+    getData() {
+      this.loading = true
+      openDashBoardAPI(this.getBaseParams()).then(res => {
+        const titles = res.data.titles
+        this.options = []
+        this.dataMap = new Map()
+        titles.forEach(title => {
+          if (this.data.dataCategories.includes(title.sqlKey)) {
+            this.dataMap.set(title.sqlKey, [])
+            this.options.push({ code: title.sqlKey, name: title.name })
+          }
+        })
+        this.chartOption.legend.data = []
+        res.data.results.forEach(element => {
+          this.options.forEach(option => {
+            this.dataMap.get(option.code).push({
+              name: element[this.data.dataDimension],
+              value: element[option.code]
+            })
+          })
+          this.chartOption.legend.data.push(element[this.data.dataDimension])
+        })
+        this.handleCommand(0)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     handleCommand(index) {
-      this.optionValue = this.options[index].value
-      this.optionName = this.options[index].name
-      this.getData()
+      const option = this.options[index]
+      this.optionName = option.name
+      this.chartOption.series[0].data = this.dataMap.get(option.code)
+      this.chartOption.series[1].data = this.dataMap.get(option.code)
+      this.chartOption.tooltip.formatter = '{b} <br/> ' + option.name + ': {c}'
+      this.chartObj.setOption(this.chartOption, true)
     }
   }
 }
@@ -232,13 +211,13 @@ export default {
 
 <style scoped lang="scss">
   @import "./style";
-  #funnel-chart-canvas {
+  .funnel-chart-canvas {
     padding-top: 10px;
     width: 100%;
     height: 360px;
   }
 
-  .funnel-chart-canvas {
+  .funnel-chart-canvas-body {
     position: relative;
     .card-title-left .icon {
       color: #50CF9E;
@@ -247,26 +226,6 @@ export default {
     .el-dropdown-selfdefine {
       display: inline-block;
       cursor: pointer;
-    }
-
-    .info-box {
-      position: absolute;
-      bottom: 24px;
-      left: 0;
-      width: 100%;
-      .info-item {
-        width: 15%;
-        margin: 0 5px;
-        .label {
-          margin-bottom: 5px;
-        }
-        &:nth-child(1) {
-          color: #6ca2ff;
-        }
-        &:nth-child(2) {
-          color: #ff7474;
-        }
-      }
     }
   }
 </style>

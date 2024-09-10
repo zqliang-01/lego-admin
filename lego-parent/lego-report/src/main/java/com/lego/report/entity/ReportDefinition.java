@@ -15,6 +15,7 @@ import java.util.Map;
 @Table(name = "report_definition")
 public class ReportDefinition extends BaseEntity {
 
+    private String type;
     private String dataSource;
     private boolean enable;
     private String sqlText;
@@ -33,6 +34,7 @@ public class ReportDefinition extends BaseEntity {
     protected void doBuildReadableSnapshot(Map<String, String> attributes) {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("姓名", StringUtil.toString(name));
+        attributes.put("类型", StringUtil.toString(type));
         attributes.put("数据源", StringUtil.toString(dataSource));
         attributes.put("序列", StringUtil.toString(sn));
         attributes.put("是否生效", enable ? "是" : "否");

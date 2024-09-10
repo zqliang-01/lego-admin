@@ -11,10 +11,14 @@ import com.lego.report.assembler.ReportDefinitionAssembler;
 import com.lego.report.dao.IReportConditionDao;
 import com.lego.report.dao.IReportDefinitionDao;
 import com.lego.report.dao.IReportTitleDao;
+import com.lego.report.dto.ReportDesignOpenInfo;
 import com.lego.report.entity.ReportCondition;
 import com.lego.report.entity.ReportDefinition;
+import com.lego.report.entity.ReportTitle;
 import com.lego.report.service.IReportOpenService;
+import com.lego.report.vo.ReportDefinitionTypeEnum;
 import com.lego.report.vo.ReportExportVO;
+import com.lego.report.vo.ReportOpenDashBoardVO;
 import com.lego.report.vo.ReportOpenPageVO;
 import com.lego.sharding.config.ShardingHintConfig;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -61,6 +65,20 @@ public class ReportOpenService extends BusService<IReportDefinitionDao, ReportDe
         long count = executor.selectCount(sqlSessionTemplate, dataDefinition.getSqlText(), new HashMap<>());
         BusinessException.check(count <= 100, "报表条件[{0}]结果集超过100，请缩小查询范围！", dataDefinition.getName());
         return executor.select(sqlSessionTemplate, dataDefinition.getSqlText(), new HashMap<>());
+    }
+
+    @Override
+    public <M> ReportDesignOpenInfo<M> openDashBoardSql(ReportOpenDashBoardVO vo) {
+        ReportDefinition definition = dao.findByCode(vo.getCode());
+        boolean isDashBroad = ReportDefinitionTypeEnum.isDashBroad(definition.getType());
+        BusinessException.check(isDashBroad, "报表[{0}]不是首页大屏报表，数据查询失败！", definition.getName());
+
+        List<ReportCondition> conditions = conditionDao.findBy(definition);
+        Map<String, Object> params = conditionAssembler.convertParams(conditions, vo.getParam());
+        ShardingHintConfig.setDataSource(definition.getDataSource());
+        List<ReportTitle> titles = titleDao.findBy(definition);
+        List<Object> results = executor.select(sqlSessionTemplate, definition.getSqlText(), params);
+        return new ReportDesignOpenInfo(results, titles);
     }
 
     @Override

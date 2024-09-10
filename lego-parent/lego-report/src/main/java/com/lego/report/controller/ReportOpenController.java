@@ -5,8 +5,10 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.lego.core.common.Constants;
 import com.lego.core.data.ICommonService;
 import com.lego.core.vo.JsonResponse;
+import com.lego.report.dto.ReportDesignOpenInfo;
 import com.lego.report.service.IReportOpenService;
 import com.lego.report.vo.ReportExportVO;
+import com.lego.report.vo.ReportOpenDashBoardVO;
 import com.lego.report.vo.ReportOpenPageVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +29,11 @@ public class ReportOpenController {
 
     @Autowired
     private ICommonService commonService;
+
+    @PostMapping(value = "/dash-board")
+    public JsonResponse<ReportDesignOpenInfo> openDashBoard(@RequestBody ReportOpenDashBoardVO vo) throws Exception {
+        return JsonResponse.success(openService.openDashBoardSql(vo));
+    }
 
     @PostMapping(value = "/page")
     public JsonResponse openPage(@RequestBody ReportOpenPageVO vo) throws Exception {

@@ -5,11 +5,9 @@
       v-loading="loading"
       :style="{ 'z-index': zIndex, 'left': containerLeft }"
       class="nav-manager">
-
       <div class="nav-manager__content">
-
         <div class="nav-section">
-          <div class="nav-section__title" title="123123">全部应用</div>
+          <div class="nav-section__title">全部应用</div>
           <flexbox
             class="nav-section__content"
             wrap="wrap">

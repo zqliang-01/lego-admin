@@ -21,6 +21,7 @@ public class AddReportDefinitionAction extends AddAction<ReportDefinition, IRepo
     @Override
     protected void preprocess() {
         BusinessException.check(StringUtil.isNotBlank(vo.getName()), "姓名不能为空，报表定义表新增失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getType()), "类型不能为空，报表定义表新增失败！");
         BusinessException.check(StringUtil.isNotBlank(vo.getSqlText()), "SQL脚本不能为空，报表定义表新增失败！");
     }
 
@@ -28,6 +29,7 @@ public class AddReportDefinitionAction extends AddAction<ReportDefinition, IRepo
     protected ReportDefinition createTargetEntity() {
         ReportDefinition entity = new ReportDefinition(vo.getName());
         entity.setDataSource(vo.getDataSource());
+        entity.setType(vo.getType());
         entity.setSn(vo.getSn());
         entity.setEnable(vo.isEnable());
         entity.setSqlText(vo.getSqlText());

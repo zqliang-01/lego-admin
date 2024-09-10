@@ -28,5 +28,16 @@ export default { type: 'report', router: [
         icon: 'icon-title'
       }
     })
+  },
+  {
+    ...layout({
+      code: 'report_design',
+      path: 'design',
+      component: () => import('@/views/report/design'),
+      meta: {
+        title: '首页设计',
+        icon: 'board'
+      }
+    })
   }]
 }

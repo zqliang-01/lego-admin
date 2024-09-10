@@ -4,7 +4,7 @@
     class="brief-box">
     <div class="brief-title">
       <span :class="'briefing' | iconPre" class="icon" />
-      <span class="text">数据简报</span>
+      <span class="text">{{ data.name }}</span>
     </div>
     <div v-if="briefList.length > 0" class="brief">
       <flexbox
@@ -45,34 +45,39 @@
 </template>
 
 <script>
+import { openDashBoardAPI } from '@/api/report/open'
+import ChartMixin from './ChartMixin'
+
 export default {
   name: 'TopReport',
+  mixins: [ChartMixin],
   props: {
     rateText: {
       type: String,
       default: ''
-    },
-    briefList: {
-      type: Array,
-      default: () => {
-        return []
-      }
     }
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      briefList: []
     }
-  },
-  watch: {
-    rateText() {
-      console.log(this.rateText)
-    }
-  },
-  mounted() {
   },
   methods: {
+    getData() {
+      if (!this.data.definition || !this.data.definition.code) {
+        return
+      }
+      this.loading = true
+      openDashBoardAPI(this.getBaseParams()).then(res => {
+        this.briefList = res.data.results
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
+    },
     reportClick(item) {
+      this.$emit('onClick', item)
     }
   }
 }
@@ -80,7 +85,6 @@ export default {
 <style scoped lang="scss">
 .brief-box {
   width: 100%;
-  margin-top: 15px;
   background-color: white;
   border: 1px solid #e6e6e6;
   border-radius: $xr-border-radius-base;
@@ -132,6 +136,9 @@ export default {
           overflow: hidden;
           .title {
             font-size: 13px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
           }
           .number {
             font-size: 23px;
@@ -139,8 +146,8 @@ export default {
             line-height: 1;
             margin-top: 8px;
             margin-right: 5px;
-            // white-space: nowrap;
-            // text-overflow: ellipsis;
+            white-space: nowrap;
+            text-overflow: ellipsis;
             overflow: hidden;
           }
         }

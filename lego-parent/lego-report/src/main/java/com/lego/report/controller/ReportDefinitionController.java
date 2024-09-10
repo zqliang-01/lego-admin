@@ -12,6 +12,7 @@ import com.lego.report.dto.ReportDefinitionInfo;
 import com.lego.report.service.IReportDefinitionService;
 import com.lego.report.vo.ReportDefinitionCreateVO;
 import com.lego.report.vo.ReportDefinitionModifyVO;
+import com.lego.report.vo.ReportDefinitionTypeEnum;
 import com.lego.report.vo.ReportOpenTestVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +42,8 @@ public class ReportDefinitionController extends BaseController {
 
     @PostMapping("/update")
     @SaCheckPermission("report_definition_update")
-    public JsonResponse<Object> update(@RequestBody ReportDefinitionModifyVO vo) {
-        definitionService.update(getLoginCode(), vo);
-        return JsonResponse.success();
+    public JsonResponse<TypeInfo> update(@RequestBody ReportDefinitionModifyVO vo) {
+        return JsonResponse.success(definitionService.update(getLoginCode(), vo));
     }
 
     @PostMapping("/delete")
@@ -55,13 +55,19 @@ public class ReportDefinitionController extends BaseController {
 
     @GetMapping("/list-simple")
     @SaCheckPermission("report_definition_read")
-    public JsonResponse<List<TypeInfo>> list(String code, String name) {
-        return JsonResponse.success(definitionService.findSimpleType(code, name, null));
+    public JsonResponse<List<TypeInfo>> list(String code, String name, String type) {
+        return JsonResponse.success(definitionService.findSimpleType(code, name, type, null));
     }
 
     @GetMapping("/list-simple-valid")
-    public JsonResponse<List<TypeInfo>> listValid(String code, String name) {
-        return JsonResponse.success(definitionService.findSimpleType(code, name, true));
+    public JsonResponse<List<TypeInfo>> listValid(String code, String name, String type) {
+        return JsonResponse.success(definitionService.findSimpleType(code, name, type, true));
+    }
+
+    @GetMapping("/list-type")
+    @SaCheckPermission("report_definition_read")
+    public JsonResponse<List<TypeInfo>> listType() {
+        return JsonResponse.success(ReportDefinitionTypeEnum.createTypeInfo());
     }
 
     @GetMapping("/get/{code}")

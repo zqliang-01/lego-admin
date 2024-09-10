@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface IReportDefinitionService {
 
-    List<TypeInfo> findSimpleType(String code, String name, Boolean enable);
+    List<TypeInfo> findSimpleType(String code, String name, String type, Boolean enable);
 
     ReportDefinitionInfo findBy(String code);
 
-    void update(String operatorCode, ReportDefinitionModifyVO vo);
+    TypeInfo update(String operatorCode, ReportDefinitionModifyVO vo);
 
     TypeInfo add(String operatorCode, ReportDefinitionCreateVO vo);
 

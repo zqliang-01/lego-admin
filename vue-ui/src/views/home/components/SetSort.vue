@@ -16,42 +16,28 @@
         <div class="left">
           <draggable
             v-model="sortLeft"
-            :group="{ name: 'sort'}"
             v-bind="{ forceFallback: false }"
             class="draggable-box">
             <set-sort-item
               v-for="(item, index) in sortLeft"
               :key="index"
-              :title="item.title"
-              :icon="item.icon | iconPre"
-              :icon-color="item.iconColor"
-              :img="item.image"
-              class="content"
-            >
-              <el-switch
-                slot="header"
-                v-model="item.show"/>
+              :data="item"
+              class="content">
+              <el-switch slot="header" v-model="item.enable"/>
             </set-sort-item>
           </draggable>
         </div>
         <div class="right">
           <draggable
             v-model="sortRight"
-            :group="{ name: 'sort'}"
             v-bind="{ forceFallback: false }"
             class="draggable-box">
             <set-sort-item
               v-for="(item, index) in sortRight"
               :key="index"
-              :title="item.title"
-              :icon="item.icon | iconPre"
-              :icon-color="item.iconColor"
-              :img="item.image"
-              class="content"
-            >
-              <el-switch
-                slot="header"
-                v-model="item.show"/>
+              :data="item"
+              class="content">
+              <el-switch slot="header" v-model="item.enable"/>
             </set-sort-item>
           </draggable>
         </div>
@@ -69,6 +55,7 @@
 </template>
 
 <script>
+import { designSortChangeAPI } from '@/api/report/designSort'
 import SetSortItem from './SetSortItem'
 import draggable from 'vuedraggable'
 
@@ -120,26 +107,34 @@ export default {
     }
   },
   created() {
-    this.getModelSort()
   },
   methods: {
-    getModelSort() {
-
-    },
-
-    /**
-     * 取消选择
-     */
     handleCancel() {
       this.$emit('update:visible', false)
     },
-
     handleConfirm() {
-      const params = {}
-      params.left = this.sortLeft
-      params.right = this.sortRight
-      this.$message.success('修改成功！')
-      this.$emit('update:visible', false)
+      const params = {
+        leftSort: this.sortLeft.map(left => {
+          return {
+            designCode: left.code,
+            enable: left.enable ? left.enable : false
+          }
+        }),
+        rightSort: this.sortRight.map(right => {
+          return {
+            designCode: right.code,
+            enable: right.enable ? right.enable : false
+          }
+        })
+      }
+      this.loading = true
+      designSortChangeAPI(params).then(() => {
+        this.loading = false
+        this.$message.success('修改成功！')
+        this.$emit('save-success')
+      }).catch(() => {
+        this.loading = false
+      })
     }
   }
 }

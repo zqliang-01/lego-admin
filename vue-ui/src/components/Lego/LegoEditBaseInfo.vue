@@ -21,7 +21,7 @@
           :key="index"
           :prop="item.fieldCode"
           :class="[{'is-block': isBlockShowField(item)}, `is-${item.formType}`]">
-          <span slot="label">
+          <span v-if="!isBlockShowField(item)" slot="label">
             {{ item.name }}
           </span>
           <field

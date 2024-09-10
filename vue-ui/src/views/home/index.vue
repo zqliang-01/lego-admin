@@ -12,19 +12,26 @@
         <reminder class="setting-reminder" content="点击设置按钮支持编辑图表顺序！" />
       </flexbox>
     </div>
-    <div class="lego-workbench__body">
-      <top-report
-        :brief-list="briefList"
-        :rate-text="rateText"
-      />
-      <flexbox
-        class="section"
-        align="stretch">
+    <div v-empty="isEmpty" class="lego-workbench__body">
+      <div
+        v-for="(item, index) in sortTop"
+        class="lego-workbench__top">
+        <top-report
+          :key="index"
+          :data="item"
+          :param="param"
+          :rate-text="rateText"
+          @onClick="handleReportClick"
+        />
+      </div>
+      <flexbox class="section" align="stretch">
         <div class="left">
           <component
             v-for="(item, index) in sortLeft"
             :key="index"
-            :is="item"
+            :is="item.chartType"
+            :data="item"
+            :param="param"
             class="left-content"
           />
         </div>
@@ -32,7 +39,9 @@
           <component
             v-for="(item, index) in sortRight"
             :key="index"
-            :is="item"
+            :is="item.chartType"
+            :data="item"
+            :param="param"
             class="right-content"
           />
         </div>
@@ -43,11 +52,14 @@
       v-if="setSortShow"
       :visible.sync="setSortShow"
       :chart-list="chartList"
-      @save="getModelSort" />
+      @save-success="init" />
   </div>
 </template>
 
 <script>
+import {
+  designValidListAPI
+} from '@/api/report/design'
 import SetSort from './components/SetSort'
 import TopReport from './components/TopReport'
 import Reminder from '@/components/Reminder'
@@ -70,64 +82,85 @@ export default {
     TimeTypeSelect,
     ...res_charts
   },
+  computed: {
+    isEmpty() {
+      return this.sortTop.length === 0 && this.sortLeft.length === 0 && this.sortRight.length === 0
+    }
+  },
   data() {
     return {
       rateText: '本月',
-      briefList: [
-        { label: '新增收入(元)', type: 'customer', icon: 'customer', num: '5852', rate: '93.06', status: 'bottom', color: '#2362FB' },
-        { label: '新增模型(个)', type: 'contacts', icon: 'contacts', num: '58', rate: '88.68', status: 'bottom', color: '#27BA4A' },
-        { label: '新增流程(个)', type: 'business', icon: 'business', num: '938', rate: '251', status: 'top', color: '#FB9323' },
-        { label: '新增字典(个)', type: 'contract', icon: 'contract', num: '1568', rate: '28.54', status: 'bottom', color: '#4A5BFD' },
-        { label: '累计金额(元)', type: 'contract', icon: 'receivables', num: '235514.00', rate: '8.45', status: 'bottom', color: '#19B5F6' },
-        { label: '商机金额(元)', type: 'business', icon: 'icon-opportunities', num: '886652.25', rate: '20.85', status: 'top', color: '#AD5CFF' },
-        { label: '材料金额(元)', type: 'receivables', icon: 'receivables', num: '13855.52', rate: '46.85', status: 'bottom', color: '#FFB940' },
-        { label: '来访客户数(条)', type: 'record', icon: 'record', num: '85', rate: '150', status: 'top', color: '#4A5BFD' }
-      ],
+      sortTop: [],
       sortLeft: [],
       sortRight: [],
       chartList: [],
+      param: {},
       setSortShow: false
     }
   },
   mounted() {
-    Object.keys(res_charts).forEach(key => {
-      const chart = res_charts[key]
-      const prop = chart.data().prop
-      if (prop) {
-        prop.show = true
-        this.chartList.push(prop)
-      }
-      if (prop && prop.position == 'left') {
-        this.sortLeft.push(chart.name)
-      }
-      if (prop && prop.position == 'right') {
-        this.sortRight.push(chart.name)
-      }
-    })
+    this.init()
   },
   methods: {
-    getModelSort() {
+    init() {
+      this.setSortShow = false
+      designValidListAPI().then(res => {
+        this.sortTop = []
+        this.sortLeft = []
+        this.sortRight = []
+        this.chartList = []
+        res.data.forEach(data => {
+          if (data.position === 'top' && data.enable) {
+            this.sortTop.push(data)
+          } else if (data.position === 'left' && data.enable) {
+            this.sortLeft.push(data)
+          } else if (data.position === 'right' && data.enable) {
+            this.sortRight.push(data)
+          }
+          const chart = res_charts[data.chartType]
+          if (chart) {
+            const prop = chart.data().prop
+            data.prop = prop
+            this.chartList.push(data)
+          }
+        })
+      })
     },
     timeTypeChange(data) {
+      this.param = data
       this.rateText = data.label
+    },
+    handleReportClick(item) {
+      if (item.path) {
+        this.$router.push(item.path)
+      }
     }
   }
 }
 </script>
 
 <style scoped lang="scss">
+::v-deep .empty-mask{
+  z-index: 0 !important;
+}
 .lego-workbench {
   width: 100%;
   min-width: 1000px;
   height: 100%;
-  padding: 15px 20px 20px;
+  padding: 10px 10px 0px;
   position: relative;
+  overflow: hidden;
 
   &__body {
+    padding-top: 10px;
     height: 100%;
     overflow: auto;
+  }
+
+  &__top {
     padding-top: 20px;
   }
+
   .setting-reminder {
     width: auto;
     margin-left: 10px;
@@ -136,7 +169,7 @@ export default {
 
   .head {
     position: absolute;
-    padding: 0px 20px 10px;
+    padding: 0px 10px 10px;
     top: 0;
     right: 0;
     left: 0;
@@ -166,8 +199,8 @@ export default {
           margin: 0 8px;
         }
       }
-    .el-radio-group {
-      ::v-deep .el-radio-button__inner {
+      .el-radio-group {
+        ::v-deep .el-radio-button__inner {
           font-size: 12px;
           padding: 11px 12px;
         }

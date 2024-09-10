@@ -1,7 +1,9 @@
 package com.lego.report.action;
 
 import com.lego.core.action.ModifyAction;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
+import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.report.dao.IReportDefinitionDao;
 import com.lego.report.entity.ReportDefinition;
@@ -38,5 +40,9 @@ public class ModifyReportDefinitionAction extends ModifyAction<ReportDefinition,
     protected void postprocess() {
         new AddReportTitleAction(operatorCode, targetEntity, vo.getTitles()).run();
         new AddReportConditionAction(operatorCode, targetEntity, vo.getParams()).run();
+    }
+
+    public TypeInfo getTypeInfo() {
+        return EntityUtil.toTypeInfo(targetEntity);
     }
 }

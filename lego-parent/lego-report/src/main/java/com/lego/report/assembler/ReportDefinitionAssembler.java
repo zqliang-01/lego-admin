@@ -13,6 +13,7 @@ public class ReportDefinitionAssembler extends EntityAssembler<ReportDefinitionI
         ReportDefinitionInfo info = new ReportDefinitionInfo();
         info.setCode(entity.getCode());
         info.setName(entity.getName());
+        info.setType(entity.getType());
         info.setDataSource(entity.getDataSource());
         info.setSn(entity.getSn());
         info.setEnable(entity.isEnable());

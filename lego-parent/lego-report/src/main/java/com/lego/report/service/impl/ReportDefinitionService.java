@@ -46,8 +46,8 @@ public class ReportDefinitionService extends BusService<IReportDefinitionDao, Re
     private MybatisDynamicExecutor executor;
 
     @Override
-    public List<TypeInfo> findSimpleType(String code, String name, Boolean enable) {
-        List<ReportDefinition> definitions = dao.findBy(code, name, enable);
+    public List<TypeInfo> findSimpleType(String code, String name, String type, Boolean enable) {
+        List<ReportDefinition> definitions = dao.findBy(code, name, type, enable);
         return assembler.createTypeInfo(definitions);
     }
 
@@ -65,9 +65,11 @@ public class ReportDefinitionService extends BusService<IReportDefinitionDao, Re
     }
 
     @Override
-    public void update(String operatorCode, ReportDefinitionModifyVO vo) {
+    public TypeInfo update(String operatorCode, ReportDefinitionModifyVO vo) {
         openTestSql(vo.getDataSource(), vo.getSqlText(), vo.getParams());
-        new ModifyReportDefinitionAction(operatorCode, vo).run();
+        ModifyReportDefinitionAction modifyAction = new ModifyReportDefinitionAction(operatorCode, vo);
+        modifyAction.run();
+        return modifyAction.getTypeInfo();
     }
 
     @Override

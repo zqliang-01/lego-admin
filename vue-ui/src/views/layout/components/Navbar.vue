@@ -190,6 +190,9 @@ export default {
     },
     appCode() {
       this.changeNavIndex()
+      if (this.appCode !== this.navActiveIndex && this.appCode !== 'other') {
+        this.$store.commit('SET_NAVACTIVEINDEX', this.appCode)
+      }
     }
   },
   mounted() {

@@ -3,15 +3,15 @@
     <flexbox class="card-title">
       <div class="card-title-left">
         <span
-          :class="icon"
-          :style="{ color: iconColor }"
+          :class="data.prop.icon"
+          :style="{ color: data.prop.iconColor }"
           class="icon" />
-        <span class="text">{{ title }}</span>
+        <span class="text">{{ data.name }}</span>
       </div>
       <slot name="header" />
     </flexbox>
     <div class="content">
-      <img :src="img" >
+      <img :src="data.prop.image" >
     </div>
   </div>
 </template>
@@ -20,10 +20,10 @@
 export default {
   name: 'SetSortItem',
   props: {
-    title: String,
-    icon: String,
-    iconColor: String,
-    img: String
+    data: {
+      type: Object,
+      default: {}
+    }
   },
   data() {
     return {}

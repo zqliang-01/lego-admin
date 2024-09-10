@@ -1,25 +1,22 @@
 <template>
   <div
     v-loading="loading"
-    class="circular-chart-canvas card">
+    class="card">
     <flexbox class="card-title">
       <span :class="[prop.icon, 'icon']" />
       <div class="card-title-center text-one-ellipsis">
-        {{ prop.title }} (
-        <span v-for="(item, index) in list" :key="index">
-          {{ item.categoryName }}、
-        </span>
-        )
+        {{ data.name }}
       </div>
     </flexbox>
     <div class="card-desc"/>
-    <div id="circular-chart-canvas" />
+    <div class="circular-chart-canvas" :id="canvaId" />
   </div>
 </template>
 
 <script>
 import echarts from 'echarts'
 import ChartMixin from '../components/ChartMixin'
+import { openDashBoardAPI } from '@/api/report/open'
 
 export default {
   name: 'CircularChart',
@@ -33,11 +30,11 @@ export default {
         iconColor: '#4983EF',
         image: require('@/assets/img/skeleton/sort-done.png')
       },
-      list: [
-        { categoryName: '分类一', money: 135300 },
-        { categoryName: '分类二', money: 507005 },
-        { categoryName: '分类三', money: 261000 }
-      ],
+      pieObj: {
+        type: 'pie',
+        data: [],
+        radius: ['40%', '70%']
+      },
       chartOption: {
         tooltip: {
           trigger: 'item',
@@ -50,8 +47,7 @@ export default {
         },
         series: []
       },
-      chartObj: null,
-      loading: false
+      chartObj: null
     }
   },
   computed: {},
@@ -59,25 +55,30 @@ export default {
   },
   methods: {
     initChart() {
-      this.chartObj = echarts.init(document.getElementById('circular-chart-canvas'))
+      this.chartObj = echarts.init(document.getElementById(this.canvaId))
     },
 
     getData() {
-      const pieObj = {
-        type: 'pie',
-        data: [],
-        radius: ['40%', '70%']
-      }
-      this.list.forEach(item => {
-        pieObj.data.push({
-          name: item.categoryName,
-          value: item.money
+      this.loading = true
+      this.pieObj.data = []
+      this.chartOption.series = []
+      openDashBoardAPI(this.getBaseParams()).then(res => {
+        res.data.results.forEach(element => {
+          this.chartOption.legend.data.push(element[this.data.dataDimension])
+          this.data.dataCategories.forEach(category => {
+            this.pieObj.data.push({
+              name: element[this.data.dataDimension],
+              value: element[category]
+            })
+          })
         })
-        this.chartOption.legend.data.push(item.categoryName)
+        this.chartOption.series.push(this.pieObj)
+        this.chartOption.color = this.color
+        this.chartObj.setOption(this.chartOption, true)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-      this.chartOption.series.push(pieObj)
-      this.chartOption.color = this.color
-      this.chartObj.setOption(this.chartOption, true)
     }
   }
 }
@@ -85,7 +86,7 @@ export default {
 
 <style scoped lang="scss">
   @import "./style";
-  #circular-chart-canvas {
+  .circular-chart-canvas {
     width: 100%;
     height: 300px;
   }

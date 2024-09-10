@@ -1,13 +1,23 @@
 export default {
   props: {
-    filterValue: {
+    data: {
+      type: Object,
+      default: {
+        title: ''
+      }
+    },
+    param: {
       type: Object,
       default: () => {}
     }
   },
   data() {
     return {
+      loading: false,
+      canvaId: this.uuid(),
       color: [
+        '#FF7474',
+        '#F59561',
         '#6CA2FF',
         '#6AC9D7',
         '#72DCA2',
@@ -29,14 +39,23 @@ export default {
     }
   },
   watch: {
-    // 根据筛选条件获取统计数据
-    filterValue: {
+    data: {
       handler() {
-        if (this.getData) {
+        if (this.getData && !this.loading) {
           this.getData()
         }
       },
-      deep: true
+      deep: true,
+      immediate: true
+    },
+    param: {
+      handler() {
+        if (this.getData && !this.loading) {
+          this.getData()
+        }
+      },
+      deep: true,
+      immediate: true
     }
   },
   mounted() {
@@ -49,9 +68,6 @@ export default {
     if (this.initChart) {
       this.initChart()
     }
-    if (this.getData) {
-      this.getData()
-    }
   },
   beforeDestroy() {
     this.$bus.off('window-resize')
@@ -61,28 +77,22 @@ export default {
      * 获取请求参数
      */
     getBaseParams() {
-      const params = {}
-      if (this.filterValue.dataType !== 'custom') {
-        params.dataType = this.filterValue.dataType
-      } else {
-        if (this.filterValue.strucs.length) {
-          params.isUser = 0
-          params.deptId = this.filterValue.strucs[0].id
-        } else {
-          params.isUser = 1
-          params.userId = this.filterValue.users.length ? this.filterValue.users[0].userId : ''
-        }
+      const condition = {
+        code: this.data.definition.code,
+        param: {}
       }
-
-      if (this.filterValue.timeLine.type) {
-        if (this.filterValue.timeLine.type === 'custom') {
-          params.startTime = this.filterValue.timeLine.startTime.replace(/\./g, '-')
-          params.endTime = this.filterValue.timeLine.endTime.replace(/\./g, '-')
-        } else {
-          params.type = this.filterValue.timeLine.value || ''
-        }
+      if (this.param && this.param.startTime) {
+        condition.param.startTime = this.param.startTime
       }
-      return params
+      if (this.param && this.param.endTime) {
+        condition.param.endTime = this.param.endTime
+      }
+      return condition
+    },
+    uuid() {
+      const time = Date.now()
+      const random = Math.floor(Math.random() * 1000000000)
+      return 'lego_' + random + String(time)
     }
   }
 }

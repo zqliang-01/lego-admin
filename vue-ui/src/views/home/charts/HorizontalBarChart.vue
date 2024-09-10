@@ -1,20 +1,21 @@
 <template>
   <div
     v-loading="loading"
-    class="horizontal-bar-chart-canvas card">
+    class="card">
     <flexbox class="card-title">
       <span :class="[prop.icon, 'icon']" />
-      <div class="card-title-center text-one-ellipsis">{{ prop.title }}</div>
+      <div class="card-title-center text-one-ellipsis">{{ data.name }}</div>
       <div class="card-title-right"/>
     </flexbox>
     <div class="card-desc"/>
-    <div id="horizontal-bar-chart-canvas" />
+    <div class="horizontal-bar-chart-canvas" :id="canvaId" />
   </div>
 </template>
 
 <script>
 import echarts from 'echarts'
 import ChartMixin from '../components/ChartMixin'
+import { openDashBoardAPI } from '@/api/report/open'
 
 export default {
   name: 'HorizontalBarChart',
@@ -52,22 +53,11 @@ export default {
           borderColor: '#fff'
         },
         legend: {
-          data: ['金额', '数量'],
+          data: [],
           top: '0px',
           itemWidth: 14
         },
-        xAxis: [
-          {
-            type: 'value',
-            name: '金额',
-            show: false
-          },
-          {
-            type: 'value',
-            name: '数量',
-            show: false
-          }
-        ],
+        xAxis: [],
         yAxis: [
           {
             type: 'category',
@@ -93,87 +83,78 @@ export default {
         series: []
       },
       axisList: [],
-      chartObj: null,
-      loading: false
+      chartObj: null
     }
   },
   mounted() {
   },
   methods: {
-    /** 柱状图 */
     initChart() {
-      this.chartObj = echarts.init(document.getElementById('horizontal-bar-chart-canvas'))
-      this.chartObj.setOption(this.chartOption, true)
+      this.chartObj = echarts.init(document.getElementById(this.canvaId))
     },
-
     getData() {
-      const moneyList = []
-      const countList = []
-      const yAxisData = []
-      this.list.forEach(element => {
-        moneyList.push(element.money)
-        countList.push(element.count)
-        yAxisData.push(element.name)
+      this.loading = true
+      openDashBoardAPI(this.getBaseParams()).then(res => {
+        const titles = res.data.titles
+        const dataMap = new Map()
+        this.chartOption.xAxis = []
+        titles.forEach(title => {
+          if (this.data.dataCategories.includes(title.sqlKey)) {
+            dataMap.set({ code: title.sqlKey, name: title.name }, [])
+            this.chartOption.xAxis.push({
+              type: 'value',
+              name: title.name,
+              show: false
+            })
+          }
+        })
+        this.chartOption.yAxis[0].data = []
+        res.data.results.forEach(element => {
+          dataMap.forEach((value, key) => {
+            value.push(element[key.code])
+          })
+          this.chartOption.yAxis[0].data.push(element[this.data.dataDimension])
+        })
+        this.chartOption.series = this.getChartSeries(dataMap)
+        this.chartObj.setOption(this.chartOption, true)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-      this.chartOption.yAxis[0].data = yAxisData
-      // 大于6当做天展示
-      this.chartOption.series = this.getChartSeries(moneyList, countList)
-      this.chartOption.color = ['#ff7474', '#6ca2ff']
-      this.chartObj.setOption(this.chartOption, true)
     },
-
-    /**
-     * 获取展示系列
-     */
-    getChartSeries(moneyList, countList) {
+    getChartSeries(dataMap) {
       const series = []
-      series.push({
-        name: '金额',
-        type: 'bar',
-        xAxisIndex: 0,
-        stack: '0',
-        barWidth: '40%',
-        label: {
-          position: 'right',
-          show: true
-        },
-        data: moneyList
+      this.chartOption.color = []
+      this.chartOption.legend.data = []
+      let index = 0
+      dataMap.forEach((value, key) => {
+        series.push({
+          name: key.name,
+          type: 'bar',
+          xAxisIndex: index,
+          stack: '' + index,
+          barWidth: '40%',
+          barGap: '10%',
+          barCategoryGap: '10%',
+          label: {
+            position: 'right',
+            show: true
+          },
+          data: value
+        })
+        this.chartOption.color.push(this.color[index % 17])
+        this.chartOption.legend.data.push(key.name)
+        ++index
       })
-
-      series.push({
-        name: '数量',
-        type: 'bar',
-        xAxisIndex: 1,
-        stack: '1',
-        barWidth: '40%',
-        barGap: '10%',
-        barCategoryGap: '10%',
-        label: {
-          position: 'right',
-          show: true
-        },
-        data: countList
-      })
-
       return series
-    },
-
-    getMaxValueList(maxValue, list) {
-      const maxMoneyList = []
-      for (let index = 0; index < list.length; index++) {
-        const element = list[index]
-        maxMoneyList.push(maxValue - Number(element))
-      }
-      return maxMoneyList
     }
-
   }
 }
 </script>
 
 <style scoped lang="scss">
   @import "./style";
-  #horizontal-bar-chart-canvas {
+  .horizontal-bar-chart-canvas {
     width: 100%;
     height: 350px;
   }

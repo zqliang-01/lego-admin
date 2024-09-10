@@ -1,19 +1,20 @@
 <template>
   <div
     v-loading="loading"
-    class="pie-chart-canvas card">
+    class="card">
     <flexbox class="card-title">
       <span :class="[prop.icon, 'icon']" />
-      <div class="card-title-center text-one-ellipsis">{{ prop.title }}</div>
+      <div class="card-title-center text-one-ellipsis">{{ data.name }}</div>
     </flexbox>
     <div class="card-desc"/>
-    <div id="pie-chart-canvas" />
+    <div class="pie-chart-canvas" :id="canvaId" />
   </div>
 </template>
 
 <script>
 import echarts from 'echarts'
 import ChartMixin from '../components/ChartMixin'
+import { openDashBoardAPI } from '@/api/report/open'
 
 export default {
   name: 'PieChart',
@@ -42,6 +43,13 @@ export default {
         { name: '分类12', industryMoney: 85523 },
         { name: '分类13', industryMoney: 44811 }
       ],
+      pieObj: {
+        radius: '70%',
+        type: 'pie',
+        data: [],
+        minAngle: 5, // 最小角度
+        startAngle: 270 // 起始角度
+      },
       chartOption: {
         legend: {
           orient: 'vertical',
@@ -56,7 +64,6 @@ export default {
         series: []
       },
       chartObj: null,
-      loading: false,
       optionName: '合同额',
       optionValue: 6,
       options: [
@@ -65,42 +72,32 @@ export default {
       ]
     }
   },
-  mounted() {
-    this.initChart()
-    this.getData()
-  },
   methods: {
     initChart() {
-      this.chartObj = echarts.init(document.getElementById('pie-chart-canvas'))
+      this.chartObj = echarts.init(document.getElementById(this.canvaId))
     },
     getData() {
+      this.loading = true
+      this.pieObj.data = []
       this.chartOption.series = []
-      const pieObj = {
-        radius: '70%',
-        type: 'pie',
-        data: [],
-        minAngle: 5, // 最小角度
-        startAngle: 270 // 起始角度
-      }
-      const legendData = []
-      this.list.forEach(item => {
-        const obj = {
-          name: item.name,
-          value: item.industryMoney
-        }
-        pieObj.data.push(obj)
-        legendData.push(item.name)
+      openDashBoardAPI(this.getBaseParams()).then(res => {
+        res.data.results.forEach(element => {
+          this.chartOption.legend.data.push(element[this.data.dataDimension])
+          this.data.dataCategories.forEach(category => {
+            this.pieObj.data.push({
+              name: element[this.data.dataDimension],
+              value: element[category]
+            })
+          })
+        })
+        this.chartOption.series.push(this.pieObj)
+        this.chartOption.color = this.color
+        this.chartObj.setOption(this.chartOption, true)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-      this.chartOption.legend.data = legendData
-      this.chartOption.color = this.color
-      this.chartOption.series.push(pieObj)
-      this.chartObj.setOption(this.chartOption, true)
     },
-
-    /**
-     * 下拉菜单选项选择
-     * @param index 选项序号
-     */
     handleCommand(index) {
       this.optionValue = this.options[index].value
       this.optionName = this.options[index].name
@@ -112,7 +109,7 @@ export default {
 
 <style scoped lang="scss">
   @import "style";
-  #pie-chart-canvas {
+  .pie-chart-canvas {
     width: 100%;
     height: 300px;
   }

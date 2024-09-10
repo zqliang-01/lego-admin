@@ -12,6 +12,20 @@
             class="el-input"
           />
         </p>
+        <p class="report-head-p">
+          <el-select
+            v-model="queryForm.type"
+            style="width: 100%;"
+            placeholder="报表类型"
+            @change="init">
+            <el-option
+              v-for="item in typeList"
+              :key="item.code"
+              :label="item.name"
+              :value="item.code">
+            </el-option>
+          </el-select>
+        </p>
       </div>
       <div class="report-head-btn">
         <el-button type="primary" class="btn" @click="handleQuery()">查询报表</el-button>
@@ -23,8 +37,7 @@
           :key="index"
           :class="{ action: currentCode === item.code }"
           class="report-list-item"
-          @click="handleSelect(item.code)"
-        >
+          @click="handleSelect(item.code)">
           {{ item.name }}
           <i v-if="currentCode === item.code" class="el-icon-right" />
         </p>
@@ -85,6 +98,7 @@ import {
   definitionGetAPI,
   definitionAddAPI,
   definitionModifyAPI,
+  definitionTypeListAPI,
   definitionSimpleListAPI
 } from '@/api/report/definition'
 import BaseInfo from './BaseInfo'
@@ -115,6 +129,7 @@ export default {
     return {
       queryLoading: false,
       formLoading: false,
+      typeList: [],
       fieldForm: {
         sqlText: '',
         params: [],
@@ -123,17 +138,27 @@ export default {
       fieldRules: {},
       queryForm: {
         name: '',
-        code: ''
+        code: '',
+        type: ''
       },
       reportList: [],
       currentCode: ''
     }
   },
   created() {
-    this.handleQuery()
-    this.handleAdd()
+    definitionTypeListAPI().then(res => {
+      this.typeList = res.data
+      if (this.typeList && this.typeList.length > 0) {
+        this.queryForm.type = this.typeList[0].code
+      }
+      this.init()
+    })
   },
   methods: {
+    init() {
+      this.handleQuery()
+      this.handleAdd()
+    },
     handleSave() {
       const createForm = this.$refs.createForm
       createForm.validate(valid => {
@@ -142,6 +167,7 @@ export default {
           return false
         }
         this.formLoading = true
+        this.fieldForm.type = this.queryForm.type
         this.request(this.fieldForm).then(res => {
           this.currentCode = res.data.code
           this.handleQuery()
@@ -184,9 +210,9 @@ export default {
         this.fieldForm = res.data
       })
     },
-    handleQuery() {
+    async handleQuery() {
       this.queryLoading = true
-      definitionSimpleListAPI(this.queryForm).then((res) => {
+      await definitionSimpleListAPI(this.queryForm).then((res) => {
         this.queryLoading = false
         this.reportList = res.data
         if (this.currentCode) {

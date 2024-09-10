@@ -1,20 +1,21 @@
 <template>
   <div
     v-loading="loading"
-    class="bar-chart-canvas card">
+    class="card">
     <flexbox class="card-title">
       <span :class="[prop.icon, 'icon']" />
-      <div class="card-title-center text-one-ellipsis">{{ prop.title }}</div>
+      <div class="card-title-center text-one-ellipsis">{{ data.name }}</div>
       <div class="card-title-right"/>
     </flexbox>
     <div class="card-desc"/>
-    <div id="bar-chart-canvas" />
+    <div class="bar-chart-canvas" :id="canvaId" />
   </div>
 </template>
 
 <script>
 import echarts from 'echarts'
 import ChartMixin from '../components/ChartMixin'
+import { openDashBoardAPI } from '@/api/report/open'
 
 export default {
   name: 'BarChart',
@@ -28,13 +29,6 @@ export default {
         iconColor: '#4983EF',
         image: require('@/assets/img/skeleton/sort-chart.png')
       },
-      list: [
-        { type: '分类一', amount: 1 },
-        { type: '分类二', amount: 2 },
-        { type: '分类三', amount: 10 },
-        { type: '分类四', amount: 3 },
-        { type: '分类五', amount: 10 }
-      ],
       chartOption: {
         color: [],
         tooltip: {
@@ -54,7 +48,7 @@ export default {
         },
         legend: {
           right: '20px',
-          data: ['分类']
+          data: []
         },
         xAxis: [
           {
@@ -97,8 +91,7 @@ export default {
         ],
         series: []
       },
-      chartObj: null,
-      loading: false
+      chartObj: null
     }
   },
   computed: {},
@@ -106,36 +99,55 @@ export default {
   },
   methods: {
     initChart() {
-      this.chartObj = echarts.init(document.getElementById('bar-chart-canvas'))
+      this.chartObj = echarts.init(document.getElementById(this.canvaId))
       this.chartObj.setOption(this.chartOption, true)
     },
     getData() {
-      const dataList = []
-      const xAxisData = []
-      this.list.forEach(element => {
-        dataList.push(element.amount)
-        xAxisData.push(element.type)
+      this.loading = true
+      openDashBoardAPI(this.getBaseParams()).then(res => {
+        const titles = res.data.titles
+        const dataMap = new Map()
+        titles.forEach(title => {
+          if (this.data.dataCategories.includes(title.sqlKey)) {
+            dataMap.set({ code: title.sqlKey, name: title.name }, [])
+          }
+        })
+        this.chartOption.xAxis[0].data = []
+        res.data.results.forEach(element => {
+          dataMap.forEach((value, key) => {
+            value.push(element[key.code])
+          })
+          this.chartOption.xAxis[0].data.push(element[this.data.dataDimension])
+        })
+        this.chartOption.series = this.getChartSeries(dataMap)
+        this.chartObj.setOption(this.chartOption, true)
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
       })
-      this.chartOption.xAxis[0].data = xAxisData
-      // 大于6当做天展示
-      this.chartOption.series = this.getChartSeries(dataList)
-      this.chartOption.color = ['#ff7474']
-      this.chartObj.setOption(this.chartOption, true)
     },
 
     /**
      * 获取展示系列
      */
-    getChartSeries(dataList) {
+    getChartSeries(dataMap) {
       const series = []
-      series.push({
-        name: '分类',
-        type: 'bar',
-        stack: 'one',
-        barGap: '0',
-        barWidth: '50%',
-        // barCategoryGap: '20%',
-        data: dataList
+      this.chartOption.color = []
+      this.chartOption.legend.data = []
+      let index = 0
+      dataMap.forEach((value, key) => {
+        series.push({
+          name: key.name,
+          type: 'bar',
+          stack: 'one',
+          barGap: '0',
+          barWidth: '50%',
+          barCategoryGap: '20%',
+          data: value
+        })
+        this.chartOption.color.push(this.color[index % 17])
+        this.chartOption.legend.data.push(key.name)
+        ++index
       })
       return series
     }
@@ -145,7 +157,7 @@ export default {
 
 <style scoped lang="scss">
   @import "style";
-  #bar-chart-canvas {
+  .bar-chart-canvas {
     width: 100%;
     height: 300px;
   }

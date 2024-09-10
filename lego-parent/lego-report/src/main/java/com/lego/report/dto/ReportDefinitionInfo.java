@@ -34,6 +34,7 @@ public class ReportDefinitionInfo extends DTO {
     private int maxExportSize;
     @ExcelProperty(value = "负责人", converter = TypeInfoConverter.class)
     private TypeInfo creator;
+    private String type;
 
     private List<ReportTitleInfo> titles = new ArrayList<>();
     private List<ReportConditionInfo> params = new ArrayList<>();

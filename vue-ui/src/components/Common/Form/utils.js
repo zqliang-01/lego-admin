@@ -81,7 +81,15 @@ function getTreeValue(trees, value) {
 export function getFormFieldValue(item, isDefault = false) {
   const value = isDefault ? objDeepCopy(item.defaultValue) : objDeepCopy(item.value)
   if (['checkbox', 'multiple_user', 'multiple_structure'].includes(item.formType)) {
-    return isEmpty(value) ? [] : value.map(item => item.code)
+    if (isEmpty(value)) {
+      return []
+    }
+    return value.map(item => {
+      if (isObject(item) && item.hasOwnProperty('code')) {
+        return item.code
+      }
+      return item
+    })
   }
   if (item.formType === 'entity') {
     return isEmpty(value) ? '' : value.code

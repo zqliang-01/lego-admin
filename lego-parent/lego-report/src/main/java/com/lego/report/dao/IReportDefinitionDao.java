@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IReportDefinitionDao extends IGenericDao<ReportDefinition> {
 
-    List<ReportDefinition> findBy(String code, String name, Boolean enable);
+    List<ReportDefinition> findBy(String code, String name, String type, Boolean enable);
 }

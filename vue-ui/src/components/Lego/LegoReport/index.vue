@@ -40,11 +40,11 @@
         <div class="page-query-btn">
           <el-button
             type="primary"
-            @click="handleQuery()">查询</el-button>
+            @click="init">查询</el-button>
           <el-button
             v-if="auth.export"
             type="warning"
-            @click="handleExport()">导出</el-button>
+            @click="handleExport">导出</el-button>
         </div>
       </el-form>
     </div>
@@ -124,8 +124,13 @@ export default {
   mounted() {
     this.queryForm.permissionCode = this.$route.params.menuCode
     this.getDefinition()
+    this.init()
   },
   methods: {
+    init() {
+      this.queryForm.pageIndex = 1
+      this.handleQuery()
+    },
     getDefinition() {
       definitionPermissionGetAPI({
         permissionCode: this.$route.params.menuCode

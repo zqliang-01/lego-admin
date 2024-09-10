@@ -113,14 +113,14 @@ export default {
     }
   },
   mounted() {
-    if (this.defaultType !== undefined) {
+    if (this.defaultType) {
       if (typeof this.defaultType === 'string') {
-        this.selectType = this.getDefaultTypeValue(this.defaultType)
+        this.typeSelectClick(this.getDefaultTypeValue(this.defaultType))
       } else if (isObject(this.defaultType)) {
         if (this.defaultType.label) {
-          this.selectType = this.defaultType
+          this.typeSelectClick(this.defaultType)
         } else if (this.defaultType.type == 'default') {
-          this.selectType = this.getDefaultTypeValue(this.defaultType.value)
+          this.typeSelectClick(this.getDefaultTypeValue(this.defaultType.value))
         } else if (this.defaultType.type == 'custom') {
           this.sureCustomContent = true
           this.showCustomContent = true
@@ -128,8 +128,6 @@ export default {
           this.endTime = this.defaultType.endTime
         }
       }
-    } else {
-      this.$emit('change', { type: 'default', value: this.selectType.value })
     }
   },
   methods: {
@@ -140,7 +138,7 @@ export default {
           return element
         }
       }
-      return { label: '本年', value: 'year' }
+      return { label: '本年', value: 'year', data: ['', ''] }
     },
 
     // 类型选择
@@ -153,8 +151,8 @@ export default {
         type: 'default',
         value: this.selectType.value,
         label: this.selectType.label,
-        startTime: item.date[0],
-        endTime: item.date[1]
+        startTime: this.selectType.date[0],
+        endTime: this.selectType.date[1]
       })
     },
     // 选择自定义时间 确定
