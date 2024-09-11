@@ -1,3 +1,5 @@
+import { getMonth } from '@/components/TimeTypeSelect/date'
+
 export default {
   props: {
     data: {
@@ -79,7 +81,10 @@ export default {
     getBaseParams() {
       const condition = {
         code: this.data.definition.code,
-        param: {}
+        param: {
+          startTime: getMonth()[0],
+          endTime: getMonth()[1]
+        }
       }
       if (this.param && this.param.startTime) {
         condition.param.startTime = this.param.startTime
