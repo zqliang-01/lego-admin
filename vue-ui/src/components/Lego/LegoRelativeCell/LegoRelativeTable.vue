@@ -3,6 +3,7 @@
     <flexbox class="content-header">
       <el-input
         v-model="searchContent"
+        :placeholder="searchKeyName"
         class="search-container">
         <el-button
           slot="append"
@@ -108,6 +109,16 @@ export default {
     }
   },
   computed: {
+    searchKeyName() {
+      let field = this.fieldList.find(field => field.fieldCode === this.searchKey)
+      if (!field && this.searchKey === 'search') {
+        field = this.fieldList.find(field => field.fieldCode === 'name')
+      }
+      if (field) {
+        return field.name
+      }
+      return ''
+    }
   },
   watch: {
     showPopover: function(val) {

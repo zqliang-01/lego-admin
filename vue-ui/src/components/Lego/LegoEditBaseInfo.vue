@@ -83,7 +83,6 @@ import LegoSections from './LegoSections'
 import FieldView from '../Common/Form/FieldView'
 import Field from '../Common/Form/Field'
 import { objDeepCopy } from '@/utils'
-import { getMenuAuth } from '@/utils/auth'
 import { getFormFieldValue } from '../Common/Form/utils'
 import GenerateRulesMixin from '../Mixins/GenerateRules'
 
@@ -96,16 +95,9 @@ export default {
   },
   mixins: [GenerateRulesMixin],
   props: {
-    menuCode: String,
-    formCode: String,
     detailCode: [String, Number],
     fieldList: Array,
     systemFieldList: Array
-  },
-  computed: {
-    auth() {
-      return getMenuAuth(this.menuCode)
-    }
   },
   data() {
     return {
@@ -235,7 +227,7 @@ export default {
 }
 
 .b-cells + .b-cells {
-  margin-top: 25px;
+  margin-top: 10px;
 }
 
 .b-cell {
@@ -245,7 +237,7 @@ export default {
 .el-form--flex {
   margin: 20px 10px 0;
   ::v-deep .el-form-item {
-    padding: 0 40px 0 15px;
+    padding: 0 30px 0 15px;
     margin-bottom: 13px;
     max-width: 100%;
     .el-form-item__content {

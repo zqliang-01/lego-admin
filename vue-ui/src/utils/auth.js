@@ -42,11 +42,3 @@ export function getMenuAuth(menuCode) {
   var auth = { ...store.getters.allAuth }
   return getObjValue(auth, menuCode, 'code')
 }
-
-export function getFormAuth(formCode) {
-  if (!formCode) {
-    return {}
-  }
-  var auth = { ...store.getters.allAuth }
-  return getObjValue(auth, formCode, 'formCode')
-}

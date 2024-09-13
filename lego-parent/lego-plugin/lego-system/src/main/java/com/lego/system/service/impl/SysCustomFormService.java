@@ -12,6 +12,7 @@ import com.lego.system.assembler.SysCustomFormAssembler;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.dao.ISysGenTableDao;
 import com.lego.system.dto.SysCustomFormInfo;
+import com.lego.system.dto.SysCustomFormPermissionInfo;
 import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysGenTable;
 import com.lego.system.service.ISysCustomFormService;
@@ -40,6 +41,12 @@ public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCusto
     public SysCustomFormInfo findBy(String code) {
         SysCustomForm form = dao.findByCode(code);
         return assembler.create(form);
+    }
+
+    @Override
+    public SysCustomFormPermissionInfo findPermissionBy(String code) {
+        SysCustomForm form = dao.findByCode(code);
+        return assembler.createPermission(form);
     }
 
     @Override

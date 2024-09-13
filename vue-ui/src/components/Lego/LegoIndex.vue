@@ -97,7 +97,7 @@
     </div>
     <lego-all-detail
       :visible.sync="relativeEntity.show"
-      :detail-code.sync="relativeEntity.code"
+      :detail-code="relativeEntity.code"
       :form-code="relativeEntity.formCode"
       :page-codes="relativeEntity.pageCodes"
       @handle="actionHandle"

@@ -1,81 +1,68 @@
 <template>
-  <slide-view
-    v-empty="!auth.detail"
-    :visible.sync="visible"
-    :listener-ids="listenerIDs"
-    :no-listener-ids="noListenerIDs"
-    :no-listener-class="noListenerClass"
-    :body-style="{padding: 0, height: '100%'}"
-    xs-empty-icon="nopermission"
-    xs-empty-text="无操作权限"
-    @afterEnter="viewAfterEnter"
-    @close="hideView">
-    <div
-      v-loading="loading"
-      ref="detailMain"
-      class="detail-main">
-      <flexbox
-        v-if="auth.detail"
-        direction="column"
-        align="stretch"
-        class="d-container">
-        <lego-detail-head
-          :action-types="actionTypes"
-          type-name="线索（自定义）"
-          :detail="detailData"
-          :menu-code="menuCode"
-          :head-field-list="headFieldList"
-          :page-codes="pageCodes"
-          @pageChange="pageChange"
-          @handle="actionHandle"
-          @close="hideView" />
-        <flexbox class="d-container-bd" align="stretch">
+  <div
+    v-loading="loading"
+    ref="detailMain"
+    class="detail-main">
+    <flexbox
+      v-if="auth.detail"
+      direction="column"
+      align="stretch"
+      class="d-container">
+      <lego-detail-head
+        :action-types="actionTypes"
+        :auth="auth"
+        :detail="detailData"
+        :head-field-list="headFieldList"
+        :page-codes="pageCodes"
+        @pageChange="pageChange"
+        @handle="actionHandle"
+        @close="hideView" />
+      <flexbox class="d-container-bd" align="stretch">
+        <el-tabs
+          v-model="tabCurrentName"
+          type="border-card"
+          class="d-container-bd--left">
+          <el-tab-pane
+            v-for="(item, index) in tabNames"
+            :key="index"
+            :label="item.label"
+            :name="item.name"
+            lazy>
+            <component
+              :is="item.name"
+              :detail-code="detailCode"
+              :menu-code="menuCode"
+              :form-code="formCode"
+              :field-list="fieldList"
+              :system-field-list="systemFieldList"
+              @handle="actionHandle"
+              @clickEntity="handleEntityClick" />
+          </el-tab-pane>
+        </el-tabs>
+        <transition name="slide-fade">
           <el-tabs
-            v-model="tabCurrentName"
+            v-show="showImportInfo"
+            value="chiefly-contacts"
             type="border-card"
-            class="d-container-bd--left">
+            class="d-container-bd--right">
             <el-tab-pane
-              v-for="(item, index) in tabNames"
-              :key="index"
-              :label="item.label"
-              :name="item.name"
+              label="重要信息"
+              name="chiefly-contacts"
               lazy>
-              <component
-                :is="item.name"
-                :detail-code="detailCode"
-                :menu-code="menuCode"
-                :form-code="formCode"
-                :field-list="fieldList"
-                :system-field-list="systemFieldList"
-                @handle="actionHandle"
-                @clickEntity="handleEntityClick" />
+              <import-info :list="importList" :detail="detailData" class="import-info" />
             </el-tab-pane>
           </el-tabs>
-          <transition name="slide-fade">
-            <el-tabs
-              v-show="showImportInfo"
-              value="chiefly-contacts"
-              type="border-card"
-              class="d-container-bd--right">
-              <el-tab-pane
-                label="重要信息"
-                name="chiefly-contacts"
-                lazy>
-                <import-info :list="importList" :detail="detailData" class="import-info" />
-              </el-tab-pane>
-            </el-tabs>
-          </transition>
-        </flexbox>
+        </transition>
       </flexbox>
-      <!-- 新建 -->
-      <lego-all-create
-        :visible.sync="isCreate"
-        :form-code="formCode"
-        :action="{type: 'update', detailData: detailData}"
-        @close="isCreate = false"
-        @handle="actionHandle"
-      />
-    </div>
+    </flexbox>
+    <!-- 新建 -->
+    <lego-all-create
+      :visible.sync="isCreate"
+      :form-code="formCode"
+      :action="{type: 'update', detailData: detailData}"
+      @close="isCreate = false"
+      @handle="actionHandle"
+    />
     <el-button
       v-if="auth.detail"
       class="firse-button"
@@ -90,7 +77,7 @@
         :form-code="relativeEntity.formCode"
         @hide-view="closeEntityDetail()"/>
     </div>
-  </slide-view>
+  </div>
 </template>
 
 <script>

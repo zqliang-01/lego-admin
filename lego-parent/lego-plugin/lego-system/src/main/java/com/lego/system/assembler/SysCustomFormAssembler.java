@@ -2,6 +2,7 @@ package com.lego.system.assembler;
 
 import com.lego.core.assembler.EntityAssembler;
 import com.lego.system.dto.SysCustomFormInfo;
+import com.lego.system.dto.SysCustomFormPermissionInfo;
 import com.lego.system.entity.SysCustomForm;
 import org.springframework.stereotype.Component;
 
@@ -29,4 +30,11 @@ public class SysCustomFormAssembler extends EntityAssembler<SysCustomFormInfo, S
         return info;
     }
 
+    public SysCustomFormPermissionInfo createPermission(SysCustomForm form) {
+        SysCustomFormPermissionInfo info = new SysCustomFormPermissionInfo();
+        info.setCode(form.getCode());
+        info.setClassName(form.getTable().getClassName());
+        info.setPermissionCode(form.getTable().getPermissionCode());
+        return info;
+    }
 }

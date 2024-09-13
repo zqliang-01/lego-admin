@@ -60,7 +60,6 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
                 value.put("title", permission.getName());
                 value.put("icon", permission.getIcon());
                 value.put("formCode", permission.getForm().getCode());
-                value.put("className", permission.getClassName());
                 value.put("dynamicRoute", permission.isDynamicRoute());
                 auth.put(permission.getRealm(), value);
                 continue;

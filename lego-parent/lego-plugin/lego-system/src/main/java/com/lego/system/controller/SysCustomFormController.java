@@ -6,6 +6,7 @@ import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysCustomFormInfo;
+import com.lego.system.dto.SysCustomFormPermissionInfo;
 import com.lego.system.service.ISysCustomFormService;
 import com.lego.system.vo.SysCustomFormCreateVO;
 import com.lego.system.vo.SysCustomFormModifyVO;
@@ -41,6 +42,12 @@ public class SysCustomFormController extends BaseController {
     @GetMapping("/get/{code}")
     public JsonResponse<SysCustomFormInfo> get(@PathVariable String code) {
         return JsonResponse.success(customFormService.findBy(code));
+    }
+
+    @GetMapping("/get-permission/{code}")
+    public JsonResponse<SysCustomFormPermissionInfo> getPermission(@PathVariable String code) {
+        SysCustomFormPermissionInfo permissionInfo = customFormService.findPermissionBy(code);
+        return JsonResponse.success(permissionInfo);
     }
 
     @GetMapping("/get-init")

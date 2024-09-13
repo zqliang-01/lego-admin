@@ -29,7 +29,6 @@
     </el-container>
     <lego-all-create
       :visible.sync="createShow"
-      :menu-code="menuCode"
       :form-code="formCode"
       @close="createShow = false"
       @handle="actionHandle"
@@ -55,7 +54,6 @@ export default {
   },
   data() {
     return {
-      menuCode: '',
       formCode: '',
       appCode: '',
       quickAddList: [],
@@ -113,7 +111,6 @@ export default {
     },
     addSkip(item) {
       this.formCode = item.formCode
-      this.menuCode = item.menuCode
       this.createShow = true
     },
     actionHandle(data) {
@@ -135,7 +132,6 @@ export default {
           sn: obj.sn,
           title: obj.title,
           icon: obj.icon,
-          menuCode: obj.code,
           formCode: obj.formCode
         })
       }

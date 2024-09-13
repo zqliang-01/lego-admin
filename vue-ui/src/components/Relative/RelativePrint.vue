@@ -64,7 +64,7 @@ export default {
         { fieldCode: 'template', name: '模板', formType: 'select', width: '100' },
         { fieldCode: 'createTime', name: '打印时间', formType: 'text', width: '100' }
       ],
-      tableHeight: document.documentElement.clientHeight - 275
+      tableHeight: document.documentElement.clientHeight - 225
     }
   },
   inject: ['rootTabs'],

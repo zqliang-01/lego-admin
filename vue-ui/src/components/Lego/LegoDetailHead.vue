@@ -5,7 +5,7 @@
       align="stretch">
       <i :class="auth.icon | iconPre" class="menu-icon" />
       <div class="t-section__bd">
-        <div class="type-name">{{ typeName }}</div>
+        <div class="type-name">{{ auth.title }}</div>
         <flexbox class="type-content">
           <el-tooltip
             :disabled="!name"
@@ -76,7 +76,6 @@
 </template>
 <script type="text/javascript">
 import FieldView from '../Common/Form/FieldView'
-import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoDetailHead',
@@ -84,8 +83,12 @@ export default {
     FieldView
   },
   props: {
-    typeName: String,
-    menuCode: String,
+    auth: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    },
     detail: {
       type: Object,
       default: () => {
@@ -107,9 +110,6 @@ export default {
     pageCodes: Array
   },
   computed: {
-    auth() {
-      return getMenuAuth(this.menuCode)
-    },
     name() {
       if (this.detail) {
         return this.detail.name

@@ -2,7 +2,7 @@
   <transition
     name="slide-fade"
     @after-enter="afterEnter">
-    <el-card
+    <div
       id="slide"
       ref="slide"
       :style="{ 'z-index': zIndex }"
@@ -15,24 +15,7 @@
         icon="el-icon-close"
         @click="close"/>
       <slot/>
-      <el-dialog
-        :visible.sync="dialogVisible"
-        :append-to-body="true"
-        :close-on-click-modal="false"
-        custom-class="no-padding-dialog"
-        title="提示"
-        top="30vh"
-        width="420px">
-        <div class="el-message-box__container" style="padding: 10px 15px 15px;">
-          <div class="el-message-box__status el-icon-warning"/>
-          <div class="el-message-box__message">确定离开？正在编辑的内容将会丢失。</div>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogSure">确 定</el-button>
-        </span>
-      </el-dialog>
-    </el-card>
+    </div>
   </transition>
 </template>
 <script type="text/javascript">
@@ -81,8 +64,6 @@ export default {
   data() {
     return {
       zIndex: getMaxIndex(),
-      isEditClose: false,
-      dialogVisible: false,
       targetData: {
         isMoveClick: false,
         pageX: 0,
@@ -93,9 +74,6 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.$on('setEditClose', value => {
-      this.isEditClose = value
-    })
   },
   mounted() {
     if (this.appendToBody) {
@@ -114,8 +92,6 @@ export default {
   },
 
   beforeDestroy() {
-    this.dialogVisible = false
-
     if (this.appendToBody && this.$el && this.$el.parentNode) {
       this.$el.parentNode.removeChild(this.$el)
     }
@@ -176,14 +152,6 @@ export default {
       this.$emit('afterEnter')
     },
     close() {
-      if (this.isEditClose) {
-        this.dialogVisible = true
-      } else {
-        this.$emit('close')
-      }
-    },
-    dialogSure() {
-      this.dialogVisible = false
       this.$emit('close')
     }
   }
@@ -206,6 +174,7 @@ export default {
 
 .slide-detail-card-container {
   // position: relative;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
   background-color: $xr-backgroud;
 }
 

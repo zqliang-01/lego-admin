@@ -23,6 +23,12 @@ export function customFormGetAPI(code) {
   })
 }
 
+export function customFormPermissionGetAPI(code) {
+  return request({
+    url: '/back-end/sys-custom-form/get-permission/' + code
+  })
+}
+
 export function customFormInitGetAPI(tableCode) {
   return request({
     url: '/back-end/sys-custom-form/get-init',

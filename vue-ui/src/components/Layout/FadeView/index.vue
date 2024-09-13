@@ -1,6 +1,7 @@
 <template>
   <fade-transaction
     v-if="visible"
+    :loading="loading"
     :body-style="{ height: '100%'}"
     @afterEnter="afterEnter">
     <flexbox

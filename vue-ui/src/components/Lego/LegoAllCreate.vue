@@ -1,7 +1,8 @@
 <template>
   <component
-    v-if="visible"
+    v-if="hasPermission"
     :visible="visible"
+    :loading="loading"
     :is="componentName"
     :form-code="formCode"
     v-bind="$attrs"
@@ -11,7 +12,8 @@
 <script type="text/javascript">
 import LegoCreate from './LegoCreate'
 import crmCreate from '@/views/crm/components/create'
-import { getFormAuth } from '@/utils/auth'
+import { getMenuAuth } from '@/utils/auth'
+import { customFormPermissionGetAPI } from '@/api/admin/formField'
 
 export default {
   name: 'LegoAllCreate',
@@ -30,16 +32,43 @@ export default {
       default: ''
     }
   },
-  data() {
-    return {}
-  },
-  computed: {
-    componentName() {
-      const auth = getFormAuth(this.formCode)
-      if (!auth.dynamicRoute && auth.className && crmCreate[auth.className + 'Create']) {
-        return auth.className + 'Create'
+  watch: {
+    visible(val) {
+      if (val) {
+        this.handleOpen()
       }
-      return 'LegoCreate'
+    }
+  },
+  data() {
+    return {
+      open: false,
+      loading: false,
+      hasPermission: false,
+      componentName: ''
+    }
+  },
+  methods: {
+    handleOpen() {
+      this.loading = true
+      this.hasPermission = false
+      customFormPermissionGetAPI(this.formCode).then(res => {
+        this.loading = false
+        const auth = getMenuAuth(res.data.permissionCode)
+        if (!auth.add) {
+          this.$message.error('无[' + this.formCode + ']操作权限！')
+          this.$emit('close')
+          return
+        }
+        this.hasPermission = true
+        if (!auth.dynamicRoute) {
+          this.componentName = res.data.className + 'Create'
+        } else {
+          this.componentName = 'LegoCreate'
+        }
+      }).catch(() => {
+        this.loading = false
+        this.$emit('close')
+      })
     }
   }
 }

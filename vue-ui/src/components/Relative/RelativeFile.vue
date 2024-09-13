@@ -116,7 +116,7 @@ export default {
         { fieldCode: 'creator', name: '上传人', formType: 'user', width: '100' },
         { fieldCode: 'createTime', name: '上传时间', formType: 'text', width: '100' }
       ],
-      tableHeight: document.documentElement.clientHeight - 315,
+      tableHeight: document.documentElement.clientHeight - 265,
       /** 重命名 弹窗 */
       editDialog: false,
       /** 编辑信息 */
