@@ -136,3 +136,6 @@
     </td>
   </tr>
 </table>
+
+### 小程序端
+<img src="https://gitee.com/zqliang_01/show-image/raw/master/lego-admin/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%A0%81.png"/>
