@@ -90,6 +90,7 @@ public class LegoWebConfig implements WebMvcConfigurer {
     private static List<MediaType> getSupportedMediaTypes() {
         List<MediaType> results = new ArrayList<MediaType>();
         results.add(MediaType.APPLICATION_JSON);
+        results.add(MediaType.TEXT_PLAIN);
         results.add(MediaType.parseMediaType("text/json"));
         return results;
     }
@@ -104,4 +105,5 @@ public class LegoWebConfig implements WebMvcConfigurer {
     public ICommonService getCommonService() {
         return new CommonService();
     }
+
 }

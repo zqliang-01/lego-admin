@@ -47,4 +47,12 @@ public class SysMessageDao extends GenericDao<SysMessage> implements ISysMessage
         query.order("t.createTime DESC");
         return query.findPage(vo);
     }
+
+    @Override
+    public SysMessage findByCode(String operatorCode, String code) {
+        QueryHandler<SysMessage> query = createQueryHandler();
+        query.condition("t.code = :code").param("code", code);
+        query.condition("t.recipient.code = :recipientCode").param("recipientCode", operatorCode);
+        return query.findUnique();
+    }
 }

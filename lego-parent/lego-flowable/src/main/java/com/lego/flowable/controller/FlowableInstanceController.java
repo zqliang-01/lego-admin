@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 @RequestMapping("/back-end/flowable-instance")
 public class FlowableInstanceController extends BaseController {
@@ -49,6 +51,11 @@ public class FlowableInstanceController extends BaseController {
     @GetMapping("/get-start-form/{id}")
     public JsonResponse<IFlowableStartFormDetailInfo> getStartForm(@PathVariable String id) {
         return JsonResponse.success(instanceService.findStartForm(id));
+    }
+
+    @GetMapping("/download-image/{id}")
+    public void downloadImage(HttpServletResponse response, @PathVariable String id) {
+        instanceService.downloadImage(response, id);
     }
 
 }

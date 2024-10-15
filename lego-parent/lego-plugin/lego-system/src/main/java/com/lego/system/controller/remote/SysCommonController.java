@@ -76,6 +76,7 @@ public class SysCommonController extends BaseController implements ISystemAPI {
     }
 
     @Override
+    @GetMapping("/get-permission-code")
     public JsonResponse<String> findPermissionCodeByTable(String tableCode) {
         return JsonResponse.success(commonService.findPermissionCodeByTable(tableCode));
     }

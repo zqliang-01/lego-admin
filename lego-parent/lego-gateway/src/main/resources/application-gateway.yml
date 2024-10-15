@@ -41,6 +41,12 @@ spring:
             - Path=/back-end/job-*/**
           filters:
             - StripPrefix=1
+        - id: mobile
+          uri: lb://mobile
+          predicates:
+            - Path=/back-end/mobile-*/**
+          filters:
+            - StripPrefix=1
 lego:
   open-request-log: true
   # 防止XSS攻击
@@ -53,7 +59,5 @@ lego:
   # 不校验白名单
   ignore:
     urls:
-      - /back-end/sys-index/login
-      - /back-end/sys-index/logout
-      - /back-end/sys-index/captchaImage
-      - /back-end/sys-index/init
+      - /back-end/sys-index/**
+      - /back-end/mobile-login/**

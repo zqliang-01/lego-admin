@@ -14,4 +14,6 @@ public interface ISysMessageDao extends IGenericDao<SysMessage> {
     List<SysMessage> findBy(String recipientCode, String type, boolean readed);
 
     LegoPage<SysMessage> findPageBy(String operatorCode, SysMessageSearchVO vo);
+
+    SysMessage findByCode(String operatorCode, String code);
 }

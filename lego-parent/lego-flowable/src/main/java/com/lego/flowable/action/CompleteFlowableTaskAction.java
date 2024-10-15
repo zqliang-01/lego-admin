@@ -47,14 +47,13 @@ public class CompleteFlowableTaskAction extends FlowableTaskAction {
     @Override
     protected void doRun() {
         String commentType = FlowableCommentType.GENERIC.getCode();
-        if (StringUtil.isNotBlank(vo.getComment())) {
-            String comment = vo.getComment();
-            if (DelegationState.PENDING.equals(task.getDelegationState())) {
-                SysEmployee employee = employeeDao.findByCode(operatorCode);
-                comment = employee.getName() + ":" + comment;
-            }
-            taskService.addComment(vo.getId(), task.getProcessInstanceId(), commentType, comment);
+        String comment = vo.getComment();
+        BusinessException.check(StringUtil.isNotBlank(comment), "审批意见不能为空！");
+        if (DelegationState.PENDING.equals(task.getDelegationState())) {
+            SysEmployee employee = employeeDao.findByCode(operatorCode);
+            comment = employee.getName() + ":" + comment;
         }
+        taskService.addComment(vo.getId(), task.getProcessInstanceId(), commentType, comment);
         if (DelegationState.PENDING.equals(task.getDelegationState())) {
             taskService.resolveTask(vo.getId());
             return;

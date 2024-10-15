@@ -59,6 +59,10 @@ public class SysFileService extends BusService<ISysFileDao, SysFileAssembler> im
         SysFile file = dao.findByCode(code);
         InputStream inputStream = fileHandler.download(file.getPath());
         final String contentType = ObjectUtil.defaultIfNull(FileUtil.getMimeType(file.getName()), "application/octet-stream");
+        if (file.isImage()) {
+            ServletUtil.write(response, inputStream, contentType);
+            return;
+        }
         ServletUtil.write(response, inputStream, contentType, file.getName());
     }
 

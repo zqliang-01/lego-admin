@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.Environment;
@@ -23,6 +24,7 @@ import java.net.UnknownHostException;
 @SpringBootApplication
 @EntityScan("com.lego.**.entity")
 @MapperScan({"com.lego.**.mapper"})
+@EnableFeignClients({"com.lego.mobile.feign"})
 @EnableJpaRepositories(value = "com.lego.**.dao", repositoryFactoryBeanClass = RepositoryFactoryBean.class)
 public class LegoAdminApplication extends SpringBootServletInitializer {
 
