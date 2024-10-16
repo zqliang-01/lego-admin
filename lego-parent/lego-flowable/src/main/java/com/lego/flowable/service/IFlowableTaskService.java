@@ -10,6 +10,7 @@ import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface IFlowableTaskService {
@@ -37,4 +38,6 @@ public interface IFlowableTaskService {
     void unClaim(String loginCode, FLowbaleTaskClaimVO vo);
 
     void transfer(String loginCode, FlowableTaskTransferVO vo);
+
+    void downloadImage(HttpServletResponse response, String id);
 }

@@ -65,11 +65,7 @@ export default {
         return createFieldListAPI(this.formCode)
       }
       return new Promise((resolve, reject) => {
-        if (this.formCode) {
-          resolve()
-        } else {
-          this.$message.error('未关联业务表单！')
-        }
+        resolve()
       })
     },
     initValue() {

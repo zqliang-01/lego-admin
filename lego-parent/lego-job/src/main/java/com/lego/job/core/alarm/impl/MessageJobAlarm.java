@@ -56,7 +56,7 @@ public class MessageJobAlarm implements JobAlarm {
 
     private static final String loadEmailJobAlarmTemplate() {
         String mailBodyTemplate = "<h5>监控告警明细：</span>" +
-            "<table border=\"1\" cellpadding=\"3\" style=\"border-collapse:collapse; width:80%;\" >\n" +
+            "<table border=\"1\" cellpadding=\"3\" style=\"border-collapse:collapse; width:100%;\" >\n" +
             "   <thead style=\"font-weight: bold;color: #ffffff;background-color: #ff8c00;\" >" +
             "      <tr>\n" +
             "         <td width=\"20%\" >执行器</td>\n" +

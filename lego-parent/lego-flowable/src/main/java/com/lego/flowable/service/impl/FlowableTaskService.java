@@ -1,5 +1,6 @@
 package com.lego.flowable.service.impl;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.flowable.FlowableProcessConstants;
@@ -27,7 +28,11 @@ import com.lego.flowable.vo.FlowableTaskSearchVO;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.entity.SysEmployee;
+import org.flowable.bpmn.model.BpmnModel;
+import org.flowable.engine.ProcessEngineConfiguration;
+import org.flowable.engine.history.HistoricActivityInstance;
 import org.flowable.engine.task.Comment;
+import org.flowable.image.ProcessDiagramGenerator;
 import org.flowable.task.api.Task;
 import org.flowable.task.api.TaskInfo;
 import org.flowable.task.api.TaskQuery;
@@ -37,6 +42,9 @@ import org.flowable.task.api.history.HistoricTaskLogEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -140,6 +148,7 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         detailInfo.setFormKey(formKey);
         detailInfo.setFinished(task instanceof HistoricTaskInstance);
         detailInfo.setComments(commentInfos);
+        detailInfo.setInstanceId(task.getProcessInstanceId());
         return detailInfo;
     }
 
@@ -187,6 +196,37 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
     @Override
     public void transfer(String loginCode, FlowableTaskTransferVO vo) {
         new TransferFlowableTaskAction(loginCode, vo).run();
+    }
+
+    @Override
+    public void downloadImage(HttpServletResponse response, String taskId) {
+        TaskInfo task = historyService.createHistoricTaskInstanceQuery()
+            .includeTaskLocalVariables()
+            .finished()
+            .taskId(taskId)
+            .singleResult();
+        if (task == null) {
+            task = taskService.createTaskQuery()
+                .includeTaskLocalVariables()
+                .taskId(taskId)
+                .singleResult();
+        }
+        List<HistoricActivityInstance> activities = historyService.createHistoricActivityInstanceQuery()
+            .executionId(task.getExecutionId())
+            .list();
+        List<String> activityIds = new ArrayList<>();
+        for (HistoricActivityInstance activity : activities) {
+            if (!activityIds.contains(activity.getActivityId())) {
+                activityIds.add(activity.getActivityId());
+            }
+        }
+        //获取流程图
+        List<String> flows = new ArrayList<>();
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
+        ProcessEngineConfiguration engineConfig = processEngine.getProcessEngineConfiguration();
+        ProcessDiagramGenerator diagramGenerator = engineConfig.getProcessDiagramGenerator();
+        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", activityIds, flows, engineConfig.getActivityFontName(), engineConfig.getLabelFontName(), engineConfig.getAnnotationFontName(), engineConfig.getClassLoader(), 1.0, true);
+        ServletUtil.write(response, in);
     }
 
 }

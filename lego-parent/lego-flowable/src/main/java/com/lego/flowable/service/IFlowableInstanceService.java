@@ -6,6 +6,8 @@ import com.lego.flowable.dto.FlowableProcessNodeInfo;
 import com.lego.flowable.dto.IFlowableStartFormDetailInfo;
 import com.lego.flowable.vo.FlowableInstanceSearchVO;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface IFlowableInstanceService {
 
     LegoPage<FlowableInstanceInfo> findBy(String operatorCode, FlowableInstanceSearchVO vo);
@@ -17,4 +19,6 @@ public interface IFlowableInstanceService {
     void stop(String operatorCode, String id);
 
     IFlowableStartFormDetailInfo findStartForm(String id);
+
+    void downloadImage(HttpServletResponse response, String id);
 }

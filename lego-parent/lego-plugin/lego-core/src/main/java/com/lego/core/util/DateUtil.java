@@ -184,6 +184,13 @@ public class DateUtil {
         return smallDate.before(bigDate);
     }
 
+    public static boolean ltCurrent(Date date) {
+        if (date == null) {
+            return true;
+        }
+        return date.before(currentDateTime());
+    }
+
     /**
      * 小于等于
      */

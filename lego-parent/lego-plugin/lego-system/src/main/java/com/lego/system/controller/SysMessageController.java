@@ -33,6 +33,11 @@ public class SysMessageController extends BaseController {
         return JsonResponse.success(messageService.findBy(getLoginCode(), vo));
     }
 
+    @GetMapping("/get/{code}")
+    public JsonResponse<SysMessageInfo> get(@PathVariable String code) {
+        return JsonResponse.success(messageService.findByCode(getLoginCode(), code));
+    }
+
     @PostMapping("/read/{code}")
     public JsonResponse<Object> read(@PathVariable String code) {
         messageService.read(getLoginCode(), code);

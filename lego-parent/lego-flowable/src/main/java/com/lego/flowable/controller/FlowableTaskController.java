@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -99,6 +100,11 @@ public class FlowableTaskController extends BaseController {
     public JsonResponse<FlowableTaskFormDetailInfo> getFormDetailBy(@PathVariable String id) {
         FlowableTaskFormDetailInfo info = taskService.findCodeVariableBy(id);
         return JsonResponse.success(info);
+    }
+
+    @GetMapping("/download-image/{id}")
+    public void downloadImage(HttpServletResponse response, @PathVariable String id) {
+        taskService.downloadImage(response, id);
     }
 
 }

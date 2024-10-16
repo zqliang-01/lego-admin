@@ -57,4 +57,9 @@ public class SysMessageService extends BusService<ISysMessageDao, SysMessageAsse
         countInfo.setNotice(noticeDao.findUnreadCount(operatorCode));
         return countInfo;
     }
+
+    @Override
+    public SysMessageInfo findByCode(String operatorCode, String code) {
+        return assembler.create(dao.findByCode(operatorCode, code));
+    }
 }

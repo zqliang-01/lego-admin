@@ -123,7 +123,6 @@ export default {
         }
       }
     },
-
     getUserData() {
       employeeGetAPI(this.code)
         .then(res => {

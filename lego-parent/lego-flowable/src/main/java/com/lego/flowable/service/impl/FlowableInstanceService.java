@@ -2,6 +2,7 @@ package com.lego.flowable.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.extra.servlet.ServletUtil;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
@@ -28,6 +29,7 @@ import org.flowable.task.api.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,5 +165,30 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
         BpmnModel bpmnModel = repositoryService.getBpmnModel(processInstance.getProcessDefinitionId());
         String formKey = modelAssembler.getStartEvent(bpmnModel).getFormKey();
         return new IFlowableStartFormDetailInfo(formKey, code);
+    }
+
+    @Override
+    public void downloadImage(HttpServletResponse response, String id) {
+        ProcessInstance instance = runtimeService.createProcessInstanceQuery()
+            .processInstanceId(id)
+            .singleResult();
+        if (instance == null) {
+            return;
+        }
+        List<Execution> executions = runtimeService.createExecutionQuery()
+            .processInstanceId(instance.getId())
+            .list();
+        //得到当前的Activity的Id
+        List<String> activityIds = new ArrayList<>();
+        List<String> flows = new ArrayList<>();
+        for (Execution exe : executions) {
+            List<String> ids = runtimeService.getActiveActivityIds(exe.getId());
+            activityIds.addAll(ids);
+        }
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(instance.getProcessDefinitionId());
+        ProcessEngineConfiguration engconf = processEngine.getProcessEngineConfiguration();
+        ProcessDiagramGenerator diagramGenerator = engconf.getProcessDiagramGenerator();
+        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", activityIds, flows, engconf.getActivityFontName(), engconf.getLabelFontName(), engconf.getAnnotationFontName(), engconf.getClassLoader(), 1.0, true);
+        ServletUtil.write(response, in);
     }
 }

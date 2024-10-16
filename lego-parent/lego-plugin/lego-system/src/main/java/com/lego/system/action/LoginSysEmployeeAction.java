@@ -1,9 +1,7 @@
 package com.lego.system.action;
 
-import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import com.lego.core.action.MaintainAction;
-import com.lego.core.common.Constants;
 import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
@@ -41,7 +39,7 @@ public class LoginSysEmployeeAction extends MaintainAction {
         boolean result = employee.checkPassword(password);
         BusinessException.check(result, "密码错误！");
 
-        StpUtil.login(code, SaLoginConfig.setExtra(Constants.DEPT_KEY, employee.getDept().getCode()));
+        StpUtil.login(code);
     }
 
     @Override

@@ -18,4 +18,6 @@ public interface ISysMessageService {
     void deleteAll(String operatorCode, String type);
 
     SysMessageCountInfo findUnreadCountBy(String operatorCode);
+
+    SysMessageInfo findByCode(String operatorCode, String code);
 }
