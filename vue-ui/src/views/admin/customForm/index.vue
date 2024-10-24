@@ -3,7 +3,7 @@
     <xr-header
       :icon-class="'double-gear'"
       :show-search="true"
-      :show-save="manage.sharding.algorithm.add ? true : false"
+      :show-save="manage.customForm.update"
       icon-color="#1CBAF5"
       label="自定义表单设置"
       placeholder="请输入名称搜索"

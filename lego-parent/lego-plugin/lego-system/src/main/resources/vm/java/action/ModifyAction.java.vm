@@ -27,6 +27,8 @@ public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${Clas
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
     #elseif($column.required && $column.javaFieldType == 'Date')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
+    #elseif($column.required && $column.javaFieldType == 'int')
+        BusinessException.check(vo.get${column.firstUpperField}() != 0, "${column.comment}不能为空，${FunctionName}修改失败！");
     #elseif($column.required)
         BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}修改失败！");
     #end

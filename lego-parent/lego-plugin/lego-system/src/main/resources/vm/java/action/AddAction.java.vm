@@ -26,6 +26,8 @@ public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
     #elseif($column.required && $column.javaFieldType == 'Date')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
+    #elseif($column.required && $column.javaFieldType == 'int')
+    	BusinessException.check(vo.get${column.firstUpperField}() != 0, "${column.comment}不能为空，${FunctionName}新增失败！");
     #elseif($column.required)
         BusinessException.check(StringUtil.isNotBlank(vo.get${column.firstUpperField}()), "${column.comment}不能为空，${FunctionName}新增失败！");
     #end

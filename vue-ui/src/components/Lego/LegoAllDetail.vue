@@ -88,15 +88,15 @@ export default {
       customFormPermissionGetAPI(this.formCode).then(res => {
         this.loading = false
         this.auth = getMenuAuth(res.data.permissionCode)
-        if (!this.auth.code) {
+        if (!this.auth || !this.auth.code) {
           this.hasPermission = false
           return
         }
         this.hasPermission = true
-        if (!this.auth.dynamicRoute) {
-          this.componentName = res.data.className + 'Detail'
-        } else {
+        if (this.auth.dynamicRoute) {
           this.componentName = 'LegoDetail'
+        } else {
+          this.componentName = res.data.className + 'Detail'
         }
       }).catch(() => {
         this.loading = false

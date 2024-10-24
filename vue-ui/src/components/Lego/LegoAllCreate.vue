@@ -54,16 +54,16 @@ export default {
       customFormPermissionGetAPI(this.formCode).then(res => {
         this.loading = false
         const auth = getMenuAuth(res.data.permissionCode)
-        if (!auth.add) {
+        if (!auth || !auth.add) {
           this.$message.error('无[' + this.formCode + ']操作权限！')
           this.$emit('close')
           return
         }
         this.hasPermission = true
-        if (!auth.dynamicRoute) {
-          this.componentName = res.data.className + 'Create'
-        } else {
+        if (auth.dynamicRoute) {
           this.componentName = 'LegoCreate'
+        } else {
+          this.componentName = res.data.className + 'Create'
         }
       }).catch(() => {
         this.loading = false

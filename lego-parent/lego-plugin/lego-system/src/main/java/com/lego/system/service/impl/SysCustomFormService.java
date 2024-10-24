@@ -11,10 +11,12 @@ import com.lego.system.action.ModifySysCustomFormFieldAction;
 import com.lego.system.assembler.SysCustomFormAssembler;
 import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.dao.ISysGenTableDao;
+import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.dto.SysCustomFormInfo;
 import com.lego.system.dto.SysCustomFormPermissionInfo;
 import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysGenTable;
+import com.lego.system.entity.SysPermission;
 import com.lego.system.service.ISysCustomFormService;
 import com.lego.system.vo.SysCustomFormCreateVO;
 import com.lego.system.vo.SysCustomFormFieldModifyVO;
@@ -31,6 +33,9 @@ public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCusto
     @Autowired
     private ISysGenTableDao tableDao;
 
+    @Autowired
+    private ISysPermissionDao permissionDao;
+
     @Override
     public LegoPage<SysCustomFormInfo> findBy(SysCustomFormSearchVO vo) {
         LegoPage<SysCustomForm> page = dao.findBy(vo);
@@ -46,7 +51,8 @@ public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCusto
     @Override
     public SysCustomFormPermissionInfo findPermissionBy(String code) {
         SysCustomForm form = dao.findByCode(code);
-        return assembler.createPermission(form);
+        SysPermission permission = permissionDao.findByCode(form.getTable().getPermissionCode());
+        return assembler.createPermission(form, permission);
     }
 
     @Override
