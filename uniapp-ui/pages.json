@@ -1,0 +1,83 @@
+{
+	"tabBar": {
+		"color": "#000000",
+		"selectedColor": "#ff0000",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"fontSize": "30rpx",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/tabbar/home.png",
+			"selectedIconPath": "static/tabbar/home-active.png",
+			"text": "首页"
+		}, {
+			"pagePath": "pages/notice/index",
+			"iconPath": "static/tabbar/notice.png",
+			"selectedIconPath": "static/tabbar/notice-active.png",
+			"text": "消息中心"
+		}, {
+			"pagePath": "pages/user/index",
+			"iconPath": "static/tabbar/user.png",
+			"selectedIconPath": "static/tabbar/user-active.png",
+			"text": "我的信息"
+		}]
+	},
+	"pages": [{
+		"path": "pages/login/index",
+		"style": {
+			"navigationBarTitleText": "登陆授权"
+		}
+	},
+	{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "首页",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/notice/index",
+		"style": {
+			"navigationBarTitleText": "消息中心",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/user/index",
+		"style": {
+			"navigationBarTitleText": "我的信息",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/user/resetPassword",
+		"style": {
+			"navigationBarTitleText": "重置密码"
+		}
+	},
+	{
+		"path": "pages/notice/detail/message",
+		"style": {
+			"navigationBarTitleText": "消息详情"
+		}
+	},
+	{
+		"path": "pages/notice/detail/task",
+		"style": {
+			"navigationBarTitleText": "审批详情"
+		}
+	}],
+	"globalStyle": {
+		"navigationStyle": "custom",
+		"navigationBarBackgroundColor": "#1e6fff",
+		"navigationBarTitleText": "LegoAdmin",
+		"navigationBarTextStyle": "white",
+		"backgroundTextStyle": "dark"
+	},
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^u-(.*)": "@/uni_modules/uview-ui/components/u-$1/u-$1.vue"
+		}
+	}
+}

@@ -1,0 +1,32 @@
+$padding: 20rpx;
+.lego-box {
+	position: relative;
+	margin: 30rpx 20rpx;
+	background-color: $uni-bg-color;
+	border-radius: $uni-border-radius-infos;
+	overflow: hidden;
+	box-shadow: 0rpx 2rpx 10rpx 2rpx rgba(0,122,255,0.08);
+}
+.item-box {
+	&-title {
+		position: relative;
+		font-size: 30rpx;
+		padding: $padding+6 $padding;
+		font-weight: 550;
+		line-height: 36rpx;
+		&:after {
+			content: "";
+			display: block;
+			position: absolute;
+			left: 0;
+			right: 0;
+			bottom: -2rpx;
+			height: 2rpx;
+			transform: scaleY(0.5);
+			background-color: $uni-border-color2;
+		}
+	}
+	&-content-chart {
+		min-height: 520rpx;
+	}
+}
