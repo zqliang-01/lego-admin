@@ -111,12 +111,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['collapse']),
+    ...mapGetters(['collapse', 'name']),
     activeMenu() {
       const route = this.$route
       const { meta, path, params } = route
 
-      let title = this.SystemConfig.companyName
+      let title = this.name
       if (meta.title) {
         title += ' - ' + meta.title
       } else if (params && params.title) {
