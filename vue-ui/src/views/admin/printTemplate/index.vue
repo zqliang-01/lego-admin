@@ -3,7 +3,7 @@
     <xr-header
       icon-class="print"
       :show-search="true"
-      :show-save="manage.sharding.algorithm.add ? true : false"
+      :show-save="manage.printTemplate.add ? true : false"
       icon-color="#1CBAF5"
       label="打印模板设置"
       placeholder="请输入名称搜索"

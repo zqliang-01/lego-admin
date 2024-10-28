@@ -123,7 +123,7 @@ export default {
     getDetail() {
       this.loading = true
       customFormGetAPI(this.$route.params.formCode).then(res => {
-        this.permissionCode = res.data.permission.code
+        this.permissionCode = res.data.permissionCode
         codeGetRequest(res.data.detailApiUrl, this.$route.params.detailCode).then(res => {
           this.params = res.data
           this.getTemplateList()

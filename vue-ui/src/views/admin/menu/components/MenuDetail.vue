@@ -186,19 +186,6 @@ export default {
       if (field.fieldCode === 'type') {
         this.menuType = value
       }
-      if (field.fieldCode === 'form') {
-        this.formCode = value
-        if (value) {
-          customFormGetAPI(this.formCode).then(res => {
-            const permission = res.data.permission
-            if (this.menuData.code && permission.code && permission.code != this.menuData.code) {
-              this.$alert(`表单已经被菜单【${permission.name}】使用，提交后将自动解除原绑定关系！`, '提示', {
-                type: 'warning'
-              }).then(() => {})
-            }
-          })
-        }
-      }
     },
     handleSubmit() {
       this.loading = true
