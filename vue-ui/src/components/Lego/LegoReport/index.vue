@@ -31,6 +31,7 @@
           <el-date-picker
             v-if="item.type == 'date'"
             v-model="queryForm.param[item.sqlKey]"
+            value-format="yyyy-MM-dd"
             type="date"
             class="input-width"/>
           <el-switch
