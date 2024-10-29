@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 @RestController
 @RequestMapping("/back-end/flowable-definition")
@@ -71,5 +73,10 @@ public class FlowableDefinitionController extends BaseController {
     @GetMapping("/get-form-key/{id}")
     public JsonResponse<Object> getFormKey(@PathVariable String id) {
         return JsonResponse.success(definitionService.findStartFormKey(id));
+    }
+
+    @GetMapping("/download-image/{id}")
+    public void downloadImage(HttpServletResponse response, @PathVariable String id) {
+        definitionService.downloadImage(response, id);
     }
 }

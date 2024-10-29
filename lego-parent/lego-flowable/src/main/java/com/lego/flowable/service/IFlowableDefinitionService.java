@@ -6,6 +6,8 @@ import com.lego.flowable.vo.FlowableDefinitionSearchVO;
 import com.lego.flowable.vo.FlowableTaskStartVO;
 import org.flowable.common.engine.impl.db.SuspensionState;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface IFlowableDefinitionService {
 
     LegoPage<FlowableDefinitionInfo> findBy(FlowableDefinitionSearchVO vo);
@@ -21,4 +23,6 @@ public interface IFlowableDefinitionService {
     void start(String operatorCode, FlowableTaskStartVO vo);
 
     String findStartFormKey(String id);
+
+    void downloadImage(HttpServletResponse response, String id);
 }

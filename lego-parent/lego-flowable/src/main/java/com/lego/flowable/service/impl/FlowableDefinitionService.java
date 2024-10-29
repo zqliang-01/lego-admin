@@ -1,5 +1,6 @@
 package com.lego.flowable.service.impl;
 
+import cn.hutool.extra.servlet.ServletUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lego.core.dto.LegoPage;
@@ -16,12 +17,16 @@ import com.lego.flowable.vo.FlowableTaskStartVO;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.StartEvent;
 import org.flowable.common.engine.impl.db.SuspensionState;
+import org.flowable.engine.ProcessEngineConfiguration;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.repository.ProcessDefinitionQuery;
+import org.flowable.image.ProcessDiagramGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
+import java.util.Arrays;
 
 @Service
 public class FlowableDefinitionService extends FlowableService<FlowableDefinitionAssembler> implements IFlowableDefinitionService {
@@ -89,6 +94,15 @@ public class FlowableDefinitionService extends FlowableService<FlowableDefinitio
         BpmnModel model = repositoryService.getBpmnModel(id);
         StartEvent startEvent = modelAssembler.getStartEvent(model);
         return startEvent.getFormKey();
+    }
+
+    @Override
+    public void downloadImage(HttpServletResponse response, String id) {
+        BpmnModel bpmnModel = repositoryService.getBpmnModel(id);
+        ProcessEngineConfiguration engine = processEngine.getProcessEngineConfiguration();
+        ProcessDiagramGenerator diagramGenerator = engine.getProcessDiagramGenerator();
+        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", Arrays.asList(), Arrays.asList(), engine.getActivityFontName(), engine.getLabelFontName(), engine.getAnnotationFontName(), engine.getClassLoader(), 1.0, true);
+        ServletUtil.write(response, in);
     }
 
 }
