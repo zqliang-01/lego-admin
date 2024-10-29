@@ -77,7 +77,6 @@ import {
   permissionModifyAPI,
   permissionAddAPI,
   permissionDeleteAPI } from '@/api/admin/permission'
-import { customFormGetAPI } from '@/api/admin/formField'
 
 export default {
   components: {
