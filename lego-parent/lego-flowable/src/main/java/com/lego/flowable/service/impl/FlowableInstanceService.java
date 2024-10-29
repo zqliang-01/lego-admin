@@ -169,26 +169,33 @@ public class FlowableInstanceService extends FlowableService<FlowableInstanceAss
 
     @Override
     public void downloadImage(HttpServletResponse response, String id) {
-        ProcessInstance instance = runtimeService.createProcessInstanceQuery()
-            .processInstanceId(id)
-            .singleResult();
-        if (instance == null) {
+        // 构建查询条件
+        HistoricActivityInstanceQuery query = historyService.createHistoricActivityInstanceQuery()
+            .processInstanceId(id);
+        List<HistoricActivityInstance> allActivityInstanceList = query.list();
+        if (CollectionUtil.isEmpty(allActivityInstanceList)) {
             return;
         }
-        List<Execution> executions = runtimeService.createExecutionQuery()
-            .processInstanceId(instance.getId())
-            .list();
-        //得到当前的Activity的Id
-        List<String> activityIds = new ArrayList<>();
-        List<String> flows = new ArrayList<>();
-        for (Execution exe : executions) {
-            List<String> ids = runtimeService.getActiveActivityIds(exe.getId());
-            activityIds.addAll(ids);
-        }
+        List<String> finishedTaskSet = new ArrayList<>();
+        List<String> finishedSequenceFlowSet = new ArrayList<>();
+        // 查询所有已完成的元素
+        List<HistoricActivityInstance> finishedElementList = allActivityInstanceList.stream().collect(Collectors.toList());
+        finishedElementList.forEach(item -> {
+            if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(item.getActivityType())
+                || BpmnXMLConstants.ELEMENT_FLOW_CONDITION.equals(item.getActivityType())) {
+                finishedSequenceFlowSet.add(item.getActivityId());
+            } else {
+                finishedTaskSet.add(item.getActivityId());
+            }
+        });
+
+        HistoricProcessInstance instance = historyService.createHistoricProcessInstanceQuery()
+            .processInstanceId(id)
+            .singleResult();
         BpmnModel bpmnModel = repositoryService.getBpmnModel(instance.getProcessDefinitionId());
-        ProcessEngineConfiguration engconf = processEngine.getProcessEngineConfiguration();
-        ProcessDiagramGenerator diagramGenerator = engconf.getProcessDiagramGenerator();
-        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", activityIds, flows, engconf.getActivityFontName(), engconf.getLabelFontName(), engconf.getAnnotationFontName(), engconf.getClassLoader(), 1.0, true);
+        ProcessEngineConfiguration engineConfig = processEngine.getProcessEngineConfiguration();
+        ProcessDiagramGenerator diagramGenerator = engineConfig.getProcessDiagramGenerator();
+        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", finishedTaskSet, finishedSequenceFlowSet, engineConfig.getActivityFontName(), engineConfig.getLabelFontName(), engineConfig.getAnnotationFontName(), engineConfig.getClassLoader(), 1.0, true);
         ServletUtil.write(response, in);
     }
 }

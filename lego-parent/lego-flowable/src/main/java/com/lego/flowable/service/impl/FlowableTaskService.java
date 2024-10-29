@@ -28,6 +28,7 @@ import com.lego.flowable.vo.FlowableTaskSearchVO;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.entity.SysEmployee;
+import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.ProcessEngineConfiguration;
 import org.flowable.engine.history.HistoricActivityInstance;
@@ -214,18 +215,23 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         List<HistoricActivityInstance> activities = historyService.createHistoricActivityInstanceQuery()
             .executionId(task.getExecutionId())
             .list();
-        List<String> activityIds = new ArrayList<>();
-        for (HistoricActivityInstance activity : activities) {
-            if (!activityIds.contains(activity.getActivityId())) {
-                activityIds.add(activity.getActivityId());
+        List<String> finishedTaskSet = new ArrayList<>();
+        List<String> finishedSequenceFlowSet = new ArrayList<>();
+        // 查询所有已完成的元素
+        List<HistoricActivityInstance> finishedElementList = activities.stream().collect(Collectors.toList());
+        finishedElementList.forEach(item -> {
+            if (BpmnXMLConstants.ELEMENT_SEQUENCE_FLOW.equals(item.getActivityType())
+                || BpmnXMLConstants.ELEMENT_FLOW_CONDITION.equals(item.getActivityType())) {
+                finishedSequenceFlowSet.add(item.getActivityId());
+            } else {
+                finishedTaskSet.add(item.getActivityId());
             }
-        }
+        });
         //获取流程图
-        List<String> flows = new ArrayList<>();
         BpmnModel bpmnModel = repositoryService.getBpmnModel(task.getProcessDefinitionId());
         ProcessEngineConfiguration engineConfig = processEngine.getProcessEngineConfiguration();
         ProcessDiagramGenerator diagramGenerator = engineConfig.getProcessDiagramGenerator();
-        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", activityIds, flows, engineConfig.getActivityFontName(), engineConfig.getLabelFontName(), engineConfig.getAnnotationFontName(), engineConfig.getClassLoader(), 1.0, true);
+        InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", finishedTaskSet, finishedSequenceFlowSet, engineConfig.getActivityFontName(), engineConfig.getLabelFontName(), engineConfig.getAnnotationFontName(), engineConfig.getClassLoader(), 1.0, true);
         ServletUtil.write(response, in);
     }
 
