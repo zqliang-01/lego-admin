@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.jdbc.ScriptRunner;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -48,6 +49,9 @@ public class VersionManager implements InitializingBean {
     private boolean needInit = true;
     private static volatile boolean initializing = false;
 
+    @Value("${auto-run-sql:false}")
+    private boolean autoRunSql;
+
     @Autowired
     private DataSourceConfig dataSourceConfig;
 
@@ -56,6 +60,10 @@ public class VersionManager implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        if (!autoRunSql) {
+            return;
+        }
+        log.info("启动自检查更新流程auto-run-sql={}", autoRunSql);
         try (Connection connection = dataSourceConfig.getDataSource().getConnection()) {
             DatabaseMetaData metaData = connection.getMetaData();
             ResultSet tableResult = metaData.getTables(null, null, "sys_config", null);
@@ -78,10 +86,11 @@ public class VersionManager implements InitializingBean {
     }
 
     public boolean needInit() {
-        return needInit;
+        return needInit && autoRunSql;
     }
 
     public String execUpdate() {
+        BusinessException.check(autoRunSql, "未开启autoRunSql配置，自动更新失败！");
         try (Connection connection = dataSourceConfig.getDataSource().getConnection()) {
             Statement stmt = connection.createStatement();
             ResultSet result = stmt.executeQuery(SELECT_VERSION_SQL);
@@ -107,6 +116,7 @@ public class VersionManager implements InitializingBean {
     }
 
     public String execInit() {
+        BusinessException.check(autoRunSql, "未开启autoRunSql配置，自动更新失败！");
         BusinessException.check(needInit, "系统无需初始化操作！");
         BusinessException.check(!initializing, "初始化处理中，请稍后！");
         List<File> sqlFiles = getInitSqlFile();
