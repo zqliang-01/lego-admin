@@ -11,7 +11,7 @@ APP_BASE_PATH=$(cd `dirname $0`; pwd)
 
 function start()
 {
-    nohup java -Xms512m -Xmx512m -jar -Djava.io.tmpdir=tmpdir ${project.build.finalName}.jar > output.log 2>&1 &
+    nohup java -jar -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=logs\oom_dump.log -Xms512m -Xmx512m -Djava.io.tmpdir=tmpdir ${project.build.finalName}.jar > output.log 2>&1 &
     echo "--------项目启动成功--------"
     echo "--------欢迎使用LegoAdmin--------"
 }
