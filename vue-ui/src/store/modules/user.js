@@ -57,7 +57,8 @@ const user = {
 
     // 获取权限
     getAuth({
-      commit
+      commit,
+      dispatch
     }) {
       return new Promise((resolve, reject) => {
         permissionCurrentGetAPI().then((response) => {
@@ -65,6 +66,7 @@ const user = {
           Lockr.set('authList', data)
           commit('SET_ALLAUTH', data)
           commit('SET_MANAGE', data.manage)
+          dispatch('GetSystemInfo')
           resolve(data)
         }).catch(error => {
           reject(error)
