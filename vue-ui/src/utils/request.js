@@ -83,31 +83,12 @@ service.interceptors.request.use(
 // response 拦截器
 service.interceptors.response.use(
   response => {
-    /**
-     * code为非200是抛错 可结合自己业务进行修改
-     */
     const res = response.data
-    if (response.status === 200 && response.config.responseType === 'blob') { // 文件类型特殊处理
-      if (response.headers['content-disposition'] || (response.headers['content-type'] && response.headers['content-type'].indexOf('application/pdf') != -1)) {
-        return response
-      } else {
-        const resultBlob = new Blob([response.data], { type: 'application/json' })
-        const fr = new FileReader()
-        fr.onload = function() {
-          const result = JSON.parse(this.result)
-          if (result.msg) {
-            errorMessage(result.msg, result.code == 1 ? 'success' : 'error')
-          }
-        }
-        fr.readAsText(resultBlob)
-      }
-    } else if (res.code !== 200) {
-      if (res.code === 302) {
-        if (res.data && res.data.extra === 1) {
-          confirmMessage(`您的账号${res.data.extraTime}在别处登录。如非本人操作，则密码可能已泄漏，建议修改密码`)
-        } else {
-          clearCacheEnterLogin()
-        }
+    if (res) {
+      if (res.code == 200) {
+        return res
+      } if (res.code === 1001) {
+        confirmMessage(`您的账号${res.data.extraTime}在别处登录。如非本人操作，则密码可能已泄漏，建议修改密码`)
       } else if (res.code === 1000) {
         confirmMessage(`会话超时，请重新登陆！`)
         store.dispatch('LogOut').then(() => {
@@ -116,10 +97,8 @@ service.interceptors.response.use(
       } else if (res.msg) {
         errorMessage(res.msg)
       }
-      return Promise.reject(res)
-    } else {
-      return res
     }
+    return response
   },
   error => {
     if (error.response) {
@@ -129,7 +108,7 @@ service.interceptors.response.use(
       } else if (response.status == 504) {
         errorMessage('网络错误，请检查您的网络')
       } else {
-        errorMessage('异常[' + response.status + ']')
+        errorMessage('未知异常[' + response.status + ']')
       }
     }
     return Promise.reject(error)

@@ -185,6 +185,9 @@ export default {
       if (field.fieldCode === 'type') {
         this.menuType = value
       }
+      if (field.fieldCode === 'form') {
+        this.formCode = value
+      }
     },
     handleSubmit() {
       this.loading = true
