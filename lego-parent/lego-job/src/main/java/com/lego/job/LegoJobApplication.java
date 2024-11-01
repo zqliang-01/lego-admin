@@ -8,6 +8,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -19,11 +20,11 @@ import org.springframework.core.env.Environment;
 import java.net.InetAddress;
 
 @Slf4j
-@SpringBootApplication
 @EnableDiscoveryClient
 @ComponentScan({"com.lego"})
 @MapperScan({"com.lego.**.mapper"})
 @EnableFeignClients({"com.lego.core.feign"})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @ConditionalOnProperty(name = "lego.start-type", havingValue = ServiceStartType.microservice)
 public class LegoJobApplication extends SpringBootServletInitializer {
 

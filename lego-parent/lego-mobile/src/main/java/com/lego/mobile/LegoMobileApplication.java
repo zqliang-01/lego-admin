@@ -9,6 +9,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -22,12 +23,12 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 @Slf4j
-@SpringBootApplication
 @EnableDiscoveryClient
 @ComponentScan({"com.lego"})
 @EntityScan("com.lego.**.entity")
 @MapperScan({"com.lego.**.mapper"})
 @EnableFeignClients({"com.lego.core.feign", "com.lego.mobile.feign"})
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @ConditionalOnProperty(name = "lego.start-type", havingValue = ServiceStartType.microservice)
 @EnableJpaRepositories(value = "com.lego.**.dao", repositoryFactoryBeanClass = RepositoryFactoryBean.class)
 public class LegoMobileApplication extends SpringBootServletInitializer {

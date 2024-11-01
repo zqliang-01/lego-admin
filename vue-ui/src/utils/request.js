@@ -97,6 +97,7 @@ service.interceptors.response.use(
       } else if (res.msg) {
         errorMessage(res.msg)
       }
+      return Promise.reject(res)
     }
     return response
   },

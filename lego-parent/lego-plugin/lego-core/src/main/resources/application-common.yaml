@@ -22,7 +22,7 @@ flowable:
   label-font-name: simsun
   activity-font-name: simsun
   annotation-font-name: simsun
-  #database-schema-update: false
+  database-schema-update: false
   async-executor-activate: false
 # 文件上传配置:local 本地存储、aliOss 阿里云对象存储
 lego:
