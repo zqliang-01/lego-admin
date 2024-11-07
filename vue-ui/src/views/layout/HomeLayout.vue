@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { Navbar, Sidebar, AppMain } from './components'
 
 export default {
@@ -23,8 +24,14 @@ export default {
     Sidebar,
     AppMain
   },
+  computed: {
+    ...mapGetters(['name'])
+  },
   data() {
     return {}
+  },
+  created() {
+    document.title = this.name + ' - 首页'
   },
   methods: {
   }

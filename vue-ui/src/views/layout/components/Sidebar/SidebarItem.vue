@@ -61,6 +61,7 @@
 
 <script>
 import path from 'path'
+import { mapGetters } from 'vuex'
 import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
@@ -83,11 +84,32 @@ export default {
     activeMenu: String,
     collapse: Boolean
   },
+  computed: {
+    ...mapGetters(['name'])
+  },
   data() {
     // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
     // TODO: refactor with render function
     this.onlyOneChild = null
     return {}
+  },
+  watch: {
+    activeMenu: {
+      handler(val) {
+        if (val.endsWith(this.item.path)) {
+          console.log(document.title)
+          let title = this.name
+          const meta = this.item.meta
+          if (meta.title) {
+            title += ' - ' + meta.title
+          } else if (params && params.title) {
+            title += ' - ' + params.title
+          }
+          document.title = title
+        }
+      },
+      immediate: true
+    }
   },
   methods: {
     resolvePath(routePath) {
