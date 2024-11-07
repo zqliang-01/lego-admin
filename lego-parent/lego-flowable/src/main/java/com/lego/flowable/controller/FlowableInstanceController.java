@@ -36,12 +36,6 @@ public class FlowableInstanceController extends BaseController {
         return JsonResponse.success(nodeInfo);
     }
 
-    @GetMapping("/get-bpmn-xml/{id}")
-    public JsonResponse<Object> getBpmnXml(@PathVariable String id) {
-        String bpmnXml = instanceService.getBpmnXml(id);
-        return JsonResponse.success(bpmnXml);
-    }
-
     @PostMapping("/stop/{id}")
     public JsonResponse<Object> stop(@PathVariable String id) {
         instanceService.stop(getLoginCode(), id);

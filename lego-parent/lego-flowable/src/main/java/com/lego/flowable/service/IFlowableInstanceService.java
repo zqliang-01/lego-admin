@@ -14,8 +14,6 @@ public interface IFlowableInstanceService {
 
     FlowableProcessNodeInfo findProcessNodeBy(String id);
 
-    String getBpmnXml(String id);
-
     void stop(String operatorCode, String id);
 
     IFlowableStartFormDetailInfo findStartForm(String id);
