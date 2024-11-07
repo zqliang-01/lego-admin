@@ -98,7 +98,6 @@ export default {
     },
     handleFile(type, item) {
       if (type === 'preview') {
-        console.log(item.code)
         const routeData = this.$router.resolve(`/reprint/${item.code}`)
         window.open(routeData.href, '_blank')
       }

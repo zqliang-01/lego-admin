@@ -135,7 +135,6 @@ export default {
       }
     },
     handleDraggableEnd() {
-      console.log(this.sortLeft, this.sortRight)
       this.loading = true
       designSortModifyAPI({
         leftSort: this.sortLeft.map(left => left.code),

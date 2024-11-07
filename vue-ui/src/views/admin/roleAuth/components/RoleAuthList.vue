@@ -34,13 +34,6 @@
                 slot-scope="{ node, data }"
                 :class="data.menu ? 'node-label node-menu': 'node-auth'">
                 {{ node.label }}
-                <el-button
-                  v-if="data.menu && data.form && data.form.code !== ''"
-                  :icon="'manage' | iconPre"
-                  type="text"
-                  @click="fieldSetClick(node)" >
-                  字段授权
-                </el-button>
               </span>
             </el-tree>
           </div>
@@ -127,9 +120,6 @@ export default {
           }
         })
       })
-    },
-    fieldSetClick(node) {
-      console.log(node)
     },
     ruleSubmit() {
       this.loading = true

@@ -192,7 +192,6 @@ export default {
     },
 
     updateVal() {
-      console.log('change-----: ', this.field, this.batchId, this.imageList)
       if (this.imageList.length === 0) {
         this.$emit('change', this.field, null, [])
         this.$emit('input', '')

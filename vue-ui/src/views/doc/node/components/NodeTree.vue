@@ -276,7 +276,6 @@ export default {
           request: fileUploadAPI,
           file: files[index]
         }).then(res => {
-          console.log(res)
           this.handleAdd('', res.data)
         })
       }

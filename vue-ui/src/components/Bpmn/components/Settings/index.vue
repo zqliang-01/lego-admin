@@ -171,7 +171,6 @@ export default {
       this.modelVisible = !this.modelVisible
     },
     updateEditorState: debounce(function() {
-      console.log(this.editorSettings)
       this.editorSettings && this.$store.commit('setConfiguration', { ...this.editorSettings })
     }, 100)
   }

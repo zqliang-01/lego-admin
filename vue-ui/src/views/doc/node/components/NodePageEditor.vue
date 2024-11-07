@@ -176,7 +176,6 @@ export default {
           })
           // 删除所有font标签
           args.content = args.content.replace(/<\/font>/ig, '').replace(/<font[^>]+>/ig, '')
-          console.log(args.content)
         },
         paste_postprocess: function(plugin, args) {
           var doms = Array.from(args.node.querySelectorAll('*'))
@@ -187,7 +186,6 @@ export default {
             dom.style.fontFamily = ''
             dom.style.fontSize = ''
             dom.style.background = ''
-            console.log(dom)
           })
         }
       }

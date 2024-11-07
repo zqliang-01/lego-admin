@@ -97,7 +97,6 @@ export default {
     activeMenu: {
       handler(val) {
         if (val.endsWith(this.item.path)) {
-          console.log(document.title)
           let title = this.name
           const meta = this.item.meta
           if (meta.title) {

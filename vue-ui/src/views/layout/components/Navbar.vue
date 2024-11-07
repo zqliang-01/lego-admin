@@ -354,7 +354,6 @@ export default {
      * 查看消息详情
      */
     checkMessageDetail(isNotice) {
-      console.log(isNotice)
       if (isNotice) {
         this.noticeMessageShow = true
         return

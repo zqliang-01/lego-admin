@@ -23,7 +23,6 @@ export default {
           reader.readAsText(file)
           reader.onload = function() {
             const xmlStr = this.result
-            console.log(xmlStr)
             getModeler() && getModeler().importXML(xmlStr)
           }
           this.$refs.importRef.value = null

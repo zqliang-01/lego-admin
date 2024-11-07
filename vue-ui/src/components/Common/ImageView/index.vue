@@ -43,7 +43,6 @@ export default {
 
   methods: {
     handleView() {
-      console.log(this.src)
       this.$previewImage.preview({
         data: [this.src]
       })

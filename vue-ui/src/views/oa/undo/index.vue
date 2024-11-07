@@ -113,7 +113,6 @@ export default {
   watch: {
     $route(to, from) {
       this.taskId = this.$route.query.taskId
-      console.log(this.taskId)
       if (this.taskId) {
         this.createShow = true
       }
