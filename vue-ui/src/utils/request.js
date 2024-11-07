@@ -84,7 +84,9 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   response => {
     const res = response.data
-    if (res) {
+    if (response.status === 200 && response.config.responseType === 'blob') { // 文件类型特殊处理
+      return response
+    } else if (res) {
       if (res.code == 200) {
         return res
       } if (res.code === 1001) {
