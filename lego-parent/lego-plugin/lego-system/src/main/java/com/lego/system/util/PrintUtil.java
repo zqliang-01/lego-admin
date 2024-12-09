@@ -1,5 +1,6 @@
 package com.lego.system.util;
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
@@ -10,13 +11,28 @@ import com.alibaba.fastjson.JSONObject;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.Pipeline;
+import com.itextpdf.tool.xml.XMLWorker;
 import com.itextpdf.tool.xml.XMLWorkerFontProvider;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
+import com.itextpdf.tool.xml.html.CssAppliersImpl;
+import com.itextpdf.tool.xml.html.TagProcessorFactory;
+import com.itextpdf.tool.xml.html.Tags;
+import com.itextpdf.tool.xml.parser.XMLParser;
+import com.itextpdf.tool.xml.pipeline.css.CSSResolver;
+import com.itextpdf.tool.xml.pipeline.css.CssResolverPipeline;
+import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
+import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
+import com.itextpdf.tool.xml.pipeline.html.ImageProvider;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.StringUtil;
+import com.lego.core.web.LegoWebInit;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.poifs.filesystem.DirectoryEntry;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
@@ -31,6 +47,8 @@ import java.util.regex.Pattern;
 
 @Slf4j
 public class PrintUtil {
+
+    private static TagProcessorFactory tpf;
 
     public static String buildPrintContent(String content, Map<String, String> params) {
         if (StringUtil.isBlank(content)) {
@@ -159,6 +177,7 @@ public class PrintUtil {
         return path;
     }
 
+    @SneakyThrows
     private static void createPdfFile(String path, String html) {
         Document document = null;
         PdfWriter pdfWriter = null;
@@ -168,7 +187,42 @@ public class PrintUtil {
             pdfWriter = PdfWriter.getInstance(document, new FileOutputStream(file));
             document.open();
             ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(html.getBytes());
-            XMLWorkerHelper.getInstance().parseXHtml(pdfWriter, document, byteArrayInputStream, StandardCharsets.UTF_8, new FontProvider());
+            CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+            HtmlPipelineContext htmlContext = new HtmlPipelineContext(new CssAppliersImpl(new FontProvider()));
+            htmlContext.setAcceptUnknown(true).autoBookmark(true).setTagFactory(getDefaultTagProcessorFactory()).setResourcesRootPath(null);
+            htmlContext.setImageProvider(new ImageProvider() {
+                @Override
+                public Image retrieve(String src) {
+                    String key = StpUtil.getTokenName();
+                    String token = StpUtil.getTokenValue();
+                    int prot = LegoWebInit.getServerPort();
+                    src = src.replace("/dev-api", "");
+                    try {
+                        return Image.getInstance(StringUtil.format("http://127.0.0.1:{0,number,#}{1}?{2}={3}", prot, src, key, token));
+                    } catch (Exception e) {
+                        log.error("打印图片{}失败", src);
+                        return null;
+                    }
+                }
+
+                @Override
+                public String getImageRootPath() {
+                    return null;
+                }
+
+                @Override
+                public void store(String src, Image img) {
+                }
+
+                @Override
+                public void reset() {
+                }
+            });
+            HtmlPipeline htmlPipeline = new HtmlPipeline(htmlContext, new PdfWriterPipeline(document, pdfWriter));
+            Pipeline<?> pipeline = new CssResolverPipeline(cssResolver, htmlPipeline);
+            XMLWorker worker = new XMLWorker(pipeline, true);
+            XMLParser p = new XMLParser(true, worker, StandardCharsets.UTF_8);
+            p.parse(byteArrayInputStream, StandardCharsets.UTF_8);
         } catch (Exception e) {
             throw new CoreException("创建临时PDF文件异常", e);
         } finally {
@@ -179,6 +233,13 @@ public class PrintUtil {
                 pdfWriter.close();
             }
         }
+    }
+
+    private static synchronized TagProcessorFactory getDefaultTagProcessorFactory() {
+        if (null == tpf) {
+            tpf = Tags.getHtmlTagProcessorFactory();
+        }
+        return tpf;
     }
 
     public static class FontProvider extends XMLWorkerFontProvider {
