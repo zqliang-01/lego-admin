@@ -195,10 +195,11 @@ public class PrintUtil {
                 public Image retrieve(String src) {
                     String key = StpUtil.getTokenName();
                     String token = StpUtil.getTokenValue();
-                    int prot = LegoWebInit.getServerPort();
+                    String rootPath = getImageRootPath();
                     src = src.replace("/dev-api", "");
+                    src = src.startsWith("/") ? src : "/" + src;
                     try {
-                        return Image.getInstance(StringUtil.format("http://127.0.0.1:{0,number,#}{1}?{2}={3}", prot, src, key, token));
+                        return Image.getInstance(StringUtil.format("{0}{1}?{2}={3}", rootPath, src, key, token));
                     } catch (Exception e) {
                         log.error("打印图片{}失败", src);
                         return null;
@@ -207,7 +208,8 @@ public class PrintUtil {
 
                 @Override
                 public String getImageRootPath() {
-                    return null;
+                    int port = LegoWebInit.getServerPort();
+                    return StringUtil.format("http://127.0.0.1:{0,number,#}", port);
                 }
 
                 @Override
