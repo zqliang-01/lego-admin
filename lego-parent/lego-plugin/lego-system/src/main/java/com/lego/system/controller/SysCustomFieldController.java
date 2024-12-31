@@ -2,9 +2,8 @@ package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.enums.FieldTypeEnum;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.util.StringUtil;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysCustomFieldInfo;
@@ -116,18 +115,11 @@ public class SysCustomFieldController extends BaseController {
 
     @GetMapping("/list-type")
     public JsonResponse<List<SysCustomFieldTypeInfo>> listType(String tableCode) {
-        SysGenTableInfo table = tableService.findByCode(tableCode);
         List<SysCustomFieldTypeInfo> typeInfos = new ArrayList<SysCustomFieldTypeInfo>();
-        for (CustomFieldTypeEnum type : CustomFieldTypeEnum.values()) {
-            if (type == CustomFieldTypeEnum.CHECKBOX) {
-                continue;
-            }
-            String javaField = type.getType().getSimpleName();
-            if (type == CustomFieldTypeEnum.SELECT) {
-                String appCode = StringUtil.toFirstUpper(table.getAppCode());
-                javaField = table.getPackageName() + ".entity." + appCode + "Dictionary";
-            }
-            typeInfos.add(new SysCustomFieldTypeInfo(type.getCode(), type.getName(), javaField));
+        for (FieldTypeEnum type : FieldTypeEnum.values()) {
+            String javaField = type.getJavaFieldType();
+            SysCustomFieldTypeInfo info = new SysCustomFieldTypeInfo(type.getCode(), type.getName(), javaField);
+            typeInfos.add(info);
         }
         return JsonResponse.success(typeInfos);
     }

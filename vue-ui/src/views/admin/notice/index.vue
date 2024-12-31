@@ -101,15 +101,15 @@ export default {
           { fieldCode: 'name', name: '标题', formType: 'text', width: '150', required: true }
         ],
         [
-          { fieldCode: 'employees', name: '接收员工', formType: 'multiple_user', width: '150' },
-          { fieldCode: 'depts', name: '接收部门', formType: 'multiple_structure', width: '150' }
+          { fieldCode: 'employees', name: '接收员工', formType: 'multipleUser', width: '150' },
+          { fieldCode: 'depts', name: '接收部门', formType: 'multipleStructure', width: '150' }
         ],
         [
           { fieldCode: 'creator', name: '创建人', formType: 'select', width: '150', editable: false },
-          { fieldCode: 'content', name: '内容', formType: 'rich_text_editor', width: '150', stylePercent: 100, visible: false, required: true }
+          { fieldCode: 'content', name: '内容', formType: 'richTextEditor', width: '150', stylePercent: 100, visible: false, required: true }
         ],
         [
-          { fieldCode: 'published', name: '发布状态', formType: 'boolean_value', width: '150', editable: false },
+          { fieldCode: 'published', name: '发布状态', formType: 'boolean', width: '150', editable: false },
           { fieldCode: 'publishedTime', name: '发布时间', formType: 'datetime', width: '150', editable: false }
         ]
       ]

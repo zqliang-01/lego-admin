@@ -105,7 +105,7 @@ export default {
           { fieldCode: 'template', name: '模板', formType: 'select', width: '150', required: true }
         ],
         [
-          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+          { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '150' }
         ]
       ]
     }

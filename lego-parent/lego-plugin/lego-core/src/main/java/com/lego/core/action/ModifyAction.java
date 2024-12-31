@@ -1,15 +1,15 @@
 package com.lego.core.action;
 
 import com.lego.core.data.ActionType;
-import com.lego.core.data.hibernate.BaseEntity;
 import com.lego.core.data.hibernate.IGenericDao;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public abstract class ModifyAction<T extends BaseEntity, D extends IGenericDao<T>> extends EntityAction<T, D> {
 
@@ -23,7 +23,7 @@ public abstract class ModifyAction<T extends BaseEntity, D extends IGenericDao<T
     @Override
     protected void doRun() {
         BusinessException.check(targetEntity != null, "targetEntity未设置");
-        Map<String, String> beforeSnapshot = targetEntity.buildReadableSnapshot();
+        ReadableVO beforeSnapshot = targetEntity.buildReadableSnapshot();
         doModify(targetEntity);
         String diffSnapshot = diffSnapshot(beforeSnapshot, targetEntity);
         if (checkDiff) {
@@ -35,17 +35,16 @@ public abstract class ModifyAction<T extends BaseEntity, D extends IGenericDao<T
         }
     }
 
-    protected final String diffSnapshot(Map<String, String> beforeSnapshot, BaseEntity domainObject) {
-        Map<String, String> afterSnapshot = domainObject.buildReadableSnapshot();
-
+    protected final String diffSnapshot(ReadableVO beforeSnapshot, BaseEntity domainObject) {
         StringBuilder sb = new StringBuilder();
+        ReadableVO afterSnapshot = domainObject.buildReadableSnapshot();
         List<String> beforeClone = new ArrayList<String>(beforeSnapshot.keySet());
         beforeClone.retainAll(afterSnapshot.keySet());
         for (String key : beforeClone) {
-            String beforeValue = beforeSnapshot.get(key);
-            String afterValue = afterSnapshot.get(key);
+            String beforeValue = beforeSnapshot.getValue(key);
+            String afterValue = afterSnapshot.getValue(key);
             if (!StringUtil.equals(beforeValue, afterValue)) {
-                sb.append(MessageFormat.format("{0}: 由\"{1}\"修改为\"{2}\"\r\n", key, beforeValue, afterValue));
+                sb.append(MessageFormat.format("{0}: 由\"{1}\"修改为\"{2}\"\r\n", key, beforeSnapshot.get(key), afterSnapshot.get(key)));
             }
         }
         return sb.toString();

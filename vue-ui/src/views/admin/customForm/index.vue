@@ -96,7 +96,7 @@ export default {
         ],
         [
           { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: TextTrackCue },
-          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+          { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '150' }
         ],
         [
           { fieldCode: 'queryApiUrl', name: '查询API', formType: 'text', width: '150' },

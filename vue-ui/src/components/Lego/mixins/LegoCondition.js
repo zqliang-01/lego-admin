@@ -25,7 +25,7 @@ export default {
           { label: '不为空', disabled: false, type: 'isNotNull' }
         ]
       }
-      if (formType == 'boolean_value') {
+      if (formType == 'boolean') {
         return [
           { label: '等于', disabled: false, type: 'equals' },
           { label: '不等于', disabled: false, type: 'notEquals' }
@@ -41,7 +41,7 @@ export default {
           { label: '不为空', disabled: false, type: 'isNotNull' }
         ]
       }
-      if (['number', 'floatnumber', 'percent'].includes(formType)) {
+      if (['number', 'float', 'percent'].includes(formType)) {
         return [
           { label: '等于', disabled: false, type: 'equals' },
           { label: '不等于', disabled: false, type: 'notEquals' },
@@ -71,6 +71,11 @@ export default {
           { label: '不包含', disabled: false, type: 'notContains' },
           { label: '为空', disabled: false, type: 'isNull' },
           { label: '不为空', disabled: false, type: 'isNotNull' }
+        ]
+      }
+      if (formType == 'address') {
+        return [
+          { label: '等于', disabled: false, type: 'equals' }
         ]
       }
       return []

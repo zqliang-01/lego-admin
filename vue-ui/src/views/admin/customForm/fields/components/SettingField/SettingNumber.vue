@@ -56,7 +56,7 @@ export default {
       handler() {
         if ([
           'number',
-          'floatnumber',
+          'float',
           'percent'
         ].includes(this.field.formType)) {
           if (!this.field.hasOwnProperty('minNumRestrict')) {

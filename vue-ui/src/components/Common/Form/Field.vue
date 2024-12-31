@@ -1,7 +1,7 @@
 <template>
   <el-input
     v-if="isTrimInput(item.formType)"
-    v-model.trim="fieldForm[item.fieldCode]"
+    v-model.trim="model"
     :disabled="disableStatus"
     :prefix-icon="getInputIcon(item.formType) | iconPre"
     :maxlength="getInputMaxlength(item.formType)"
@@ -9,51 +9,51 @@
     type="text"
     @input="commonChange(item, index, $event)"/>
   <cover-upload
-    v-else-if="isCoverUpload"
-    v-model="fieldForm[item.fieldCode]"
+    v-else-if="item.formType == 'pictureEditor'"
+    v-model="model"
     :disabled="disableStatus"
-    :fileUploadAPI="coverUploadAPI"
-    :filePreviewUrl="coverPreviewUrl"
+    :fileUploadAPI="uploadAPI"
+    :filePreviewUrl="previewUrl"
     @value-change="commonChange(item, index, $event)"/>
   <image-upload
     v-else-if="item.formType == 'picture'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :disabled="disableStatus"
     @value-change="commonChange(item, index, $event)"/>
   <json-editor
     v-else-if="item.formType == 'jsonEditor'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :disabled="disableStatus"
     @input="commonChange(item, index, $event)"/>
   <rich-text-editor
-    v-else-if="item.formType == 'rich_text_editor'"
-    v-model="fieldForm[item.fieldCode]"
+    v-else-if="item.formType == 'richTextEditor'"
+    v-model="model"
     :disabled="disableStatus"
     @input="commonChange(item, index, $event)"/>
   <el-input-number
     v-else-if="item.formType == 'number'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :placeholder="item.placeholder"
     :disabled="disableStatus"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <el-input-number
-    v-else-if="item.formType == 'floatnumber'"
-    v-model="fieldForm[item.fieldCode]"
+    v-else-if="item.formType == 'float'"
+    v-model="model"
     :placeholder="item.placeholder"
     :disabled="disableStatus"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <percent-input
     v-else-if="item.formType == 'percent'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :placeholder="item.placeholder"
     :disabled="disableStatus"
     :controls="false"
     @change="commonChange(item, index, $event)" />
   <el-input
     v-else-if="item.formType == 'textarea'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :disabled="disableStatus"
     :rows="3"
     :autosize="{ minRows: 3}"
@@ -64,7 +64,7 @@
     @input="commonChange(item, index, $event)" />
   <lego-select
     v-else-if="['select', 'user'].includes(item.formType)"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :item="item"
     :disabled="disableStatus"
     :clearable="item.clearable"
@@ -75,19 +75,20 @@
     @change="commonChange(item, index, $event)"/>
   <select-tree
     v-else-if="['structure'].includes(item.formType)"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :options="item.setting"
     :disabled="disableStatus"
     filterable
   />
   <dept-select
-    v-else-if="['multiple_structure'].includes(item.formType)"
-    :value="item.value"
+    v-else-if="['multipleStructure'].includes(item.formType)"
+    v-model="model"
+    :data="item.value"
     :disabled="disableStatus"
-    @value-change="valueChange(item, index, $event)" />
+    @change="commonChange(item, index, $event)" />
   <lego-checkbox
-    v-else-if="['checkbox', 'multiple_user'].includes(item.formType)"
-    v-model="fieldForm[item.fieldCode]"
+    v-else-if="['checkbox', 'multipleUser'].includes(item.formType)"
+    v-model="model"
     :disabled="disableStatus"
     :clearable="item.clearable"
     :placeholder="item.placeholder"
@@ -97,7 +98,7 @@
     @change="commonChange(item, index, $event)"/>
   <el-date-picker
     v-else-if="item.formType == 'date'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :disabled="disableStatus"
     :picker-options="pickerOptions"
     clearable
@@ -108,7 +109,7 @@
     @change="commonChange(item, index, $event)"/>
   <el-date-picker
     v-else-if="item.formType == 'datetime'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :disabled="disableStatus"
     clearable
     style="width: 100%;"
@@ -117,36 +118,45 @@
     placeholder="选择日期"
     @change="commonChange(item, index, $event)"/>
   <el-switch
-    v-else-if="item.formType == 'boolean_value'"
-    v-model="fieldForm[item.fieldCode]"
+    v-else-if="item.formType == 'boolean'"
+    v-model="model"
     :active-value="item.activeValue"
     :inactive-value="item.inactiveValue"
     :disabled="disableStatus"
     @change="commonChange(item, index, $event)"/>
   <select-icon
     v-else-if="item.formType == 'icon'"
-    v-model="fieldForm[item.fieldCode]"
+    v-model="model"
     :disabled="disableStatus"
     @change="commonChange(item, index, $event)"/>
   <signature-pad
-    v-else-if="item.formType == 'handwriting_sign'"
-    v-model="fieldForm[item.fieldCode]"
+    v-else-if="item.formType == 'handwritingSign'"
+    v-model="model"
     :disabled="disableStatus"/>
   <desc-text
-    v-else-if="item.formType == 'desc_text'"
-    :value="item.defaultValue"
+    v-else-if="item.formType == 'descText'"
+    v-model="item.defaultValue"
     :disabled="true"/>
   <lego-relative-cell
     v-else-if="item.formType == 'entity'"
-    :value="item.value"
+    v-model="model"
+    :data="item.value"
+    :search-key="item.searchKey"
+    :query-api="item.queryApi"
+    :field-list="item.fieldList"
     :form-code="relativeFormCode"
     :disabled="disableStatus"
-    @value-change="entityChange(item, index, $event)"/>
+    @change="commonChange(item, index, $event)"/>
   <cron-input
-    v-else-if="item.formType == 'cron_input'"
-    :cron-value="fieldForm[item.fieldCode]"
+    v-else-if="item.formType == 'cronInput'"
+    v-model="model"
     :disabled="disableStatus"
-    @change="valueChange(item, index, $event)"/>
+    @change="commonChange(item, index, $event)"/>
+  <Address
+    v-else-if="item.formType == 'address'"
+    v-model="model"
+    :disabled="disableStatus"
+    @change="commonChange(item, index, $event)"/>
   <div v-else>
     <slot :data="item" :index="index" />
   </div>
@@ -167,12 +177,9 @@ import DeptSelect from '@/components/Common/DeptSelect'
 import CoverUpload from '@/components/Common/CoverUpload'
 import ImageUpload from '@/components/Common/ImageUpload'
 import CronInput from '@/components/Common/CronInput'
+import Address from '@/components/Common/Address'
 
 import Mixin from './Mixin'
-import {
-  fileUploadAPI as docFileUploadAPI,
-  filePreviewUrl as docFilePreviewUrl
-} from '@/api/doc/file'
 import { fileUploadAPI, filePreviewUrl } from '@/api/common'
 
 export default {
@@ -191,7 +198,8 @@ export default {
     DeptSelect,
     CoverUpload,
     ImageUpload,
-    CronInput
+    CronInput,
+    Address
   },
   mixins: [Mixin],
   props: {
@@ -213,26 +221,42 @@ export default {
     }
   },
   computed: {
-    isCoverUpload() {
-      return ['doc_cover'].includes(this.item.formType)
-    },
-    coverUploadAPI() {
-      if (this.item.formType === 'doc_cover') {
-        return docFileUploadAPI
+    model: {
+      get: function() {
+        return this.item.fieldCode.split('.').reduce((data, key) => data ? data[key] : undefined, this.fieldForm)
+      },
+      set: function(val) {
+        var list = this.item.fieldCode.split('.') || []
+        let currentObj = this.fieldForm
+        list.forEach((element, index) => {
+          if (index === list.length - 1) {
+            this.$set(currentObj, element, val)
+          } else if (currentObj[element]) {
+            currentObj = currentObj[element]
+          } else {
+            this.$set(currentObj, element, {})
+            currentObj = currentObj[element]
+          }
+        })
       }
-      return fileUploadAPI
-    },
-    coverPreviewUrl() {
-      if (this.item.formType === 'doc_cover') {
-        return docFilePreviewUrl
-      }
-      return filePreviewUrl
     },
     relativeFormCode() {
       if (this.item.relativeForm) {
         return this.item.relativeForm.code
       }
       return ''
+    },
+    uploadAPI() {
+      if (this.item.uploadAPI) {
+        return this.item.uploadAPI
+      }
+      return fileUploadAPI
+    },
+    previewUrl() {
+      if (this.item.previewUrl) {
+        return this.item.previewUrl
+      }
+      return filePreviewUrl
     }
   },
   watch: {
@@ -244,21 +268,9 @@ export default {
       immediate: true
     }
   },
-  created() {
-    this.disableStatus = this.item.disabled || this.disabled
-  },
   mounted() {},
   beforeDestroy() {},
   methods: {
-    entityChange(item, index, value) {
-      const result = value ? value.code : ''
-      this.$set(this.fieldForm, item.fieldCode, result)
-      this.commonChange(item, index, value)
-    },
-    valueChange(item, index, value) {
-      this.$set(this.fieldForm, item.fieldCode, value)
-      this.commonChange(item, index, value)
-    }
   }
 }
 </script>

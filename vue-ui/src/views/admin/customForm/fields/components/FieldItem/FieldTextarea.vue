@@ -3,6 +3,7 @@
     :activate="activate"
     :field="field"
     :control-flag="controlFlag"
+    :show-border="showBorder"
     class="field-textarea"
     @click="emitClick"
     @action="handleAction">

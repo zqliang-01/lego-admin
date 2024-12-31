@@ -4,7 +4,7 @@ import com.lego.core.data.ICommonService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.feign.client.ISystemClient;
 import com.lego.core.vo.ActionVO;
-import com.lego.core.vo.SysMessageCreateVO;
+import com.lego.core.vo.MessageCreateVO;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -30,7 +30,12 @@ public class CommonService implements ICommonService {
     }
 
     @Override
-    public void addSysMessage(SysMessageCreateVO vo) {
+    public TypeInfo findDictBy(String code) {
+        return systemClient.findDictionaryBy(code).getData();
+    }
+
+    @Override
+    public void addSysMessage(MessageCreateVO vo) {
         systemClient.addSysMessage(vo);
     }
 

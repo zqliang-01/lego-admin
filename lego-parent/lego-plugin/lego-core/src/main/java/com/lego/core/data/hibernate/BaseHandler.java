@@ -1,5 +1,6 @@
 package com.lego.core.data.hibernate;
 
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.exception.CoreException;
 import org.hibernate.query.internal.NativeQueryImpl;
 import org.hibernate.transform.Transformers;

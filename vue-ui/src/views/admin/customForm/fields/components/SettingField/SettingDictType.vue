@@ -28,7 +28,6 @@
       title="维护字典数据"
       width="70%">
       <setting-dict-value
-        :app-code="appCode"
         :selected-type="selectedType"
         :dict-type-list="dictTypeList"
         @onRefreshType="getDictType"
@@ -47,10 +46,6 @@ export default {
     SettingDictValue
   },
   props: {
-    appCode: {
-      type: String,
-      required: true
-    },
     field: {
       type: Object,
       required: true
@@ -71,9 +66,6 @@ export default {
       },
       deep: true,
       immediate: true
-    },
-    appCode(value) {
-      this.getDictType()
     }
   },
   created() {
@@ -87,15 +79,13 @@ export default {
       }
     },
     getDictType() {
-      if (this.appCode) {
-        this.loading = true
-        dictTypeListAPI(this.appCode).then(res => {
-          this.dictTypeList = res.data
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
-      }
+      this.loading = true
+      dictTypeListAPI().then(res => {
+        this.dictTypeList = res.data
+        this.loading = false
+      }).catch(() => {
+        this.loading = false
+      })
     },
     onChangeType(value) {
       this.$set(this.field, 'optionDictType', value)

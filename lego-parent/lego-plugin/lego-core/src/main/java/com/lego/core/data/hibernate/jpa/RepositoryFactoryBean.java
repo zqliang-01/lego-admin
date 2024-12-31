@@ -1,6 +1,6 @@
 package com.lego.core.data.hibernate.jpa;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.exception.CoreException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.JpaRepository;

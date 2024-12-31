@@ -113,12 +113,12 @@ export default {
       search: '',
       fieldList: [
         [
-          { fieldCode: 'cover', name: '封面', formType: 'doc_cover', width: '150' },
+          { fieldCode: 'cover', name: '封面', formType: 'pictureEditor', previewUrl: filePreviewUrl, width: '150' },
           { fieldCode: 'name', name: '名称', formType: 'text', width: '150', clickable: true },
           { fieldCode: 'updateTime', name: '删除时间', formType: 'text', width: '100', editable: false }
         ],
         [
-          { fieldCode: 'open', name: '是否公开', formType: 'boolean_value', width: '50' },
+          { fieldCode: 'open', name: '是否公开', formType: 'boolean', width: '50' },
           { fieldCode: 'description', name: '描述', formType: 'text', width: '150' }
         ]
       ],

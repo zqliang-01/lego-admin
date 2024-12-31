@@ -3,6 +3,7 @@
     :activate="activate"
     :field="field"
     :control-flag="controlFlag"
+    :show-border="showBorder"
     class="field-select"
     @click="emitClick"
     @action="handleAction">
@@ -21,7 +22,8 @@
     <flexbox
       v-else
       class="select-box">
-      <div :class="{placeholder: !Boolean(field.defaultValue)}">
+      <i v-if="fieldIcon" :class="fieldIcon | iconPre" class="item-icon" />
+      <div class="placeholder">
         {{ defaultName }}
       </div>
       <i class="el-icon-arrow-down el-icon--right"/>
@@ -41,9 +43,6 @@ export default {
   },
   mixins: [mixins],
   props: {
-    appCode: {
-      type: String
-    }
   },
   data() {
     return {
@@ -79,8 +78,8 @@ export default {
   methods: {
     getOptions() {
       const field = this.field
-      if (this.appCode && field.optionDataType === 'dict') {
-        dictSimpleListAPI(this.appCode, field.optionDictType).then(res => {
+      if (field.optionDataType === 'dict') {
+        dictSimpleListAPI(field.optionDictType).then(res => {
           this.options = res.data
         })
       }
@@ -93,14 +92,21 @@ export default {
 .select-box {
   width: 100%;
   color: #333;
+  height: 32px;
   border: 1px solid #dcdfe6;
   border-radius: $xr-border-radius-base;
   padding: 8px 10px;
   div {
     flex: 1;
   }
+  .item-icon {
+    display: inline-block;
+    color: #999;
+    margin-right: 5px;
+  }
   .placeholder {
     color: #999;
+    line-height: 14px;
   }
 }
 

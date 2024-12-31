@@ -3,7 +3,7 @@ package com.lego.core.web.upload;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.model.OSSObject;
-import com.lego.core.common.FileLocationEnum;
+import com.lego.core.enums.FileLocationEnum;
 import com.lego.core.dto.FileUploadInfo;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.StringUtil;

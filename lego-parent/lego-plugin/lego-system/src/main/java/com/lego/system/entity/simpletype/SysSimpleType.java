@@ -20,4 +20,8 @@ public abstract class SysSimpleType extends SimpleType {
 
     protected SysSimpleType() {
     }
+
+    protected SysSimpleType(String name, int serialNumber) {
+        super(name, serialNumber);
+    }
 }

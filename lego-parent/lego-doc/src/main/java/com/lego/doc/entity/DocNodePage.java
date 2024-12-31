@@ -1,6 +1,7 @@
 package com.lego.doc.entity;
 
 import com.lego.core.util.EntityUtil;
+import com.lego.core.vo.ReadableVO;
 import com.lego.doc.entity.simpletype.DocNodeType;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,6 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.util.Map;
 
 @Entity
 @Getter
@@ -36,7 +36,7 @@ public class DocNodePage extends DocNode {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         super.doBuildReadableSnapshot(attributes);
         attributes.put("内容", EntityUtil.toString(page));
     }

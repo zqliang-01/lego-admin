@@ -15,6 +15,8 @@ export default class Field {
     this.defaultValue = obj.defaultValue || ''
     if (this.formType === 'checkbox') {
       this.defaultValue = obj.defaultValue || []
+    } else if (this.formType === 'address') {
+      this.defaultValue = obj.defaultValue || {}
     }
     this.setting = obj.setting || [] // 选项
   }

@@ -1,6 +1,7 @@
 package com.lego.crm.vo;
 
 import java.math.BigDecimal;
+import com.lego.core.data.hibernate.entity.AddressEntity;
 import java.util.Date;
 
 import com.lego.core.vo.ModifyVO;
@@ -18,9 +19,10 @@ public class CrmContractModifyVO extends ModifyVO {
     private String name;
     private Date startTime;
     private Date endTime;
-    private String ownerCode;
+    private String owner;
     private BigDecimal amount;
+    private String type;
+    private AddressEntity address;
     private String lead;
     private String customer;
-    private String type;
 }

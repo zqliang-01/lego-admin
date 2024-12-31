@@ -17,7 +17,6 @@
             <div
               v-if="getShowValue(item)"
               :key="index"
-              :class="[`is-${item.formType}`]"
               :label="item.name"
               :style="{width: item.stylePercent ? `${item.stylePercent}%` : 'auto'}"
               class="form-item">
@@ -182,12 +181,6 @@ export default {
       word-break: break-all;
       word-wrap: break-word;
       color: #666;
-    }
-
-    &.is-desc_text {
-      .form-item__label {
-        display: none;
-      }
     }
   }
 }

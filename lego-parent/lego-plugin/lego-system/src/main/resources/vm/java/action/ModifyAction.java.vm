@@ -25,6 +25,8 @@ public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${Clas
 #foreach ($column in $columns)
     #if($column.required && $column.javaFieldType == 'BigDecimal')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
+    #elseif($column.required && $column.formType == 'address')
+    	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
     #elseif($column.required && $column.javaFieldType == 'Date')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}修改失败！");
     #elseif($column.required && $column.javaFieldType == 'int')
@@ -38,7 +40,7 @@ public class Modify${ClassName}Action extends ModifyAction<${ClassName}, I${Clas
     @Override
     protected void doModify(${ClassName} entity) {
 #foreach ($column in $columns)
-    #if($column.formType == 'boolean_value')
+    #if($column.formType == 'boolean')
         entity.set${column.firstUpperField}(vo.is${column.firstUpperField}());
     #elseif($column.entityType && $column.required)
         entity.set${column.firstUpperField}(findByCode(${column.className}.class, vo.get${column.firstUpperField}()));

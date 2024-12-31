@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.lego.core.action.AddAction;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import com.lego.system.dao.ISysCodeGeneratorDao;
 import com.lego.system.dao.ISysCustomFieldDao;
 import com.lego.system.dao.ISysCustomFormDao;
@@ -28,7 +27,7 @@ public class AddSysCustomFieldAction extends AddAction<SysCustomField, ISysCusto
 
     @Override
     protected void preprocess() {
-        if (!CustomFieldTypeEnum.DESC_TEXT.equals(vo.getFormType())) {
+        if (!"descText".equals(vo.getFormType())) {
             BusinessException.check(StringUtil.isNotBlank(vo.getFieldCode()), "表单项编码不能为空！");
             BusinessException.check(StringUtil.isNotBlank(vo.getName()), "表单项名称不能为空！");
         }
@@ -41,7 +40,7 @@ public class AddSysCustomFieldAction extends AddAction<SysCustomField, ISysCusto
         SysCustomField entity = new SysCustomField(vo.getCode(), vo.getName(), form);
         entity.setFieldCode(vo.getFieldCode());
         entity.setComponentName(vo.getComponentName());
-        entity.setDefaultValue(JSON.toJSONString(vo.getDefaultValue()));
+        entity.setDefaultValue(getDefaultValue());
         entity.setFormType(vo.getFormType());
         entity.setHidden(vo.isHidden());
         entity.setInputTips(vo.getInputTips());
@@ -60,6 +59,14 @@ public class AddSysCustomFieldAction extends AddAction<SysCustomField, ISysCusto
         entity.setRelativeForm(formDao.findByUnsureCode(vo.getRelativeFormCode()));
         entity.setCodeGenerator(generatorDao.findByUnsureCode(vo.getGeneratorCode()));
         return entity;
+    }
+
+    private String getDefaultValue() {
+        Object defaultValue = vo.getDefaultValue();
+        if (defaultValue != null && StringUtil.isNotBlank(defaultValue.toString())) {
+            return JSON.toJSONString(defaultValue);
+        }
+        return null;
     }
 
     @Override

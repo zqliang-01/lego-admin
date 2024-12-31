@@ -197,7 +197,7 @@ export default {
         ],
         [
           { fieldCode: 'author', name: '负责人', formType: 'user', width: '100' },
-          { fieldCode: 'triggerStatus', name: '状态', activeValue: 1, inactiveValue: 0, formType: 'boolean_value', width: '80' }
+          { fieldCode: 'triggerStatus', name: '状态', activeValue: 1, inactiveValue: 0, formType: 'boolean', width: '80' }
         ]
       ]
     }

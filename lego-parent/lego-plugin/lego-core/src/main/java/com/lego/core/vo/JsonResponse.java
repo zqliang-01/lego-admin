@@ -2,7 +2,7 @@ package com.lego.core.vo;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.lego.core.common.ExceptionEnum;
+import com.lego.core.enums.ExceptionEnum;
 import lombok.Data;
 
 import java.util.ArrayList;

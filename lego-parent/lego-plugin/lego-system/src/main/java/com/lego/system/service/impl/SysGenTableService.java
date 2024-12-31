@@ -1,12 +1,12 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.common.GenConstants;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.data.mybatis.mapper.MetaTableMapper;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.MetaTableColumnInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
+import com.lego.core.gen.GenConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.GenericConditionItemVO;
 import com.lego.core.vo.GenericConditionVO;
@@ -95,7 +95,6 @@ public class SysGenTableService extends BusService<ISysGenTableDao, SysGenTableA
     @Override
     public void add(String operatorCode, SysGenTableCreateVO vo, List<MetaTableColumnInfo> tableColumns) {
         new AddSysGenTableAction(operatorCode, vo).run();
-        new ImportSysGenTableColumnAction(operatorCode, vo.getCode(), tableColumns).run();
     }
 
     @Override

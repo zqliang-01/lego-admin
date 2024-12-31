@@ -1,29 +1,6 @@
 package ${PackageName}.entity;
 
-#foreach ($import in $BaseImportList)
-import ${import};
-#end
-import java.util.Map;
-
-import javax.persistence.Entity;
-#if($Property.hasEntity)
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-#end
-import javax.persistence.Table;
-
-import com.lego.core.data.hibernate.BusEntity;
-#foreach ($import in $EntityImportList)
-import ${import};
-#end
-#foreach ($import in $UtilImportList)
-import ${import};
-#end
-import com.lego.core.util.StringUtil;
-
-import lombok.Getter;
-import lombok.Setter;
+#parse("vm/java/entity/components/import.vm")
 
 @Setter
 @Getter
@@ -32,12 +9,24 @@ import lombok.Setter;
 public class ${ClassName} extends BusEntity {
 
 #foreach ($column in $columns)
-#if($column.formType == 'entity' || $column.formType == 'select')
+#if($column.entityType)
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "$column.name")
     private $column.className $column.javaField;
+#elseif($column.formType == 'address')
+
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "province", column = @Column(name = "$column.attributes.province")),
+        @AttributeOverride(name = "city", column = @Column(name = "$column.attributes.city")),
+        @AttributeOverride(name = "area", column = @Column(name = "$column.attributes.area")),
+        @AttributeOverride(name = "detail", column = @Column(name = "$column.attributes.detail"))
+    })
+    private $column.className $column.javaField;
+
 #elseif(!$column.ignoreField)
+    @Column(name = "$column.name")
     private $column.javaFieldType $column.javaField;
 #end
 #end
@@ -49,14 +38,20 @@ public class ${ClassName} extends BusEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
 #foreach ($column in $columns)
     #if($column.formType == 'date')
         attributes.put("$column.comment", DateUtil.toDateString($column.javaField));
     #elseif($column.formType == 'datetime')
         attributes.put("$column.comment", DateUtil.toDateTimeString($column.javaField));
-    #elseif($column.formType == 'boolean_value')
+    #elseif($column.formType == 'boolean')
         attributes.put("$column.comment", $column.javaField ? "是" : "否");
+    #elseif($column.formType == 'user')
+        attributes.put("$column.comment", StringUtil.toString($column.javaField), PublicTypeEnum.EMPLOYEE);
+    #elseif($column.formType == 'structure')
+        attributes.put("$column.comment", StringUtil.toString($column.javaField), PublicTypeEnum.DEPT);
+    #elseif($column.formType == 'select')
+        attributes.put("$column.comment", StringUtil.toString($column.javaField), PublicTypeEnum.DICTIONARY);
     #elseif($column.entityType)
         attributes.put("$column.comment", EntityUtil.toString($column.javaField));
     #else

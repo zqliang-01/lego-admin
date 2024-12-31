@@ -9,6 +9,7 @@ import com.lego.core.dto.TreeInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
+import com.lego.core.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -20,11 +21,24 @@ public abstract class BaseAssembler<D extends DTO, E> {
     private ICommonService commonService;
 
     protected TypeInfo createEmployee(String code) {
+        if (StringUtil.isBlank(code)) {
+            return TypeInfo.NULL;
+        }
         return commonService.findEmployeeBy(code);
     }
 
     protected TypeInfo createDept(String code) {
+        if (StringUtil.isBlank(code)) {
+            return TypeInfo.NULL;
+        }
         return commonService.findDeptBy(code);
+    }
+
+    protected TypeInfo createDict(String code) {
+        if (StringUtil.isBlank(code)) {
+            return TypeInfo.NULL;
+        }
+        return commonService.findDictBy(code);
     }
 
     public List<D> create(List<E> entities) {

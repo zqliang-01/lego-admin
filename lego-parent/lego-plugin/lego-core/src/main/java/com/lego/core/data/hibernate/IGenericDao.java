@@ -1,6 +1,7 @@
 package com.lego.core.data.hibernate;
 
 import com.lego.core.data.DataPermission;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.GenericConditionVO;
 import org.springframework.data.jpa.repository.JpaRepository;

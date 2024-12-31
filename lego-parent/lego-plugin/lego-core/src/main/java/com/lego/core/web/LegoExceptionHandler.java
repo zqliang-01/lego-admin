@@ -6,7 +6,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.lego.core.common.Constants;
-import com.lego.core.common.ExceptionEnum;
+import com.lego.core.enums.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.StringUtil;

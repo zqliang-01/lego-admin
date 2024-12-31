@@ -2,7 +2,7 @@ package com.lego.crm.dto;
 
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.lego.core.common.TypeInfoConverter;
+import com.lego.core.gen.converter.TypeInfoConverter;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.dto.BusDTO;
 

@@ -1,9 +1,10 @@
 package com.lego.system.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import com.lego.system.entity.simpletype.SysMessageType;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Date;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -54,7 +54,7 @@ public class SysMessage extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("标题", this.getName());
         attributes.put("内容", StringUtil.toString(content));
         attributes.put("已读", readed ? "是" : "否");

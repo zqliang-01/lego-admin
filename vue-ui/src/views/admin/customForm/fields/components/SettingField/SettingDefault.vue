@@ -8,11 +8,12 @@
 
     <lego-relative-cell
       v-else-if="type === 'entity'"
-      :value="field.relativeForm"
+      v-model="field.relativeFormCode"
+      :data="field.relativeForm"
       :field-list="formFieldList"
       search-key="name"
       query-api="/back-end/sys-custom-form/list"
-      @value-change="entityChange(field, $event)"/>
+      @change="entityChange(field, $event)"/>
     <el-input
       v-else-if="type === 'text'"
       v-model="field.defaultValue"
@@ -24,12 +25,6 @@
       v-else-if="type === 'textarea'"
       v-model="field.defaultValue"
       :maxlength="field.maxLength || 800"
-      clearable
-      @blur="inputBlur" />
-
-    <el-input
-      v-else-if="type === 'jsonEditor'"
-      v-model="field.defaultValue"
       clearable
       @blur="inputBlur" />
 
@@ -80,11 +75,15 @@
         数字的位数必须少于{{ field.formType === 'percent' ? 10 : 15 }}位
       </div>
     </template>
+    <Address
+      v-else-if="field.formType === 'address'"
+      v-model="field.defaultValue" />
   </div>
 </template>
 
 <script>
 import { dictSimpleListAPI } from '@/api/dictionary'
+import Address from '@/components/Common/Address'
 import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
 import LegoCodeGenerator from '@/components/Lego/LegoCodeGenerator'
 
@@ -94,6 +93,7 @@ import { regexIsMobile, regexIsEmail } from '@/utils'
 export default {
   name: 'SettingDefault',
   components: {
+    Address,
     LegoRelativeCell,
     LegoCodeGenerator
   },
@@ -101,9 +101,6 @@ export default {
     field: {
       type: Object,
       required: true
-    },
-    appCode: {
-      type: String
     }
   },
   data() {
@@ -127,8 +124,7 @@ export default {
       ].includes(formType)) return 'datePicker'
       if ([
         'number',
-        'floatnumber',
-        'percent'
+        'float'
       ].includes(formType)) return 'number'
       if ([
         'select',
@@ -136,12 +132,10 @@ export default {
       ].includes(formType)) return 'select'
       if ([
         'textarea',
-        'jsonEditor'
+        'entity',
+        'address'
       ].includes(formType)) return formType
-      if (formType === 'boolean_value') return 'switch'
-      if (formType === 'entity') {
-        return 'entity'
-      }
+      if (formType === 'boolean') return 'switch'
       return 'text'
     }
   },
@@ -163,16 +157,14 @@ export default {
     entityChange(field, value) {
       if (!isEmpty(value)) {
         this.$set(this.field, 'relativeForm', value)
-        this.$set(this.field, 'relativeFormCode', value.code)
         return
       }
       this.$set(this.field, 'relativeForm', null)
-      this.$set(this.field, 'relativeFormCode', '')
     },
     getOptions() {
       const field = this.field
-      if (this.appCode && field.optionDataType === 'dict' && field.optionDictType) {
-        dictSimpleListAPI(this.appCode, field.optionDictType).then(res => {
+      if (field.optionDataType === 'dict' && field.optionDictType) {
+        dictSimpleListAPI(field.optionDictType).then(res => {
           this.options = res.data
         })
       }

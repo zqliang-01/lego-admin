@@ -1,9 +1,9 @@
 package com.lego.system.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
-import com.lego.core.vo.CustomFieldTypeEnum;
+import com.lego.core.vo.ReadableVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -60,7 +59,7 @@ public class SysCustomField extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", getCode());
         attributes.put("字段", fieldCode);
         attributes.put("名称", getName());
@@ -89,6 +88,6 @@ public class SysCustomField extends BaseEntity {
     }
 
     public boolean isTips() {
-        return CustomFieldTypeEnum.DESC_TEXT.equals(formType);
+        return "descText".equals(formType);
     }
 }

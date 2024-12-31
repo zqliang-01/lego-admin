@@ -1,13 +1,13 @@
 package com.lego.report.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -30,7 +30,7 @@ public class ReportDesignSort extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("图表", this.designCode);
         attributes.put("用户", this.creatorCode);
         attributes.put("状态", StringUtil.toString(this.enable));

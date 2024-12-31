@@ -84,7 +84,7 @@ export default {
           { fieldCode: 'type', name: '类型', formType: 'select', width: '150', required: true }
         ],
         [
-          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+          { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '150' }
         ],
         [
           { fieldCode: 'json', name: '模板内容', formType: 'jsonEditor', width: '150', stylePercent: 100 }

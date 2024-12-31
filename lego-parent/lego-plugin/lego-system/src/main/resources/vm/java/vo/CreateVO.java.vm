@@ -22,8 +22,10 @@ public class ${ClassName}CreateVO extends VO {
     private BigDecimal $column.javaField;
 #elseif($column.javaFieldType == 'int')
     private int $column.javaField;
-#elseif($column.formType == 'boolean_value')
+#elseif($column.formType == 'boolean')
     private boolean $column.javaField;
+#elseif($column.formType == 'address')
+    private AddressEntity $column.javaField;
 #else
     private String $column.javaField;
 #end

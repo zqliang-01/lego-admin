@@ -2,7 +2,7 @@ package com.lego.core.dto;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.lego.core.common.TypeInfoConverter;
+import com.lego.core.gen.converter.TypeInfoConverter;
 import com.lego.core.util.DateUtil;
 import lombok.Getter;
 import lombok.Setter;

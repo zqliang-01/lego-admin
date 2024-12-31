@@ -84,7 +84,8 @@ public class LegoWebConfig implements WebMvcConfigurer {
             SerializerFeature.WriteMapNullValue,
             SerializerFeature.QuoteFieldNames,
             SerializerFeature.WriteDateUseDateFormat,
-            SerializerFeature.PrettyFormat};
+            SerializerFeature.PrettyFormat,
+            SerializerFeature.DisableCircularReferenceDetect};
     }
 
     private static List<MediaType> getSupportedMediaTypes() {

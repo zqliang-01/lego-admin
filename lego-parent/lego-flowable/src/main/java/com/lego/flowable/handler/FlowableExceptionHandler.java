@@ -1,6 +1,6 @@
 package com.lego.flowable.handler;
 
-import com.lego.core.common.ExceptionEnum;
+import com.lego.core.enums.ExceptionEnum;
 import com.lego.core.web.ILegoExceptionHandler;
 import org.flowable.common.engine.api.FlowableException;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,9 @@
 package com.lego.doc.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import com.lego.doc.entity.simpletype.DocFileLocation;
 import com.lego.doc.entity.simpletype.DocFileType;
 import lombok.Getter;
@@ -13,7 +14,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -43,7 +43,7 @@ public class DocFile extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("名称", StringUtil.toString(name));
         attributes.put("大小（字节）", StringUtil.toString(size));

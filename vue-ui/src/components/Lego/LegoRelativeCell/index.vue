@@ -63,7 +63,7 @@ export default {
       type: String,
       default: ''
     },
-    value: {
+    data: {
       type: Object,
       default: () => {
         return {}
@@ -104,16 +104,17 @@ export default {
     }
   },
   watch: {
-    value: function(val) {
-      this.initValue()
+    data: {
+      handler() {
+        this.initValue()
+        this.initFields()
+      },
+      immediate: true,
+      deep: true
     },
     formCode: function(val) {
       this.initFields()
     }
-  },
-  mounted() {
-    this.initFields()
-    this.initValue()
   },
   methods: {
     initFields() {
@@ -129,12 +130,12 @@ export default {
       }
     },
     initValue() {
-      if (isEmpty(this.value)) {
+      if (isEmpty(this.data) || isEmpty(this.data.code)) {
         this.dataValue = []
       } else if (this.multiple) {
-        this.dataValue = this.value
+        this.dataValue = this.data
       } else {
-        this.dataValue = [this.value]
+        this.dataValue = [this.data]
       }
       this.checkInfos(this.dataValue)
     },
@@ -142,11 +143,13 @@ export default {
     checkInfos(data) {
       this.dataValue = data
       if (this.multiple) {
-        this.$emit('value-change', data)
+        this.$emit('input', data)
+        this.$emit('change', data)
         return
       }
-      const value = data && data.length > 0 ? data[0] : {}
-      this.$emit('value-change', value)
+      const value = data && data.length > 0 ? data[0] : undefined
+      this.$emit('input', value ? value.code : undefined)
+      this.$emit('change', value)
     },
     /** 删除 */
     deleteinfo(index) {

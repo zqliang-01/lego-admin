@@ -34,7 +34,7 @@ export default {
         [
           { fieldCode: 'maxExportSize', name: '最大导出数量', formType: 'number', stylePercent: 100 / 3, required: true },
           { fieldCode: 'sn', name: '序号', formType: 'number', stylePercent: 100 / 3, required: true },
-          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', stylePercent: 100 / 3 }
+          { fieldCode: 'enable', name: '状态', formType: 'boolean', stylePercent: 100 / 3 }
         ]
       ]
     }

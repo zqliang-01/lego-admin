@@ -2,7 +2,7 @@ package com.lego.core.data;
 
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.ActionVO;
-import com.lego.core.vo.SysMessageCreateVO;
+import com.lego.core.vo.MessageCreateVO;
 
 import java.util.List;
 
@@ -17,7 +17,9 @@ public interface ICommonService {
 
     TypeInfo findDeptBy(String code);
 
-    void addSysMessage(SysMessageCreateVO vo);
+    TypeInfo findDictBy(String code);
+
+    void addSysMessage(MessageCreateVO vo);
 
     String findRelateCodeBy(String permissionCode);
 

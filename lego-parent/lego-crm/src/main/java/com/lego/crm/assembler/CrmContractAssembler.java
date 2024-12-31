@@ -16,11 +16,12 @@ public class CrmContractAssembler extends BusAssembler<CrmContractInfo, CrmContr
     	info.setName(entity.getName());
     	info.setStartTime(entity.getStartTime());
     	info.setEndTime(entity.getEndTime());
-    	info.setOwnerCode(createEmployee(entity.getOwnerCode()));
+    	info.setOwner(createEmployee(entity.getOwner()));
     	info.setAmount(entity.getAmount());
+    	info.setType(createDict(entity.getType()));
+    	info.setAddress(entity.getAddress());
     	info.setLead(createTypeInfo(entity.getLead()));
     	info.setCustomer(createTypeInfo(entity.getCustomer()));
-    	info.setType(createTypeInfo(entity.getType()));
         return info;
     }
 }

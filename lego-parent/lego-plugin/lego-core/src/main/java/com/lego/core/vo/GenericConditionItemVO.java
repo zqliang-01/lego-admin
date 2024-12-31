@@ -1,5 +1,6 @@
 package com.lego.core.vo;
 
+import com.lego.core.enums.GenericConditionEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,32 +8,33 @@ public class GenericConditionItemVO extends VO {
 
     private static final long serialVersionUID = 1L;
 
-    private CustomFieldTypeEnum fieldType;
-    private GenericSearchConditionEnum condition;
+    private GenericConditionEnum condition;
     @Getter
     private String key;
     @Getter
     private Object value;
+    private String conditionKey;
     @Setter
     private int index;
 
-    public GenericConditionItemVO(GenericSearchConditionEnum condition, String key, Object value) {
-        this(condition, CustomFieldTypeEnum.TEXT, key, value);
+    public GenericConditionItemVO(GenericConditionEnum condition, String key) {
+        this(condition, key, null, key);
     }
 
-    public GenericConditionItemVO(GenericSearchConditionEnum condition, CustomFieldTypeEnum fieldType, String key, Object value) {
-        this.fieldType = fieldType;
+    public GenericConditionItemVO(GenericConditionEnum condition, String key, Object value) {
+        this(condition, key, value, key);
+    }
+
+    public GenericConditionItemVO(GenericConditionEnum condition, String key, Object value, String conditionKey) {
         this.condition = condition;
         this.key = key;
         this.value = value;
+        this.conditionKey = conditionKey;
     }
 
     public String getCondition() {
         StringBuilder sb = new StringBuilder("t.");
-        sb.append(key);
-        if (fieldType.isEntity() && condition.needValue()) {
-            sb.append(".code");
-        }
+        sb.append(conditionKey);
         sb.append(" ");
         sb.append(condition.getType());
         if (isNeedValue()) {
@@ -54,15 +56,15 @@ public class GenericConditionItemVO extends VO {
     }
 
     public static GenericConditionItemVO createEqual(String key, Object value) {
-        return new GenericConditionItemVO(GenericSearchConditionEnum.EQUALS, CustomFieldTypeEnum.TEXT, key, value);
+        return new GenericConditionItemVO(GenericConditionEnum.EQUALS, key, value);
     }
 
-    public static GenericConditionItemVO createEqual(CustomFieldTypeEnum fieldType, String key, Object value) {
-        return new GenericConditionItemVO(GenericSearchConditionEnum.EQUALS, fieldType, key, value);
+    public static GenericConditionItemVO createEntityEqual(String key, Object value) {
+        return new GenericConditionItemVO(GenericConditionEnum.EQUALS, key, value, key + ".code");
     }
 
     public static GenericConditionItemVO createLike(String key, Object value) {
-        return new GenericConditionItemVO(GenericSearchConditionEnum.LIKE, CustomFieldTypeEnum.TEXT, key, value);
+        return new GenericConditionItemVO(GenericConditionEnum.LIKE, key, value);
     }
 
 }

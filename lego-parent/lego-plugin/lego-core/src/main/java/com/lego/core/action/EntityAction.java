@@ -1,13 +1,12 @@
 package com.lego.core.action;
 
 import com.lego.core.data.ActionType;
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.data.hibernate.BusEntity;
 import com.lego.core.data.hibernate.IGenericDao;
+import com.lego.core.data.hibernate.entity.BaseEntity;
+import com.lego.core.data.hibernate.entity.BusEntity;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.EntityUtil;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import com.lego.core.vo.GenericConditionItemVO;
 import com.lego.core.vo.GenericConditionVO;
 
@@ -55,7 +54,7 @@ public abstract class EntityAction<E extends BaseEntity, D extends IGenericDao<E
 
     protected boolean checkEntityExists(String key, Object value) {
         GenericConditionVO condition = GenericConditionVO.create()
-            .addItem(GenericConditionItemVO.createEqual(CustomFieldTypeEnum.ENTITY, key, value));
+            .addItem(GenericConditionItemVO.createEntityEqual(key, value));
         return entityDao.exists(condition);
     }
 

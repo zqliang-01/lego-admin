@@ -6,7 +6,6 @@ import com.lego.core.util.StringUtil;
 import com.lego.crm.dao.ICrmLeadDao;
 import com.lego.crm.entity.CrmLead;
 import com.lego.crm.vo.CrmLeadModifyVO;
-import com.lego.crm.entity.CrmDictionary;
 import com.lego.crm.entity.CrmCustomer;
 
 public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
@@ -22,10 +21,7 @@ public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
     @Override
     protected void preprocess() {
         BusinessException.check(StringUtil.isNotBlank(vo.getCode()), "编码不能为空，线索修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getEmployee()), "员工不能为空，线索修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getDept()), "部门不能为空，线索修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getSource()), "来源不能为空，线索修改失败！");
-        BusinessException.check(StringUtil.isNotBlank(vo.getCustomer()), "客户不能为空，线索修改失败！");
+        BusinessException.check(StringUtil.isNotBlank(vo.getName()), "名称不能为空，线索修改失败！");
     }
 
     @Override
@@ -33,7 +29,7 @@ public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
         entity.setName(vo.getName());
         entity.setMobile(vo.getMobile());
         entity.setAmount(vo.getAmount());
-        entity.setBrithday(vo.getBrithday());
+        entity.setBirthday(vo.getBirthday());
         entity.setAddress(vo.getAddress());
         entity.setAge(vo.getAge());
         entity.setSize(vo.getSize());
@@ -41,7 +37,7 @@ public class ModifyCrmLeadAction extends ModifyAction<CrmLead, ICrmLeadDao> {
         entity.setEmail(vo.getEmail());
         entity.setEmployee(vo.getEmployee());
         entity.setDept(vo.getDept());
-        entity.setSource(findByCode(CrmDictionary.class, vo.getSource()));
-        entity.setCustomer(findByCode(CrmCustomer.class, vo.getCustomer()));
+        entity.setSource(vo.getSource());
+        entity.setCustomer(findByUnsureCode(CrmCustomer.class, vo.getCustomer()));
     }
 }

@@ -142,7 +142,7 @@ export default {
         { fieldCode: 'dept', name: '部门', formType: 'select', width: '150' },
         { fieldCode: 'roles', name: '角色', formType: 'checkbox', width: '150' },
         { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150' },
-        { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '100' }
+        { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '100' }
       ]
     }
   },

@@ -32,4 +32,8 @@ public class TypeInfo extends DTO {
         this.name = name;
         this.sn = sn;
     }
+
+    public String toString() {
+        return this.getName() + "(" + this.getCode() + ")";
+    }
 }

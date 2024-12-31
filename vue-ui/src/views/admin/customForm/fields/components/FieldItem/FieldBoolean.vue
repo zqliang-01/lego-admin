@@ -3,10 +3,15 @@
     :activate="activate"
     :field="field"
     :control-flag="controlFlag"
+    :show-border="showBorder"
     class="field-boolean"
     @click="emitClick"
     @action="handleAction">
-    <el-switch v-model="field.defaultValue"/>
+    <flexbox
+      align="center"
+      class="box">
+      <el-switch v-model="field.defaultValue"/>
+    </flexbox>
   </field-wrapper>
 </template>
 
@@ -26,11 +31,9 @@ export default {
 
 <style scoped lang="scss">
 .box {
+  width: 100%;
+  height: 32px;
   font-size: 14px;
   padding: 10px 0;
-  border: 1px solid #e1e1e1;
-  border-radius: 3px;
-  background: white;
-  text-align: center;
 }
 </style>

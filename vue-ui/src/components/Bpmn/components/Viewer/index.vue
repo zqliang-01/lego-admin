@@ -176,4 +176,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import '@/components/bpmn/theme/viewer.scss';
+::v-deep .bjs-powered-by {
+  display: none !important;
+}
 </style>

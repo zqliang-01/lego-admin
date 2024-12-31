@@ -1,6 +1,6 @@
 package com.lego.core.dto;
 
-import com.lego.core.common.FileLocationEnum;
+import com.lego.core.enums.FileLocationEnum;
 
 import lombok.Getter;
 import lombok.Setter;

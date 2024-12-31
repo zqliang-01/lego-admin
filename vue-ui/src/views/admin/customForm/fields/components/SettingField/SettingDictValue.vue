@@ -140,10 +140,6 @@ export default {
       type: Boolean,
       default: false
     },
-    appCode: {
-      type: String,
-      required: true
-    },
     selectedType: {
       type: String,
       required: true
@@ -241,7 +237,7 @@ export default {
         return
       }
       this.loading = true
-      dictListAPI(this.appCode, this.currentTypeCode).then(res => {
+      dictListAPI(this.currentTypeCode).then(res => {
         this.loading = false
         this.valueList = res.data || []
       }).catch(() => {
@@ -267,7 +263,7 @@ export default {
         this.$set(row, 'show', true)
       } else if (type == 'save') {
         this.loading = true
-        dictModifyAPI(this.appCode, row).then(() => {
+        dictModifyAPI(row).then(() => {
           this.loading = false
           this.$message.success('修改成功')
           this.getDetail()
@@ -296,7 +292,7 @@ export default {
     },
     submitDialog() {
       this.loading = true
-      this.request(this.appCode, this.submitForm).then(res => {
+      this.request(this.submitForm).then(res => {
         this.$message.success('操作成功')
         this.showDialog = false
         if (this.editType === 'modifyType') {

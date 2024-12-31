@@ -13,12 +13,14 @@ public class ${ClassName}Assembler extends BusAssembler<${ClassName}Info, ${Clas
     protected ${ClassName}Info doCreate(${ClassName} entity) {
         ${ClassName}Info info = new ${ClassName}Info();
 #foreach ($column in $columns)
-    #if($column.formType == 'boolean_value')
+    #if($column.formType == 'boolean')
     	info.set${column.firstUpperField}(entity.is${column.firstUpperField}());
     #elseif($column.formType == 'user')
     	info.set${column.firstUpperField}(createEmployee(entity.get${column.firstUpperField}()));
     #elseif($column.formType == 'structure')
     	info.set${column.firstUpperField}(createDept(entity.get${column.firstUpperField}()));
+    #elseif($column.formType == 'select')
+    	info.set${column.firstUpperField}(createDict(entity.get${column.firstUpperField}()));
     #elseif($column.typeInfo)
     	info.set${column.firstUpperField}(createTypeInfo(entity.get${column.firstUpperField}()));
     #else

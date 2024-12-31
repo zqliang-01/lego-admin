@@ -7,13 +7,15 @@ import ${import};
 import com.alibaba.excel.annotation.ExcelProperty;
 #if($Property.hasDate)
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.lego.core.util.DateUtil;
 #end
 #if($Property.hasBoolean)
-import com.lego.core.common.BooleanConverter;
+import com.lego.core.gen.converter.BooleanConverter;
 #end
-#if($Property.hasEntity)
-import com.lego.core.common.TypeInfoConverter;
+#if($Property.hasAddress)
+import com.lego.core.gen.converter.AddressConverter;
+#end
+#if($Property.hasTypeInfo)
+import com.lego.core.gen.converter.TypeInfoConverter;
 import com.lego.core.dto.TypeInfo;
 #end
 import com.lego.core.dto.BusDTO;
@@ -30,15 +32,18 @@ public class ${ClassName}Info extends BusDTO {
 #foreach ($column in $columns)
 #if($column.formType == 'date')
     @ExcelProperty(value = "$column.comment")
-    @DateTimeFormat(DateUtil.datePattern)
+    @DateTimeFormat("yyyy-MM-dd")
     private Date $column.javaField;
 #elseif($column.formType == 'datetime')
     @ExcelProperty(value = "$column.comment")
-    @DateTimeFormat(DateUtil.dateTimePattern)
+    @DateTimeFormat("yyyy-MM-dd HH:mm:ss")
     private Date $column.javaField;
-#elseif($column.formType == 'boolean_value')
+#elseif($column.formType == 'boolean')
     @ExcelProperty(value = "$column.comment", converter = BooleanConverter.class)
     private boolean $column.javaField;
+#elseif($column.formType == 'address')
+    @ExcelProperty(value = "$column.comment", converter = AddressConverter.class)
+    private AddressEntity $column.javaField;
 #elseif($column.typeInfo)
     @ExcelProperty(value = "$column.comment", converter = TypeInfoConverter.class)
     private TypeInfo $column.javaField;

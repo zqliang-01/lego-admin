@@ -6,7 +6,7 @@ import com.lego.core.dto.TypeInfo;
 import com.lego.core.feign.api.ISystemAPI;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.JsonResponse;
-import com.lego.core.vo.SysMessageCreateVO;
+import com.lego.core.vo.MessageCreateVO;
 import com.lego.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -45,8 +45,14 @@ public class SysCommonController extends BaseController implements ISystemAPI {
     }
 
     @Override
+    @GetMapping("/get-dictionary-simple/{code}")
+    public JsonResponse<TypeInfo> findDictionaryBy(String code) {
+        return JsonResponse.success(commonService.findDictBy(code));
+    }
+
+    @Override
     @PostMapping("/add-message")
-    public JsonResponse<Object> addSysMessage(SysMessageCreateVO vo) {
+    public JsonResponse<Object> addSysMessage(MessageCreateVO vo) {
         commonService.addSysMessage(vo);
         return JsonResponse.success();
     }

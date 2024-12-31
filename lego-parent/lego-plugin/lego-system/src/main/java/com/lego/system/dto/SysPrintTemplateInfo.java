@@ -2,9 +2,9 @@ package com.lego.system.dto;
 
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.lego.core.common.TypeInfoConverter;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.gen.converter.TypeInfoConverter;
 import lombok.Getter;
 import lombok.Setter;
 

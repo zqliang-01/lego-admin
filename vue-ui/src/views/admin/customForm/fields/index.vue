@@ -5,7 +5,13 @@
     justify="flex-start"
     class="fields-index body">
     <flexbox-item class="body-left">
-      <div class="body-left_title">字段库</div>
+      <div class="body-left_title">
+        字段库
+        <div class="switch">
+          <el-switch v-model="showBorder"/>
+          <span>显示分割线</span>
+        </div>
+      </div>
       <ul>
         <draggable
           :list="fieldLibList"
@@ -55,8 +61,7 @@
                 v-for="(childArr, fatherIndex) in fieldList"
                 :key="fatherIndex"
                 align="flex-start"
-                justify="flex-start"
-                class="field-row">
+                justify="flex-start">
                 <component
                   v-for="(field, childIndex) in childArr"
                   ref="fieldItem"
@@ -64,7 +69,7 @@
                   :is="field.componentName"
                   :field="field"
                   :field-list="fieldList"
-                  :app-code="appCode"
+                  :show-border="showBorder"
                   :point="[fatherIndex, childIndex]"
                   :active-point="selectedPoint"
                   @action="handleAction"
@@ -82,7 +87,6 @@
         :field="selectedField"
         :point="selectedPoint"
         :field-list="fieldList"
-        :app-code="appCode"
         :column-list="columnList"
         @update-width="handleUpdateFieldWidth" />
     </flexbox-item>
@@ -121,8 +125,8 @@ export default {
   data() {
     return {
       loading: false,
+      showBorder: false,
       errorMsg: null,
-      appCode: '',
       tableName: '',
       formCode: '',
       columnList: [],
@@ -167,7 +171,6 @@ export default {
         formCode: this.formCode
       }).then(res => {
         this.fieldList = res.data.fields || []
-        this.appCode = res.data.appCode
         this.tableName = res.data.tableName
         this.columnList = res.data.columns
         if (this.fieldList.length > 0) {
@@ -176,11 +179,10 @@ export default {
         this.rejectHandle = false
         this.loading = false
         this.errorMsg = null
+      }).catch(res => {
+        this.errorMsg = res.msg
+        this.loading = false
       })
-        .catch(res => {
-          this.errorMsg = res.msg
-          this.loading = false
-        })
     },
     /**
      * 点击左侧字段库进行添加
@@ -212,7 +214,7 @@ export default {
       if (this.movedField.formType === 'select') {
         newField.optionDataType = 'dict'
       }
-      if (this.movedField.formType === 'desc_text') {
+      if (this.movedField.formType === 'descText') {
         newField.name = ''
       }
       let rowNum = 0
@@ -340,7 +342,7 @@ export default {
       delete copyField.name
       delete copyField.fieldCode
       delete copyField.relevant
-      if (copyField.formType === 'desc_text') {
+      if (copyField.formType === 'descText') {
         copyField.name = ''
       }
       this.fieldList.splice(point[0] + 1, 0, [copyField])
@@ -443,7 +445,7 @@ export default {
         const item = arr[i]
         const positionStr = `第${item.xAxis + 1}行第${item.yAxis + 1}列【` + item.name + `】`
         item.name = (item.name || '').trim()
-        if (item.formType === 'desc_text') {
+        if (item.formType === 'descText') {
           // 描述文字
           if (!isEmpty(item.defaultValue) && item.defaultValue.length > 2000) {
             this.$message.error(positionStr + '描述文字类型字段最多设置2000字')
@@ -485,7 +487,6 @@ export default {
         formCode: this.formCode
       }).then(res => {
         this.fieldList = res.data.fields || []
-        this.appCode = res.data.appCode
         this.tableName = res.data.tableName
         this.columnList = res.data.columns
         if (this.fieldList.length > 0) {
@@ -571,12 +572,20 @@ export default {
       overflow-y: auto;
       background-color: white;
       .body-left_title {
-        .lego-icon-fields {
+        border-bottom: 1px solid #dbdbdb;
+        .switch {
           margin-right: 10px;
+          float: right;
+          span {
+            margin-left: 5px;
+            font-weight: normal;
+            font-size: 13px;
+          }
         }
         font-weight: bold;
         font-size: 14px;
-        margin: 20px 20px 15px;
+        padding: 20px 20px 15px;
+        margin-bottom: 15px;
       }
 
       .lib-wrapper {
@@ -636,7 +645,7 @@ export default {
           width: 100%;
           height: 100%;
           overflow-y: auto;
-          padding: 10px 16px 30px;
+          padding: 0px 16px 30px;
           .el-main {
             .no-list {
               margin: 200px 0;

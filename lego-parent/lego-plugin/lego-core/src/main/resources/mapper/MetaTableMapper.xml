@@ -62,7 +62,7 @@
 
     <select id="selectColumns" parameterType="String" resultMap="GenTableColumnResult">
         select
-        column_name,
+        LOWER(column_name) column_name,
         column_comment,
         column_type,
         ordinal_position as sort,

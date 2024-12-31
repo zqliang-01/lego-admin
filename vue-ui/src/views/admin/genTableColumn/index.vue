@@ -1,104 +1,79 @@
+
 <template>
-  <flexbox
-    v-loading="loading"
-    align="flex-start"
-    justify="flex-start"
-    class="fields-index body">
-    <div class="body-content">
-      <flexbox
-        align="flex-start"
-        justify="flex-start"
-        direction="column"
-        class="body-content-warp">
-        <el-header>
-          <div class="title">编辑表字段</div>
-          <div>
-            <el-button v-debounce="handleSync" v-if="manage.genTable.sync" type="primary">初始化</el-button>
-            <el-button v-debounce="handleSave" type="primary">保存</el-button>
-            <el-button @click="handleCancel">返回</el-button>
+  <div class="container">
+    <xr-header
+      ref="xrHeader"
+      :icon-class="'user'"
+      showBack
+      label="代码生成字段设计"
+      icon-color="#19B5F6">
+      <template slot="ft">
+        <el-button slot="ft" v-debounce="handleSync" icon="el-icon-refresh" v-if="manage.genTable.sync">初始化</el-button>
+        <el-button slot="ft" @click="handlePreview" icon="el-icon-view">代码预览</el-button>
+        <el-button @click="handleBack" type="primary">返回<i class="el-icon-d-arrow-right"></i></el-button>
+      </template>
+    </xr-header>
+    <div class="content" v-loading="loading">
+      <!-- 左边导航 -->
+      <div class="nav">
+        <div class="nav__hd">
+          字段列表
+          <el-button
+            type="text"
+            icon="el-icon-circle-plus"
+            class="add-btn"
+            @click="handleAdd">新增字段</el-button>
+        </div>
+        <div class="nav-box">
+          <div
+            v-for="(item, index) in dataList"
+            :key="index"
+            :class="{'is-select' : item.code == currentData.code}"
+            class="menu-item"
+            @click="handleClick(item)">
+            {{ item.name }}
+            <span v-if="item.required" class="require"></span>
+            <span class="type">
+              {{ item.comment }}({{ item.formType }})
+            </span>
           </div>
-        </el-header>
-        <el-table
-          ref="dragTable"
-          :data="dataList"
-          :max-height="tableHeight"
-          row-key="code">
-          <el-table-column label="序号" prop="sn" min-width="5%" class-name="allowDrag">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.sn"/>
-            </template>
-          </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" label="字段列名" prop="name" min-width="8%" />
-          <el-table-column label="字段描述" min-width="8%">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.comment"/>
-            </template>
-          </el-table-column>
-          <el-table-column :show-overflow-tooltip="true" label="物理类型" prop="dataType" min-width="5%" />
-          <el-table-column label="表单类型" min-width="11%">
-            <template slot-scope="scope">
-              <el-select v-model="scope.row.formType" @change="formTypeChange($event, scope.row)">
-                <el-option
-                  v-for="(item, index) in formTypeList"
-                  :key="index"
-                  :label="item.name"
-                  :value="item.code" />
-              </el-select>
-            </template>
-          </el-table-column>
-          <el-table-column label="java类型" min-width="10%">
-            <template slot-scope="scope">
-              <template v-if="scope.row.editJavaFiledType">
-                <lego-relative-cell
-                  v-if="scope.row.formType == 'entity'"
-                  search-key="code"
-                  query-api="/back-end/sys-gen-table/list"
-                  :value="scope.row.relativeTable"
-                  :field-list="fieldList"
-                  @value-change="entityChange(scope.row, $event)"/>
-                <el-input v-else v-model="scope.row.javaFieldType"/>
-              </template>
-              <span v-else>{{ scope.row.javaFieldType }}</span>
-            </template>
-          </el-table-column>
-          <el-table-column label="java属性" min-width="10%">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.javaField"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="必填" min-width="5%" align="center">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.required"/>
-            </template>
-          </el-table-column>
-          <el-table-column label="唯一" min-width="5%" align="center">
-            <template slot-scope="scope">
-              <el-checkbox v-model="scope.row.unique"/>
-            </template>
-          </el-table-column>
-        </el-table>
-      </flexbox>
+        </div>
+      </div>
+      <div class="content-right">
+        <Detail
+          :currentData="currentData"
+          :tableCode="tableCode"
+          :selected="dataList"
+          @success="init"/>
+      </div>
     </div>
-  </flexbox>
+    <code-preview
+      :visible.sync="previewVisible"
+      :data="previewData"
+      title="代码预览"
+    />
+    <TableSyncDialog
+      :visible.sync="showSync"
+      :tableCode="tableCode"
+      :selected="dataList"
+      @success="init"
+    />
+  </div>
 </template>
-
 <script>
-import {
-  genTableColumnListAPI,
-  genTableModifyAPI
-} from '@/api/admin/genTableColumn'
-import {
-  genTableSyncAPI
-} from '@/api/admin/genTable'
-import { customFieldTypeListAPI } from '@/api/admin/formField'
-import { Loading } from 'element-ui'
+import CodePreview from '../genTable/CodePreview'
+import Detail from './components/Detail'
+import TableSyncDialog from './components/TableSyncDialog'
+import XrHeader from '@/components/XrHeader'
 import { mapGetters } from 'vuex'
-import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
-
+import { genTablePreviewAPI } from '@/api/admin/genTable'
+import { genTableColumnListAPI } from '@/api/admin/genTableColumn'
 export default {
-  name: 'GenEdit',
   components: {
-    LegoRelativeCell
+    Detail,
+    TableSyncDialog,
+    XrHeader,
+    CodePreview
   },
   computed: {
     ...mapGetters(['manage'])
@@ -106,151 +81,161 @@ export default {
   data() {
     return {
       loading: false,
+      showSync: false,
       tableCode: '',
-      tableHeight: document.documentElement.clientHeight - 165, // 表的高度
-      dataList: [],
-      // 字典信息
-      formTypeList: [],
-      fieldList: [
-        { fieldCode: 'code', name: '表名', formType: 'select', width: '150' },
-        { fieldCode: 'name', name: '功能名称', formType: 'text', width: '150' },
-        { fieldCode: 'comment', name: '描述', formType: 'text', width: '150' },
-        { fieldCode: 'packageName', name: '包名', formType: 'text', width: '150' },
-        { fieldCode: 'appCode', name: '模块编码', formType: 'text', width: '100' },
-        { fieldCode: 'className', name: '类名', formType: 'text', width: '100' },
-        { fieldCode: 'permissionCode', name: '菜单编码', formType: 'text', width: '100' }
-      ]
+      previewVisible: false,
+      previewData: [],
+      currentData: {},
+      dataList: []
     }
   },
-  created() {
+  mounted() {
     this.tableCode = this.$route.params && this.$route.params.tableCode
-    customFieldTypeListAPI({ tableCode: this.tableCode }).then(res => {
-      this.formTypeList = res.data
-      this.refreshData()
-    })
+    this.init()
   },
   methods: {
-    refreshData() {
+    init() {
       this.loading = true
       genTableColumnListAPI({ tableCode: this.tableCode }).then(res => {
-        this.dataList = res.data.map(item => {
-          item.editJavaFiledType = false
-          if (item.formType === 'entity' || item.formType === 'select') {
-            item.editJavaFiledType = true
-          }
-          return item
-        })
+        this.dataList = res.data
+        if (!this.currentData.code && this.dataList.length > 0) {
+          this.currentData = this.dataList[0]
+        }
+        if (this.dataList.length === 0) {
+          setTimeout(this.handleSync, 1000)
+        }
         this.loading = false
       }).catch(() => {
         this.loading = false
       })
     },
-    formTypeChange(value, row) {
-      const item = this.formTypeList.find(formType => formType.code === value)
-      if (item) {
-        row.javaFieldType = item.type
-      }
-      if (value === 'entity' || value === 'select') {
-        row.editJavaFiledType = true
-        return
-      }
-      row.editJavaFiledType = false
+    handleAdd() {
+      this.currentData = {}
+    },
+    handleClick(value) {
+      this.currentData = value
     },
     handleSync() {
-      this.$confirm('初始化操作将重置表字段配置，是否继续?', '提示', {
-        type: 'warning'
-      }).then(() => {
-        const loading = Loading.service({ fullscreen: true, text: '初始化中，请稍后...' })
-        genTableSyncAPI(this.tableCode).then(() => {
-          loading.close()
-          this.$message.success('初始化成功')
-          this.refreshData()
-        }).catch(() => {
-          loading.close()
-        })
+      let msg = '初始化操作将重置所有表字段配置，是否继续?'
+      if (this.dataList.length === 0) {
+        msg = '当前数据表暂无字段信息，是否进行初始化?'
+      }
+      this.$confirm(msg, '提示', { type: 'warning' }).then(() => {
+        this.showSync = true
       })
     },
-    handleSave() {
+    handlePreview() {
       this.loading = true
-      genTableModifyAPI(this.dataList).then(() => {
-        this.$message.success('保存成功！')
-        this.refreshData()
+      genTablePreviewAPI(this.tableCode).then(response => {
         this.loading = false
-      }).catch(res => {
+        this.previewData = response.data
+        this.previewVisible = true
+      }).catch(() => {
         this.loading = false
       })
     },
-    handleDelete(row) {
-      if (row.unique) {
-        this.$message.error('唯一字段不能删除！')
-        return
-      }
-      if (row.required) {
-        this.$message.error('必填字段不能删除！')
-        return
-      }
-      this.dataList = this.dataList.filter(data => data.code !== row.code)
-    },
-    handleCancel() {
+    handleBack() {
       this.$router.go(-1)
-    },
-    entityChange(row, value) {
-      row.relativeTableCode = value.code
     }
   }
 }
 </script>
+<style lang="scss" scoped>
+.container {
+  padding: 0 15px;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+.content {
+  height: calc(100% - 60px);
+  overflow: hidden;
+  position: relative;
+}
+.require::before {
+  content: "*";
+  color: #F56C6C;
+}
+.nav {
+  width: 280px;
+  background: #fff;
+  border: 1px solid $xr-border-line-color;
+  border-radius: $xr-border-radius-base;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.nav__hd {
+  position: relative;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 600;
+  border-bottom: 1px solid $xr-border-line-color;
 
-<style scoped lang="scss">
-@import '@/styles/mixin.scss';
-
-.fields-index {
-  &.body {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    user-select: none;
-    overflow: hidden;
-
-    .body-content {
-      padding: 15px;
-      flex: 1;
-      height: 100%;
-
-      .body-content-warp {
-        margin: 0 auto;
-        height: 100%;
-        box-shadow: 0 2px 12px 0 rgba($color: #000, $alpha: 0.1);
-        border-radius: $xr-border-radius-base;
-        overflow: hidden;
-        background-color: white;
-        .el-header {
-          width: 100%;
-          // border-bottom: 1px solid $xr-border-line-color;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          .title {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-          }
-        }
-        .body-content-main {
-          width: 100%;
-          height: 100%;
-          overflow-y: auto;
-          padding: 10px 16px 30px;
-          .el-main {
-            .no-list {
-              margin: 200px 0;
-              color: #ccc;
-              @include center;
-            }
-          }
-        }
-      }
-    }
+  .el-button {
+    position: absolute;
+    top: 10px;
+    right: 15px;
   }
 }
+
+.content-right {
+  background: #fff;
+  border: 1px solid $xr-border-line-color;
+  border-radius: $xr-border-radius-base;
+  margin-left: 295px;
+  height: 100%;
+  overflow: hidden;
+  padding-top: 10px;
+  position: relative;
+  overflow: auto;
+}
+.nav-box {
+  line-height: 30px;
+  overflow-y: auto;
+  padding: 10px 0;
+  height: calc(100% - 50px);
+}
+// 菜单
+.menu-item {
+  color: #333;
+  font-size: 13px;
+  padding: 0 15px;
+  height: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  position: relative;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  .type {
+    color: #aaa;
+    font-size: 12px;
+    margin-right: 5px;
+    float: right;
+  }
+}
+
+.menu-item:hover,
+.menu-item.is-select {
+  background-color: $xr--background-color-base;
+}
+
+.menu-item:hover::before,
+.menu-item.is-select::before {
+  content: ' ';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 2px;
+  background-color: #5383ed;
+}
+
+.nav-box .menu-item:hover .icon-close {
+  display: block;
+  float: right;
+}
+
 </style>

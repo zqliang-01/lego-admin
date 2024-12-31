@@ -1,5 +1,8 @@
 package com.lego.core.web;
 
+import cn.hutool.core.io.resource.ResourceUtil;
+import com.lego.core.dto.AddressData;
+import com.lego.core.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
@@ -22,6 +25,12 @@ public class LegoWebInit implements BeanFactoryPostProcessor, ApplicationContext
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         initFont();
+        initData();
+    }
+
+    private void initData() {
+        InputStream inputStream = ResourceUtil.getStream("classpath:data/address.json");
+        AddressData.init(StringUtil.toString(inputStream));
     }
 
     private void initFont() {

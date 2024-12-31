@@ -1,8 +1,9 @@
 package com.lego.doc.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,7 +57,7 @@ public class DocPage extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("名称", StringUtil.toString(name));
         attributes.put("是否生效", enable ? "是" : "否");

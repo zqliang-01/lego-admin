@@ -1,5 +1,7 @@
 package com.lego.core.data.hibernate;
 
+import com.lego.core.data.hibernate.entity.BaseEntity;
+
 import java.util.Date;
 import java.util.List;
 

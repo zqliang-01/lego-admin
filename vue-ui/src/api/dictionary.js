@@ -1,20 +1,20 @@
 import request from '@/utils/request'
 
-export function dictSimpleListAPI(model, type) {
+export function dictSimpleListAPI(type) {
   return request({
-    url: '/back-end/' + model + '-dict/list-simple?typeCode=' + type
+    url: '/back-end/sys-dict/list-simple?typeCode=' + type
   })
 }
 
-export function dictListAPI(model, type) {
+export function dictListAPI(type) {
   return request({
-    url: '/back-end/' + model + '-dict/list?typeCode=' + type
+    url: '/back-end/sys-dict/list?typeCode=' + type
   })
 }
 
-export function dictAddAPI(model, data) {
+export function dictAddAPI(data) {
   return request({
-    url: '/back-end/' + model + '-dict/add',
+    url: '/back-end/sys-dict/add',
     method: 'post',
     data: data,
     headers: {
@@ -23,9 +23,9 @@ export function dictAddAPI(model, data) {
   })
 }
 
-export function dictModifyAPI(model, data) {
+export function dictModifyAPI(data) {
   return request({
-    url: '/back-end/' + model + '-dict/update',
+    url: '/back-end/sys-dict/update',
     method: 'post',
     data: data,
     headers: {
@@ -34,15 +34,15 @@ export function dictModifyAPI(model, data) {
   })
 }
 
-export function dictTypeListAPI(model) {
+export function dictTypeListAPI() {
   return request({
-    url: '/back-end/' + model + '-dict/list-type'
+    url: '/back-end/sys-dict/list-type'
   })
 }
 
-export function dictTypeAddAPI(model, data) {
+export function dictTypeAddAPI(data) {
   return request({
-    url: '/back-end/' + model + '-dict/add-type',
+    url: '/back-end/sys-dict/add-type',
     method: 'post',
     data: data,
     headers: {
@@ -51,9 +51,9 @@ export function dictTypeAddAPI(model, data) {
   })
 }
 
-export function dictTypeModifyAPI(model, data) {
+export function dictTypeModifyAPI(data) {
   return request({
-    url: '/back-end/' + model + '-dict/update-type',
+    url: '/back-end/sys-dict/update-type',
     method: 'post',
     data: data,
     headers: {

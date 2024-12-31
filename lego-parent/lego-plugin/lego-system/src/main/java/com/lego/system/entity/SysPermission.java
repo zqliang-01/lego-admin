@@ -3,6 +3,7 @@ package com.lego.system.entity;
 import com.lego.core.data.TreeEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import com.lego.system.entity.simpletype.SysPermissionRouteType;
 import com.lego.system.entity.simpletype.SysPermissionType;
 import com.lego.system.vo.SysPermissionTypeCode;
@@ -14,7 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -48,7 +48,7 @@ public class SysPermission extends TreeEntity<SysPermission> {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", getCode());
         attributes.put("名称", getName());
         attributes.put("上级菜单", EntityUtil.toString(getParent()));

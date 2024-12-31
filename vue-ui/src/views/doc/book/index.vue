@@ -91,7 +91,10 @@ import {
   bookListAPI,
   bookDisableAPI
 } from '@/api/doc/book'
-import { filePreviewUrl } from '@/api/doc/file'
+import {
+  fileUploadAPI,
+  filePreviewUrl
+} from '@/api/doc/file'
 import { mapGetters } from 'vuex'
 import Create from './Create'
 import XrHeader from '@/components/XrHeader'
@@ -130,12 +133,12 @@ export default {
       search: '',
       fieldList: [
         [
-          { fieldCode: 'cover', name: '封面', formType: 'doc_cover', width: '150' }
+          { fieldCode: 'cover', name: '封面', formType: 'pictureEditor', uploadAPI: fileUploadAPI, previewUrl: filePreviewUrl, width: '150' }
         ],
         [
           { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '100', editable: false },
           { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true },
-          { fieldCode: 'open', name: '是否公开', formType: 'boolean_value', width: '50' }
+          { fieldCode: 'open', name: '是否公开', formType: 'boolean', width: '50' }
         ],
         [
           { fieldCode: 'description', name: '描述', formType: 'textarea', width: '150', stylePercent: 100 }

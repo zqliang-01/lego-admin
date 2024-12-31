@@ -5,13 +5,11 @@
     :visible="visible"
     :fullscreen="isFull"
     width="80%"
-    top="5vh"
+    top="10vh"
+    tittle="代码预览"
     append-to-body class="scrollbar preview-box"
     @close="handleCancel">
-    <div slot="title">
-      <h2>代码预览</h2>
-    </div>
-    <sash-form-layout height="510px" rightBackground="#e6e6e6">
+    <sash-form-layout :height="tableHeight" rightBackground="#e6e6e6">
       <template v-slot:left>
         <el-tree
         :props="treeProps"
@@ -71,7 +69,8 @@ export default {
       treeProps: {
         label: 'code',
         children: 'childrens'
-      }
+      },
+      tableHeight: document.documentElement.clientHeight - 200 + 'px'
     }
   },
   computed: {

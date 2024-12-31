@@ -9,10 +9,10 @@
     :destroy-on-close="true"
     :modal-append-to-body="false"
     custom-class="lego-detail"
-    @close="handleClose"
     @open="handleOpen">
     <el-button
       class="close-btn xr-btn--orange"
+      :style="{top: topIndex + 'px'}"
       type="primary"
       icon="el-icon-close"
       @click="handleClose"/>
@@ -38,6 +38,7 @@ import LegoDetail from './LegoDetail'
 import crmDetail from '@/views/crm/components/detail'
 import { getMenuAuth } from '@/utils/auth'
 import { customFormPermissionGetAPI } from '@/api/admin/formField'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'LegoAllDetail',
@@ -62,6 +63,11 @@ export default {
     },
     detailCode: String
   },
+  computed: {
+    ...mapGetters([
+      'activeIndex'
+    ])
+  },
   watch: {
     visible(val) {
       this.open = val
@@ -72,6 +78,7 @@ export default {
       open: false,
       loading: false,
       hasPermission: false,
+      topIndex: 160,
       auth: {},
       detailForm: {},
       componentName: 'LegoDetail'
@@ -98,12 +105,15 @@ export default {
         } else {
           this.componentName = res.data.className + 'Detail'
         }
+        this.topIndex = this.activeIndex
+        this.$store.commit('SET_ACTIVEINDEX', 50)
       }).catch(() => {
         this.loading = false
       })
     },
     handleClose() {
       this.$emit('hide-view')
+      this.$store.commit('SET_ACTIVEINDEX', -50)
     }
   }
 }
@@ -121,7 +131,6 @@ export default {
 
 .close-btn {
   position: fixed;
-  top: 160px;
   z-index: 100;
   margin-left: -39.5px;
   border-top-right-radius: 0;

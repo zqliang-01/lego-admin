@@ -10,7 +10,7 @@ const app = {
     logo: '',
     name: '',
     sidebar: {
-      activeIndex: '', // 目前激活的 行
+      activeIndex: 160, // 目前激活的 行
       collapse: Lockr.get('sideBarCollapse') || false
     },
     navbar: {
@@ -23,8 +23,12 @@ const app = {
   },
 
   mutations: {
-    SET_ACTIVEINDEX: (state, path) => {
-      state.sidebar.activeIndex = path
+    SET_ACTIVEINDEX: (state, index) => {
+      let currentIndex = state.sidebar.activeIndex + index
+      if (currentIndex < 160 || currentIndex > 900) {
+        currentIndex = 160
+      }
+      state.sidebar.activeIndex = currentIndex
     },
     SET_COLLAPSE: (state, collapse) => {
       state.sidebar.collapse = collapse

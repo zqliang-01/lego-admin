@@ -3,6 +3,7 @@ package com.lego.doc.entity;
 import com.lego.core.data.TreeEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import com.lego.doc.entity.simpletype.DocNodeType;
 import com.lego.doc.vo.DocNodeTypeCode;
 import lombok.Getter;
@@ -20,7 +21,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.Date;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -61,7 +61,7 @@ public abstract class DocNode extends TreeEntity<DocNode> {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("名称", StringUtil.toString(name));
         attributes.put("是否生效", enable ? "是" : "否");

@@ -73,7 +73,7 @@ export default {
     field: {
       handler() {
         if ([
-          'floatnumber',
+          'float',
           'percent'
         ].includes(this.field.formType)) {
           this.checked = !isEmpty(this.field.precisions)

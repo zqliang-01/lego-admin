@@ -6,7 +6,6 @@ import com.lego.core.util.StringUtil;
 import com.lego.crm.dao.ICrmCustomerDao;
 import com.lego.crm.entity.CrmCustomer;
 import com.lego.crm.vo.CrmCustomerModifyVO;
-import com.lego.crm.entity.CrmDictionary;
 
 public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCustomerDao> {
 
@@ -31,6 +30,6 @@ public class ModifyCrmCustomerAction extends ModifyAction<CrmCustomer, ICrmCusto
         entity.setMobile(vo.getMobile());
         entity.setWebsite(vo.getWebsite());
         entity.setEmail(vo.getEmail());
-        entity.setType(findByCode(CrmDictionary.class, vo.getType()));
+        entity.setType(vo.getType());
     }
 }

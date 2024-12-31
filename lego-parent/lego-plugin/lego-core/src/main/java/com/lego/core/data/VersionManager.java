@@ -8,7 +8,7 @@ import cn.hutool.core.util.ZipUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.lego.core.common.Constants;
-import com.lego.core.common.ExceptionEnum;
+import com.lego.core.enums.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.StringUtil;

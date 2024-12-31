@@ -3,7 +3,7 @@ package com.lego.system.action;
 import com.lego.core.action.AddAction;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
-import com.lego.core.vo.SysMessageCreateVO;
+import com.lego.core.vo.MessageCreateVO;
 import com.lego.system.dao.ISysMessageDao;
 import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysEmployee;
@@ -13,9 +13,9 @@ import com.lego.system.vo.SysPermissionCode;
 
 public class AddSysMessageAction extends AddAction<SysMessage, ISysMessageDao> {
 
-    private SysMessageCreateVO vo;
+    private MessageCreateVO vo;
 
-    public AddSysMessageAction(String operatorCode, SysMessageCreateVO vo) {
+    public AddSysMessageAction(String operatorCode, MessageCreateVO vo) {
         super(SysPermissionCode.manage, operatorCode);
         this.vo = vo;
     }

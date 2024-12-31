@@ -2,7 +2,7 @@ package com.lego.core.exception;
 
 import java.text.MessageFormat;
 
-import com.lego.core.common.ExceptionEnum;
+import com.lego.core.enums.ExceptionEnum;
 
 public class BusinessException extends RuntimeException {
     private static final long serialVersionUID = -4175159377328726294L;

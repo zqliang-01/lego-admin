@@ -3,7 +3,7 @@ package com.lego.sharding.entity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;

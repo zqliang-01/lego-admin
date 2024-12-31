@@ -59,10 +59,11 @@ export function genTableModifyAPI(data) {
   })
 }
 
-export function genTableSyncAPI(code) {
+export function genTableSyncAPI(code, data) {
   return request({
     url: `/back-end/sys-gen-table/sync/${code}`,
     method: 'post',
+    data: data,
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
     }

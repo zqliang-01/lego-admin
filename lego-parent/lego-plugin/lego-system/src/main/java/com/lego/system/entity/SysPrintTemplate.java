@@ -1,8 +1,9 @@
 package com.lego.system.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -39,7 +39,7 @@ public class SysPrintTemplate extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", getCode());
         attributes.put("名称", getName());
         String md5Str = "";

@@ -10,7 +10,8 @@
   </div>
 </template>
 <script>
-import data from '@/utils/icon-data.js'
+import data from '@/utils/data/icon-data'
+
 export default {
   name: 'IconList',
   data() {

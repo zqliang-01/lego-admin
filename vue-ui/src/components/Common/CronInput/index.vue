@@ -18,7 +18,7 @@ export default {
     Cron
   },
   props: {
-    cronValue: {
+    value: {
       type: String,
       default: DEFAULT_CRON_EXPRESSION
     },
@@ -26,17 +26,14 @@ export default {
   },
   data() {
     return {
-      cron_: '',
+      cron_: this.value,
       visible: false
     }
   },
   watch: {
-    cronValue(val) {
+    value(val) {
       this.setCron(val)
     }
-  },
-  created() {
-    this.setCron(this.cronValue)
   },
   methods: {
     setCron(newValue) {
@@ -48,10 +45,10 @@ export default {
     },
     change(cron) {
       this.cron_ = cron
-      this.$emit('change', this.cron_)
+      this.$emit('input', this.cron_)
     },
     reset() {
-      this.$emit('reset', this.cronValue)
+      this.$emit('reset', this.value)
     }
   }
 }

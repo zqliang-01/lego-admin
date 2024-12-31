@@ -53,7 +53,7 @@ export default {
     },
     filterFieldList() {
       return this.fieldList.filter(field => {
-        return !['picture', 'handwriting_sign'].includes(field.formType)
+        return !['picture'].includes(field.formType)
       })
     }
   },

@@ -3,6 +3,7 @@
     :activate="activate"
     :field="field"
     :control-flag="controlFlag"
+    :show-border="showBorder"
     @click="emitClick"
     @action="handleAction">
 

@@ -16,7 +16,7 @@ public class CrmLeadAssembler extends BusAssembler<CrmLeadInfo, CrmLead> {
     	info.setName(entity.getName());
     	info.setMobile(entity.getMobile());
     	info.setAmount(entity.getAmount());
-    	info.setBrithday(entity.getBrithday());
+    	info.setBirthday(entity.getBirthday());
     	info.setAddress(entity.getAddress());
     	info.setAge(entity.getAge());
     	info.setSize(entity.getSize());
@@ -24,7 +24,7 @@ public class CrmLeadAssembler extends BusAssembler<CrmLeadInfo, CrmLead> {
     	info.setEmail(entity.getEmail());
     	info.setEmployee(createEmployee(entity.getEmployee()));
     	info.setDept(createDept(entity.getDept()));
-    	info.setSource(createTypeInfo(entity.getSource()));
+    	info.setSource(createDict(entity.getSource()));
     	info.setCustomer(createTypeInfo(entity.getCustomer()));
         return info;
     }

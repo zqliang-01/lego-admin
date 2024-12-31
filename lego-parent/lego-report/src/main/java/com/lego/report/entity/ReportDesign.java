@@ -1,7 +1,8 @@
 package com.lego.report.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Setter
 @Getter
@@ -47,7 +47,7 @@ public class ReportDesign extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("姓名", StringUtil.toString(name));
         attributes.put("序列", StringUtil.toString(sn));

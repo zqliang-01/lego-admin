@@ -1,19 +1,17 @@
 package com.lego.sharding.entity;
 
-import java.util.Map;
+import com.lego.core.data.hibernate.entity.BaseEntity;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.util.EntityUtil;
-import com.lego.core.util.StringUtil;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Setter
 @Getter
@@ -36,7 +34,7 @@ public class ShardingTemplate extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("名称", StringUtil.toString(name));
         attributes.put("状态", enable ? "是" : "否");

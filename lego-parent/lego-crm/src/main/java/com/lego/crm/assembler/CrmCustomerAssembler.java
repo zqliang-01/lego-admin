@@ -17,7 +17,7 @@ public class CrmCustomerAssembler extends BusAssembler<CrmCustomerInfo, CrmCusto
     	info.setMobile(entity.getMobile());
     	info.setWebsite(entity.getWebsite());
     	info.setEmail(entity.getEmail());
-    	info.setType(createTypeInfo(entity.getType()));
+    	info.setType(createDict(entity.getType()));
         return info;
     }
 }

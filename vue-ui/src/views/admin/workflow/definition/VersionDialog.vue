@@ -107,7 +107,7 @@ export default {
         { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true, xAxis: 0, yAxis: 1 },
         { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true, xAxis: 1, yAxis: 0 },
         { fieldCode: 'version', name: '版本', formType: 'text', width: '50', required: true, editable: false },
-        { fieldCode: 'active', name: '是否激活', formType: 'boolean_value', width: '100', editable: false }
+        { fieldCode: 'active', name: '是否激活', formType: 'boolean', width: '100', editable: false }
       ]
     }
   },

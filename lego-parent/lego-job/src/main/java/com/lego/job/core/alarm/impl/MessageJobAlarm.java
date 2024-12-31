@@ -3,8 +3,8 @@ package com.lego.job.core.alarm.impl;
 import com.lego.core.common.Constants;
 import com.lego.core.data.ICommonService;
 import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.vo.SysMessageCreateVO;
-import com.lego.core.vo.SysMessageTypeEnum;
+import com.lego.core.vo.MessageCreateVO;
+import com.lego.core.enums.MessageTypeEnum;
 import com.lego.job.core.alarm.JobAlarm;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.model.XxlJobGroup;
@@ -42,11 +42,11 @@ public class MessageJobAlarm implements JobAlarm {
                 info.getJobDesc(),
                 alarmContent);
 
-            SysMessageCreateVO messageVO = new SysMessageCreateVO();
+            MessageCreateVO messageVO = new MessageCreateVO();
             messageVO.setRecipient(info.getAuthor());
             messageVO.setCreator(Constants.ADMIN_EMPLOYEE_CODE);
             messageVO.setName("任务调度中心监控报警，《" + group.getTitle() + "》执行任务《" + info.getJobDesc() + "》异常");
-            messageVO.setType(SysMessageTypeEnum.FORM.getCode());
+            messageVO.setType(MessageTypeEnum.FORM.getCode());
             messageVO.setContent(content);
             commonService.addSysMessage(messageVO);
         }

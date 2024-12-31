@@ -3,7 +3,7 @@ package com.lego.core.feign.api;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.JsonResponse;
-import com.lego.core.vo.SysMessageCreateVO;
+import com.lego.core.vo.MessageCreateVO;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,8 +26,11 @@ public interface ISystemAPI {
     @GetMapping("/back-end/sys-common/get-dept-simple/{code}")
     JsonResponse<TypeInfo> findDeptBy(@PathVariable String code);
 
+    @GetMapping("/back-end/sys-common/get-dictionary-simple/{code}")
+    JsonResponse<TypeInfo> findDictionaryBy(@PathVariable String code);
+
     @PostMapping("/back-end/sys-common/add-message")
-    JsonResponse<Object> addSysMessage(@RequestBody SysMessageCreateVO vo);
+    JsonResponse<Object> addSysMessage(@RequestBody MessageCreateVO vo);
 
     @GetMapping("/back-end/sys-common/get-relate-code/{permissionCode}")
     JsonResponse<String> findRelateCodeBy(@PathVariable String permissionCode);

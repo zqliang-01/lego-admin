@@ -24,6 +24,8 @@ public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}
 #foreach ($column in $columns)
     #if($column.required && $column.javaFieldType == 'BigDecimal')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
+    #elseif($column.required && $column.formType == 'address')
+    	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
     #elseif($column.required && $column.javaFieldType == 'Date')
     	BusinessException.check(vo.get${column.firstUpperField}() != null, "${column.comment}不能为空，${FunctionName}新增失败！");
     #elseif($column.required && $column.javaFieldType == 'int')
@@ -55,7 +57,7 @@ public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}
     protected ${ClassName} createTargetEntity() {
         ${ClassName} entity = new ${ClassName}(vo.getCode(), vo.getName());
 #foreach ($column in $columns)
-    #if($column.formType == 'boolean_value')
+    #if($column.formType == 'boolean')
         entity.set${column.firstUpperField}(vo.is${column.firstUpperField}());
     #elseif($column.entityType && $column.required)
         entity.set${column.firstUpperField}(findByCode(${column.className}.class, vo.get${column.firstUpperField}()));

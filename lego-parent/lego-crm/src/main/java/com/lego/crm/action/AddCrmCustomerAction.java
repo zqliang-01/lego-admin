@@ -5,7 +5,6 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.crm.dao.ICrmCustomerDao;
 import com.lego.crm.entity.CrmCustomer;
-import com.lego.crm.entity.CrmDictionary;
 import com.lego.crm.vo.CrmCustomerCreateVO;
 
 public class AddCrmCustomerAction extends AddAction<CrmCustomer, ICrmCustomerDao> {
@@ -31,7 +30,7 @@ public class AddCrmCustomerAction extends AddAction<CrmCustomer, ICrmCustomerDao
         entity.setMobile(vo.getMobile());
         entity.setWebsite(vo.getWebsite());
         entity.setEmail(vo.getEmail());
-        entity.setType(findByCode(CrmDictionary.class, vo.getType()));
+        entity.setType(vo.getType());
         return entity;
     }
 }

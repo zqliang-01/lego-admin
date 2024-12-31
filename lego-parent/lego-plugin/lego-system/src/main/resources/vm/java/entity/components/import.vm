@@ -1,0 +1,26 @@
+#foreach ($import in $BaseImportList)
+import ${import};
+#end
+
+#foreach ($import in $HibernateImportList)
+import ${import};
+#end
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import com.lego.core.data.hibernate.entity.BusEntity;
+#if($Property.hasPublic)
+import com.lego.core.enums.PublicTypeEnum;
+#end
+#foreach ($import in $EntityImportList)
+import ${import};
+#end
+#foreach ($import in $UtilImportList)
+import ${import};
+#end
+import com.lego.core.vo.ReadableVO;
+import com.lego.core.util.StringUtil;
+
+import lombok.Getter;
+import lombok.Setter;

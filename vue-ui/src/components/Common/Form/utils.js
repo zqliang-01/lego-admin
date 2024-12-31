@@ -1,13 +1,14 @@
 import { isArray, isObject, isEmpty } from '@/utils/types'
 import { separator } from '@/filters/vueNumeralFilter/filters'
 import { objDeepCopy } from '@/utils'
+import { getDisplay } from '@/utils/address'
 import { Message } from 'element-ui'
 
 /**
  * 获取自定义字段展示值
  */
 export function getFormFieldShowValue(formType, value, placeholder = '--') {
-  if (formType === 'floatnumber') {
+  if (formType === 'float') {
     return isEmpty(value) ? placeholder : separator(value)
   } else if (formType === 'date') {
     return isEmpty(value) ? placeholder : getDateTime(value)
@@ -18,7 +19,7 @@ export function getFormFieldShowValue(formType, value, placeholder = '--') {
       return isEmpty(value) ? placeholder : value.name
     }
     return isEmpty(value) ? placeholder : value
-  } else if (['checkbox', 'multiple_user', 'multiple_structure'].includes(formType)) {
+  } else if (['checkbox', 'multipleUser', 'multipleStructure'].includes(formType)) {
     return isArray(value) ? value.map(item => item.name).join() : placeholder
   }
   return isEmpty(value) ? placeholder : value
@@ -33,7 +34,7 @@ export function getConditionShowValue(item, placeholder = '--') {
   if (isEmpty(value)) {
     return placeholder
   }
-  if (formType === 'floatnumber') {
+  if (formType === 'float') {
     return separator(value)
   } else if (formType === 'date') {
     return getDateTime(value)
@@ -56,6 +57,8 @@ export function getConditionShowValue(item, placeholder = '--') {
     }
     const name = item.setting.find(item => item.code === value).name
     return isEmpty(name) ? placeholder : name
+  } else if (formType === 'address') {
+    return getDisplay(value)
   }
   return value
 }
@@ -80,7 +83,7 @@ function getTreeValue(trees, value) {
  */
 export function getFormFieldValue(item, isDefault = false) {
   const value = isDefault ? objDeepCopy(item.defaultValue) : objDeepCopy(item.value)
-  if (['checkbox', 'multiple_user', 'multiple_structure'].includes(item.formType)) {
+  if (['checkbox', 'multipleUser', 'multipleStructure'].includes(item.formType)) {
     if (isEmpty(value)) {
       return []
     }

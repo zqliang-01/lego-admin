@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-import com.lego.core.common.FileLocationEnum;
+import com.lego.core.enums.FileLocationEnum;
 
 import lombok.Data;
 

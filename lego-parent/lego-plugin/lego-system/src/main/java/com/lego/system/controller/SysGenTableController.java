@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -98,9 +99,10 @@ public class SysGenTableController extends BaseController {
 
     @PostMapping("/sync/{code}")
     @SaCheckPermission("manage_genTable_sync")
-    public JsonResponse<Object> sync(@PathVariable String code) {
+    public JsonResponse<Object> sync(@PathVariable String code, @RequestBody List<String> data) {
         SysGenTableInfo table = tableService.findByCode(code);
         List<MetaTableColumnInfo> tableColumns = columnService.findMetaColumnBy(table.getDataSource(), code);
+        tableColumns = tableColumns.stream().filter(column -> data.contains(column.getColumnName())).collect(Collectors.toList());
         tableService.sync(getLoginCode(), code, tableColumns);
         return JsonResponse.success();
     }

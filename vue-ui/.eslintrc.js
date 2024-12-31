@@ -30,10 +30,10 @@ module.exports = {
     'vue/require-valid-default-prop': 'off',
     'no-prototype-builtins': 'off',
     'linebreak-style': 0,
-    "vue/html-closing-bracket-newline": [
-      "off"
+    'vue/html-closing-bracket-newline': [
+      'off'
     ],
-    "vue/name-property-casing": ["error", "PascalCase"],
+    'vue/name-property-casing': ['error', 'PascalCase'],
     'vue/no-v-html': 0,
     'vue/require-default-prop': 0,
     'accessor-pairs': 2,

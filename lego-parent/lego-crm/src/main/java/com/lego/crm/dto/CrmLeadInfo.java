@@ -5,9 +5,8 @@ import java.util.Date;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.lego.core.util.DateUtil;
-import com.lego.core.common.BooleanConverter;
-import com.lego.core.common.TypeInfoConverter;
+import com.lego.core.gen.converter.BooleanConverter;
+import com.lego.core.gen.converter.TypeInfoConverter;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.dto.BusDTO;
 
@@ -29,14 +28,14 @@ public class CrmLeadInfo extends BusDTO {
     @ExcelProperty(value = "金额")
     private BigDecimal amount;
     @ExcelProperty(value = "生日")
-    @DateTimeFormat(DateUtil.datePattern)
-    private Date brithday;
+    @DateTimeFormat("yyyy-MM-dd")
+    private Date birthday;
     @ExcelProperty(value = "地址")
     private String address;
     @ExcelProperty(value = "年龄")
     private int age;
     @ExcelProperty(value = "百分数")
-    private String size;
+    private BigDecimal size;
     @ExcelProperty(value = "状态", converter = BooleanConverter.class)
     private boolean status;
     @ExcelProperty(value = "邮箱")

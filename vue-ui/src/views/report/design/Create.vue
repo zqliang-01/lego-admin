@@ -113,7 +113,7 @@ export default {
             { fieldCode: 'name', name: '名称', formType: 'text', required: true },
             { fieldCode: 'definition', name: '报表定义', formType: 'select', required: true, clearable: true, setting: this.definitionList },
             { fieldCode: 'sn', name: '序号', formType: 'number', required: true },
-            { fieldCode: 'enable', name: '是否生效', formType: 'boolean_value' }
+            { fieldCode: 'enable', name: '是否生效', formType: 'boolean' }
           ]
         ]
       }
@@ -125,7 +125,7 @@ export default {
           { fieldCode: 'dataCategories', name: '数据值字段', formType: 'checkbox', required: true, setting: this.definitionTitleList },
           { fieldCode: 'dataDimension', name: '维度字段', formType: 'select', required: true, setting: this.definitionTitleList },
           { fieldCode: 'sn', name: '序号', formType: 'number', required: true },
-          { fieldCode: 'enable', name: '是否生效', formType: 'boolean_value' }
+          { fieldCode: 'enable', name: '是否生效', formType: 'boolean' }
         ]
       ]
     },

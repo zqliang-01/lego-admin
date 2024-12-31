@@ -1,7 +1,7 @@
 <template>
   <div
     :style="{width: fieldWidth}"
-    :class="{activate: activate}"
+    :class="{activate: activate, 'border': showBorder }"
     class="field-item"
     @click.stop="emitClick">
     <div v-if="!hiddenTitle" class="field-item_title">
@@ -48,13 +48,17 @@
           v-if="controlFlag.copy"
           class="control-copy control-btn"
           @click.stop="handleControl('copy', $event)">
-          <i :class="'associated' | iconPre" />
+          <el-tooltip content="复制">
+            <i :class="'associated' | iconPre" />
+          </el-tooltip>
         </div>
         <div
           v-if="controlFlag.delete"
           class="control-delete control-btn"
           @click.stop="handleControl('delete', $event)">
-          <i :class="'s-delete' | iconPre" />
+          <el-tooltip content="删除">
+            <i :class="'s-delete' | iconPre" />
+          </el-tooltip>
         </div>
       </div>
     </template>
@@ -87,6 +91,10 @@ export default {
       }
     },
     hiddenTitle: {
+      type: Boolean,
+      default: false
+    },
+    showBorder: {
       type: Boolean,
       default: false
     }
@@ -122,10 +130,13 @@ export default {
 <style scoped lang="scss">
 .field-item {
   position: relative;
-  //border-left: 2px solid transparent;
   padding: 0 10px 20px;
   background-color: white;
   cursor: move;
+
+  &.border {
+    border: 1px dashed #d9d9d9;
+  }
 
   &.activate {
     //border-left: 2px solid $xr-color-primary;

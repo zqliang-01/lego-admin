@@ -2,9 +2,10 @@ package com.lego.system.entity;
 
 import com.lego.core.common.Constants;
 import com.lego.core.data.IdGenerator;
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import com.lego.system.vo.DataScopeType;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +23,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Getter
 @Entity
@@ -70,7 +70,7 @@ public class SysEmployee extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("工号", getCode());
         attributes.put("姓名", getName());
         attributes.put("密码", getPassword());

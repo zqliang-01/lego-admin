@@ -2,7 +2,7 @@ package com.lego.gateway.handler;
 
 import cn.dev33.satoken.exception.InvalidContextException;
 import cn.dev33.satoken.exception.NotLoginException;
-import com.lego.core.common.ExceptionEnum;
+import com.lego.core.enums.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.JsonResponse;

@@ -91,7 +91,7 @@ export default {
         [
           { fieldCode: 'deploymentTime', name: '发布时间', formType: 'text', width: '150', editable: false },
           { fieldCode: 'version', name: '版本', formType: 'text', width: '100', editable: false },
-          { fieldCode: 'active', name: '是否激活', formType: 'boolean_value', width: '100', editable: false }
+          { fieldCode: 'active', name: '是否激活', formType: 'boolean', width: '100', editable: false }
         ]
       ]
     }

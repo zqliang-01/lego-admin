@@ -39,7 +39,7 @@ module.exports = defineConfig({
       }
     }
   },
-  
+
   chainWebpack(config) {
     config.module.rule('svg').exclude.add(resolve('src/components/Bpmn/bpmn-icons')).end()
     config.module

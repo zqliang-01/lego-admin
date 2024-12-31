@@ -1,7 +1,7 @@
 package com.lego.core.action;
 
 import com.lego.core.data.ActionType;
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.data.hibernate.IGenericDao;
 import com.lego.core.exception.BusinessException;
 

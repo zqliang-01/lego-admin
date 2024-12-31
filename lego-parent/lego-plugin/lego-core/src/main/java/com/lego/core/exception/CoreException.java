@@ -1,6 +1,6 @@
 package com.lego.core.exception;
 
-import com.lego.core.common.ExceptionEnum;
+import com.lego.core.enums.ExceptionEnum;
 
 import java.text.MessageFormat;
 

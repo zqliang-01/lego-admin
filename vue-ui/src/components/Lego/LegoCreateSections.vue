@@ -6,7 +6,10 @@
       <div
         :style="{ 'border-left-color': mColor }"
         class="section-mark"/>
-      <div class="section-title">{{ title }}</div>
+      <div class="section-title">
+        {{ title }}
+        <slot name="tips"/>
+      </div>
       <el-dropdown
         v-if="dropdownItems && dropdownItems.length > 0"
         class="lego-create-sections__more"

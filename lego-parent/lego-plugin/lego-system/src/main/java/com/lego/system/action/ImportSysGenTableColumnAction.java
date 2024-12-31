@@ -2,11 +2,11 @@ package com.lego.system.action;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.action.MaintainAction;
-import com.lego.core.common.GenConstants;
 import com.lego.core.data.ActionType;
 import com.lego.core.data.mybatis.mapper.MetaTableMapper;
 import com.lego.core.dto.MetaTableColumnInfo;
 import com.lego.core.exception.BusinessException;
+import com.lego.core.gen.GenConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
 import com.lego.system.dao.ISysGenTableColumnDao;
@@ -43,13 +43,16 @@ public class ImportSysGenTableColumnAction extends MaintainAction {
             if (GenConstants.COLUMNNAME_IGNORE_GEN.contains(tableColumn.getColumnName().toLowerCase())) {
                 continue;
             }
-            new AddSysGenTableColumnAction(operatorCode, tableCode, tableColumn).run();
+            new AddSysGenTableColumnInitAction(operatorCode, tableCode, tableColumn).run();
         }
         this.description = MessageFormat.format("初始化数据表[{0}]字段", tableCode);
     }
 
     private void deleteColumns() {
         List<SysGenTableColumn> columns = columnDao.findBy(tableCode);
+        for (SysGenTableColumn column : columns) {
+            column.removeAttribute();
+        }
         columnDao.deleteAllInBatch(columns);
     }
 

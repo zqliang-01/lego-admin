@@ -4,7 +4,7 @@
     :key="index"
     :prop="`${propPrefix || ''}${item.fieldCode}`"
     :rules="item.rules"
-    :class="[item.className || '', `is-${item.formType}`]"
+    :class="[item.className || '']"
     :style="{width: item.stylePercent ? `${item.stylePercent}%` : '50%'}"
     class="form-item">
     <template v-if="!item.simpleType" slot="label">
@@ -25,8 +25,7 @@
       :index="index"
       :field-form="fieldForm"
       :disabled="disabled"
-      @change="fieldChange"
-    >
+      @change="fieldChange">
       <template slot-scope="{ data, index }">
         <slot :data="data" :index="index" />
       </template>
@@ -87,12 +86,6 @@ export default {
     position: relative;
     top: auto;
     left: auto;
-  }
-
-  .el-form-item.is-desc_text {
-    .el-form-item__label {
-      display: none;
-    }
   }
 }
 </style>

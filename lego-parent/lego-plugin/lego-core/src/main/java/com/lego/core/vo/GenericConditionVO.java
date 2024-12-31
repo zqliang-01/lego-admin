@@ -1,19 +1,18 @@
 package com.lego.core.vo;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.lego.core.util.StringUtil;
-
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
-@Setter
 public class GenericConditionVO extends PageVO {
 
 	private static final long serialVersionUID = 1L;
 
+	@Setter
 	private String orderType;
 	private List<GenericConditionItemVO> items = new ArrayList<GenericConditionItemVO>();
 
@@ -32,6 +31,12 @@ public class GenericConditionVO extends PageVO {
 		this.setPageIndex(pageVO.getPageIndex());
 	}
 
+	public GenericConditionVO addItem(List<GenericConditionItemVO> items) {
+		for (GenericConditionItemVO item : items) {
+			addItem(item);
+		}
+		return this;
+	}
 	public GenericConditionVO addItem(GenericConditionItemVO item) {
 		boolean containItem = items.stream().anyMatch(c -> StringUtil.equals(c.getKey(), item.getKey()));
 		if (containItem) {

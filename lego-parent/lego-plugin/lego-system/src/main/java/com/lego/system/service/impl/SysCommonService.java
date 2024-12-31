@@ -6,14 +6,16 @@ import com.lego.core.data.ICommonService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.vo.ActionVO;
-import com.lego.core.vo.SysMessageCreateVO;
+import com.lego.core.vo.MessageCreateVO;
 import com.lego.system.action.AddSysMessageAction;
 import com.lego.system.dao.ISysDeptDao;
+import com.lego.system.dao.ISysDictionaryDao;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.dao.ISysGenTableDao;
 import com.lego.system.dao.ISysOperationLogDao;
 import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.entity.SysDept;
+import com.lego.system.entity.SysDictionary;
 import com.lego.system.entity.SysEmployee;
 import com.lego.system.entity.SysOperationLog;
 import com.lego.system.entity.SysPermission;
@@ -39,6 +41,9 @@ public class SysCommonService implements ICommonService {
 
     @Resource
     private ISysDeptDao deptDao;
+
+    @Resource
+    private ISysDictionaryDao dictionaryDao;
 
     @Resource
     private ISysPermissionDao permissionDao;
@@ -79,7 +84,13 @@ public class SysCommonService implements ICommonService {
     }
 
     @Override
-    public void addSysMessage(SysMessageCreateVO vo) {
+    public TypeInfo findDictBy(String code) {
+        SysDictionary dictionary = dictionaryDao.findByCode(code);
+        return EntityUtil.toTypeInfo(dictionary);
+    }
+
+    @Override
+    public void addSysMessage(MessageCreateVO vo) {
         new AddSysMessageAction(vo.getCreator(), vo).run();
     }
 

@@ -1,6 +1,6 @@
 package com.lego.core.assembler;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.dto.VersionDTO;

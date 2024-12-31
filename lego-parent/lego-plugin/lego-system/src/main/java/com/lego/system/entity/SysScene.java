@@ -1,18 +1,16 @@
 package com.lego.system.entity;
 
-import java.util.Map;
+import com.lego.core.data.hibernate.entity.BaseEntity;
+import com.lego.core.util.EntityUtil;
+import com.lego.core.vo.ReadableVO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.util.EntityUtil;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -40,7 +38,7 @@ public class SysScene extends BaseEntity {
 	}
 
 	@Override
-	protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+	protected void doBuildReadableSnapshot(ReadableVO attributes) {
 		attributes.put("编码", getCode());
 		attributes.put("名称", getName());
 		attributes.put("是否默认", current ? "是" : "否");

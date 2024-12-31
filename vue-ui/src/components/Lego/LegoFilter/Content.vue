@@ -5,7 +5,7 @@
         v-for="(item, index) in showObj.form"
         :key="index"
         class="list-item">
-        <span v-if="item.formType == 'boolean_value'">
+        <span v-if="item.formType == 'boolean'">
           {{ item.name +'&nbsp;' + getConditionName(item) }}“
           <el-switch :value="item.value" disabled/>”
         </span>

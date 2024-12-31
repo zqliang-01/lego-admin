@@ -1,8 +1,9 @@
 package com.lego.system.entity;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import com.lego.system.entity.simpletype.SysFileLocation;
 import com.lego.system.entity.simpletype.SysFileType;
 import com.lego.system.vo.SysFileTypeCode;
@@ -14,7 +15,6 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.util.Map;
 
 @Getter
 @Setter
@@ -51,7 +51,7 @@ public class SysFile extends BaseEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("名称", getName());
         attributes.put("大小", StringUtil.toString(size));
         attributes.put("路径", path);

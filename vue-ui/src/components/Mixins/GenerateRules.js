@@ -39,6 +39,31 @@ export default {
             trigger: ['blur', 'change']
           })
         }
+        if (item.formType === 'address') {
+          tempList.push({
+            validator: ({ item }, value, callback) => {
+              if (isEmpty(value.province)) {
+                callback(new Error(item.name + '省份不能为空！'))
+                return
+              }
+              if (isEmpty(value.city)) {
+                callback(new Error(item.name + '城市不能为空！'))
+                return
+              }
+              if (isEmpty(value.area)) {
+                callback(new Error(item.name + '区域不能为空！'))
+                return
+              }
+              if (isEmpty(value.detail)) {
+                callback(new Error(item.name + '详细信息不能为空！'))
+                return
+              }
+              callback()
+            },
+            item: item,
+            trigger: ['blur', 'change']
+          })
+        }
       }
 
       // 特殊类型
@@ -59,7 +84,7 @@ export default {
           item: item,
           trigger: ['blur']
         })
-      } else if (item.formType === 'floatnumber') {
+      } else if (item.formType === 'float') {
         const validateMoneyNumber = (rule, value, callback) => {
           if (item.hasOwnProperty('precisions')) {
             this._getNumberRule(rule, value, callback)

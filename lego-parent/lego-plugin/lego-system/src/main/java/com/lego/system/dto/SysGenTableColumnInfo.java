@@ -1,13 +1,14 @@
 package com.lego.system.dto;
 
-import com.lego.core.common.GenConstants;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.enums.FieldTypeEnum;
+import com.lego.core.gen.GenConstants;
 import com.lego.core.util.StringUtil;
-import com.lego.core.vo.CustomFieldTypeEnum;
-
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Map;
 
 @Getter
 @Setter
@@ -26,35 +27,27 @@ public class SysGenTableColumnInfo extends DTO {
     private boolean required;
     private boolean unique;
     private TypeInfo table;
-    private SysGenTableInfo relativeTable;
+    private TypeInfo relativeTable;
     private TypeInfo creator;
+    private Map<String, String> attributes;
 
-    public boolean isTypeInfo() {
-        CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(formType);
-        if (fieldType == null) {
-            return false;
-        }
-        return fieldType.isTypeInfo();
-    }
-
-    public boolean isEntityType() {
-        CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(formType);
-        if (fieldType == null) {
-            return false;
-        }
-        return fieldType.isEntity();
-    }
-
-    public boolean isCommonType() {
-        CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(formType);
-        if (fieldType == null) {
-            return false;
-        }
-        return fieldType.isCommon();
-    }
-
+    // 代码生成使用
     public boolean isIgnoreField() {
     	return GenConstants.COLUMNNAME_IGNORE_ENTITY.contains(name);
+    }
+
+    // 代码生成使用
+    public boolean isEntityType() {
+        return FieldTypeEnum.ENTITY.equals(formType);
+    }
+
+    // 代码生成使用
+    public boolean isTypeInfo() {
+        FieldTypeEnum fieldType = FieldTypeEnum.get(formType);
+        if (fieldType == null) {
+            return false;
+        }
+        return fieldType.isPublic() || fieldType == FieldTypeEnum.ENTITY;
     }
 
     public String getClassName() {
@@ -68,6 +61,7 @@ public class SysGenTableColumnInfo extends DTO {
         return javaFieldType.substring(pos + 1);
     }
 
+    // 代码生成使用
     public String getFirstUpperField() {
         return StringUtil.toFirstUpper(javaField);
     }

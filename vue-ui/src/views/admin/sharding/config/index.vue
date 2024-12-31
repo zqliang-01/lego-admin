@@ -87,7 +87,7 @@ export default {
         ],
         [
           { fieldCode: 'description', name: '备注', formType: 'text', width: '150' },
-          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+          { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '150' }
         ]
       ]
     }

@@ -1,7 +1,6 @@
 package com.lego.system.dto;
 
 import com.lego.core.dto.DTO;
-
 import lombok.Getter;
 import lombok.Setter;
 

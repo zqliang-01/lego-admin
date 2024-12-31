@@ -44,7 +44,7 @@ export default {
         }
       }
     },
-    value: [String, Number],
+    value: [String, Number, Object],
     // 选项列表数据(树形结构的对象数组)
     options: { type: Array, default: () => { return [] } },
     placeholder: { type: String, default: '请选择' },

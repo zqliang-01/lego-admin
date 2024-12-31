@@ -24,12 +24,13 @@ public class SysGenTableColumnAssembler extends EntityAssembler<SysGenTableColum
     info.setFormType(entity.getFormType());
     info.setJavaField(entity.getJavaField());
     info.setJavaFieldType(entity.getJavaFieldType());
+    info.setAttributes(entity.getAttributes());
     info.setName(entity.getName());
     info.setRequired(entity.isRequired());
     info.setTable(createTypeInfo(entity.getTable()));
     SysGenTable relativeTable = entity.getRelativeTable();
     if (relativeTable != null) {
-      info.setRelativeTable(tableAssembler.create(relativeTable));
+      info.setRelativeTable(createTypeInfo(relativeTable));
     }
     info.setUnique(entity.isUniqueness());
     return info;

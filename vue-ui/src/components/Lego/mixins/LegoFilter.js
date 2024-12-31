@@ -63,7 +63,7 @@ export default {
         formItem.relativeForm = field.relativeForm
         formItem.type = 'is'
         formItem.fieldForm = {}
-        if (field.formType === 'boolean_value') {
+        if (field.formType === 'boolean') {
           formItem.fieldForm = { [formItem.fieldCode]: false }
         }
         const conditions = this.getConditionByFormType(formItem.formType)

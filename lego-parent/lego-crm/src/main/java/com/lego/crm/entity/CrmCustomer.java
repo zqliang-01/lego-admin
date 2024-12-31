@@ -1,34 +1,31 @@
 package com.lego.crm.entity;
 
-import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.lego.core.data.hibernate.BusEntity;
-import com.lego.crm.entity.CrmDictionary;
-import com.lego.core.util.EntityUtil;
+import com.lego.core.data.hibernate.entity.BusEntity;
+import com.lego.core.enums.PublicTypeEnum;
+import com.lego.core.vo.ReadableVO;
 import com.lego.core.util.StringUtil;
 
 import lombok.Getter;
 import lombok.Setter;
-
 @Setter
 @Getter
 @Entity
 @Table(name = "crm_customer")
 public class CrmCustomer extends BusEntity {
 
+    @Column(name = "mobile")
     private String mobile;
+    @Column(name = "website")
     private String website;
+    @Column(name = "email")
     private String email;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "type_id")
-    private CrmDictionary type;
+    @Column(name = "type")
+    private String type;
 
     protected CrmCustomer() { }
 
@@ -37,12 +34,12 @@ public class CrmCustomer extends BusEntity {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", StringUtil.toString(code));
         attributes.put("名称", StringUtil.toString(name));
         attributes.put("手机号", StringUtil.toString(mobile));
         attributes.put("网址", StringUtil.toString(website));
         attributes.put("邮箱", StringUtil.toString(email));
-        attributes.put("类型", EntityUtil.toString(type));
+        attributes.put("类型", StringUtil.toString(type), PublicTypeEnum.DICTIONARY);
     }
 }

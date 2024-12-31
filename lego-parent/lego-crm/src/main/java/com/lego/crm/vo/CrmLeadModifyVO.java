@@ -18,10 +18,10 @@ public class CrmLeadModifyVO extends ModifyVO {
     private String name;
     private String mobile;
     private BigDecimal amount;
-    private Date brithday;
+    private Date birthday;
     private String address;
     private int age;
-    private String size;
+    private BigDecimal size;
     private boolean status;
     private String email;
     private String employee;

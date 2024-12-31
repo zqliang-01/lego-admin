@@ -3,6 +3,7 @@ package com.lego.system.entity;
 import com.lego.core.data.TreeEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Setter
@@ -42,7 +42,7 @@ public class SysDept extends TreeEntity<SysDept> {
     }
 
     @Override
-    protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+    protected void doBuildReadableSnapshot(ReadableVO attributes) {
         attributes.put("编码", getCode());
         attributes.put("名称", getName());
         attributes.put("上级部门", EntityUtil.toString(getParent()));

@@ -1,6 +1,6 @@
 package com.lego.core.assembler;
 
-import com.lego.core.data.hibernate.BusEntity;
+import com.lego.core.data.hibernate.entity.BusEntity;
 import com.lego.core.dto.BusDTO;
 
 public abstract class BusAssembler<D extends BusDTO, E extends BusEntity> extends EntityAssembler<D, E> {

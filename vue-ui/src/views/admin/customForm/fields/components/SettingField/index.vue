@@ -79,13 +79,8 @@
                 </el-radio-button>
               </el-radio-group>
             </div>
-            <setting-options
-              v-if="dataResourceRadio == 'custom'"
-              :field="field"/>
-            <setting-dict-type
-              v-if="dataResourceRadio == 'dict'"
-              :app-code="appCode"
-              :field="field" />
+            <setting-options v-if="dataResourceRadio == 'custom'" :field="field"/>
+            <setting-dict-type v-if="dataResourceRadio == 'dict'" :field="field" />
           </div>
         </template>
 
@@ -111,9 +106,7 @@
               <i :class="'help lego-help-tips' | iconPre" style="margin-left: 3px;"/>
             </el-tooltip>
           </div>
-          <setting-default
-            :field="field"
-            :app-code="appCode" />
+          <setting-default :field="field"/>
         </div>
 
         <div v-if="canNumber || canFloat" class="item-section">
@@ -173,12 +166,10 @@
 
 <script>
 import SettingDefault from './SettingDefault'
-import SettingOptions from './SettingOptions'
 import SettingNumber from './SettingNumber'
 import SettingFloat from './SettingFloat'
 import SettingPrecisions from './SettingPrecisions'
 import SettingDescText from './SettingDescText'
-import SettingLogicForm from './SettingLogicForm'
 import SettingDictType from './SettingDictType'
 
 import FieldTypeLib from '../../fieldTypeLib'
@@ -187,21 +178,15 @@ export default {
   name: 'FieldSetting',
   components: {
     SettingDefault,
-    SettingOptions,
     SettingNumber,
     SettingFloat,
     SettingPrecisions,
     SettingDescText,
-    SettingLogicForm,
     SettingDictType
   },
   props: {
     field: { // 要编辑的字段信息
       type: Object,
-      required: true
-    },
-    appCode: {
-      type: String,
       required: true
     },
     fieldList: { // 所有字段
@@ -242,7 +227,7 @@ export default {
       return ![
         'user',
         'structure',
-        'handwriting_sign',
+        'handwritingSign',
         'picture'
       ].includes(this.field.formType)
     },
@@ -257,14 +242,14 @@ export default {
     canNumber() {
       return [
         'number',
-        'floatnumber',
+        'float',
         'percent'
       ].includes(this.field.formType)
     },
     // 是否允许设置小数
     canFloat() {
       return [
-        'floatnumber',
+        'float',
         'percent'
       ].includes(this.field.formType)
     },
@@ -290,7 +275,7 @@ export default {
     },
     // 是否为描述文字类型
     isDescText() {
-      return this.field.formType === 'desc_text'
+      return this.field.formType === 'descText'
     }
   },
   watch: {

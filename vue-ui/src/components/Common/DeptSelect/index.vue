@@ -78,7 +78,7 @@ export default {
     LegoPopover
   },
   props: {
-    value: {
+    data: {
       type: Array,
       default: () => {
         return []
@@ -102,7 +102,7 @@ export default {
   computed: {
   },
   watch: {
-    value: {
+    data: {
       handler() {
         this.initInfo()
       },
@@ -124,10 +124,10 @@ export default {
       // 用户列表
       this.parentDeptList = []
       this.parentDeptList.push({ name: '全部' })
-      this.selectedList = this.value.map(item => {
+      this.selectedList = this.data.map(item => {
         return item
       })
-      this.resultList = this.value.map(item => {
+      this.resultList = this.data.map(item => {
         return item
       })
       this.getDeptList()
@@ -197,7 +197,7 @@ export default {
       const codes = this.resultList.map(item => {
         return item.code
       })
-      this.$emit('value-change', codes)
+      this.$emit('input', codes)
     },
     handleConfirm() {
       this.resultList = this.selectedList.map(item => {
@@ -206,7 +206,8 @@ export default {
       const codes = this.resultList.map(item => {
         return item.code
       })
-      this.$emit('value-change', codes)
+      this.$emit('input', codes)
+      this.$emit('change', codes)
     },
     // 清空按钮
     clearAll() {

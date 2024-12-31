@@ -20,7 +20,7 @@
           v-for="(item, index) in fieldList"
           :key="index"
           :prop="item.fieldCode"
-          :class="[{'is-block': isBlockShowField(item)}, `is-${item.formType}`]">
+          :class="[{'is-block': isBlockShowField(item)}]">
           <span v-if="!isBlockShowField(item)" slot="label">
             {{ item.name }}
           </span>
@@ -59,7 +59,7 @@
           v-for="(item, index) in systemFieldList"
           :key="index"
           :prop="item.fieldCode"
-          :class="[{'is-block': isBlockShowField(item)}, `is-${item.formType}`]">
+          :class="[{'is-block': isBlockShowField(item)}]">
           <span slot="label">
             {{ item.name }}
           </span>
@@ -258,7 +258,8 @@ export default {
       }
     }
 
-    &.is-desc_text {
+    &.is-block {
+      flex-basis: 100% !important;
       .el-form-item__content {
         margin-left: 0 !important;
       }
@@ -296,10 +297,6 @@ export default {
 .can-check {
   color: $xr-color-primary !important;
   cursor: pointer;
-}
-
-.is-block {
-  flex-basis: 100% !important;
 }
 
 .b-cell-b {

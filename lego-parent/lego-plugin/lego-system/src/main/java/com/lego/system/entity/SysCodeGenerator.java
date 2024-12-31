@@ -1,15 +1,13 @@
 package com.lego.system.entity;
 
-import java.util.Map;
+import com.lego.core.data.hibernate.entity.BaseEntity;
+import com.lego.core.util.StringUtil;
+import com.lego.core.vo.ReadableVO;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-
-import com.lego.core.data.hibernate.BaseEntity;
-import com.lego.core.util.StringUtil;
-
-import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 @Setter
@@ -28,7 +26,7 @@ public class SysCodeGenerator extends BaseEntity {
 	}
 
 	@Override
-	protected void doBuildReadableSnapshot(Map<String, String> attributes) {
+	protected void doBuildReadableSnapshot(ReadableVO attributes) {
 		attributes.put("名称", StringUtil.toString(name));
 		attributes.put("前缀", StringUtil.toString(prefix));
 		attributes.put("序列长度", StringUtil.toString(serialLength));

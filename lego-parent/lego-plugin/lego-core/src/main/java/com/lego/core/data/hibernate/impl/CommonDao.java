@@ -1,6 +1,6 @@
 package com.lego.core.data.hibernate.impl;
 
-import com.lego.core.data.hibernate.BaseEntity;
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.data.hibernate.ICommonDao;
 import com.lego.core.exception.CoreException;
 import org.springframework.beans.factory.InitializingBean;

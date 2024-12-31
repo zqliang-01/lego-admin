@@ -3,23 +3,16 @@
     :activate="activate"
     :field="field"
     :control-flag="controlFlag"
+    :show-border="showBorder"
     class="field-input"
     @click="emitClick"
     @action="handleAction">
-    <lego-relative-cell
-      v-if="field.formType === 'entity'"
-      :value="field.relativeForm"
-      :field-list="formFieldList"
-      search-key="name"
-      query-api="/back-end/sys-custom-form/list"
-      @value-change="entityChange(field, $event)"/>
     <flexbox
-      v-else
       align="center"
       class="box">
+      <i v-if="fieldIcon" :class="fieldIcon | iconPre" class="item-icon" />
       <span class="default-val">
-        <i v-if="fieldIcon" :class="fieldIcon | iconPre" class="item-icon" />
-        {{ typeof field.defaultValue == 'string' ? field.defaultValue : '' }}
+        {{ displayValue }}
       </span>
     </flexbox>
   </field-wrapper>
@@ -27,15 +20,13 @@
 
 <script>
 import FieldWrapper from './FieldWrapper'
-import LegoRelativeCell from '@/components/Lego/LegoRelativeCell'
 import mixins from './mixins'
 import { isEmpty } from '@/utils/types'
 
 export default {
   name: 'FieldInput',
   components: {
-    FieldWrapper,
-    LegoRelativeCell
+    FieldWrapper
   },
   mixins: [mixins],
   data() {
@@ -45,6 +36,14 @@ export default {
         { fieldCode: 'table', name: '数据表', formType: 'select', width: '150' },
         { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150' }
       ]
+    }
+  },
+  computed: {
+    displayValue() {
+      if (this.field.formType === 'entity') {
+        return this.field.relativeForm ? this.field.relativeForm.name : ''
+      }
+      return this.field.defaultValue
     }
   },
   methods: {
@@ -73,10 +72,11 @@ export default {
   .item-icon {
     display: inline-block;
     color: #999;
-    margin-right: 8px;
+    margin-right: 5px;
   }
   .default-val {
-    color: #333;
+    color: #999;
+    line-height: 14px;
   }
 }
 </style>

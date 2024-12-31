@@ -94,7 +94,7 @@ export default {
         ],
         [
           { fieldCode: 'dataSource', name: '数据源', formType: 'select', width: '150', clearable: true },
-          { fieldCode: 'enable', name: '状态', formType: 'boolean_value', width: '150' }
+          { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '150' }
         ],
         [
           { fieldCode: 'description', name: '备注', formType: 'text', width: '150' }

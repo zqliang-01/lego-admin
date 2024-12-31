@@ -2,8 +2,8 @@ package com.lego.sharding.dto;
 
 
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.lego.core.common.BooleanConverter;
 import com.lego.core.dto.DTO;
+import com.lego.core.gen.converter.BooleanConverter;
 import lombok.Getter;
 import lombok.Setter;
 

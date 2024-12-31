@@ -1,13 +1,12 @@
 package com.lego.system.util;
 
 import com.lego.core.common.Constants;
-import com.lego.core.data.hibernate.BusEntity;
 import com.lego.core.dto.TypeInfo;
+import com.lego.core.enums.FieldTypeEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import com.lego.system.dto.SysCodePreviewInfo;
 import com.lego.system.dto.SysGenTableColumnInfo;
 import com.lego.system.dto.SysGenTableInfo;
@@ -18,7 +17,6 @@ import org.apache.velocity.app.Velocity;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -35,36 +33,34 @@ public class VelocityUtil {
     }
 
     public static VelocityContext prepareContext(int startSn, SysGenTableInfo table, List<SysGenTableColumnInfo> columns) {
-        BusinessException.check(!columns.isEmpty(), "当前数据表[{0}]无数据列，请先初始化后再操作！", table.getCode());
+        BusinessException.check(!columns.isEmpty(), "当前数据表[{0}]无数据字段，请先初始化后再操作！", table.getCode());
         init();
         VelocityContext velocityContext = new VelocityContext();
-        // java类定义
         velocityContext.put("startSn", startSn);
         velocityContext.put("TableName", table.getCode());
         velocityContext.put("UrlName", table.getUrlName());
         velocityContext.put("AppCode", table.getAppCode());
+        velocityContext.put("FunctionName", table.getName());
         velocityContext.put("FieldName", table.getFieldName());
         velocityContext.put("ClassName", table.getClassName());
         velocityContext.put("PackageName", table.getPackageName());
         velocityContext.put("PermissionCode", table.getPermissionCode());
         velocityContext.put("Property", getProperty(columns));
+        velocityContext.put("Import", getImport(columns));
         velocityContext.put("BaseImportList", getBaseImportList(columns));
         velocityContext.put("UtilImportList", getUtilImportList(columns));
         velocityContext.put("EntityImportList", getEntityImportList(columns));
-
-        // vue定义
-        velocityContext.put("FunctionName", table.getName());
-        velocityContext.put("UnionKey", getUnionKey(columns));
+        velocityContext.put("HibernateImportList", getHibernateImportList(columns));
 
         columns.sort(new Comparator<SysGenTableColumnInfo>() {
             @Override
             public int compare(SysGenTableColumnInfo o1, SysGenTableColumnInfo o2) {
-                CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(o1.getFormType());
-                if (fieldType != null && fieldType.isEntity()) {
+                FieldTypeEnum fieldType = FieldTypeEnum.get(o1.getFormType());
+                if (fieldType == FieldTypeEnum.ENTITY) {
                     return 1;
                 }
-                fieldType = CustomFieldTypeEnum.get(o2.getFormType());
-                if (fieldType != null && fieldType.isEntity()) {
+                fieldType = FieldTypeEnum.get(o2.getFormType());
+                if (fieldType == FieldTypeEnum.ENTITY) {
                     return -1;
                 }
                 return o1.getSn() > o2.getSn() ? 1 : -1;
@@ -74,52 +70,49 @@ public class VelocityUtil {
         return velocityContext;
     }
 
+    private static Map<String, Set<String>> getImport(List<SysGenTableColumnInfo> columns) {
+        Map<String, Set<String>> map = new HashedMap<String, Set<String>>();
+        return map;
+    }
+
     private static Map<String, Boolean> getProperty(List<SysGenTableColumnInfo> columns) {
         Map<String, Boolean> map = new HashedMap<String, Boolean>();
         for (SysGenTableColumnInfo column : columns) {
             String formType = column.getFormType();
-            CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(formType);
+            FieldTypeEnum fieldType = FieldTypeEnum.get(formType);
             BusinessException.check(fieldType != null, "不存在的表单类型{{0}}，字段[{1}]生成失败！", formType, column.getComment());
-            if (fieldType == CustomFieldTypeEnum.BOOLEAN) {
+            if (fieldType == FieldTypeEnum.BOOLEAN) {
                 map.put("hasBoolean", true);
             }
-            if (fieldType == CustomFieldTypeEnum.ENTITY || fieldType == CustomFieldTypeEnum.SELECT) {
+            if (fieldType == FieldTypeEnum.ENTITY) {
                 map.put("hasEntity", true);
             }
-            if (fieldType.getType().isAssignableFrom(Date.class)) {
+            if (fieldType == FieldTypeEnum.ADDRESS) {
+                map.put("hasAddress", true);
+            }
+            if (fieldType.isDate()) {
                 map.put("hasDate", true);
             }
-            if (fieldType.isCommon()) {
-                map.put("hasCommon", true);
+            if (fieldType.isPublic()) {
+                map.put("hasPublic", true);
+            }
+            if (column.isTypeInfo()) {
+                map.put("hasTypeInfo", true);
             }
         }
         return map;
-    }
-
-    private static String getUnionKey(List<SysGenTableColumnInfo> columns) {
-        for (SysGenTableColumnInfo column : columns) {
-            if (column.isUnique()) {
-                return column.getJavaField();
-            }
-        }
-        return columns.get(0).getJavaField();
     }
 
     private static Set<String> getBaseImportList(List<SysGenTableColumnInfo> columns) {
         Set<String> list = new HashSet<String>();
         for (SysGenTableColumnInfo column : columns) {
             String formType = column.getFormType();
-            CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(formType);
+            FieldTypeEnum fieldType = FieldTypeEnum.get(formType);
             BusinessException.check(fieldType != null, "不存在的表单类型{{0}}，字段[{1}]生成失败！", formType, column.getComment());
-
-            if (fieldType.getType().isAssignableFrom(BusEntity.class)) {
-                continue;
+            String packageName = fieldType.getTypePackageName();
+            if (StringUtil.isNotBlank(packageName)) {
+                list.add(packageName);
             }
-            Class<?> fieldClass = fieldType.getType();
-            if (fieldClass.isPrimitive() || fieldClass.isAssignableFrom(String.class)) {
-                continue;
-            }
-            list.add(fieldClass.getName());
         }
         return list;
     }
@@ -128,13 +121,12 @@ public class VelocityUtil {
         Set<String> list = new HashSet<String>();
         for (SysGenTableColumnInfo column : columns) {
             String formType = column.getFormType();
-            CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(formType);
+            FieldTypeEnum fieldType = FieldTypeEnum.get(formType);
             BusinessException.check(fieldType != null, "不存在的表单类型{{0}}，字段[{1}]生成失败！", formType, column.getComment());
-
-            if (fieldType.getType().isAssignableFrom(Date.class)) {
+            if (fieldType.isDate()) {
                 list.add(DateUtil.class.getName());
             }
-            if (column.isEntityType()) {
+            if (fieldType == FieldTypeEnum.ENTITY) {
                 list.add(EntityUtil.class.getName());
             }
         }
@@ -145,10 +137,28 @@ public class VelocityUtil {
         Set<String> list = new HashSet<String>();
         for (SysGenTableColumnInfo column : columns) {
             String formType = column.getFormType();
-            CustomFieldTypeEnum fieldType = CustomFieldTypeEnum.get(formType);
-            BusinessException.check(fieldType != null, "不存在的表单类型{{0}}，字段[{1}]生成失败！", formType, column.getComment());
-            if (fieldType.isEntity()) {
+            FieldTypeEnum fieldType = FieldTypeEnum.get(formType);
+            if (fieldType == FieldTypeEnum.ENTITY) {
                 list.add(column.getJavaFieldType());
+            }
+        }
+        return list;
+    }
+
+    private static Set<String> getHibernateImportList(List<SysGenTableColumnInfo> columns) {
+        Set<String> list = new HashSet<String>();
+        for (SysGenTableColumnInfo column : columns) {
+            String formType = column.getFormType();
+            FieldTypeEnum fieldType = FieldTypeEnum.get(formType);
+            if (fieldType == FieldTypeEnum.ENTITY) {
+                list.add("javax.persistence.FetchType");
+                list.add("javax.persistence.ManyToOne");
+                list.add("javax.persistence.JoinColumn");
+            }
+            if (fieldType == FieldTypeEnum.ADDRESS) {
+                list.add("javax.persistence.AttributeOverride");
+                list.add("javax.persistence.AttributeOverrides");
+                list.add("javax.persistence.Embedded");
             }
         }
         return list;

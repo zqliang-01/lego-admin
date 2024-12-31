@@ -3,7 +3,6 @@ package com.lego.sharding.service.impl;
 import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import com.lego.core.vo.GenericConditionItemVO;
 import com.lego.core.vo.GenericConditionVO;
 import com.lego.core.vo.GenericSearchVO;
@@ -58,7 +57,7 @@ public class ShardingTemplateService extends BusService<IShardingTemplateDao, Sh
     public List<TypeInfo> findSimpleTypeBy(String typeCode) {
         GenericConditionVO conditionVO = GenericConditionVO.create();
         conditionVO.addItem(GenericConditionItemVO.createEqual("enable", true));
-        conditionVO.addItem(GenericConditionItemVO.createEqual(CustomFieldTypeEnum.SELECT, "type", typeCode));
+        conditionVO.addItem(GenericConditionItemVO.createEntityEqual("type", typeCode));
         List<ShardingTemplate> templates = dao.findBy(conditionVO);
         return assembler.createTypeInfo(templates);
     }

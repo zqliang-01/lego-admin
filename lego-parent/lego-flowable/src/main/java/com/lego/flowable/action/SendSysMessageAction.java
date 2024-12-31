@@ -4,8 +4,8 @@ import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
 import com.lego.core.data.ICommonService;
 import com.lego.core.util.StringUtil;
-import com.lego.core.vo.SysMessageCreateVO;
-import com.lego.core.vo.SysMessageTypeEnum;
+import com.lego.core.vo.MessageCreateVO;
+import com.lego.core.enums.MessageTypeEnum;
 import com.lego.core.web.LegoBeanFactory;
 import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.TaskService;
@@ -37,13 +37,13 @@ public class SendSysMessageAction extends MaintainAction {
                 taskName = "未命名的任务";
             }
             if (StringUtil.isNotBlank(assignee)) {
-                SysMessageCreateVO messageVO = new SysMessageCreateVO();
+                MessageCreateVO messageVO = new MessageCreateVO();
                 messageVO.setName(taskName);
                 messageVO.setRecipient(assignee);
                 messageVO.setCreator(operatorCode);
                 messageVO.setEntityCode(task.getId());
                 messageVO.setFormCode(task.getFormKey());
-                messageVO.setType(SysMessageTypeEnum.FLOWABLE.getCode());
+                messageVO.setType(MessageTypeEnum.FLOWABLE.getCode());
                 messageVO.setContent("${creator} 发起了任务《${title}》需要您审批，请及时查看");
                 commonService.addSysMessage(messageVO);
             }

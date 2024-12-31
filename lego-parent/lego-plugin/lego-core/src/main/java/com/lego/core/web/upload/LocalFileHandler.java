@@ -1,7 +1,7 @@
 package com.lego.core.web.upload;
 
 import cn.hutool.core.io.FileUtil;
-import com.lego.core.common.FileLocationEnum;
+import com.lego.core.enums.FileLocationEnum;
 import com.lego.core.dto.FileUploadInfo;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.StringUtil;

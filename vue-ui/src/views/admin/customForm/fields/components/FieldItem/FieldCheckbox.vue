@@ -3,6 +3,7 @@
     :activate="activate"
     :field="field"
     :control-flag="controlFlag"
+    :show-border="showBorder"
     class="field-checkbox"
     @click="emitClick"
     @action="handleAction">
@@ -73,8 +74,8 @@ export default {
   methods: {
     getOptions() {
       const field = this.field
-      if (field.appCode && field.optionDataType === 'dict') {
-        dictSimpleListAPI(field.appCode, field.optionDictType).then(res => {
+      if (field.optionDataType === 'dict') {
+        dictSimpleListAPI(field.optionDictType).then(res => {
           this.options = res.data
         })
       }

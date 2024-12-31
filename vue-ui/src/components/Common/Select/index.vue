@@ -38,10 +38,10 @@ export default {
   name: 'LegoSelect',
   mixins: [Emitter],
   props: {
-    value: [String, Number],
+    value: [String, Number, Object],
     item: Object,
     disabled: Boolean,
-    clearable: Boolean,
+    clearable: { type: Boolean, default: () => { return true } },
     placeholder: String,
     filterable: {
       type: Boolean,

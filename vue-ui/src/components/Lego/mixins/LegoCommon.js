@@ -71,13 +71,12 @@ export default {
       if (!this.appCode) {
         this.appCode = this.navActiveIndex
       }
-      if (field.optionDataType === 'dict' &&
-        field.optionDictType) {
-        dictSimpleListAPI(this.appCode, field.optionDictType).then(res => {
+      if (field.optionDataType === 'dict' && field.optionDictType) {
+        dictSimpleListAPI(field.optionDictType).then(res => {
           field.setting = res.data
         })
       }
-      if (['user', 'multiple_user'].includes(field.formType)) {
+      if (['user', 'multipleUser'].includes(field.formType)) {
         employeeSimpleListAPI().then(res => {
           field.setting = res.data
         })

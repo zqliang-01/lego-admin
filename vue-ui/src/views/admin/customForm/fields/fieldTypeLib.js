@@ -12,12 +12,6 @@ export default [
     icon: 'icon-textarea'
   },
   {
-    componentName: 'FieldJsonEditor',
-    formType: 'jsonEditor',
-    name: 'JSON编辑器',
-    icon: 'icon-textarea'
-  },
-  {
     componentName: 'FieldInput',
     formType: 'website',
     name: '网址',
@@ -25,7 +19,7 @@ export default [
   },
   {
     componentName: 'FieldBoolean',
-    formType: 'boolean_value',
+    formType: 'boolean',
     name: '布尔值',
     icon: 'icon-bool'
   },
@@ -49,15 +43,9 @@ export default [
   },
   {
     componentName: 'FieldInput',
-    formType: 'floatnumber',
+    formType: 'float',
     name: '小数',
     icon: 'icon-coin'
-  },
-  {
-    componentName: 'FieldPercent',
-    formType: 'percent',
-    name: '百分数',
-    icon: 'icon-percent'
   },
   {
     componentName: 'FieldInput',
@@ -84,26 +72,20 @@ export default [
     icon: 'icon-datetime'
   },
   {
-    componentName: 'FieldInput',
+    componentName: 'FieldSelect',
     formType: 'user',
     name: '员工',
     icon: 'icon-user-data'
   },
   {
-    componentName: 'FieldInput',
+    componentName: 'FieldSelect',
     formType: 'structure',
     name: '部门',
     icon: 'icon-users'
   },
   {
-    componentName: 'FieldWritingSign',
-    formType: 'handwriting_sign',
-    name: '手写签名',
-    icon: 'icon-signature'
-  },
-  {
     componentName: 'FieldDescText',
-    formType: 'desc_text',
+    formType: 'descText',
     name: '描述文字',
     icon: 'icon-des'
   },
@@ -118,5 +100,11 @@ export default [
     formType: 'picture',
     name: '图片',
     icon: 'icon-picture '
+  },
+  {
+    componentName: 'FieldAddress',
+    formType: 'address',
+    name: '地址',
+    icon: 'icon-address'
   }
 ]

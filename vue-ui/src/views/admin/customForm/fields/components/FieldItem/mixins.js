@@ -17,6 +17,10 @@ export default {
     activePoint: { // 选中的字段坐标
       type: Array,
       default: () => []
+    },
+    showBorder: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

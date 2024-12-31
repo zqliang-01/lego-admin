@@ -3,7 +3,6 @@ package com.lego.system.dto;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.StringUtil;
-import com.lego.core.vo.CustomFieldTypeEnum;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -46,6 +45,6 @@ public class SysCustomFieldInfo extends DTO {
     }
 
     public boolean isSimpleType() {
-        return CustomFieldTypeEnum.DESC_TEXT.equals(formType);
+        return "descText".equals(formType);
     }
 }

@@ -1,5 +1,6 @@
 package com.lego.core.data.hibernate;
 
+import com.lego.core.data.hibernate.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
