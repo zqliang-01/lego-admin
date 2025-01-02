@@ -32,6 +32,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
@@ -214,7 +216,7 @@ public class VersionManager implements InitializingBean {
             int num2 = i < nums2.length ? nums2[i] : 0;
 
             if (num1 != num2) {
-                return Integer.compare(num1, num2) > 0;
+                return num1 > num2;
             }
         }
         return false;
@@ -222,6 +224,7 @@ public class VersionManager implements InitializingBean {
 
     private void runBatchSql(List<File> sqlFiles, Connection connection, boolean autoCommit) throws IOException {
         if (!sqlFiles.isEmpty()) {
+            Collections.sort(sqlFiles, Comparator.comparing(File::getAbsolutePath));
             ScriptRunner runner = new ScriptRunner(connection);
             runner.setDelimiter("~");
             runner.setLogWriter(null);
