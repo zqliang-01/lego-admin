@@ -207,3 +207,21 @@ export const calculateStrLength = (str) => {
 	}
 	return tmpNum;
 }
+
+/** 获取file大小的名称 */
+export function fileSize(value) {
+  if (value == null || value == '') {
+    return '0 Bytes'
+  }
+  if (typeof value == 'string') {
+    value = parseInt(value)
+  }
+  var unitArr = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']
+  var index = 0
+  var srcsize = parseFloat(value)
+  index = Math.floor(Math.log(srcsize) / Math.log(1024))
+  var size = srcsize / Math.pow(1024, index)
+  //  保留的小数位数
+  size = size.toFixed(2)
+  return size + unitArr[index]
+}

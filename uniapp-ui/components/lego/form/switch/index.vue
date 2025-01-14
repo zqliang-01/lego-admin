@@ -4,7 +4,8 @@
 		:prop="item.fieldCode"
 		:rules="item.rules"
 		:label="item.name"
-		:required="item.required">
+		:required="required"
+		:borderBottom="borderBottom">
 		<u-switch
 			v-model="innerValue"
 			size="20"
@@ -20,7 +21,20 @@ export default {
   mixins: [Mixin],
 	data() {
 		return {
-			innerValue: this.fieldForm[this.item.fieldCode]
+			innerValue: false
+		}
+	},
+	watch: {
+		item: {
+			handler(newVal, oldVal) {
+				if (newVal.value) {
+					this.innerValue = true
+				} else {
+					this.innerValue = false
+				}
+				this.commonChange(this.item, this.innerValue)
+			},
+			immediate: true
 		}
 	},
 	methods: {

@@ -27,9 +27,11 @@ Vue.use(uView)
 Vue.use(comDirectives, app)
 
 import LegoIcon from '@/components/lego/icon'
+import LegoSearch from '@/components/lego/search'
 import NavBar from '@/components/navBar'
 import Empty from '@/components/empty'
 Vue.component('LegoIcon', LegoIcon)
+Vue.component('LegoSearch', LegoSearch)
 Vue.component('NavBar', NavBar)
 Vue.component('Empty', Empty)
 

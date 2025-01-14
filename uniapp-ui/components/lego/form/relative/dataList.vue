@@ -104,12 +104,4 @@ export default {
 .action-title {
 	height: 90rpx;
 }
-.com-loadmore {
-	padding: 15rpx;
-	.u-more-text {
-		font-weight: 500;
-		font-size: 26rpx !important;
-		color: rgb(185, 185, 185) !important;
-	}
-}
 </style>

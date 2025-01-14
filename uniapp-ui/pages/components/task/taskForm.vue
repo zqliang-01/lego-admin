@@ -3,9 +3,9 @@
 		<u--form
 			ref="createForm"
 			:model="fieldForm"
-			:labelStyle="{color: '#666666'}"
-			:labelWidth="labelWidth"
-			labelAlign="left"
+			:labelStyle="{color: '#666666', minWidth: labelWidth + 'rpx', marginRight: '20rpx'}"
+			labelWidth="auto"
+			labelAlign="right"
 			errorType="border-bottom">
 			<view class="lego-card">
 				<FormItems
@@ -15,8 +15,9 @@
 					:field-list="children"
 					:disabled="isView"
 					@change="commonChange"/>
+			</view>
+			<view v-if="!isView" class="lego-card">
 				<FormItems
-					v-if="!isView"
 					v-for="(children, index) in otherFieldList"
 					:key="children.key"
 					:field-form="fieldForm"
@@ -41,7 +42,7 @@
 </template>
 
 <script>
-import * as TaskAPI from '@/api/task'
+import * as TaskAPI from '@/api/notice/task'
 import * as FieldAPI from '@/api/form/field'
 import FormItems from '@/components/lego/form/formItems'
 import RuleMixin from '@/components/lego/form/ruleMixin'
@@ -54,12 +55,22 @@ export default {
 		FormItems
 	},
 	props: {
-		task: Object
+		task: {
+			type: Object,
+			default: () => {
+				return {
+					id: '',
+					code: '',
+					finished: false,
+					formKey: ''
+				}
+			}
+		}
 	},
   computed: {
     isView() {
       return this.actionType === 'view'
-    },
+    }
 	},
 	data() {
 		return {
@@ -71,7 +82,7 @@ export default {
       otherFieldList: [
         {
 					data: [
-						{ fieldCode: 'comment', name: '审批意见', formType: 'textarea', required: true }
+						{ fieldCode: 'comment', name: '审批意见', formType: 'text', required: true }
 					],
 					key: 'otherComment'
 				}
@@ -167,14 +178,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.lego-card {
-	padding: 20rpx 40rpx;
-	position: relative;
-	margin: 20rpx;
-	background-color: $uni-bg-color;
-	border-radius: $uni-border-radius-infos;
-	box-shadow: 0rpx 2rpx 10rpx 2rpx rgba(0,122,255,0.08);
-}
 .formButton {
 	display: flex;
 	position: fixed;

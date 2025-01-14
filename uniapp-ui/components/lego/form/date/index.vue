@@ -1,18 +1,18 @@
 <template>
 	<view>
 		<u-form-item
-			borderBottom
 			:prop="item.fieldCode"
 			:rules="item.rules"
 			:label="item.name"
-			:required="item.required"
+			:required="required"
+			:borderBottom="borderBottom"
 			@click="handleShowAction">
 			<u--input
 				v-model="innerValue"
 				border="none"
 				disabled
-				:disabledColor="isDisabled ? '#f1f1f1' : '#ffffff'"
-				:placeholder="item.placeholder || actionTitle"
+				disabledColor='#ffffff'
+				:placeholder="placeholder"
 				:clearable="clearable"></u--input>
 			<view slot="right">
 				<u-icon v-if="!isDisabled" name="arrow-right"></u-icon>
@@ -44,7 +44,10 @@ export default {
 	watch: {
 		item: {
 			handler(newVal, oldVal) {
-				this.innerValue = moment(newVal.value).format(this.formatterValue)
+				if (newVal.value) {
+					this.innerDateValue = Number(moment(newVal.value))
+					this.innerValue = moment(newVal.value).format(this.formatterValue)
+				}
 			},
 			immediate: true
 		}

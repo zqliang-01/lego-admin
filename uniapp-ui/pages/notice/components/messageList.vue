@@ -33,9 +33,6 @@ export default {
 	},
 	data() {
 		return {
-			options: [{
-				text: '删除'
-			}]
 		}
 	},
 	methods: {
@@ -72,7 +69,7 @@ export default {
 				app.$emit('onReaded', item.code, index)
 			}
 			if (item.type.code === 'flowable') {
-				app.$navTo('pages/notice/detail/task', {code: item.entityCode})
+				app.$navTo('pages/components/task/taskDetail', {code: item.entityCode})
 			} else {
 				app.$navTo('pages/notice/detail/message', {code: item.code})
 			}

@@ -12,23 +12,23 @@
 				@change="handleTypeChange"></u-tabs>
 		</view>
 		<view v-if="hasForm || !task.finished" class="task-content">
-			<FormDetail v-show="currentType === 'form'" :task="task" @onComplete="init"/>
-			<HistoryDetail v-if="currentType === 'history'" :commentList="task.comments" :taskId="task.id"/>
+			<TaskForm v-show="currentType === 'form'" :task="task" @onComplete="init"/>
+			<TaskHistory v-if="currentType === 'history'" :commentList="task.comments" :taskId="task.id"/>
 		</view>
-		<HistoryDetail v-else :commentList="task.comments" :taskId="task.id"/>
+		<TaskHistory v-else :commentList="task.comments" :taskId="task.id"/>
 	</view>
 </template>
 
 <script>
-import FormDetail from './taskForm'
-import HistoryDetail from './taskHistory'
-import * as TaskAPI from '@/api/task'
+import TaskForm from './taskForm'
+import TaskHistory from './taskHistory'
+import * as TaskAPI from '@/api/notice/task'
 import { isEmpty } from '@/utils/util'
 
 export default {
 	components: {
-		FormDetail,
-		HistoryDetail
+		TaskForm,
+		TaskHistory
 	},
 	data() {
 		return {
@@ -36,6 +36,7 @@ export default {
 				name: '审批详情'
 			},
 			loading: true,
+			taskCode: '',
 			currentType: 'form',
 			tabList: [{
 				name: '表单',
@@ -56,9 +57,8 @@ export default {
 		}
 	},
 	onLoad(data) {
-		const app = this
-		app.taskCode = data.code
-		app.init()
+		this.taskCode = data.code
+		this.init()
 	},
 	methods: {
 		init() {

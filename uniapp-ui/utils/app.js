@@ -1,6 +1,6 @@
 import store from '../store'
 import * as util from './util'
-import * as MessageAPI from '@/api/message';
+import * as MessageAPI from '@/api/notice/message';
 
 /**
  * 获取当前运行的终端(App H5 小程序)
@@ -83,6 +83,7 @@ export const showToast = msg => {
 export const getTabBarLinks = () => {
 	const tabBarLinks = [
 		'pages/index/index',
+    'pages/app/index',
     'pages/notice/index',
     'pages/user/index'
 	]

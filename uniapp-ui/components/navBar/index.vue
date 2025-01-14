@@ -1,11 +1,12 @@
 <template>
 	<u-navbar
-		:autoBack="showBack"
+		:autoBack="showBack && autoBack"
 		:title="title"
 		:titleStyle ="titleStyle "
 		:bgColor="backgroundColor"
 		:border="false"
-		:placeholder="true">
+		:placeholder="true"
+		@leftClick="handleBack">
 		<view slot="left">
 			<slot name="left">
 				<u-icon
@@ -26,6 +27,10 @@
 				type: Boolean,
 				default: true
 			},
+			autoBack: {
+				type: Boolean,
+				default: true
+			},
       title: String,
 			backgroundColor: {
 				type: String,
@@ -40,6 +45,9 @@
 			}
 		},
     methods: {
+			handleBack() {
+				this.$emit('leftClick')
+			}
     }
   }
 </script>

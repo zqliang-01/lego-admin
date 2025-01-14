@@ -1,5 +1,5 @@
 <template>
-	<view class="item-box lego-box" v-loading="loading">
+	<view class="item-box lego-card" v-loading="loading">
 		<view class="item-box-title">
 			<text>{{ data.name }}</text>
 		</view>

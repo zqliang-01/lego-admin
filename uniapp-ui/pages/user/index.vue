@@ -57,7 +57,7 @@
 
 <script>
 import store from '@/store'
-import * as UserApi from '@/api/user'
+import * as UserApi from '@/api/manage/user'
 import * as UploadApi from '@/api/upload'
 import { filePreviewUrl } from '@/api/upload'
 export default {
@@ -99,7 +99,7 @@ export default {
 			return name
 		}
 	},
-	onShow(options) {
+	onLoad(options) {
 		this.getPageData()
 	},
 	methods: {
@@ -154,7 +154,7 @@ export default {
 			const app = this
 			store.dispatch('Logout').then(() => {
 				app.$toast("注销成功")
-				app.$navTo('pages/login/index')
+				uni.reLaunch({ url:'/pages/login/index' })
 			})
 		}
 	}
@@ -255,7 +255,7 @@ export default {
 	.btn-item-out {
 		margin-top: 20rpx;
 		background: #FFFFFF;
-		border: 1px solid #268bd5;
+		border: 1px solid $lego-theme;
 		color: #666666;
 	}
 }

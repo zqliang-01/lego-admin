@@ -11,6 +11,11 @@
 			"selectedIconPath": "static/tabbar/home-active.png",
 			"text": "首页"
 		}, {
+			"pagePath": "pages/app/index",
+			"iconPath": "static/tabbar/app.png",
+			"selectedIconPath": "static/tabbar/app-active.png",
+			"text": "应用中心"
+		}, {
 			"pagePath": "pages/notice/index",
 			"iconPath": "static/tabbar/notice.png",
 			"selectedIconPath": "static/tabbar/notice-active.png",
@@ -32,6 +37,13 @@
 		"path": "pages/index/index",
 		"style": {
 			"navigationBarTitleText": "首页",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/app/index",
+		"style": {
+			"navigationBarTitleText": "应用中心",
 			"enablePullDownRefresh": true
 		}
 	},
@@ -62,14 +74,75 @@
 		}
 	},
 	{
-		"path": "pages/notice/detail/task",
+		"path": "pages/components/task/taskDetail",
 		"style": {
 			"navigationBarTitleText": "审批详情"
+		}
+	},
+	{
+		"path": "pages/app/common/index",
+		"style": {
+			"navigationBarTitleText": "通用查询",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/app/common/create",
+		"style": {
+			"navigationBarTitleText": "通用创建"
+		}
+	},
+	{
+		"path": "pages/app/common/detail",
+		"style": {
+			"navigationBarTitleText": "通用详情",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/app/oa/start/index",
+		"style": {
+			"navigationBarTitleText": "发起审批",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/app/oa/start/startForm",
+		"style": {
+			"navigationBarTitleText": "发起审批表单"
+		}
+	},
+	{
+		"path": "pages/app/oa/owner/index",
+		"style": {
+			"navigationBarTitleText": "我的流程",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/app/oa/undo/index",
+		"style": {
+			"navigationBarTitleText": "待办任务",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/app/oa/claim/index",
+		"style": {
+			"navigationBarTitleText": "待签任务",
+			"enablePullDownRefresh": true
+		}
+	},
+	{
+		"path": "pages/app/oa/finished/index",
+		"style": {
+			"navigationBarTitleText": "已办任务",
+			"enablePullDownRefresh": true
 		}
 	}],
 	"globalStyle": {
 		"navigationStyle": "custom",
-		"navigationBarBackgroundColor": "#1e6fff",
+		"navigationBarBackgroundColor": "#007aff",
 		"navigationBarTitleText": "LegoAdmin",
 		"navigationBarTextStyle": "white",
 		"backgroundTextStyle": "dark"

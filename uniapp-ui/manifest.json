@@ -89,7 +89,10 @@
                 "desc" : "获取距离您的使用位置"
             }
         },
-        "lazyCodeLoading" : "requiredComponents"
+        "lazyCodeLoading" : "requiredComponents",
+        "unipush" : {
+            "enable" : true
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true,
@@ -108,7 +111,7 @@
     },
     "h5" : {
         "title" : "LegoAdmin低代码开发平台",
-        "domain" : "www.zqliang.cn",
+        "domain" : "admin.zqliang.cn",
         "router" : {
             "base" : "/h5/",
             "mode" : "hash"

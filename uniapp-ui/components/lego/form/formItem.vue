@@ -5,54 +5,70 @@
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoSwitch
-			v-else-if="item.formType == 'boolean_value'"
+			v-else-if="item.formType == 'boolean'"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoTextarea
 			v-else-if="item.formType === 'textarea'"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoSelect
 			v-else-if="['select', 'user'].includes(item.formType)"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoDate
 			v-else-if="['date', 'datetime'].includes(item.formType)"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoTreeSelect
 			v-else-if="['structure'].includes(item.formType)"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoRelative
 			v-else-if="['entity'].includes(item.formType)"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoUpload
 			v-else-if="['picture'].includes(item.formType)"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 		<LegoRichtext
-			v-else-if="['desc_text'].includes(item.formType)"
+			v-else-if="['descText'].includes(item.formType)"
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
+			@change="commonChange" />
+		<LegoAddress
+			v-else-if="['address'].includes(item.formType)"
+			:item="item"
+			:fieldForm="fieldForm"
+			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange" />
 	</view>
 </template>
@@ -67,6 +83,7 @@ import LegoTextarea from './textarea'
 import LegoTreeSelect from './treeselect'
 import LegoUpload from './upload'
 import LegoRichtext from './richtext'
+import LegoAddress from './address'
 import { isEmpty } from '@/utils/util'
 import Mixin from './mixin'
 
@@ -82,7 +99,8 @@ export default {
 		LegoTextarea,
 		LegoTreeSelect,
 		LegoUpload,
-		LegoRichtext
+		LegoRichtext,
+		LegoAddress
   },
 	computed: {
     isTrimInput() {
@@ -91,7 +109,7 @@ export default {
         'mobile',
         'email',
         'website',
-				'floatnumber',
+				'float',
 				'number',
 				'percent'
       ].includes(this.item.formType)

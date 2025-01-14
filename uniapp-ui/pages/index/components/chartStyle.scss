@@ -1,12 +1,4 @@
 $padding: 20rpx;
-.lego-box {
-	position: relative;
-	margin: 30rpx 20rpx;
-	background-color: $uni-bg-color;
-	border-radius: $uni-border-radius-infos;
-	overflow: hidden;
-	box-shadow: 0rpx 2rpx 10rpx 2rpx rgba(0,122,255,0.08);
-}
 .item-box {
 	&-title {
 		position: relative;

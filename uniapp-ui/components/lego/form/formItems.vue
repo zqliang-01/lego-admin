@@ -6,6 +6,7 @@
 			:item="item"
 			:fieldForm="fieldForm"
 			:disabled="disabled"
+			:borderBottom="borderBottom"
 			@change="commonChange">
 		</FormItem>
   </view>
@@ -30,6 +31,10 @@ export default {
 			default: () => {
 				return []
 			}
+		},
+		borderBottom: {
+			type: Boolean,
+			default: true
 		},
 		disabled: Boolean
 	},

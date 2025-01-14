@@ -21,6 +21,8 @@ export function getFormFieldShowValue(formType, value, placeholder = '--') {
     return isEmpty(value) ? placeholder : value
   } else if (['checkbox', 'multipleUser', 'multipleStructure'].includes(formType)) {
     return isArray(value) ? value.map(item => item.name).join() : placeholder
+  } else if (formType === 'address') {
+    return getDisplay(value)
   }
   return isEmpty(value) ? placeholder : value
 }

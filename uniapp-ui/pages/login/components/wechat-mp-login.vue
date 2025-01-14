@@ -1,8 +1,8 @@
 <template>
 	<view class="container">
-		<NavBar title="账号授权"/>
+		<NavBar :showBack="false" title="账号授权"/>
 		<view class="wechatapp">
-			<u-loading-icon size="190" mode="flower"></u-loading-icon>
+			<u-loading-icon size="50" color="#5098ff"></u-loading-icon>
 		</view>
 		<view class="auth-title">自动登录中，请稍后...</view>
 		<view class="no-login-btn">

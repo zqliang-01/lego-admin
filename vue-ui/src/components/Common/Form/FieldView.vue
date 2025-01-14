@@ -26,8 +26,6 @@
       :class="{'can-check': !isEmpty}"
       @click="handleEntityClick(value)" >{{ getCommonShowValue() }}</span>
     <span
-      v-else-if="formType == 'address'" >{{ handleAddressShowValue() }}</span>
-    <span
       :class="[{'can-check': clickable}, {'can-visit--bold': clickable}]"
       @click="handleClick(value)"
       v-else>{{ getCommonShowValue() }}</span>
@@ -49,7 +47,6 @@ import MapView from '@/components/Common/MapView' // 地图详情
 import merge from '@/utils/merge'
 import { isEmpty } from '@/utils/types'
 import { getFormFieldShowValue } from './utils'
-import { getDisplay } from '@/utils/address'
 
 const DefaultFieldView = {
   signatureHeight: '26px'
@@ -106,9 +103,6 @@ export default {
     },
     handleEntityClick(value) {
       this.$emit('clickEntity', { field: this.item, value: value })
-    },
-    handleAddressShowValue() {
-      return getDisplay(this.value)
     }
   }
 }

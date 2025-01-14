@@ -7,6 +7,25 @@ export const isEmpty = (str) => {
   return str.trim() == ''
 }
 
+/** 判断输入的是货币 货币的整数部分须少于15位，小数部分须少于2位*/
+export function isMoneyNumber(nubmer) {
+  var regex = /^([-+]?\d{1,15})(\.\d{0,2})?$/
+  if (!regex.test(nubmer)) {
+    return false
+  }
+  return true
+}
+
+/** 判断输入的是邮箱*/
+export function isEmail(email) {
+  var regex = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+  if (!regex.test(email)) {
+    return false
+  }
+  return true
+}
+
+
 /**
  * 匹配phone
  */
@@ -21,16 +40,6 @@ export const isPhone = (str) => {
 export const isMobile = (str) => {
   const reg = /^(1[3456789]\d{9})$/
   return reg.test(str)
-}
-
-/**
- * 匹配Email地址
- */
-export const isEmail = (str) => {
-  if (str == null || str == "") return false
-  var result = str.match(/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/)
-  if (result == null) return false
-  return true
 }
 
 /**

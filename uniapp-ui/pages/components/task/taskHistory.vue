@@ -1,10 +1,10 @@
 <template>
 	<view>
-		<view class="history-content">
+		<view class="lego-card">
 			<u--text suffixIcon="photo" type="info" text="流程图"></u--text>
 			<u--image width="100%" height="100%" :src="imageUrl" mode="widthFix" @click="handlePreview"></u--image>
 		</view>
-		<view class="history-content">
+		<view class="lego-card">
 			<u--text suffixIcon="calendar" type="info" text="操作记录"></u--text>
 			<u-steps v-if="commentList.length > 0" direction="column" :current="commentList.length">
 				<view v-for="(item, index) in commentList" :key="index">
@@ -26,7 +26,7 @@
 
 <script>
 import store from '@/store'
-import { flowImageUrl } from '@/api/task'
+import { flowImageUrl } from '@/api/notice/task'
 export default {
 	props: {
 		taskId: String,
@@ -92,14 +92,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.history-content {
-	padding: 20rpx 40rpx;
-	position: relative;
-	margin: 30rpx 20rpx;
-	background-color: $uni-bg-color;
-	border-radius: $uni-border-radius-infos;
-	box-shadow: 0rpx 2rpx 10rpx 2rpx rgba(0,122,255,0.08);
-}
 .history-item {
 	display: inline-block;
 	font-size: 13px;

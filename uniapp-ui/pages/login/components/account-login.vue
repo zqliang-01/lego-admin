@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<NavBar v-if="platform !== 'H5'" title="账号登录" :show-message="false" />
+		<NavBar v-if="platform !== 'H5'" title="账号登录" :show-message="false"  :showBack="false"/>
 		<view class="login-logo">
 			<view class="logo">
 				<image src="/static/logo.png" mode=""></image>
@@ -245,7 +245,7 @@ export default {
 	height: 86rpx;
 	margin: 0 auto;
 	margin-top: 60rpx;
-	background: #268bd5;
+	background: $lego-theme;
 	text-align: center;
 	line-height: 86rpx;
 	color: #fff;

@@ -35,7 +35,7 @@
 
 <script>
 import store from '@/store'
-import * as MessageAPI from '@/api/message';
+import * as MessageAPI from '@/api/notice/message';
 import MessageList from './components/messageList'
 import { setMessageTabBadge } from '@/utils/app'
 
@@ -153,7 +153,7 @@ export default {
 				app.tabList.forEach(tab => {
 					tab.badge.value = res.data[tab.code]
 				})
-				setMessageTabBadge(res.data.all, 1)
+				setMessageTabBadge(res.data.all, 2)
 			})
 		}
 	}
@@ -170,13 +170,5 @@ export default {
 }
 .message-list {
 	padding-top: 90rpx;
-}
-.com-loadmore{
-	padding: 15rpx;
-	.u-more-text{
-		font-weight: 500;
-		font-size: 26rpx !important;
-		color: rgb(185, 185, 185) !important;
-	}
 }
 </style>

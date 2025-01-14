@@ -18,7 +18,7 @@
 <script>
 import store from '@/store'
 import * as HomeApi from '@/api/home'
-import * as MessageAPI from '@/api/message';
+import * as MessageAPI from '@/api/notice/message';
 import { setMessageTabBadge } from '@/utils/app'
 import ChartView from './charts'
 import TopReport from './components/topReport'

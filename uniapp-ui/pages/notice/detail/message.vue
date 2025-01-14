@@ -2,10 +2,10 @@
 	<view class="container">
 		<NavBar showBack :title="message.name"/>
 		<view class="item">
-				<view class="text"><view class="title">创建人:</view>{{ message.creator.name }}</view>
+			<view class="text"><view class="title">创建人:</view>{{ message.creator.name }}</view>
 		</view>
 		<view class="item">
-				<view class="text"><view class="title">推送时间:</view>{{ message.createTime }}</view>
+			<view class="text"><view class="title">推送时间:</view>{{ message.createTime }}</view>
 		</view>
 		<view class="message-content">
 			<u-parse :content="message.content" :tag-style="{ table: 'width: 100%!importent'}"></u-parse>
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import * as MessageAPI from '@/api/message';
+import * as MessageAPI from '@/api/notice/message';
 export default {
 	data() {
 		return {

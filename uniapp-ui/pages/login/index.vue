@@ -13,7 +13,7 @@ import {
 } from '@/utils/app'
 import AccountLogin from './components/account-login'
 import WechatMpLogin from './components/wechat-mp-login'
-import * as UserApi from '@/api/user'
+import * as UserApi from '@/api/manage/user'
 import * as LoginApi from '@/api/login'
 import { isEmpty } from '../../utils/verify'
 

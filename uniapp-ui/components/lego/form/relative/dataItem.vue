@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { isArray, isObject, isEmpty } from '@/utils/util'
+import { getShowValue } from '@/utils/form'
 export default {
 	props: {
 		fieldList: Array,
@@ -39,22 +39,7 @@ export default {
 		handleViewValue(item) {
 			const formType = item.formType
 			const value = this.data[item.fieldCode]
-			const placeholder = '--'
-			if (formType === 'floatnumber') {
-				return isEmpty(value) ? placeholder : separator(value)
-			} else if (formType === 'date') {
-				return isEmpty(value) ? placeholder : getDateTime(value)
-			} else if (formType === 'percent') {
-				return isEmpty(value) ? placeholder : value
-			} else if (['select', 'user', 'structure', 'entity'].includes(formType)) {
-				if (isObject(value)) {
-					return isEmpty(value) ? placeholder : value.name
-				}
-				return isEmpty(value) ? placeholder : value
-			} else if (['checkbox', 'multiple_user', 'multiple_structure'].includes(formType)) {
-				return isArray(value) ? value.map(item => item.name).join() : placeholder
-			}
-			return isEmpty(value) ? placeholder : value
+			return getShowValue(formType, value)
 		},
 		handleClick() {
 			this.$emit("onSelect", this.data)

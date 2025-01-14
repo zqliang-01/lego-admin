@@ -27,7 +27,7 @@
 
 <script>
 import store from '@/store'
-import * as UserApi from '@/api/user'
+import * as UserApi from '@/api/manage/user'
 import * as LoginApi from '@/api/login'
 export default {
 	data() {
@@ -130,7 +130,7 @@ export default {
 		.button {
 			height: 88rpx;
 			line-height: 88rpx;
-			background: #268bd5;
+			background: $lego-theme;
 			color: #fff;
 			font-size: 30rpx;
 			border-radius: 12rpx;
@@ -140,7 +140,7 @@ export default {
 		.button-mobile {
 			height: 88rpx;
 			line-height: 88rpx;
-			background: #268bd5;
+			background: $lego-theme;
 			color: #fff;
 			font-size: 30rpx;
 			border-radius: 12rpx;

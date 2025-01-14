@@ -70,3 +70,14 @@ export function getLastYear() {
   const end = moment().subtract(1, 'year').endOf('year').format('YYYY-MM-DD')
   return [start, end]
 }
+
+/**
+ * 获取date类型展示时间
+ */
+export function getDate(time) {
+  if (time) {
+    const temps = time.split(' ')
+    return temps.length > 0 ? temps[0] : ''
+  }
+  return time
+}

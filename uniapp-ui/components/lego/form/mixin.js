@@ -3,9 +3,13 @@ import util from '@/utils/util'
 export default {
 	props: {
     item: Object,
-		value: [String, Number, Boolean],
+		value: [String, Number, Boolean, Object],
     fieldForm: Object,
-    disabled: Boolean
+    disabled: Boolean,
+		borderBottom: {
+			type: Boolean,
+			default: true
+		}
 	},
   data() {
     return {}
@@ -20,11 +24,20 @@ export default {
 		isDisabled() {
 			return this.disabled || this.item.disabled
 		},
+		required() {
+			return this.item.required && !this.isDisabled
+		},
 		clearable() {
 			if (this.disabled || this.item.disabled) {
 				return false
 			}
-			return true//this.item.clearable
+			return true
+		},
+		placeholder() {
+			if (!this.isDisabled) {
+				return this.item.placeholder || this.actionTitle
+			}
+			return ''
 		}
 	},
   methods: {

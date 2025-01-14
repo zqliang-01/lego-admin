@@ -1,39 +1,42 @@
-import * as UserApi from '@/api/user'
-import * as DeptApi from '@/api/dept'
+import * as UserApi from '@/api/manage/user'
+import * as DeptApi from '@/api/manage/dept'
 import * as DictAPI from '@/api/form/dictionary'
 import { postRequest, codeGetRequest, codeGenerate } from '@/api/form/common'
-import { isEmpty, isObject, isArray, objDeepCopy, calculateStrLength } from '@/utils/util'
+import { calculateStrLength, isArray } from '@/utils/util'
+import { getSubmitValue } from '@/utils/form'
 
 export default {
 	data() {
 		return {
-			appCode: '',
 			actionType: 'add',
 			fieldForm: {
 				comment: ''
 			},
 			fieldList: [],
 			addRequest: {},
+			listRequest: {},
 			updateRequest: {},
 			detailRequest: {}
 		}
 	},
   computed: {
+    saveRequest() {
+      return this.actionType === 'update' ? this.updateRequest : this.addRequest
+    },
 		labelWidth() {
 			let num = 8
 			this.fieldList.forEach(fields => {
-				fields.forEach(field => {
-					let tmpNum = calculateStrLength(field.name)
-					if (tmpNum > num) {
-						num = tmpNum;
-					}
-				})
+				if (isArray(fields)) {
+					fields.forEach(field => {
+						let tmpNum = calculateStrLength(field.name)
+						if (tmpNum > num && !field.simpleType) {
+							num = tmpNum;
+						}
+					})
+				}
 			})
-			return num < 8 ? (num / 2 * 18 + 10) : (num / 2 * 18)
-		},
-    saveRequest() {
-      return this.actionType === 'update' ? this.updateRequest : this.addRequest
-    }
+			return num * 15
+		}
   },
   methods: {
     setDefaultValue(field, fieldForm, isCreate) {
@@ -42,30 +45,16 @@ export default {
 					this.$set(fieldForm, field.fieldCode, res.data)
         })
       } else {
-				const value = this.getFormFieldValue(field, isCreate);
+				const value = getSubmitValue(field, isCreate);
 				this.$set(fieldForm, field.fieldCode, value);
       }
     },
-		getFormFieldValue(item, isDefault = false) {
-			const value = isDefault ? objDeepCopy(item.defaultValue) : objDeepCopy(item.value)
-			if (['checkbox', 'multiple_user', 'multiple_structure'].includes(item.formType)) {
-				if (isEmpty(value)) {
-					return []
-				}
-				return value.map(item => {
-					if (isObject(item) && item.hasOwnProperty('code')) {
-						return item.code
-					}
-					return item
-				})
-			}
-			if (isObject(value) && value.hasOwnProperty('code')) {
-				return isEmpty(value) ? '' : value.code
-			}
-			return isEmpty(value) ? '' : value
-		},
 		initRequest(form) {
-			this.appCode = form.appCode
+      if (this.listRequest) {
+        this.listRequest = function doRequest(data) {
+          return postRequest(form.queryApiUrl, data)
+        }
+      }
 			if (this.detailRequest) {
 				this.detailRequest = function doRequest(data) {
 					return codeGetRequest(form.detailApiUrl, data)
@@ -84,7 +73,7 @@ export default {
 		},
 		initSettingValue(field) {
 			if (field.optionDataType === 'dict' && field.optionDictType) {
-				DictAPI.list(this.appCode, field.optionDictType).then(res => {
+				DictAPI.list(field.optionDictType).then(res => {
 					field.setting = res.data
 				})
 			}
@@ -99,11 +88,11 @@ export default {
 				})
 			}
 		},
-		getDisable(field, type) {
+		getDisable(field) {
 			if (field.disabled) {
 				return true
 			}
-			return field.unique && type === 'update'
+			return field.unique && this.actionType === 'update'
 		},
 		commonChange(item, value) {
 			this.fieldForm[item.fieldCode] = value

@@ -1,9 +1,9 @@
 import {
-  regexIsNumber,
-  regexIsMoneyNumber,
-  regexIsMobile,
-  regexIsEmail
-} from '@/utils/regex'
+  isNumber,
+  isMoneyNumber,
+  isMobile,
+  isEmail
+} from '@/utils/verify'
 import { isEmpty, isObject, isArray } from '@/utils/util'
 
 export default {
@@ -46,7 +46,7 @@ export default {
           if (item.hasOwnProperty('precisions')) {
             this._getNumberRule(rule, value, callback)
           } else {
-            if (isEmpty(value) || regexIsNumber(value)) {
+            if (isEmpty(value) || isNumber(value)) {
               callback()
             } else {
               callback(new Error('数字的整数部分须少于15位，小数部分须少于4位'))
@@ -58,12 +58,12 @@ export default {
           item: item,
           trigger: ['blur']
         })
-      } else if (item.formType === 'floatnumber') {
+      } else if (item.formType === 'float') {
         const validateMoneyNumber = (rule, value, callback) => {
           if (item.hasOwnProperty('precisions')) {
             this._getNumberRule(rule, value, callback)
           } else {
-            if (isEmpty(value) || regexIsMoneyNumber(value)) {
+            if (isEmpty(value) || isMoneyNumber(value)) {
               callback()
             } else {
               callback(new Error('货币的整数部分须少于15位，小数部分须少于2位'))
@@ -77,7 +77,7 @@ export default {
         })
       } else if (item.formType === 'mobile') {
         const validateMobile = (rule, value, callback) => {
-          if (isEmpty(value) || regexIsMobile(value)) {
+          if (isEmpty(value) || isMobile(value)) {
             callback()
           } else {
             callback(new Error('手机格式有误'))
@@ -90,7 +90,7 @@ export default {
         })
       } else if (item.formType === 'email') {
         const validateEmail = (rule, value, callback) => {
-          if (isEmpty(value) || regexIsEmail(value)) {
+          if (isEmpty(value) || isEmail(value)) {
             callback()
           } else {
             callback(new Error('邮箱格式有误'))

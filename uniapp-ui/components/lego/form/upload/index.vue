@@ -1,11 +1,11 @@
 <template>
 	<view>
 		<u-form-item
-			borderBottom
 			:prop="item.fieldCode"
 			:rules="item.rules"
 			:label="item.name"
-			:required="item.required">
+			:required="required"
+			:borderBottom="borderBottom">
 			<image v-if="imageUrl" class="image-name" @click="handleChooseImage" :src="imageUrl"/>
 			<view v-else class="image-name" @click="handleChooseImage"></view>
 			<u--text

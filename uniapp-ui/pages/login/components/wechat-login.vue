@@ -112,7 +112,7 @@ export default {
 	.button {
 		height: 88rpx;
 		line-height: 88rpx;
-		background: #268bd5;
+		background: $lego-theme;
 		color: #fff;
 		font-size: 30rpx;
 		border-radius: 12rpx;

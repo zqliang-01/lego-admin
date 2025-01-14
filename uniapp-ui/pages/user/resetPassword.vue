@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import * as UserApi from '@/api/user'
+import * as UserApi from '@/api/manage/user'
 export default {
 	components: {},
 	data() {
@@ -177,7 +177,7 @@ export default {
 	.btn-item-back {
 		margin-top: 20rpx;
 		background: #FFFFFF;
-		border: 1px solid #268bd5;
+		border: 1px solid $lego-theme;
 		color: #666666;
 	}
 

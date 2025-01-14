@@ -1,21 +1,18 @@
 <template>
 	<u-form-item
-		borderBottom
 		:prop="item.fieldCode"
 		:rules="item.rules"
 		:label="item.name"
-		:required="item.required"
-		labelPosition="top">
-		<view style="margin-top: 15rpx; width: 100%;">
-			<u-textarea
-				v-model="fieldForm[item.fieldCode]"
-				:disabled="isDisabled"
-				:maxlength="item.maxlength || 800"
-				:placeholder="item.placeholder"
-				border="none"
-				@input="commonChange(item, $event)">
-			</u-textarea>
-		</view>
+		:required="required"
+		:borderBottom="borderBottom">
+		<u-textarea
+			v-model="fieldForm[item.fieldCode]"
+			:disabled="isDisabled"
+			:maxlength="item.maxlength || 800"
+			:placeholder="placeholder"
+			border="none"
+			@input="commonChange(item, $event)">
+		</u-textarea>
 	</u-form-item>
 </template>
 
@@ -24,6 +21,12 @@ import Mixin from '../mixin'
 export default {
   mixins: [Mixin],
 	computed: {
+		placeholder() {
+			if (!this.isDisabled) {
+				return this.item.placeholder || '请填写' + this.item.name
+			}
+			return ''
+		}
 	},
 	data() {
 		return {
@@ -34,5 +37,5 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 </style>
