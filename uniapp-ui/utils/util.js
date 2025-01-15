@@ -198,7 +198,7 @@ export const calculateStrLength = (str) => {
 	if (!str) {
 		return tmpNum;
 	}
-	for (var i = 0; i < str.length; i++){
+	for (var i = 0; i < str.length; i++) {
 		if(str.charCodeAt(i)> 127 || str.charCodeAt(i) <0){
 			tmpNum += 2;
 		} else {
@@ -224,4 +224,19 @@ export function fileSize(value) {
   //  保留的小数位数
   size = size.toFixed(2)
   return size + unitArr[index]
+}
+
+export function getTreeName(trees, value) {
+	let name = ''
+	trees.forEach(tree => {
+		if (tree.code == value) {
+			name = tree.name
+		} else if (!name && tree.childrens.length > 0) {
+			const tmp = getTreeName(tree.childrens, value)
+			if (tmp) {
+				name = tmp
+			}
+		}
+	})
+	return name
 }

@@ -62,7 +62,7 @@ import FormItem from '@/components/lego/form/formItem'
 import ModelMixin from '@/components/lego/form/modelMixin'
 import RuleMixin from '@/components/lego/form/ruleMixin'
 import { getDisplay } from '@/utils/data/address'
-import { calculateStrLength, isArray, isObject, isEmpty } from '@/utils/util'
+import { calculateStrLength, isArray, isObject, isEmpty, getTreeName } from '@/utils/util'
 import { separator } from '@/utils/number'
 
 export default {
@@ -192,8 +192,7 @@ export default {
 		  } else if (['select', 'user', 'entity'].includes(formType)) {
 		    return isEmpty(item.value) ? '' : item.value.name
 		  } else if (formType === 'structure') {
-				console.log(value)
-		    return getTreeValue(item.setting, value)
+		    return getTreeName(item.setting, value)
 		  } else if (formType === 'checkbox') {
 		    if (isArray(value)) {
 		      const name = value.map(element => {
@@ -208,20 +207,6 @@ export default {
 				return getDisplay(value)
 			}
 		  return value
-		},
-		getTreeValue(trees, value) {
-		  let name = ''
-		  trees.forEach(tree => {
-		    if (tree.childrens.length > 0) {
-		      const tmp = getTreeValue(tree.childrens, value)
-		      if (tmp) {
-		        name = tmp
-		      }
-		    } else if (tree.code == value) {
-		      name = tree.name
-		    }
-		  })
-		  return name
 		},
 		handleDelete(index) {
 			this.filterList.splice(index, 1)
