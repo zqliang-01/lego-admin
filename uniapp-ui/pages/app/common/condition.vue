@@ -87,9 +87,14 @@ export default {
 			dataList: []
 		}
 	},
-	mounted() {
-		if (this.formData && this.formData.form) {
-			this.init()
+	watch: {
+		formData: {
+			handler(newVal, oldVal) {
+				if (newVal && newVal.fields) {
+					this.init()
+				}
+			},
+			immediate: true
 		}
 	},
   computed: {
