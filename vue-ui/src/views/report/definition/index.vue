@@ -247,8 +247,8 @@ export default {
 </script>
 <style lang="scss" scoped>
 .report-design {
-  overflow: hidden;
   display: flex;
+  height: 100%;
 
   .setting-reminder {
     width: auto;
@@ -256,12 +256,10 @@ export default {
   }
 
   .report-list {
-    width: 245px;
     height: 100%;
     background: #fff;
-    margin: 15px;
     padding: 15px;
-    position: fixed;
+    overflow-y: auto;
 
     .report-head {
       &-p {
@@ -317,7 +315,7 @@ export default {
 
   .report-infos {
     flex: 1;
-    width: calc(100% - 260px);
+    overflow-y: auto;
 
     .page-box-body {
       min-height: 500px;
@@ -326,7 +324,7 @@ export default {
         background: #fff;
         border-radius: 12px;
         box-shadow: 0 4px 5px 0px rgba(152, 152, 152, 0.1);
-        margin: 15px 15px 15px 280px;
+        margin: 15px 15px 15px 15px;
         padding: 15px;
       }
     }

@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-		<NavBar title="代办任务"/>
+		<NavBar title="待办任务"/>
 		<view v-if="dataList.length > 0">
 			<view class="data-item" v-for="(item,index) in dataList" :key="index">
 				<view class="message" @click="handleDetail(item)">
