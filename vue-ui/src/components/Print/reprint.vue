@@ -9,20 +9,7 @@
         <el-button type="primary" @click="handleClick('print')">打印</el-button>
         <el-button @click="handleClick('goback')">取消</el-button>
       </template>
-      <template v-else>
-        <span class="select-label">选择文件类型</span>
-        <el-select
-          v-model="fileType"
-          style="width: 80px;"
-          class="handle-item-content">
-          <el-option
-            v-for="item in fileTypeList"
-            :key="item"
-            :label="item"
-            :value="item"/>
-        </el-select>
-        <el-button class="preview-button" type="primary" @click="printPreviewClick">打印预览</el-button>
-      </template>
+      <el-button v-else class="preview-button" type="primary" @click="printPreviewClick">打印预览</el-button>
     </el-header>
     <el-main>
       <div class="main-container">

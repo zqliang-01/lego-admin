@@ -1,6 +1,5 @@
 package com.lego.system.util;
 
-import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
@@ -31,7 +30,9 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.itextpdf.tool.xml.pipeline.html.ImageProvider;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.StringUtil;
-import com.lego.core.web.LegoWebInit;
+import com.lego.core.web.upload.FileHandler;
+import com.lego.system.dao.ISysFileDao;
+import com.lego.system.entity.SysFile;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.poifs.filesystem.DirectoryEntry;
@@ -40,6 +41,7 @@ import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
@@ -73,7 +75,7 @@ public class PrintUtil {
         return Pattern.compile("^\\{.*\\}$").matcher(value).matches();
     }
 
-    public static String buildTempFile(String content, String fileType) {
+    public static String buildTempFile(String content, String fileType, ISysFileDao fileDao, FileHandler fileHandler) {
         if (StrUtil.isEmpty(content)) {
             content = "<br/>";
         }
@@ -154,7 +156,7 @@ public class PrintUtil {
         FileUtil.mkdir(folderPath + File.separator);
         String path = folderPath + File.separator + fileName;
         if ("pdf".equals(fileType)) {
-            createPdfFile(path, html);
+            createPdfFile(path, html, fileDao, fileHandler);
         } else if ("word".equals(fileType)) {
             ByteArrayInputStream bais = null;
             FileOutputStream ostream = null;
@@ -172,13 +174,13 @@ public class PrintUtil {
                 IoUtil.close(bais);
                 IoUtil.close(ostream);
             }
-            createPdfFile(path, html);
+            createPdfFile(path, html, fileDao, fileHandler);
         }
         return path;
     }
 
     @SneakyThrows
-    private static void createPdfFile(String path, String html) {
+    private static void createPdfFile(String path, String html, ISysFileDao fileDao, FileHandler fileHandler) {
         Document document = null;
         PdfWriter pdfWriter = null;
         try {
@@ -193,13 +195,11 @@ public class PrintUtil {
             htmlContext.setImageProvider(new ImageProvider() {
                 @Override
                 public Image retrieve(String src) {
-                    String key = StpUtil.getTokenName();
-                    String token = StpUtil.getTokenValue();
-                    String rootPath = getImageRootPath();
-                    src = src.replace("/dev-api", "");
-                    src = src.startsWith("/") ? src : "/" + src;
                     try {
-                        return Image.getInstance(StringUtil.format("{0}{1}?{2}={3}", rootPath, src, key, token));
+                        String code = src.substring(src.lastIndexOf("/") + 1);
+                        SysFile localFile = fileDao.findByCode(code);
+                        InputStream input = fileHandler.download(localFile.getPath());
+                        return Image.getInstance(IoUtil.readBytes(input));
                     } catch (Exception e) {
                         log.error("打印图片{}失败", src);
                         return null;
@@ -208,8 +208,7 @@ public class PrintUtil {
 
                 @Override
                 public String getImageRootPath() {
-                    int port = LegoWebInit.getServerPort();
-                    return StringUtil.format("http://127.0.0.1:{0,number,#}", port);
+                    return null;
                 }
 
                 @Override

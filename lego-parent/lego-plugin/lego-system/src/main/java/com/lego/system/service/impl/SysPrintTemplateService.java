@@ -4,11 +4,13 @@ import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericSearchVO;
+import com.lego.core.web.upload.FileHandler;
 import com.lego.system.action.AddSysPrintTemplateAction;
 import com.lego.system.action.DeleteSysPrintTemplateAction;
 import com.lego.system.action.DesignSysPrintTemplateAction;
 import com.lego.system.action.ModifySysPrintTemplateAction;
 import com.lego.system.assembler.SysPrintTemplateAssembler;
+import com.lego.system.dao.ISysFileDao;
 import com.lego.system.dao.ISysPrintTemplateDao;
 import com.lego.system.dto.SysPrintTemplateInfo;
 import com.lego.system.entity.SysPrintTemplate;
@@ -16,6 +18,7 @@ import com.lego.system.service.ISysPrintTemplateService;
 import com.lego.system.util.PrintUtil;
 import com.lego.system.vo.SysPrintTemplateCreateVO;
 import com.lego.system.vo.SysPrintTemplateModifyVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,6 +26,12 @@ import java.util.Map;
 
 @Service
 public class SysPrintTemplateService extends BusService<ISysPrintTemplateDao, SysPrintTemplateAssembler> implements ISysPrintTemplateService {
+
+    @Autowired
+    private ISysFileDao fileDao;
+
+    @Autowired
+    private FileHandler fileHandler;
 
     @Override
     public LegoPage<SysPrintTemplateInfo> findPageBy(GenericSearchVO vo) {
@@ -70,7 +79,7 @@ public class SysPrintTemplateService extends BusService<ISysPrintTemplateDao, Sy
 
     @Override
     public String preview(String content, String fileType) {
-        return PrintUtil.buildTempFile(content, fileType);
+        return PrintUtil.buildTempFile(content, fileType, fileDao, fileHandler);
     }
 
 }

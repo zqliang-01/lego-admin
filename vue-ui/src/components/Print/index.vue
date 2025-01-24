@@ -22,17 +22,6 @@
             :label="item.name"
             :value="item.code"/>
         </el-select>
-        <span class="select-label">选择文件类型</span>
-        <el-select
-          v-model="fileType"
-          style="width: 80px;"
-          class="handle-item-content">
-          <el-option
-            v-for="item in fileTypeList"
-            :key="item"
-            :label="item"
-            :value="item"/>
-        </el-select>
         <el-button class="preview-button" type="primary" @click="printPreviewClick">打印预览</el-button>
       </template>
     </el-header>
@@ -161,7 +150,11 @@ export default {
         params: this.params
       }).then(res => {
         this.loading = false
-        this.content = res.data
+        if (res.data) {
+          this.content = res.data
+        } else {
+          this.content = '<p></p>'
+        }
       }).catch(() => {
         this.loading = false
       })
