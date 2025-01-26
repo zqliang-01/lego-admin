@@ -1,12 +1,12 @@
 package com.lego.job.controller;
 
 import com.lego.core.exception.BusinessException;
-import com.lego.core.job.biz.AdminBiz;
-import com.lego.core.job.biz.model.HandleCallbackParam;
-import com.lego.core.job.biz.model.RegistryParam;
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.util.GsonTool;
-import com.lego.core.job.util.XxlJobRemotingUtil;
+import com.lego.core.module.job.biz.AdminBiz;
+import com.lego.core.module.job.biz.model.HandleCallbackParam;
+import com.lego.core.module.job.biz.model.RegistryParam;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.util.GsonTool;
+import com.lego.core.module.job.util.XxlJobRemotingUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import org.springframework.stereotype.Controller;

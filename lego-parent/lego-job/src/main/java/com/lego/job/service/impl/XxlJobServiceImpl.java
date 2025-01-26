@@ -2,9 +2,9 @@ package com.lego.job.service.impl;
 
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.job.enums.ExecutorBlockStrategyEnum;
-import com.lego.core.job.glue.GlueTypeEnum;
-import com.lego.core.job.util.XxlDateUtil;
+import com.lego.core.module.job.enums.ExecutorBlockStrategyEnum;
+import com.lego.core.module.job.glue.GlueTypeEnum;
+import com.lego.core.module.job.util.XxlDateUtil;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.job.core.conf.XxlJobAdminConfig;

@@ -9,13 +9,13 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
 #end
 #if($Property.hasBoolean)
-import com.lego.core.gen.converter.BooleanConverter;
+import com.lego.core.module.gen.converter.BooleanConverter;
 #end
 #if($Property.hasAddress)
-import com.lego.core.gen.converter.AddressConverter;
+import com.lego.core.module.gen.converter.AddressConverter;
 #end
 #if($Property.hasTypeInfo)
-import com.lego.core.gen.converter.TypeInfoConverter;
+import com.lego.core.module.gen.converter.TypeInfoConverter;
 import com.lego.core.dto.TypeInfo;
 #end
 import com.lego.core.dto.BusDTO;

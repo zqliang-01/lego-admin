@@ -1,6 +1,6 @@
 package com.lego.system.entity;
 
-import com.lego.core.data.TreeEntity;
+import com.lego.core.data.hibernate.entity.TreeEntity;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.ReadableVO;

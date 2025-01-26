@@ -1,7 +1,7 @@
 package com.lego.flowable.handler.impl;
 
 import com.lego.core.feign.vo.TaskCompletedVO;
-import com.lego.core.flowable.IFlowableCompletedService;
+import com.lego.core.module.flowable.IFlowableCompletedService;
 import com.lego.flowable.handler.IFlowableCompleteHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

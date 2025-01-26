@@ -2,7 +2,7 @@ package com.lego.core.assembler;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.lego.core.data.ICommonService;
-import com.lego.core.data.TreeEntity;
+import com.lego.core.data.hibernate.entity.TreeEntity;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TreeInfo;

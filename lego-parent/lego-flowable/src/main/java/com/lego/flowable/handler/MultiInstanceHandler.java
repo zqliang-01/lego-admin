@@ -2,7 +2,7 @@ package com.lego.flowable.handler;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.lego.core.flowable.FlowableProcessConstants;
+import com.lego.core.module.flowable.FlowableProcessConstants;
 import com.lego.system.mapper.SysEmployeeMapper;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.FlowElement;

@@ -1,7 +1,7 @@
 package com.lego.core.assembler;
 
 import cn.hutool.core.map.MapUtil;
-import com.lego.core.data.TreeEntity;
+import com.lego.core.data.hibernate.entity.TreeEntity;
 import com.lego.core.dto.TreeInfo;
 import org.springframework.stereotype.Component;
 

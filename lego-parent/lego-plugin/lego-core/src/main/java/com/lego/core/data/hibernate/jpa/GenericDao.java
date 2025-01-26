@@ -6,7 +6,7 @@ import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.data.hibernate.entity.BusEntity;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.CoreException;
-import com.lego.core.flowable.FlowableCheckStatus;
+import com.lego.core.module.flowable.FlowableCheckStatus;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.GenericConditionItemVO;

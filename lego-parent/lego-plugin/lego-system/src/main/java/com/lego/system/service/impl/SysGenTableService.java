@@ -6,7 +6,7 @@ import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.MetaTableColumnInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.gen.GenConstants;
+import com.lego.core.module.gen.GenConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.GenericConditionItemVO;
 import com.lego.core.vo.GenericConditionVO;

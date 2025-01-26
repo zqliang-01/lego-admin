@@ -2,7 +2,7 @@ package com.lego.job.core.alarm.impl;
 
 import com.lego.core.common.Constants;
 import com.lego.core.data.ICommonService;
-import com.lego.core.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.model.ReturnT;
 import com.lego.core.vo.MessageCreateVO;
 import com.lego.core.enums.MessageTypeEnum;
 import com.lego.job.core.alarm.JobAlarm;

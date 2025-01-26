@@ -1,6 +1,6 @@
 package com.lego.job.service;
 
-import com.lego.core.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.model.ReturnT;
 import com.lego.job.core.model.XxlJobUser;
 import com.lego.job.core.util.CookieUtil;
 import com.lego.job.core.util.JacksonUtil;

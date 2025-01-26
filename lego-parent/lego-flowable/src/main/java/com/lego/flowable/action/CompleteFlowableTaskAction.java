@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import com.lego.core.data.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.feign.vo.TaskCompletedVO;
-import com.lego.core.flowable.FlowableProcessConstants;
+import com.lego.core.module.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
 import com.lego.flowable.handler.IFlowableCompleteHandler;

@@ -2,7 +2,7 @@ package com.lego.flowable.config;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.flowable.FlowableProcessConstants;
+import com.lego.core.module.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.handler.IFlowableCompleteHandler;

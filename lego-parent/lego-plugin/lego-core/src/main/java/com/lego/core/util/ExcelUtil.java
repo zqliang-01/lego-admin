@@ -2,8 +2,8 @@ package com.lego.core.util;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
-import com.lego.core.common.ExcelBigNumberConvert;
 import com.lego.core.exception.CoreException;
+import com.lego.core.module.gen.converter.ExcelBigNumberConvert;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

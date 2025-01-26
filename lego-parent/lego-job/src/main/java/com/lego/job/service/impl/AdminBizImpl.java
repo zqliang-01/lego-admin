@@ -1,9 +1,9 @@
 package com.lego.job.service.impl;
 
-import com.lego.core.job.biz.AdminBiz;
-import com.lego.core.job.biz.model.HandleCallbackParam;
-import com.lego.core.job.biz.model.RegistryParam;
-import com.lego.core.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.AdminBiz;
+import com.lego.core.module.job.biz.model.HandleCallbackParam;
+import com.lego.core.module.job.biz.model.RegistryParam;
+import com.lego.core.module.job.biz.model.ReturnT;
 import com.lego.job.core.thread.JobCompleteHelper;
 import com.lego.job.core.thread.JobRegistryHelper;
 import org.springframework.stereotype.Service;

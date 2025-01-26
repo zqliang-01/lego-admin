@@ -3,7 +3,7 @@ package com.lego.flowable.service.impl;
 import cn.hutool.extra.servlet.ServletUtil;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.flowable.FlowableProcessConstants;
+import com.lego.core.module.flowable.FlowableProcessConstants;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.action.CompleteFlowableTaskAction;

@@ -1,7 +1,7 @@
 package com.lego.job.core.route;
 
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.biz.model.TriggerParam;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.model.TriggerParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

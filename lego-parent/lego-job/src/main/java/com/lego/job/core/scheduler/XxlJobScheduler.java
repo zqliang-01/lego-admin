@@ -1,7 +1,7 @@
 package com.lego.job.core.scheduler;
 
-import com.lego.core.job.biz.ExecutorBiz;
-import com.lego.core.job.biz.client.ExecutorBizClient;
+import com.lego.core.module.job.biz.ExecutorBiz;
+import com.lego.core.module.job.biz.client.ExecutorBizClient;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.thread.JobCompleteHelper;
 import com.lego.job.core.thread.JobFailMonitorHelper;

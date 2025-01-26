@@ -1,7 +1,7 @@
 package com.lego.core.data.hibernate.entity;
 
 import com.lego.core.data.hibernate.IJpaFilterName;
-import com.lego.core.flowable.FlowableCheckStatus;
+import com.lego.core.module.flowable.FlowableCheckStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Filter;

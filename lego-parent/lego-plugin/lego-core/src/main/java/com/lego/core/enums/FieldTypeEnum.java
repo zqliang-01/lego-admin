@@ -1,6 +1,6 @@
 package com.lego.core.enums;
 
-import com.lego.core.gen.handler.*;
+import com.lego.core.module.gen.handler.*;
 import lombok.Getter;
 
 @Getter

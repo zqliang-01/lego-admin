@@ -5,7 +5,7 @@ import com.lego.core.enums.FieldTypeEnum;
 import com.lego.core.enums.GenericConditionEnum;
 import com.lego.core.enums.GenericSortEnum;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.gen.handler.IFieldTypeHandler;
+import com.lego.core.module.gen.handler.IFieldTypeHandler;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.GenericConditionItemVO;
 import com.lego.core.vo.GenericConditionVO;

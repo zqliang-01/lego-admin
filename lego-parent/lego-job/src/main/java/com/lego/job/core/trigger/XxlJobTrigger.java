@@ -1,11 +1,11 @@
 package com.lego.job.core.trigger;
 
-import com.lego.core.job.biz.ExecutorBiz;
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.biz.model.TriggerParam;
-import com.lego.core.job.enums.ExecutorBlockStrategyEnum;
-import com.lego.core.job.util.IpUtil;
-import com.lego.core.job.util.ThrowableUtil;
+import com.lego.core.module.job.biz.ExecutorBiz;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.model.TriggerParam;
+import com.lego.core.module.job.enums.ExecutorBlockStrategyEnum;
+import com.lego.core.module.job.util.IpUtil;
+import com.lego.core.module.job.util.ThrowableUtil;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.model.XxlJobGroup;
 import com.lego.job.core.model.XxlJobInfo;

@@ -2,9 +2,9 @@ package ${PackageName}.listener;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.lego.core.common.Constants;
-import com.lego.core.flowable.FlowableCheckStatus;
-import com.lego.core.flowable.FlowableProcessConstants;
-import com.lego.core.flowable.IFlowableCompletedListener;
+import com.lego.core.module.flowable.FlowableCheckStatus;
+import com.lego.core.module.flowable.FlowableProcessConstants;
+import com.lego.core.module.flowable.IFlowableCompletedListener;
 import com.lego.core.util.StringUtil;
 import ${PackageName}.service.I${ClassName}Service;
 import ${PackageName}.vo.${ClassName}CreateVO;

@@ -4,7 +4,7 @@ import com.lego.core.data.hibernate.impl.BusService;
 import com.lego.core.data.mybatis.mapper.MetaTableMapper;
 import com.lego.core.dto.MetaTableColumnInfo;
 import com.lego.core.dto.TypeInfo;
-import com.lego.core.gen.GenConstants;
+import com.lego.core.module.gen.GenConstants;
 import com.lego.sharding.config.ShardingHintConfig;
 import com.lego.system.action.AddSysGenTableColumnAction;
 import com.lego.system.action.DeleteSysGenTableColumnAction;

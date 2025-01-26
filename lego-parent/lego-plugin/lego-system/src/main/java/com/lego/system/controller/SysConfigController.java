@@ -1,7 +1,7 @@
 package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.lego.core.data.VersionManager;
+import com.lego.core.module.version.VersionManager;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysAppInfo;

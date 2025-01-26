@@ -2,9 +2,9 @@ package com.lego.crm.listener;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.lego.core.common.Constants;
-import com.lego.core.flowable.FlowableCheckStatus;
-import com.lego.core.flowable.FlowableProcessConstants;
-import com.lego.core.flowable.IFlowableCompletedListener;
+import com.lego.core.module.flowable.FlowableCheckStatus;
+import com.lego.core.module.flowable.FlowableProcessConstants;
+import com.lego.core.module.flowable.IFlowableCompletedListener;
 import com.lego.core.util.StringUtil;
 import com.lego.crm.service.ICrmCustomerService;
 import com.lego.crm.vo.CrmCustomerCreateVO;

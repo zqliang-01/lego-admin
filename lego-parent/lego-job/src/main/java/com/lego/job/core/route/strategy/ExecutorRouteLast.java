@@ -1,7 +1,7 @@
 package com.lego.job.core.route.strategy;
 
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.biz.model.TriggerParam;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.model.TriggerParam;
 import com.lego.job.core.route.ExecutorRouter;
 
 import java.util.List;

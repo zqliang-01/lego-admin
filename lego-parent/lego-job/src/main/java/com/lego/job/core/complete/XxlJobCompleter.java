@@ -1,7 +1,7 @@
 package com.lego.job.core.complete;
 
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.context.XxlJobContext;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.context.XxlJobContext;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.model.XxlJobInfo;
 import com.lego.job.core.model.XxlJobLog;

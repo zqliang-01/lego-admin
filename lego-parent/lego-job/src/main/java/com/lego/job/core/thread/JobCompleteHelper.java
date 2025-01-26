@@ -1,8 +1,8 @@
 package com.lego.job.core.thread;
 
-import com.lego.core.job.biz.model.HandleCallbackParam;
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.util.XxlDateUtil;
+import com.lego.core.module.job.biz.model.HandleCallbackParam;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.util.XxlDateUtil;
 import com.lego.job.core.complete.XxlJobCompleter;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.model.XxlJobLog;

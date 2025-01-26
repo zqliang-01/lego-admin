@@ -1,7 +1,7 @@
 package com.lego.system.entity;
 
 import com.lego.core.data.hibernate.entity.BaseEntity;
-import com.lego.core.gen.GenConstants;
+import com.lego.core.module.gen.GenConstants;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.ReadableVO;
 import lombok.Getter;

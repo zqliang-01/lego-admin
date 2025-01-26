@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
-import com.lego.core.flowable.FlowableCheckStatus;
+import com.lego.core.module.flowable.FlowableCheckStatus;
 import com.lego.core.util.ExcelUtil;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.core.vo.JsonResponse;

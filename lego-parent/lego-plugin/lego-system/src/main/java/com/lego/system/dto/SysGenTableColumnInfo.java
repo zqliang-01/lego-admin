@@ -3,7 +3,7 @@ package com.lego.system.dto;
 import com.lego.core.dto.DTO;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.enums.FieldTypeEnum;
-import com.lego.core.gen.GenConstants;
+import com.lego.core.module.gen.GenConstants;
 import com.lego.core.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;

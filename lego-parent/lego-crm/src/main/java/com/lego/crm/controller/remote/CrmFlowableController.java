@@ -3,7 +3,7 @@ package com.lego.crm.controller.remote;
 import com.lego.core.common.ServiceStartType;
 import com.lego.core.feign.api.ICrmAPI;
 import com.lego.core.feign.vo.TaskCompletedVO;
-import com.lego.core.flowable.IFlowableCompletedService;
+import com.lego.core.module.flowable.IFlowableCompletedService;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;

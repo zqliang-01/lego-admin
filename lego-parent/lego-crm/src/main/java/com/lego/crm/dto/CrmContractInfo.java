@@ -6,8 +6,8 @@ import java.util.Date;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.alibaba.excel.annotation.format.DateTimeFormat;
-import com.lego.core.gen.converter.AddressConverter;
-import com.lego.core.gen.converter.TypeInfoConverter;
+import com.lego.core.module.gen.converter.AddressConverter;
+import com.lego.core.module.gen.converter.TypeInfoConverter;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.dto.BusDTO;
 

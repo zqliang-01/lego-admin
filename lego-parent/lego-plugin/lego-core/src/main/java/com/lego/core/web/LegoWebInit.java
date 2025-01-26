@@ -31,7 +31,7 @@ public class LegoWebInit implements BeanFactoryPostProcessor {
     }
 
     private void initFont() {
-        try (InputStream fontStream = this.getClass().getResourceAsStream("/fonts/simsun.ttf")) {
+        try (InputStream fontStream = ResourceUtil.getStream("classpath:fonts/simsun.ttf")) {
             Font font = Font.createFont(Font.TRUETYPE_FONT, fontStream);
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(font);

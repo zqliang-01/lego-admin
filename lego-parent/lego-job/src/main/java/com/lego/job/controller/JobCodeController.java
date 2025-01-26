@@ -2,7 +2,7 @@ package com.lego.job.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.job.glue.GlueTypeEnum;
+import com.lego.core.module.job.glue.GlueTypeEnum;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;

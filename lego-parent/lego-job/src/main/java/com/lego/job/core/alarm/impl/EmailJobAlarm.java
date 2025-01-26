@@ -1,6 +1,6 @@
 package com.lego.job.core.alarm.impl;
 
-import com.lego.core.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.model.ReturnT;
 import com.lego.job.core.alarm.JobAlarm;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.model.XxlJobGroup;

@@ -1,9 +1,9 @@
 package com.lego.core.feign.api;
 
-import com.lego.core.job.biz.model.HandleCallbackParam;
-import com.lego.core.job.biz.model.RegistryParam;
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.util.XxlJobRemotingUtil;
+import com.lego.core.module.job.biz.model.HandleCallbackParam;
+import com.lego.core.module.job.biz.model.RegistryParam;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.util.XxlJobRemotingUtil;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;

@@ -1,8 +1,8 @@
 package com.lego.job.core.route.strategy;
 
-import com.lego.core.job.biz.ExecutorBiz;
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.biz.model.TriggerParam;
+import com.lego.core.module.job.biz.ExecutorBiz;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.biz.model.TriggerParam;
 import com.lego.job.core.route.ExecutorRouter;
 import com.lego.job.core.scheduler.XxlJobScheduler;
 

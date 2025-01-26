@@ -1,8 +1,8 @@
 package com.lego.job.core.thread;
 
-import com.lego.core.job.biz.model.RegistryParam;
-import com.lego.core.job.biz.model.ReturnT;
-import com.lego.core.job.enums.RegistryConfig;
+import com.lego.core.module.job.biz.model.RegistryParam;
+import com.lego.core.module.job.biz.model.ReturnT;
+import com.lego.core.module.job.enums.RegistryConfig;
 import com.lego.job.core.conf.XxlJobAdminConfig;
 import com.lego.job.core.model.XxlJobGroup;
 import com.lego.job.core.model.XxlJobRegistry;

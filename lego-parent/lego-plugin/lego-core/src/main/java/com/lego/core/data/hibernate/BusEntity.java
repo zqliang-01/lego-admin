@@ -1,6 +1,6 @@
 package com.lego.core.data.hibernate;
 
-import com.lego.core.flowable.FlowableCheckStatus;
+import com.lego.core.module.flowable.FlowableCheckStatus;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Filter;
