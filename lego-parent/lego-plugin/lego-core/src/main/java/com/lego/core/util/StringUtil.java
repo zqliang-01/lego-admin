@@ -19,6 +19,7 @@ import java.security.MessageDigest;
 import java.sql.Clob;
 import java.text.DecimalFormat;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -244,6 +245,20 @@ public class StringUtil {
         return str.substring(pos + separator.length());
     }
 
+    public static String substringLastAfter(String str, String separator) {
+        if (isBlank(str)) {
+            return str;
+        }
+        if (separator == null) {
+            return "";
+        }
+        int pos = str.lastIndexOf(separator);
+        if (pos == -1) {
+            return "";
+        }
+        return str.substring(pos + separator.length());
+    }
+
     public static String substringBefore(String str, String separator) {
         if (isBlank(str)) {
             return str;
@@ -379,4 +394,26 @@ public class StringUtil {
         return matcher.match(pattern, url);
     }
 
+    /**
+     * 比较X.xx.x格式的版本号
+     */
+    public static boolean isNewVersion(String version1, String version2) {
+        int[] nums1 = Arrays.stream(version1.substring(1).split("\\."))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+        int[] nums2 = Arrays.stream(version2.substring(1).split("\\."))
+            .mapToInt(Integer::parseInt)
+            .toArray();
+
+        int length = Math.max(nums1.length, nums2.length);
+        for (int i = 0; i < length; i++) {
+            int num1 = i < nums1.length ? nums1[i] : 0;
+            int num2 = i < nums2.length ? nums2[i] : 0;
+
+            if (num1 != num2) {
+                return num1 > num2;
+            }
+        }
+        return false;
+    }
 }

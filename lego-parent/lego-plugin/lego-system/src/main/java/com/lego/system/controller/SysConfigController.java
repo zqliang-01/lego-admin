@@ -1,7 +1,9 @@
 package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
+import com.lego.core.exception.BusinessException;
 import com.lego.core.module.version.VersionManager;
+import com.lego.core.util.StringUtil;
 import com.lego.core.vo.JsonResponse;
 import com.lego.core.web.BaseController;
 import com.lego.system.dto.SysAppInfo;
@@ -52,8 +54,9 @@ public class SysConfigController extends BaseController {
     @GetMapping("/check-update")
     @SaCheckPermission("manage_system_update")
     public JsonResponse<SysVersionInfo> checkUpdate() {
-        String newVersion = versionManager.getNewVersion();
         String currentVersion = configService.findValueBy(SysConfigCode.APP_VERSION);
+        BusinessException.check(StringUtil.isNotBlank(currentVersion), "当前版本过旧，未检测到版本信息！");
+        String newVersion = versionManager.getNewVersion(currentVersion);
         return JsonResponse.success(new SysVersionInfo(currentVersion, newVersion));
     }
 
