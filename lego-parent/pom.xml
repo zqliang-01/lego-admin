@@ -92,6 +92,7 @@
 		<module>lego-plugin</module>
 		<module>lego-job</module>
         <module>lego-mobile</module>
+		<module>lego-system</module>
     </modules>
 
 	<build>

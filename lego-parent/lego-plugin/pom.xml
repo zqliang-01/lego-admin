@@ -12,6 +12,5 @@
   <modules>
     <module>lego-core</module>
     <module>lego-sharding</module>
-    <module>lego-system</module>
   </modules>
 </project>
