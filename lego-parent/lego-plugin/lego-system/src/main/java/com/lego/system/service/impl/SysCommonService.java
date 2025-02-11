@@ -3,20 +3,24 @@ package com.lego.system.service.impl;
 import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.common.Constants;
 import com.lego.core.data.ICommonService;
+import com.lego.core.dto.FormInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.EntityUtil;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.MessageCreateVO;
 import com.lego.system.action.AddSysMessageAction;
+import com.lego.system.dao.ISysCustomFormDao;
 import com.lego.system.dao.ISysDeptDao;
 import com.lego.system.dao.ISysDictionaryDao;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.dao.ISysGenTableDao;
 import com.lego.system.dao.ISysOperationLogDao;
 import com.lego.system.dao.ISysPermissionDao;
+import com.lego.system.entity.SysCustomForm;
 import com.lego.system.entity.SysDept;
 import com.lego.system.entity.SysDictionary;
 import com.lego.system.entity.SysEmployee;
+import com.lego.system.entity.SysGenTable;
 import com.lego.system.entity.SysOperationLog;
 import com.lego.system.entity.SysPermission;
 import com.lego.system.mapper.SysEmployeeMapper;
@@ -59,6 +63,9 @@ public class SysCommonService implements ICommonService {
 
     @Autowired
     private SysEmployeeMapper employeeMapper;
+
+    @Autowired
+    private ISysCustomFormDao formDao;
 
     @Override
     public void addLog(ActionVO vo) {
@@ -131,5 +138,22 @@ public class SysCommonService implements ICommonService {
     @Override
     public String findPermissionCodeByTable(String tableCode) {
         return tableDao.findPermissionCodeBy(tableCode);
+    }
+
+    @Override
+    public FormInfo findFormBy(String code) {
+        SysCustomForm form = formDao.findByCode(code);
+        SysGenTable table = form.getTable();
+        return new FormInfo(form.getCode(), form.getName(), table.getAppCode(), table.getCode());
+    }
+
+    @Override
+    public List<String> findEmployeeCodesByRole(List<String> roleCodes) {
+        return employeeMapper.selectCodesByRoles(roleCodes);
+    }
+
+    @Override
+    public List<String> findEmployeeCodesByDept(List<String> deptCodes) {
+        return employeeMapper.selectCodesByDepts(deptCodes);
     }
 }

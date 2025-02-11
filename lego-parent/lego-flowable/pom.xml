@@ -15,7 +15,7 @@
     <dependencies>
         <dependency>
             <groupId>com.lego</groupId>
-            <artifactId>lego-system</artifactId>
+            <artifactId>lego-core</artifactId>
             <version>1.0.0</version>
         </dependency>
         <!--flowable工作流 -->
@@ -27,7 +27,7 @@
     </dependencies>
 
     <build>
-        <finalName>lego-system</finalName>
+        <finalName>lego-flowable</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>

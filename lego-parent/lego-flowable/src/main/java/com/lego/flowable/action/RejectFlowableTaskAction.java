@@ -6,7 +6,6 @@ import com.lego.core.util.StringUtil;
 import com.lego.flowable.vo.FlowableCommentType;
 import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.FlowableTaskRejectVO;
-import com.lego.system.vo.SysPermissionCode;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.UserTask;
@@ -28,7 +27,7 @@ public class RejectFlowableTaskAction extends FlowableTaskAction {
     private FlowableTaskRejectVO vo;
 
     public RejectFlowableTaskAction(String operatorCode, FlowableTaskRejectVO vo) {
-        super(SysPermissionCode.oaUndo, operatorCode, vo.getId());
+        super("oa_undo", operatorCode, vo.getId());
         this.vo = vo;
     }
 

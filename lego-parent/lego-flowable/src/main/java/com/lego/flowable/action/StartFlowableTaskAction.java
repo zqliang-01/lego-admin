@@ -2,6 +2,8 @@ package com.lego.flowable.action;
 
 import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
+import com.lego.core.data.ICommonService;
+import com.lego.core.dto.FormInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.feign.vo.TaskCompletedVO;
 import com.lego.core.util.StringUtil;
@@ -9,10 +11,6 @@ import com.lego.core.web.LegoBeanFactory;
 import com.lego.flowable.handler.IFlowableCompleteHandler;
 import com.lego.flowable.vo.FlowableTaskStartVO;
 import com.lego.flowable.vo.ProcessStatus;
-import com.lego.system.dao.ISysCustomFormDao;
-import com.lego.system.entity.SysCustomForm;
-import com.lego.system.entity.SysGenTable;
-import com.lego.system.vo.SysPermissionCode;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.engine.IdentityService;
 import org.flowable.engine.RepositoryService;
@@ -28,14 +26,14 @@ import java.text.MessageFormat;
 public class StartFlowableTaskAction extends MaintainAction {
 
     private FlowableTaskStartVO vo;
-    private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
+    protected ICommonService commonService = LegoBeanFactory.getBean(ICommonService.class);
     private RuntimeService runtimeService = LegoBeanFactory.getBean(RuntimeService.class);
     private IdentityService identityService = LegoBeanFactory.getBean(IdentityService.class);
     private RepositoryService repositoryService = LegoBeanFactory.getBean(RepositoryService.class);
     private IFlowableCompleteHandler completeHandler = LegoBeanFactory.getBean(IFlowableCompleteHandler.class);
 
     public StartFlowableTaskAction(String operatorCode, FlowableTaskStartVO vo) {
-        super(SysPermissionCode.manageWorkFlow, operatorCode);
+        super("manage_workflow", operatorCode);
         this.vo = vo;
     }
 
@@ -73,14 +71,13 @@ public class StartFlowableTaskAction extends MaintainAction {
         if (StringUtil.isBlank(vo.getFormKey())) {
             return "";
         }
-        SysCustomForm form = formDao.findByCode(vo.getFormKey());
-        SysGenTable genTable = form.getTable();
-        BusinessException.check(genTable != null, "表单[{0}]无关联数据表，任务保存失败！", vo.getFormKey());
+        FormInfo form = commonService.findFormBy(vo.getFormKey());
+        BusinessException.check(form != null, "表单[{0}]无关联数据表，任务保存失败！", vo.getFormKey());
 
         TaskCompletedVO completedVO = new TaskCompletedVO();
         completedVO.setVariable(vo.getVariables());
-        completedVO.setTableCode(genTable.getCode());
-        return completeHandler.doTaskCompleted(genTable.getAppCode(), completedVO);
+        completedVO.setTableCode(form.getTableCode());
+        return completeHandler.doTaskCompleted(form.getAppCode(), completedVO);
     }
 
     private void processSysMessage(String id) {

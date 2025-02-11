@@ -2,8 +2,8 @@ package com.lego.flowable.handler;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.lego.core.data.ICommonService;
 import com.lego.core.module.flowable.FlowableProcessConstants;
-import com.lego.system.mapper.SysEmployeeMapper;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.FlowElement;
 import org.flowable.bpmn.model.UserTask;
@@ -22,7 +22,7 @@ import java.util.Set;
 public class MultiInstanceHandler {
 
     @Autowired
-    private SysEmployeeMapper employeeMapper;
+    private ICommonService commonService;
 
     public Set<String> getUserIds(DelegateExecution execution) {
         Set<String> candidateUserIds = new LinkedHashSet<>();
@@ -35,9 +35,9 @@ public class MultiInstanceHandler {
             } else if (CollUtil.isNotEmpty(userTask.getCandidateGroups())) {
                 List<String> groups = userTask.getCandidateGroups();
                 if ("ROLES".equals(dataType)) {
-                    candidateUserIds.addAll(employeeMapper.selectCodesByRoles(groups));
+                    candidateUserIds.addAll(commonService.findEmployeeCodesByRole(groups));
                 } else if ("DEPTS".equals(dataType)) {
-                    candidateUserIds.addAll(employeeMapper.selectCodesByDepts(groups));
+                    candidateUserIds.addAll(commonService.findEmployeeCodesByDept(groups));
                 }
             }
         }

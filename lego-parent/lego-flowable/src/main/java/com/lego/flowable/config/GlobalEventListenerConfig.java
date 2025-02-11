@@ -1,6 +1,8 @@
 package com.lego.flowable.config;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.lego.core.data.ICommonService;
+import com.lego.core.dto.FormInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.module.flowable.FlowableProcessConstants;
 import com.lego.core.util.StringUtil;
@@ -8,9 +10,6 @@ import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.handler.IFlowableCompleteHandler;
 import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.ProcessStatus;
-import com.lego.system.dao.ISysCustomFormDao;
-import com.lego.system.entity.SysCustomForm;
-import com.lego.system.entity.SysGenTable;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEntityEvent;
 import org.flowable.common.engine.api.delegate.event.FlowableEngineEventType;
@@ -36,8 +35,6 @@ import java.util.List;
 public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListener implements InitializingBean {
 
     @Autowired
-    private ISysCustomFormDao formDao;
-    @Autowired
     private RuntimeService runtimeService;
     @Resource
     protected HistoryService historyService;
@@ -47,6 +44,8 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
     private FlowableModelAssembler modelAssembler;
     @Autowired
     private IFlowableCompleteHandler completeHandler;
+    @Autowired
+    private ICommonService commonService;
 
     /**
      * 流程结束监听器
@@ -94,12 +93,11 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
                 continue;
             }
             List<HistoricTaskLogEntry> taskLogs = taskLogQuery.taskId(task.getId()).type(logType).list();
-            SysCustomForm form = formDao.findByCode(task.getFormKey());
-            SysGenTable table = form.getTable();
+            FormInfo form = commonService.findFormBy(task.getFormKey());
             if (CollectionUtil.isEmpty(taskLogs)) {
-                completeHandler.doProcessCompleted(table.getAppCode(), table.getCode(), code);
+                completeHandler.doProcessCompleted(form.getAppCode(), form.getTableCode(), code);
             } else {
-                completeHandler.doTaskRejected(table.getAppCode(), table.getCode(), code);
+                completeHandler.doTaskRejected(form.getAppCode(), form.getTableCode(), code);
             }
         }
     }
@@ -119,9 +117,8 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
             if (StringUtil.isBlank(code)) {
                 continue;
             }
-            SysCustomForm form = formDao.findByCode(task.getFormKey());
-            SysGenTable table = form.getTable();
-            completeHandler.doTaskRejected(table.getAppCode(), table.getCode(), code);
+            FormInfo form = commonService.findFormBy(task.getFormKey());
+            completeHandler.doTaskRejected(form.getAppCode(), form.getTableCode(), code);
         }
     }
 
@@ -130,12 +127,11 @@ public class GlobalEventListenerConfig extends AbstractFlowableEngineEventListen
         String formKey = modelAssembler.getStartEvent(bpmnModel).getFormKey();
         if (StringUtil.isNotBlank(formKey)) {
             String code = instance.getBusinessKey();
-            SysCustomForm form = formDao.findByCode(formKey);
-            SysGenTable table = form.getTable();
+            FormInfo form = commonService.findFormBy(formKey);
             if (ProcessStatus.RUNNING.getCode().equals(instance.getBusinessStatus())) {
-                completeHandler.doProcessCompleted(table.getAppCode(), table.getCode(), code);
+                completeHandler.doProcessCompleted(form.getAppCode(), form.getTableCode(), code);
             } else {
-                completeHandler.doTaskRejected(table.getAppCode(), table.getCode(), code);
+                completeHandler.doTaskRejected(form.getAppCode(), form.getTableCode(), code);
             }
         }
     }

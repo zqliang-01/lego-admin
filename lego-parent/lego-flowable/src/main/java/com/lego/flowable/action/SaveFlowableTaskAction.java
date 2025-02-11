@@ -1,6 +1,7 @@
 package com.lego.flowable.action;
 
 import com.lego.core.data.ActionType;
+import com.lego.core.dto.FormInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.feign.vo.TaskCompletedVO;
 import com.lego.core.module.flowable.FlowableProcessConstants;
@@ -8,21 +9,15 @@ import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
 import com.lego.flowable.handler.IFlowableCompleteHandler;
 import com.lego.flowable.vo.FlowableTaskCompleteVO;
-import com.lego.system.dao.ISysCustomFormDao;
-import com.lego.system.entity.SysCustomForm;
-import com.lego.system.entity.SysGenTable;
-import com.lego.system.vo.SysPermissionCode;
 
 public class SaveFlowableTaskAction extends FlowableTaskAction {
 
     private FlowableTaskCompleteVO vo;
 
-    private ISysCustomFormDao formDao = getDao(ISysCustomFormDao.class);
-
     private IFlowableCompleteHandler completeHandler = LegoBeanFactory.getBean(IFlowableCompleteHandler.class);
 
     public SaveFlowableTaskAction(String operatorCode, FlowableTaskCompleteVO vo) {
-        super(SysPermissionCode.oaUndo, operatorCode, vo.getId());
+        super("oa_undo", operatorCode, vo.getId());
         this.vo = vo;
     }
 
@@ -44,14 +39,13 @@ public class SaveFlowableTaskAction extends FlowableTaskAction {
         if (StringUtil.isBlank(task.getFormKey())) {
             return;
         }
-        SysCustomForm form = formDao.findByCode(task.getFormKey());
-        SysGenTable genTable = form.getTable();
-        BusinessException.check(genTable != null, "表单[{0}]无关联数据表，任务保存失败！", task.getFormKey());
+        FormInfo form = commonService.findFormBy(task.getFormKey());
+        BusinessException.check(form != null, "表单[{0}]无关联数据表，任务保存失败！", task.getFormKey());
 
         TaskCompletedVO completedVO = new TaskCompletedVO();
-        completedVO.setTableCode(genTable.getCode());
+        completedVO.setTableCode(form.getTableCode());
         completedVO.setVariable(vo.getVariables());
-        String code = completeHandler.doTaskCompleted(genTable.getAppCode(), completedVO);
+        String code = completeHandler.doTaskCompleted(form.getAppCode(), completedVO);
         taskService.setVariableLocal(vo.getId(), FlowableProcessConstants.FORM_UNIQUE_KEY, code);
     }
 

@@ -14,7 +14,13 @@ spring:
         - id: system
           uri: lb://system
           predicates:
-            - Path=/back-end/sys-*/**,/back-end/flowable-*/**,/back-end/sharding-*/**
+            - Path=/back-end/sys-*/**,/back-end/sharding-*/**
+          filters:
+            - StripPrefix=1
+        - id: flowable
+          uri: lb://flowable
+          predicates:
+            - Path=/back-end/flowable-*/**
           filters:
             - StripPrefix=1
         - id: crm

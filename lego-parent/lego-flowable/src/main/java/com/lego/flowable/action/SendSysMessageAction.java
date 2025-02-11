@@ -3,11 +3,10 @@ package com.lego.flowable.action;
 import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
 import com.lego.core.data.ICommonService;
+import com.lego.core.enums.MessageTypeEnum;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.MessageCreateVO;
-import com.lego.core.enums.MessageTypeEnum;
 import com.lego.core.web.LegoBeanFactory;
-import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.TaskService;
 import org.flowable.task.api.Task;
 
@@ -20,7 +19,7 @@ public class SendSysMessageAction extends MaintainAction {
     private TaskService taskService = LegoBeanFactory.getBean(TaskService.class);
 
     public SendSysMessageAction(String operatorCode, String instanceId) {
-        super(SysPermissionCode.manageWorkFlow, operatorCode);
+        super("manage_workflow", operatorCode);
         this.instanceId = instanceId;
     }
 

@@ -6,7 +6,6 @@ import com.lego.core.web.LegoBeanFactory;
 import com.lego.flowable.assembler.FlowableModelAssembler;
 import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.ProcessStatus;
-import com.lego.system.vo.SysPermissionCode;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.EndEvent;
 import org.flowable.engine.RuntimeService;
@@ -28,7 +27,7 @@ public class StopFlowableInstanceAction extends FlowableAction {
     private FlowableModelAssembler modelAssembler = LegoBeanFactory.getBean(FlowableModelAssembler.class);
 
     public StopFlowableInstanceAction(String operatorCode, String id) {
-        super(SysPermissionCode.manageWorkFlow, operatorCode);
+        super("manage_workflow", operatorCode);
         this.id = id;
     }
 

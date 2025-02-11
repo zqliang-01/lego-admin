@@ -6,7 +6,6 @@ import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.LegoBeanFactory;
 import com.lego.flowable.vo.FlowableModelModifyVO;
-import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.repository.Model;
 
@@ -19,7 +18,7 @@ public class ModifyFlowableModelAction extends MaintainAction {
     private RepositoryService repositoryService = LegoBeanFactory.getBean(RepositoryService.class);
 
     public ModifyFlowableModelAction(String operatorCode, FlowableModelModifyVO vo) {
-        super(SysPermissionCode.manageWorkFlowModel, operatorCode);
+        super("manage_workflow_model", operatorCode);
         this.vo = vo;
     }
 

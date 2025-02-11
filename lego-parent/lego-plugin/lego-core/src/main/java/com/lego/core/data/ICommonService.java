@@ -1,5 +1,6 @@
 package com.lego.core.data;
 
+import com.lego.core.dto.FormInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.MessageCreateVO;
@@ -30,4 +31,10 @@ public interface ICommonService {
     List<String> findDataPermissionEmployeeCode();
 
     String findPermissionCodeByTable(String tableCode);
+
+    FormInfo findFormBy(String code);
+
+    List<String> findEmployeeCodesByRole(List<String> roleCodes);
+
+    List<String> findEmployeeCodesByDept(List<String> deptCodes);
 }

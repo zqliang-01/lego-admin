@@ -1,10 +1,11 @@
 package com.lego.flowable.service.impl;
 
 import cn.hutool.extra.servlet.ServletUtil;
+import com.lego.core.data.ICommonService;
 import com.lego.core.dto.LegoPage;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.module.flowable.FlowableProcessConstants;
-import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.action.CompleteFlowableTaskAction;
 import com.lego.flowable.action.DelegateFlowableTaskAction;
@@ -26,8 +27,6 @@ import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
-import com.lego.system.dao.ISysEmployeeDao;
-import com.lego.system.entity.SysEmployee;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.ProcessEngineConfiguration;
@@ -55,7 +54,7 @@ import java.util.stream.Collectors;
 public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> implements IFlowableTaskService {
 
     @Autowired
-    private ISysEmployeeDao employeeDao;
+    private ICommonService commonService;
 
     @Autowired
     private FlowableCommentMapper commentMapper;
@@ -68,9 +67,9 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
 
     @Override
     public LegoPage<FlowableTaskInfo> findUndoBy(String employeeCode, FlowableTaskSearchVO vo) {
-        SysEmployee employee = employeeDao.findByCode(employeeCode);
-        List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
-        candidateGroups.add(EntityUtil.getCode(employee.getDept()));
+        List<String> candidateGroups = commonService.findRoleCodesBy(employeeCode);
+        TypeInfo dept = commonService.findDeptBy(employeeCode);
+        candidateGroups.add(dept.getCode());
         TaskQuery taskQuery = taskService.createTaskQuery()
             .active()
             .taskCandidateOrAssigned(employeeCode)
@@ -98,9 +97,9 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
 
     @Override
     public LegoPage<FlowableTaskInfo> findClaimdBy(String employeeCode, FlowableTaskSearchVO vo) {
-        SysEmployee employee = employeeDao.findByCode(employeeCode);
-        List<String> candidateGroups = EntityUtil.getCode(employee.getRoles());
-        candidateGroups.add(EntityUtil.getCode(employee.getDept()));
+        List<String> candidateGroups = commonService.findRoleCodesBy(employeeCode);
+        TypeInfo dept = commonService.findDeptBy(employeeCode);
+        candidateGroups.add(dept.getCode());
         TaskQuery taskQuery = taskService.createTaskQuery()
             .active()
             .taskCandidateUser(employeeCode)

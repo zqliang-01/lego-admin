@@ -1,6 +1,7 @@
 package com.lego.core.feign;
 
 import com.lego.core.data.ICommonService;
+import com.lego.core.dto.FormInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.feign.client.ISystemClient;
 import com.lego.core.vo.ActionVO;
@@ -62,6 +63,21 @@ public class CommonService implements ICommonService {
     @Override
     public String findPermissionCodeByTable(String tableCode) {
         return systemClient.findPermissionCodeByTable(tableCode).getData();
+    }
+
+    @Override
+    public FormInfo findFormBy(String code) {
+        return systemClient.findFormByCode(code).getData();
+    }
+
+    @Override
+    public List<String> findEmployeeCodesByRole(List<String> roleCodes) {
+        return systemClient.findEmployeeCodesByRole(roleCodes).getData();
+    }
+
+    @Override
+    public List<String> findEmployeeCodesByDept(List<String> deptCodes) {
+        return systemClient.findEmployeeCodesByDept(deptCodes).getData();
     }
 
 }

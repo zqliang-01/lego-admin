@@ -34,6 +34,11 @@
         <!-- 启动依赖模块，微服务部署时按需单独启动 -->
         <dependency>
             <groupId>com.lego</groupId>
+            <artifactId>lego-system</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.lego</groupId>
             <artifactId>lego-flowable</artifactId>
             <version>1.0.0</version>
         </dependency>

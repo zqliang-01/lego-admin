@@ -2,6 +2,7 @@ package com.lego.system.controller.remote;
 
 import com.lego.core.common.ServiceStartType;
 import com.lego.core.data.ICommonService;
+import com.lego.core.dto.FormInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.feign.api.ISystemAPI;
 import com.lego.core.vo.ActionVO;
@@ -85,6 +86,24 @@ public class SysCommonController extends BaseController implements ISystemAPI {
     @GetMapping("/get-permission-code")
     public JsonResponse<String> findPermissionCodeByTable(String tableCode) {
         return JsonResponse.success(commonService.findPermissionCodeByTable(tableCode));
+    }
+
+    @Override
+    @GetMapping("/get-form")
+    public JsonResponse<FormInfo> findFormByCode(String code) {
+        return JsonResponse.success(commonService.findFormBy(code));
+    }
+
+    @Override
+    @GetMapping(value = "/back-end/sys-common/get-employee-codes-by-role")
+    public JsonResponse<List<String>> findEmployeeCodesByRole(List<String> roleCodes) {
+        return JsonResponse.success(commonService.findEmployeeCodesByRole(roleCodes));
+    }
+
+    @Override
+    @GetMapping(value = "/back-end/sys-common/get-employee-codes-by-dept")
+    public JsonResponse<List<String>> findEmployeeCodesByDept(List<String> deptCodes) {
+        return JsonResponse.success(commonService.findEmployeeCodesByDept(deptCodes));
     }
 
 }

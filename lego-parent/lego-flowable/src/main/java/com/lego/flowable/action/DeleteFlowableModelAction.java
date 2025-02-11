@@ -3,7 +3,6 @@ package com.lego.flowable.action;
 import com.lego.core.action.MaintainAction;
 import com.lego.core.data.ActionType;
 import com.lego.core.web.LegoBeanFactory;
-import com.lego.system.vo.SysPermissionCode;
 import org.flowable.engine.RepositoryService;
 
 import java.text.MessageFormat;
@@ -15,7 +14,7 @@ public class DeleteFlowableModelAction extends MaintainAction {
     private RepositoryService repositoryService = LegoBeanFactory.getBean(RepositoryService.class);
 
     public DeleteFlowableModelAction(String operatorCode, String id) {
-        super(SysPermissionCode.manageWorkFlow, operatorCode);
+        super("manage_workflow", operatorCode);
         this.id = id;
     }
 

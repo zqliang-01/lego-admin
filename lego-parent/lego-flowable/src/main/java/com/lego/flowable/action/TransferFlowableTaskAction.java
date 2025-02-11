@@ -1,20 +1,18 @@
 package com.lego.flowable.action;
 
 import com.lego.core.data.ActionType;
+import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
-import com.lego.core.util.EntityUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.flowable.vo.FlowableCommentType;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
-import com.lego.system.entity.SysEmployee;
-import com.lego.system.vo.SysPermissionCode;
 
 public class TransferFlowableTaskAction extends FlowableTaskAction {
 
     private FlowableTaskTransferVO vo;
 
     public TransferFlowableTaskAction(String operatorCode, FlowableTaskTransferVO vo) {
-        super(SysPermissionCode.oaUndo, operatorCode, vo.getId());
+        super("oa_undo", operatorCode, vo.getId());
         this.vo = vo;
     }
 
@@ -27,10 +25,10 @@ public class TransferFlowableTaskAction extends FlowableTaskAction {
 
     @Override
     protected void doRun() {
-        SysEmployee employee = employeeDao.findByCode(operatorCode);
+        TypeInfo employee = commonService.findEmployeeBy(operatorCode);
         StringBuilder commentBuilder = new StringBuilder(employee.getName()).append("->");
-        SysEmployee targetEmployee = employeeDao.findByCode(vo.getEmployeeCode());
-        commentBuilder.append(EntityUtil.getName(targetEmployee));
+        TypeInfo targetEmployee = commonService.findEmployeeBy(vo.getEmployeeCode());
+        commentBuilder.append(targetEmployee.getName());
         if (StringUtil.isNotBlank(vo.getComment())) {
             commentBuilder.append(": ").append(vo.getComment());
         }

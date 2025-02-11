@@ -28,8 +28,8 @@ monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身
         <!--*********************文件日志***********************-->
         <!--debug级别日志-->
         <RollingFile name="debugFileAppender"
-                     fileName="${LOG_HOME}/debug/lego-flowable-debug.log"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-flowable-debug-%d{yyyy-MM-dd}-%i.log.gz">
+                     fileName="${LOG_HOME}/debug/lego-system-debug.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-system-debug-%d{yyyy-MM-dd}-%i.log.gz">
             <Filters>
                 <!--过滤掉info及更高级别日志-->
                 <ThresholdFilter level="INFO" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -52,8 +52,8 @@ monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身
 
         <!--info级别日志-->
         <RollingFile name="infoFileAppender"
-                     fileName="${LOG_HOME}/info/lego-flowable-info.log"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-flowable-info-%d{yyyy-MM-dd}-%i.log.gz">
+                     fileName="${LOG_HOME}/info/lego-system-info.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-system-info-%d{yyyy-MM-dd}-%i.log.gz">
             <Filters>
                 <!--过滤掉warn及更高级别日志-->
                 <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
@@ -76,8 +76,8 @@ monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身
 
         <!--error及更高级别日志-->
         <RollingFile name="errorFileAppender"
-                     fileName="${LOG_HOME}/error/lego-flowable-error.log"
-                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-flowable-error-%d{yyyy-MM-dd}-%i.log.gz">
+                     fileName="${LOG_HOME}/error/lego-system-error.log"
+                     filePattern="${LOG_HOME}/$${date:yyyy-MM}/lego-system-error-%d{yyyy-MM-dd}-%i.log.gz">
             <!--设置日志格式-->
             <PatternLayout>
                 <pattern>${ENCODER_PATTERN}</pattern>

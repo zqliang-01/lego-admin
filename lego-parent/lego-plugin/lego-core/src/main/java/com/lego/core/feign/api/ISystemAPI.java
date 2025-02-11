@@ -1,5 +1,6 @@
 package com.lego.core.feign.api;
 
+import com.lego.core.dto.FormInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.ActionVO;
 import com.lego.core.vo.JsonResponse;
@@ -46,4 +47,13 @@ public interface ISystemAPI {
 
     @GetMapping(value = "/back-end/sys-common/get-permission-code")
     JsonResponse<String> findPermissionCodeByTable(@RequestParam("tableCode") String tableCode);
+
+    @GetMapping(value = "/back-end/sys-common/get-form")
+    JsonResponse<FormInfo> findFormByCode(@RequestParam("code") String code);
+
+    @GetMapping(value = "/back-end/sys-common/get-employee-codes-by-role")
+    JsonResponse<List<String>> findEmployeeCodesByRole(@RequestParam("roleCodes") List<String> roleCodes);
+
+    @GetMapping(value = "/back-end/sys-common/get-employee-codes-by-dept")
+    JsonResponse<List<String>> findEmployeeCodesByDept(@RequestParam("deptCodes") List<String> deptCodes);
 }
