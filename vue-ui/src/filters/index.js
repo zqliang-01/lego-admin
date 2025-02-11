@@ -41,6 +41,9 @@ export function filterUserLazyImg(value) {
  */
 export function iconPre(name) {
   if (name) {
+    if (name.startsWith('el')) {
+      return name
+    }
     return name.startsWith('lego') ? name : `lego lego-${name}`
   }
   return ''

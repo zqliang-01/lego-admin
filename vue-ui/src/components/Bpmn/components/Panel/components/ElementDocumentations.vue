@@ -2,7 +2,7 @@
   <el-collapse-item name="element-documentations">
     <template #title>
       <collapse-title title="附加文档">
-        <lucide-icon name="FileText" />
+        <LegoIcon name="document" />
       </collapse-title>
     </template>
     <edit-item label="Documentation" :label-width="120">
@@ -14,7 +14,6 @@
 <script>
 import { getDocumentValue, setDocumentValue } from '../../../bo-utils/documentationUtil'
 import EditItem from '../../common/EditItem'
-import LucideIcon from '../../common/LucideIcon'
 import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
@@ -23,7 +22,6 @@ export default {
   name: 'ElementDocumentations',
   components: {
     CollapseTitle,
-    LucideIcon,
     EditItem
   },
   data() {

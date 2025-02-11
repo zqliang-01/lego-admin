@@ -1,7 +1,7 @@
 <template>
   <div class="bpmn-settings" @click.stop>
     <div class="toggle-button" @click="modelVisible = !modelVisible">
-      <lucide-icon name="Settings" :size="40" color="#ffffff" />
+      <LegoIcon name="icon-setup" :size="40" color="#ffffff" />
     </div>
     <el-drawer :visible.sync="modelVisible" :size="600" title="偏好设置" append-to-body>
       <div class="settings-form">
@@ -110,13 +110,9 @@
 import { mapGetters } from 'vuex'
 import { defaultSettings } from '../../preset-configuration/editor.config'
 import { debounce } from 'min-dash'
-import LucideIcon from '../common/LucideIcon'
 
 export default {
   name: 'BpmnSettings',
-  components: {
-    LucideIcon
-  },
   props: {
     settings: {
       type: Object,

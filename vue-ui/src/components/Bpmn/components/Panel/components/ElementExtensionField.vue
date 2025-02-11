@@ -2,7 +2,7 @@
   <el-collapse-item name="element-extension-field">
     <template #title>
       <collapse-title title="扩展字段">
-        <lucide-icon name="PlayCircle" />
+        <LegoIcon name="icon-setting" />
       </collapse-title>
     </template>
     <div class="element-extension-field">
@@ -20,7 +20,6 @@
 
 <script>
 import EditItem from '../../common/EditItem'
-import LucideIcon from '../../common/LucideIcon'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import CollapseTitle from '../../common/CollapseTitle'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
@@ -31,7 +30,6 @@ export default {
   name: 'ElementExtensionField',
   components: {
     CollapseTitle,
-    LucideIcon,
     EditItem
   },
   data() {

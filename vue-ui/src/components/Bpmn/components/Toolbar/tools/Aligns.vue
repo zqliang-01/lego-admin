@@ -7,7 +7,7 @@
       :key="btn.key"
       @click="alignElements(btn.key)"
     >
-      <lucide-icon :name="btn.icon" :size="16" />
+      <LegoIcon :name="btn.icon" :size="16" />
       <el-popover
         ref="popover"
         placement="bottom"
@@ -21,15 +21,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import LucideIcon from '../../common/LucideIcon'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import ResetPopover from '@/utils/bpmn/resetPopover'
 
 export default {
   name: 'BpmnAligns',
-  components: {
-    LucideIcon
-  },
   computed: {
     ...mapGetters(['getModeler'])
   },
@@ -39,12 +35,12 @@ export default {
   data() {
     return {
       buttons: [
-        { name: '左对齐', key: 'left', icon: 'AlignStartVertical' },
-        { name: '水平居中', key: 'center', icon: 'AlignCenterVertical' },
-        { name: '右对齐', key: 'right', icon: 'AlignEndVertical' },
-        { name: '上对齐', key: 'top', icon: 'AlignStartHorizontal' },
-        { name: '垂直居中', key: 'middle', icon: 'AlignCenterHorizontal' },
-        { name: '下对齐', key: 'bottom', icon: 'AlignEndHorizontal' }
+        { name: '左对齐', key: 'left', icon: 'el-icon-caret-left' },
+        { name: '水平居中', key: 'center', icon: 'el-icon-s-data' },
+        { name: '右对齐', key: 'right', icon: 'el-icon-caret-right' },
+        { name: '上对齐', key: 'top', icon: 'el-icon-caret-top' },
+        { name: '垂直居中', key: 'middle', icon: 'el-icon-d-caret' },
+        { name: '下对齐', key: 'bottom', icon: 'el-icon-caret-bottom' }
       ]
     }
   },

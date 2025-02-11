@@ -6,7 +6,7 @@
       class="el-button__no-padding"
       @click="mockSimulationToggle"
     >
-      <lucide-icon name="Bot" :size="16" />
+      <LegoIcon name="el-icon-video-camera" :size="16" />
       <el-popover
         ref="processMock"
         content="开启/关闭流程模拟"
@@ -21,7 +21,7 @@
       class="el-button__no-padding"
       @click="minimapToggle"
     >
-      <lucide-icon name="Map" :size="16" />
+      <LegoIcon name="icon-picture" :size="16" />
       <el-popover
         ref="minimapToggle"
         content="展开/收起小地图"
@@ -31,7 +31,7 @@
       />
     </el-button>
     <el-button v-if="getEditorConfig.useLint" v-r-popover:lintToggle class="el-button__no-padding" @click="lintToggle">
-      <lucide-icon name="FileCheck" :size="16" />
+      <LegoIcon name="icon-related-tasks" :size="16" />
       <el-popover
         ref="lintToggle"
         content="开启/关闭流程校验"
@@ -41,7 +41,7 @@
       />
     </el-button>
     <el-button v-r-popover:eventToggle class="el-button__no-padding" @click="eventModelVisible = true">
-      <lucide-icon name="Podcast" :size="16" />
+      <LegoIcon name="info" :size="16" />
       <el-popover
         ref="eventToggle"
         content="查看bpmn事件"
@@ -51,7 +51,7 @@
       />
     </el-button>
     <el-button v-r-popover:keyboard class="el-button__no-padding" @click="keyboardModelVisible = true">
-      <lucide-icon name="Keyboard" :size="16" />
+      <LegoIcon name="icon-automation" :size="16" />
       <el-popover
         ref="keyboard"
         content="键盘快捷键"
@@ -117,14 +117,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import LucideIcon from '../../common/LucideIcon'
 import ResetPopover from '@/utils/bpmn/resetPopover'
 
 export default {
   name: 'BpmnExternals',
-  components: {
-    LucideIcon
-  },
   directives: {
     'r-popover': ResetPopover
   },

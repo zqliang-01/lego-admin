@@ -2,8 +2,7 @@
   <el-collapse-item name="element-form">
     <template #title>
       <collapse-title title="设置表单">
-        <lucide-icon name="user-round" />
-        <i :class="'icon-des' | iconPre" />
+        <LegoIcon name="icon-des" />
       </collapse-title>
     </template>
     <div class="element-form">
@@ -29,7 +28,6 @@
 </template>
 
 <script>
-import LucideIcon from '../../common/LucideIcon'
 import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
@@ -41,8 +39,7 @@ import { debounce } from 'min-dash'
 export default {
   name: 'ElementForm',
   components: {
-    CollapseTitle,
-    LucideIcon
+    CollapseTitle
   },
   data() {
     return {

@@ -89,7 +89,6 @@ import {
 } from '@/api/admin/config'
 import { fileUploadAPI, filePreviewUrl } from '@/api/common'
 
-import RadialProgressBar from 'vue-radial-progress'
 import EditImage from '@/components/EditImage'
 import XrHeader from '@/components/XrHeader'
 
@@ -99,8 +98,7 @@ export default {
   name: 'SystemConfig',
   components: {
     EditImage,
-    XrHeader,
-    RadialProgressBar
+    XrHeader
   },
   data() {
     return {
@@ -247,43 +245,6 @@ export default {
   position: relative;
 }
 
-// 进度信息
-.progress-info {
-  &-item {
-    text-align: center;
-    min-width: 150px;
-    flex-shrink: 0;
-    font-size: 14px;
-
-    .info-title {
-      color: #333;
-    }
-
-    .info-value {
-      font-size: 13px;
-      color: #999;
-    }
-
-    .info-value + .info-value {
-      margin-top: 8px;
-    }
-
-    .progress {
-      margin: 20px 0 30px;
-      font-size: 12px;
-      color: #333;
-
-      &-value {
-        font-weight: bold;
-        margin-top: 10px;
-      }
-    }
-
-    .radial-progress-container {
-      display: inline-block;
-    }
-  }
-}
 .save-button {
   margin-left: 250px;
 }

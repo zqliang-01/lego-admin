@@ -2,7 +2,7 @@
   <el-collapse-item name="base-info">
     <template #title>
       <collapse-title title="常规信息">
-        <lucide-icon name="Info" />
+        <LegoIcon name="cancel" />
       </collapse-title>
     </template>
 
@@ -37,7 +37,6 @@ import {
 } from '../../../bo-utils/processUtil'
 import { setIdValue } from '../../../bo-utils/idUtil'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
-import LucideIcon from '../../common/LucideIcon'
 import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import EditItem from '../../common/EditItem'
@@ -46,7 +45,6 @@ export default {
   name: 'ElementGenerations',
   components: {
     CollapseTitle,
-    LucideIcon,
     EditItem
   },
   data() {

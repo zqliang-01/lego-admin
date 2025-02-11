@@ -2,7 +2,7 @@
   <el-collapse-item name="element-async-continuations">
     <template #title>
       <collapse-title title="异步属性">
-        <lucide-icon name="Shuffle" />
+        <LegoIcon name="approval-11" />
       </collapse-title>
     </template>
     <edit-item label="Before" :label-width="120">
@@ -27,7 +27,6 @@ import {
   setACExclusive
 } from '../../../bo-utils/asynchronousContinuationsUtil'
 import CollapseTitle from '../../common/CollapseTitle'
-import LucideIcon from '../../common/LucideIcon'
 import EditItem from '../../common/EditItem'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
@@ -36,7 +35,6 @@ export default {
   name: 'ElementAsyncContinuations',
   components: {
     CollapseTitle,
-    LucideIcon,
     EditItem
   },
   data() {

@@ -1,15 +1,14 @@
 import 'babel-polyfill'
 import Vue from 'vue'
-import 'normalize.css/normalize.css'
 import App from './App.vue'
 import store from './store'
 import router from './router'
 
-import '@/permission'
+import 'normalize.css/normalize.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss'
-import 'vue2-animate/dist/vue2-animate.min.css'
 import '@/components/Bpmn/theme/index.scss'
+import '@/permission'
 
 import config from '@/config'
 window.SystemConfig = config
@@ -50,6 +49,8 @@ import LegoAllDetail from '@/components/Lego/LegoAllDetail'
 Vue.component('LegoAllDetail', LegoAllDetail)
 import LegoAllCreate from '@/components/Lego/LegoAllCreate'
 Vue.component('LegoAllCreate', LegoAllCreate)
+import LegoIcon from '@/components/Lego/LegoIcon'
+Vue.component('LegoIcon', LegoIcon)
 
 /** 懒加载图片 */
 import VueSrc from './directives/src'

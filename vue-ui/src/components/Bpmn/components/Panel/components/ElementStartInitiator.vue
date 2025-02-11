@@ -2,7 +2,7 @@
   <el-collapse-item name="element-start-initiator">
     <template #title>
       <collapse-title title="启动器">
-        <lucide-icon name="PlayCircle" />
+        <LegoIcon name="enable" />
       </collapse-title>
     </template>
     <div class="element-start-initiator">
@@ -18,14 +18,12 @@ import { getInitiatorValue, setInitiatorValue } from '../../../bo-utils/initiato
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
-import LucideIcon from '../../common/LucideIcon'
 import EditItem from '../../common/EditItem'
 
 export default {
   name: 'ElementStartInitiator',
   components: {
     CollapseTitle,
-    LucideIcon,
     EditItem
   },
   data() {

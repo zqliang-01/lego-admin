@@ -2,7 +2,7 @@
   <el-collapse-item name="element-extension-properties">
     <template #title>
       <collapse-title title="扩展属性">
-        <lucide-icon name="FileCog" />
+        <LegoIcon name="icon-modify" />
       </collapse-title>
       <number-tag :value="extensions.length" margin-left="12px" />
     </template>
@@ -47,7 +47,6 @@ import {
   removeExtensionProperty
 } from '../../../bo-utils/extensionPropertiesUtil'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
-import LucideIcon from '../../common/LucideIcon'
 import NumberTag from '../../common/NumberTag'
 import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
@@ -56,8 +55,7 @@ export default {
   name: 'ElementExtensionProperties',
   components: {
     CollapseTitle,
-    NumberTag,
-    LucideIcon
+    NumberTag
   },
   data() {
     return {

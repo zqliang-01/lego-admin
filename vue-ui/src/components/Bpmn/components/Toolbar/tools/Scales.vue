@@ -1,7 +1,7 @@
 <template>
   <el-button-group>
     <el-button v-r-popover:zoomOut class="el-button__no-padding" @click="zoomOut()">
-      <lucide-icon name="ZoomOut" :size="16" />
+      <LegoIcon name="el-icon-zoom-out" :size="16" />
       <el-popover ref="zoomOut" placement="bottom" trigger="hover" popper-class="button-popover" content="缩小视图" />
     </el-button>
     <el-button v-r-popover:zoomReset class="el-button__no-padding" @click="zoomReset('fit-viewport')">
@@ -11,7 +11,7 @@
       <el-popover ref="zoomReset" placement="bottom" trigger="hover" popper-class="button-popover" content="重置缩放" />
     </el-button>
     <el-button v-r-popover:zoomIn class="el-button__no-padding" @click="zoomIn()">
-      <lucide-icon name="ZoomIn" :size="16" />
+      <LegoIcon name="el-icon-zoom-in" :size="16" />
       <el-popover ref="zoomIn" placement="bottom" trigger="hover" popper-class="button-popover" content="放大视图" />
     </el-button>
   </el-button-group>
@@ -19,15 +19,11 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import LucideIcon from '../../common/LucideIcon'
 import ResetPopover from '@/utils/bpmn/resetPopover'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 
 export default {
   name: 'BpmnScales',
-  components: {
-    LucideIcon
-  },
   directives: {
     'r-popover': ResetPopover
   },

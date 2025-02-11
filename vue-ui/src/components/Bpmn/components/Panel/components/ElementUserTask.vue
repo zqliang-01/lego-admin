@@ -2,8 +2,7 @@
   <el-collapse-item name="element-user-task">
     <template #title>
       <collapse-title title="设置审批人">
-        <lucide-icon name="user-round" />
-        <i :class="'icon-my' | iconPre" />
+        <LegoIcon name="employees" />
       </collapse-title>
     </template>
     <div class="element-user-task">
@@ -88,7 +87,6 @@
 </template>
 
 <script>
-import LucideIcon from '../../common/LucideIcon'
 import CollapseTitle from '../../common/CollapseTitle'
 import SelectTree from '@/components/Common/SelectTree'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
@@ -104,8 +102,7 @@ export default {
   name: 'ElementUserTask',
   components: {
     SelectTree,
-    CollapseTitle,
-    LucideIcon
+    CollapseTitle
   },
   data() {
     return {

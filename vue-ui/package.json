@@ -36,13 +36,10 @@
     "highlight.js": "^10.5.0",
     "html-docx-js": "^0.3.1",
     "lockr": "^0.8.5",
-    "lodash.debounce": "^4.0.8",
-    "lucide-vue": "^0.89.0",
     "min-dash": "^3.5.2",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "numeral": "^2.0.6",
-    "or": "^0.2.0",
     "pinyin-match": "1.0.9",
     "sass-resources-loader": "^2.0.0",
     "signature_pad": "3.0.0-beta.4",
@@ -53,12 +50,9 @@
     "vue-cropper": "^0.4.8",
     "vue-json-editor": "^1.4.3",
     "vue-moment": "^4.0.0",
-    "vue-radial-progress": "^0.2.10",
     "vue-router": "^3.4.9",
-    "vue2-animate": "^2.1.2",
     "vuedraggable": "2.24.3",
-    "vuex": "^3.6.2",
-    "xlsx": "^0.14.1"
+    "vuex": "^3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",

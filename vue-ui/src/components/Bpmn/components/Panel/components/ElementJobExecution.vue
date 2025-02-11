@@ -2,7 +2,7 @@
   <el-collapse-item name="element-external-task">
     <template #title>
       <collapse-title title="执行作业">
-        <lucide-icon name="CalendarClock" />
+        <LegoIcon name="icon-full-clock" />
       </collapse-title>
     </template>
     <div class="element-external-task">
@@ -18,7 +18,6 @@
 
 <script>
 import EditItem from '../../common/EditItem'
-import LucideIcon from '../../common/LucideIcon'
 import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 import {
@@ -35,7 +34,6 @@ export default {
   name: 'ElementJobExecution',
   components: {
     CollapseTitle,
-    LucideIcon,
     EditItem
   },
   data() {

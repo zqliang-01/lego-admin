@@ -2,7 +2,7 @@
   <el-collapse-item name="element-execution-listeners">
     <template #title>
       <collapse-title title="执行监听">
-        <lucide-icon name="Radio" />
+        <LegoIcon name="icon-status" />
       </collapse-title>
       <number-tag :value="listeners.length" margin-left="12px" />
     </template>
@@ -107,7 +107,6 @@ import {
 import { getScriptType } from '../../../bo-utils/scriptUtil'
 import { getActive } from '../../../bpmn-utils/BpmnDesignerUtils'
 import NumberTag from '../../common/NumberTag'
-import LucideIcon from '../../common/LucideIcon'
 import CollapseTitle from '../../common/CollapseTitle'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
 
@@ -115,8 +114,7 @@ export default {
   name: 'ElementExecutionListeners',
   components: {
     CollapseTitle,
-    NumberTag,
-    LucideIcon
+    NumberTag
   },
   data() {
     return {
