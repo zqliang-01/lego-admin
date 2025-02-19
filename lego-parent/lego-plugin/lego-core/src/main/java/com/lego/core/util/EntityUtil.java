@@ -1,7 +1,7 @@
 package com.lego.core.util;
 
-import com.lego.core.data.hibernate.SimpleType;
 import com.lego.core.data.hibernate.entity.BaseEntity;
+import com.lego.core.data.hibernate.entity.SimpleType;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.CoreException;
 

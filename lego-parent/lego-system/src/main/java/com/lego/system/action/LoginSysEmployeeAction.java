@@ -2,7 +2,7 @@ package com.lego.system.action;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.lego.core.action.MaintainAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysEmployeeDao;

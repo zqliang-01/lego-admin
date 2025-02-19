@@ -1,6 +1,6 @@
 package com.lego.core.vo;
 
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import lombok.Getter;
 import lombok.Setter;
 

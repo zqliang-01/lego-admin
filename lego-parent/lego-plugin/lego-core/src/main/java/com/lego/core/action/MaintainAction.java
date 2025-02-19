@@ -1,6 +1,6 @@
 package com.lego.core.action;
 
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.core.data.ICommonService;
 import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.data.hibernate.ICommonDao;

@@ -1,6 +1,6 @@
 package com.lego.core.data;
 
-import com.lego.core.data.hibernate.IJpaFilterName;
+import com.lego.core.data.hibernate.jpa.IJpaFilterName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 

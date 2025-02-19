@@ -1,7 +1,7 @@
 package com.lego.system.action;
 
 import com.lego.core.action.EntityAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.system.dao.ISysMessageDao;
 import com.lego.system.entity.SysMessage;
 import com.lego.system.vo.SysPermissionCode;

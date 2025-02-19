@@ -2,7 +2,7 @@ package com.lego.report.action;
 
 import com.alibaba.fastjson.JSON;
 import com.lego.core.action.MaintainAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.core.data.mybatis.MybatisDynamicExecutor;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.ExcelUtil;

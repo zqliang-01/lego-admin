@@ -1,7 +1,7 @@
 package com.lego.system.assembler;
 
 import com.lego.core.assembler.EntityAssembler;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.system.dto.SysOperationLogInfo;
 import com.lego.system.entity.SysOperationLog;
 import org.springframework.beans.factory.annotation.Autowired;

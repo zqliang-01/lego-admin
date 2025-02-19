@@ -2,7 +2,7 @@ package com.lego.mobile.action;
 
 import cn.dev33.satoken.stp.StpUtil;
 import com.lego.core.action.MaintainAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.core.util.StringUtil;
 import com.lego.mobile.dao.IMobileUserBindDao;
 import com.lego.mobile.entity.MobileUserBind;

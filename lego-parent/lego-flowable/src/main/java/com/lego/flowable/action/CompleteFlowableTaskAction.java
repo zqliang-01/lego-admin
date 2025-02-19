@@ -1,7 +1,7 @@
 package com.lego.flowable.action;
 
 import cn.hutool.core.convert.Convert;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.core.dto.FormInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;

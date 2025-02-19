@@ -1,4 +1,4 @@
-package com.lego.core.data;
+package com.lego.core.enums;
 
 import lombok.Getter;
 

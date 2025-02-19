@@ -1,7 +1,7 @@
 package com.lego.report.action;
 
 import com.lego.core.action.MaintainAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.report.dao.IReportDesignSortDao;
 import com.lego.report.entity.ReportDesignSort;
 import com.lego.report.vo.ReportDesignSortItemVO;

@@ -2,7 +2,7 @@ package com.lego.system.action;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.lego.core.action.MaintainAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.system.dao.ISysAppSortDao;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.dao.ISysPermissionDao;

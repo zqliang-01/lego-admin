@@ -1,4 +1,4 @@
-package com.lego.core.data.hibernate;
+package com.lego.core.data.hibernate.jpa;
 
 public interface IJpaFilterName {
 

@@ -1,7 +1,7 @@
 package com.lego.flowable.action;
 
 import com.lego.core.action.MaintainAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.core.data.ICommonService;
 import com.lego.core.dto.FormInfo;
 import com.lego.core.exception.BusinessException;

@@ -1,6 +1,6 @@
 package com.lego.system.entity.simpletype;
 
-import com.lego.core.data.hibernate.SimpleType;
+import com.lego.core.data.hibernate.entity.SimpleType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 

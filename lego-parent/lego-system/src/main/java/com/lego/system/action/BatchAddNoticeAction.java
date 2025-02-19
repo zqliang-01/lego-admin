@@ -1,7 +1,7 @@
 package com.lego.system.action;
 
 import com.lego.core.action.MaintainAction;
-import com.lego.core.data.ActionType;
+import com.lego.core.enums.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.dao.ISysNoticeDao;
