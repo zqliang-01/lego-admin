@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.system.action.DeleteAllSysNoticeAction;
 import com.lego.system.action.DeleteSysNoticeAction;
@@ -14,7 +14,7 @@ import com.lego.system.vo.SysNoticeSearchVO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysNoticeService extends BusService<ISysNoticeDao, SysNoticeAssembler> implements ISysNoticeService {
+public class SysNoticeService extends BaseService<ISysNoticeDao, SysNoticeAssembler> implements ISysNoticeService {
 
     @Override
     public void read(String operatorCode, String code) {

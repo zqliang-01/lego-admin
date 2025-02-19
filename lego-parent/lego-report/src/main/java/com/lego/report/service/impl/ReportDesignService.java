@@ -1,6 +1,6 @@
 package com.lego.report.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.report.action.AddReportDesignAction;
 import com.lego.report.action.DeleteReportDesignAction;
 import com.lego.report.action.ModifyReportDesignAction;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ReportDesignService extends BusService<IReportDesignDao, ReportDesignAssembler> implements IReportDesignService {
+public class ReportDesignService extends BaseService<IReportDesignDao, ReportDesignAssembler> implements IReportDesignService {
 
     @Override
     public List<ReportDesignInfo> findAll() {

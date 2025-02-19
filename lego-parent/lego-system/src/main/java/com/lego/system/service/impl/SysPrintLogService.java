@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.GenericSearchVO;
 import com.lego.system.action.AddSysPrintLogAction;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysPrintLogService extends BusService<ISysPrintLogDao, SysPrintLogAssembler> implements ISysPrintLogService {
+public class SysPrintLogService extends BaseService<ISysPrintLogDao, SysPrintLogAssembler> implements ISysPrintLogService {
 
     @Override
     public LegoPage<SysPrintLogInfo> findPageBy(GenericSearchVO vo) {

@@ -70,11 +70,4 @@ public class CrmContractService extends BusService<ICrmContractDao, CrmContractA
             new DeleteCrmContractAction(operatorCode, code).run();
         }
     }
-
-    @Override
-    public void updateCheckStatus(String code, String checkStatus) {
-        CrmContract contract = dao.findByCode(code);
-        contract.updateCheckStatus(checkStatus);
-        dao.save(contract);
-    }
 }

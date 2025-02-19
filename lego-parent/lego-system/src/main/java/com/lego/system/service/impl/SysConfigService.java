@@ -2,7 +2,6 @@ package com.lego.system.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.alibaba.fastjson.JSON;
-import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysConfigDao;
 import com.lego.system.dto.SysSystemInfo;
@@ -16,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 
 @Service
-public class SysConfigService extends BaseService implements ISysConfigService {
+public class SysConfigService implements ISysConfigService {
 
     @Autowired
     private ISysConfigDao configDao;

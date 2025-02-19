@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.system.assembler.SysCustomFieldAssembler;
 import com.lego.system.dao.ISysColumnSortDao;
@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SysCustomFieldService extends BusService<ISysCustomFieldDao, SysCustomFieldAssembler> implements ISysCustomFieldService {
+public class SysCustomFieldService extends BaseService<ISysCustomFieldDao, SysCustomFieldAssembler> implements ISysCustomFieldService {
 
     @Autowired
     private ISysCustomFormDao formDao;

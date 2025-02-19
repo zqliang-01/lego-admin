@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.system.action.DeleteAllSysMessageAction;
 import com.lego.system.action.DeleteSysMessageAction;
@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysMessageService extends BusService<ISysMessageDao, SysMessageAssembler> implements ISysMessageService {
+public class SysMessageService extends BaseService<ISysMessageDao, SysMessageAssembler> implements ISysMessageService {
 
     @Autowired
     private SysMessageMapper messageMapper;

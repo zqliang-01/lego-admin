@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.GenericConditionItemVO;
@@ -18,7 +18,7 @@ import com.lego.system.vo.SysNoticeTemplateSearchVO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysNoticeTemplateService extends BusService<ISysNoticeTemplateDao, SysNoticeTemplateAssembler> implements ISysNoticeTemplateService {
+public class SysNoticeTemplateService extends BaseService<ISysNoticeTemplateDao, SysNoticeTemplateAssembler> implements ISysNoticeTemplateService {
 
     @Override
     public LegoPage<SysNoticeTemplateInfo> findBy(String operatorCode, SysNoticeTemplateSearchVO vo) {

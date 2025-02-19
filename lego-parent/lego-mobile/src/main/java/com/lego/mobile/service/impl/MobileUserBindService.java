@@ -1,6 +1,5 @@
 package com.lego.mobile.service.impl;
 
-import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.mobile.action.AddMobileUserBindAction;
 import com.lego.mobile.action.ModifyMobileUserBindAction;
 import com.lego.mobile.dao.IMobileAppConfigDao;
@@ -13,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MobileUserBindService extends BaseService implements IMobileUserBindService {
+public class MobileUserBindService implements IMobileUserBindService {
 
     @Autowired
     private IMobileUserBindDao userBindDao;

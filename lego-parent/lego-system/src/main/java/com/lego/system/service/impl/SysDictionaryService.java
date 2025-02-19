@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.EntityUtil;
 import com.lego.system.action.AddSysDictionaryAction;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysDictionaryService extends BusService<ISysDictionaryDao, SysDictionaryAssembler> implements ISysDictionaryService {
+public class SysDictionaryService extends BaseService<ISysDictionaryDao, SysDictionaryAssembler> implements ISysDictionaryService {
 
     @Override
     public List<TypeInfo> findSimpleByType(String typeCode) {

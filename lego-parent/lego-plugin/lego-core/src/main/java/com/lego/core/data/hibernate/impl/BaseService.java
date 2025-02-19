@@ -1,6 +1,10 @@
 package com.lego.core.data.hibernate.impl;
 
+import com.lego.core.assembler.BaseAssembler;
 import com.lego.core.data.hibernate.ICommonDao;
+import com.lego.core.data.hibernate.IGenericDao;
+import com.lego.core.data.hibernate.entity.BaseEntity;
+import com.lego.core.dto.DTO;
 import com.lego.core.enums.FieldTypeEnum;
 import com.lego.core.enums.GenericConditionEnum;
 import com.lego.core.enums.GenericSortEnum;
@@ -15,7 +19,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class BaseService {
+public abstract class BaseService<D extends IGenericDao<? extends BaseEntity>, A extends BaseAssembler<? extends DTO, ? extends BaseEntity>> {
+
+    @Autowired
+    protected D dao;
+
+    @Autowired
+    protected A assembler;
 
     @Autowired
     protected ICommonDao commonDao;

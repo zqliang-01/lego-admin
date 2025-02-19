@@ -1,6 +1,6 @@
 package com.lego.sharding.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.sharding.action.ModifyShardingPropertiesAction;
 import com.lego.sharding.assembler.ShardingPropertiesAssembler;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ShardingPropertiesService extends BusService<IShardingPropertiesDao, ShardingPropertiesAssembler> implements IShardingPropertiesService {
+public class ShardingPropertiesService extends BaseService<IShardingPropertiesDao, ShardingPropertiesAssembler> implements IShardingPropertiesService {
 
     @Override
     public List<TypeInfo> findBy(Long entityId) {

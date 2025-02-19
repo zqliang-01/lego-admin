@@ -1,6 +1,6 @@
 package com.lego.doc.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.vo.GenericConditionItemVO;
@@ -20,7 +20,7 @@ import com.lego.doc.vo.DocBookModifyVO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DocBookService extends BusService<IDocBookDao, DocBookAssembler> implements IDocBookService {
+public class DocBookService extends BaseService<IDocBookDao, DocBookAssembler> implements IDocBookService {
 
     @Override
     public LegoPage<DocBookInfo> findPageBy(String operatorCode, GenericSearchVO vo) {

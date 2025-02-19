@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TreeInfo;
 import com.lego.core.dto.TypeInfo;
 import com.lego.system.action.AddSysDeptAction;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysDeptService extends BusService<ISysDeptDao, SysDeptAssembler> implements ISysDeptService {
+public class SysDeptService extends BaseService<ISysDeptDao, SysDeptAssembler> implements ISysDeptService {
 
     @Override
     public List<SysDeptInfo> findBy(SysDeptSearchVO vo) {

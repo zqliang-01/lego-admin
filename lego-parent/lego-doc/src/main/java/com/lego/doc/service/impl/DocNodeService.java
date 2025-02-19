@@ -1,6 +1,6 @@
 package com.lego.doc.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.doc.action.AddDocNodeAction;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class DocNodeService extends BusService<IDocNodeDao, DocNodeAssembler> implements IDocNodeService {
+public class DocNodeService extends BaseService<IDocNodeDao, DocNodeAssembler> implements IDocNodeService {
 
     @Autowired
     private IDocBookDao bookDao;

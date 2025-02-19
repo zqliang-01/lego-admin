@@ -1,7 +1,7 @@
 package com.lego.report.service.impl;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.data.mybatis.MybatisDynamicExecutor;
 import com.lego.core.dto.TypeInfo;
 import com.lego.report.action.AddReportDefinitionAction;
@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class ReportDefinitionService extends BusService<IReportDefinitionDao, ReportDefinitionAssembler> implements IReportDefinitionService {
+public class ReportDefinitionService extends BaseService<IReportDefinitionDao, ReportDefinitionAssembler> implements IReportDefinitionService {
 
     @Autowired
     private IReportConditionDao conditionDao;

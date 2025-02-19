@@ -1,7 +1,7 @@
 package com.lego.system.service.impl;
 
 import cn.dev33.satoken.stp.StpUtil;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.system.action.AddSysEmployeeAction;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysEmployeeService extends BusService<ISysEmployeeDao, SysEmployeeAssembler> implements ISysEmployeeService {
+public class SysEmployeeService extends BaseService<ISysEmployeeDao, SysEmployeeAssembler> implements ISysEmployeeService {
 
     @Override
     public LegoPage<SysEmployeeInfo> findBy(SysEmployeeSearchVO vo) {

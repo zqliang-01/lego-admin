@@ -1,7 +1,7 @@
 package com.lego.doc.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.doc.action.AddDocCollectAction;
 import com.lego.doc.action.DeleteDocCollectAction;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DocCollectService extends BusService<IDocCollectDao, DocCollectAssembler> implements IDocCollectService {
+public class DocCollectService extends BaseService<IDocCollectDao, DocCollectAssembler> implements IDocCollectService {
 
     @Override
     public LegoPage<DocCollectInfo> findPageBy(String operatorCode, DocCollectSearchVO vo) {

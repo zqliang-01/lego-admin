@@ -70,11 +70,4 @@ public class ${ClassName}Service extends BusService<I${ClassName}Dao, ${ClassNam
             new Delete${ClassName}Action(operatorCode, code).run();
         }
     }
-
-    @Override
-    public void updateCheckStatus(String code, String checkStatus) {
-        ${ClassName} ${FieldName} = dao.findByCode(code);
-        ${FieldName}.updateCheckStatus(checkStatus);
-        dao.save(${FieldName});
-    }
 }

@@ -1,6 +1,6 @@
 package com.lego.sharding.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericConditionItemVO;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ShardingDataSourceService extends BusService<IShardingDataSourceDao, ShardingDataSourceAssembler> implements IShardingDataSourceService {
+public class ShardingDataSourceService extends BaseService<IShardingDataSourceDao, ShardingDataSourceAssembler> implements IShardingDataSourceService {
 
     @Override
     public LegoPage<ShardingDataSourceInfo> findPageBy(GenericSearchVO vo) {

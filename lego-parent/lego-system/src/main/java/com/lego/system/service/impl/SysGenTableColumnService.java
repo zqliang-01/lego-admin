@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.data.mybatis.mapper.MetaTableMapper;
 import com.lego.core.dto.MetaTableColumnInfo;
 import com.lego.core.dto.TypeInfo;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SysGenTableColumnService extends BusService<ISysGenTableColumnDao, SysGenTableColumnAssembler> implements ISysGenTableColumnService {
+public class SysGenTableColumnService extends BaseService<ISysGenTableColumnDao, SysGenTableColumnAssembler> implements ISysGenTableColumnService {
 
     @Autowired
     private MetaTableMapper tableMapper;

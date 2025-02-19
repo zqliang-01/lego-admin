@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.system.assembler.SysOperationLogAssembler;
 import com.lego.system.dao.ISysEmployeeDao;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysOperationLogService extends BusService<ISysOperationLogDao, SysOperationLogAssembler> implements ISysOperationLogService {
+public class SysOperationLogService extends BaseService<ISysOperationLogDao, SysOperationLogAssembler> implements ISysOperationLogService {
 
     @Autowired
     private ISysEmployeeDao employeeDao;

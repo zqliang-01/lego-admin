@@ -1,6 +1,6 @@
 package com.lego.sharding.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.vo.GenericConditionItemVO;
 import com.lego.core.vo.GenericConditionVO;
 import com.lego.sharding.assembler.ShardingTemplateTypeAssembler;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ShardingTemplateTypeService extends BusService<IShardingTemplateTypeDao, ShardingTemplateTypeAssembler> implements IShardingTemplateTypeService {
+public class ShardingTemplateTypeService extends BaseService<IShardingTemplateTypeDao, ShardingTemplateTypeAssembler> implements IShardingTemplateTypeService {
 
     @Override
     public List<ShardingTemplateTypeInfo> findValid() {

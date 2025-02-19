@@ -3,7 +3,7 @@ package com.lego.doc.service.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericSearchVO;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 
 @Service
-public class DocFileService extends BusService<IDocFileDao, DocFileAssembler> implements IDocFileService {
+public class DocFileService extends BaseService<IDocFileDao, DocFileAssembler> implements IDocFileService {
 
     @Autowired
     private FileHandler fileHandler;

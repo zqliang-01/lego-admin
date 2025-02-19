@@ -1,6 +1,6 @@
 package com.lego.doc.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.exception.BusinessException;
 import com.lego.doc.action.ModifyDocPageAction;
 import com.lego.doc.assembler.DocPageAssembler;
@@ -12,7 +12,7 @@ import com.lego.doc.vo.DocPageModifyVO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DocPageService extends BusService<IDocPageDao, DocPageAssembler> implements IDocPageService {
+public class DocPageService extends BaseService<IDocPageDao, DocPageAssembler> implements IDocPageService {
 
     @Override
     public DocPageInfo findBy(String operatorCode, String code) {

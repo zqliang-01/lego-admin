@@ -1,7 +1,7 @@
 package com.lego.system.service.impl;
 
 import com.lego.core.common.Constants;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SysRoleService extends BusService<ISysRoleDao, SysRoleAssembler> implements ISysRoleService {
+public class SysRoleService extends BaseService<ISysRoleDao, SysRoleAssembler> implements ISysRoleService {
 
     @Autowired
     private ISysEmployeeDao employeeDao;

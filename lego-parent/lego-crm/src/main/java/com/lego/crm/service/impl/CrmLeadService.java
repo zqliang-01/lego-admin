@@ -70,11 +70,4 @@ public class CrmLeadService extends BusService<ICrmLeadDao, CrmLeadAssembler> im
             new DeleteCrmLeadAction(operatorCode, code).run();
         }
     }
-
-    @Override
-    public void updateCheckStatus(String code, String checkStatus) {
-        CrmLead lead = dao.findByCode(code);
-        lead.updateCheckStatus(checkStatus);
-        dao.save(lead);
-    }
 }

@@ -1,21 +1,23 @@
 package com.lego.core.data.hibernate.impl;
 
-import com.lego.core.assembler.EntityAssembler;
-import com.lego.core.data.hibernate.entity.BaseEntity;
+import com.lego.core.assembler.BusAssembler;
+import com.lego.core.data.hibernate.IBusGenericDao;
+import com.lego.core.data.hibernate.IBusService;
 import com.lego.core.data.hibernate.IGenericDao;
+import com.lego.core.data.hibernate.entity.BusEntity;
 import com.lego.core.dto.DTO;
-import org.springframework.beans.factory.annotation.Autowired;
 
-public class BusService<D extends IGenericDao<? extends BaseEntity>, A extends EntityAssembler<? extends DTO, ? extends BaseEntity>> extends BaseService {
+public abstract class BusService<D extends IBusGenericDao<? extends BusEntity>, A extends BusAssembler<? extends DTO, ? extends BusEntity>> extends BaseService<D, A> implements IBusService {
 
-    @Autowired
-    protected D dao;
+    @Override
+    public void updateCheckStatus(String code, String checkStatus) {
+        BusEntity entity = dao.findByCode(code);
+        entity.updateCheckStatus(checkStatus);
+        ((IGenericDao) dao).save(entity);
+    }
 
-    @Autowired
-    protected A assembler;
-
+    @Override
     public boolean exists(String code) {
         return dao.exists(code);
     }
-
 }

@@ -1,7 +1,7 @@
 package com.lego.system.service.impl;
 
 import com.lego.core.common.Constants;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.system.action.AddSysPermissionAction;
 import com.lego.system.action.DeleteSysPermissionAction;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysPermissionService extends BusService<ISysPermissionDao, SysPermissionAssembler> implements ISysPermissionService {
+public class SysPermissionService extends BaseService<ISysPermissionDao, SysPermissionAssembler> implements ISysPermissionService {
 
     @Autowired
     private ISysEmployeeDao employeeDao;

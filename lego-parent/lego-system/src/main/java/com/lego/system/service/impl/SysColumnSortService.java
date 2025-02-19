@@ -1,7 +1,7 @@
 package com.lego.system.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.system.action.AddSysColumnSortAction;
 import com.lego.system.action.ModifySysColumnSortAction;
 import com.lego.system.action.ModifySysColumnWidthAction;
@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SysColumnSortService extends BusService<ISysColumnSortDao, SysColumnSortAssembler> implements ISysColumnSortService {
+public class SysColumnSortService extends BaseService<ISysColumnSortDao, SysColumnSortAssembler> implements ISysColumnSortService {
 
     @Autowired
     private ISysCustomFieldDao fieldDao;

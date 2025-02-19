@@ -3,7 +3,7 @@ package com.lego.system.service.impl;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.extra.servlet.ServletUtil;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.upload.FileHandler;
 import com.lego.system.action.AddSysFileAction;
@@ -24,7 +24,7 @@ import java.io.InputStream;
 import java.util.List;
 
 @Service
-public class SysFileService extends BusService<ISysFileDao, SysFileAssembler> implements ISysFileService {
+public class SysFileService extends BaseService<ISysFileDao, SysFileAssembler> implements ISysFileService {
 
     @Autowired
     private FileHandler fileHandler;

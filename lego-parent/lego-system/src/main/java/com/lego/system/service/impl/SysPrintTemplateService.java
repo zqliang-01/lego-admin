@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.GenericSearchVO;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SysPrintTemplateService extends BusService<ISysPrintTemplateDao, SysPrintTemplateAssembler> implements ISysPrintTemplateService {
+public class SysPrintTemplateService extends BaseService<ISysPrintTemplateDao, SysPrintTemplateAssembler> implements ISysPrintTemplateService {
 
     @Autowired
     private ISysFileDao fileDao;

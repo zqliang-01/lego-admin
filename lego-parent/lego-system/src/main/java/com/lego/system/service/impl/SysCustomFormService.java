@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.EntityUtil;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysCustomFormService extends BusService<ISysCustomFormDao, SysCustomFormAssembler> implements ISysCustomFormService {
+public class SysCustomFormService extends BaseService<ISysCustomFormDao, SysCustomFormAssembler> implements ISysCustomFormService {
 
     @Autowired
     private ISysGenTableDao tableDao;

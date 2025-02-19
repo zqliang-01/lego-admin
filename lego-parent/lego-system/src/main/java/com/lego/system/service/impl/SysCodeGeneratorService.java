@@ -1,7 +1,7 @@
 package com.lego.system.service.impl;
 
 import com.lego.core.data.IdGenerator;
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.StringUtil;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SysCodeGeneratorService extends BusService<ISysCodeGeneratorDao, SysCodeGeneratorAssembler> implements ISysCodeGeneratorService {
+public class SysCodeGeneratorService extends BaseService<ISysCodeGeneratorDao, SysCodeGeneratorAssembler> implements ISysCodeGeneratorService {
 
     @Autowired
     private IdGenerator idGenerator;

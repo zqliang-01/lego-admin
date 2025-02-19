@@ -70,11 +70,4 @@ public class CrmCustomerService extends BusService<ICrmCustomerDao, CrmCustomerA
             new DeleteCrmCustomerAction(operatorCode, code).run();
         }
     }
-
-    @Override
-    public void updateCheckStatus(String code, String checkStatus) {
-        CrmCustomer customer = dao.findByCode(code);
-        customer.updateCheckStatus(checkStatus);
-        dao.save(customer);
-    }
 }

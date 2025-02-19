@@ -1,6 +1,6 @@
 package com.lego.system.service.impl;
 
-import com.lego.core.data.hibernate.impl.BusService;
+import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.system.action.AddSysSceneAction;
 import com.lego.system.action.DeleteSysSceneAction;
 import com.lego.system.action.ModifySysSceneAction;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class SysSceneService extends BusService<ISysSceneDao, SysSceneAssembler> implements ISysSceneService {
+public class SysSceneService extends BaseService<ISysSceneDao, SysSceneAssembler> implements ISysSceneService {
 
     @Override
     public List<SysSceneInfo> findByForm(String formCode) {
