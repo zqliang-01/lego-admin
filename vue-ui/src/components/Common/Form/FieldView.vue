@@ -17,6 +17,10 @@
       v-else-if="formType == 'descText'"
       :value="item.defaultValue"
       :disabled="true"/>
+    <desc-text
+      v-else-if="formType == 'richTextEditor'"
+      :value="value"
+      :disabled="true"/>
     <span
       v-else-if="formType == 'website'"
       :class="{'can-check': !isEmpty}"
@@ -97,7 +101,7 @@ export default {
       return getFormFieldShowValue(this.formType, this.value)
     },
     handleClick(value) {
-      if (this.item.clickable) {
+      if (this.clickable) {
         this.$emit('clickValue', { field: this.item, value: value })
       }
     },

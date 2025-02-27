@@ -59,6 +59,8 @@
     <lego-all-create
       :visible.sync="isCreate"
       :form-code="formCode"
+      :menu-code="menuCode"
+      localName="${ClassName}Create"
       :action="{type: 'update', detailData: detailData}"
       @close="isCreate = false"
       @handle="actionHandle"
@@ -75,6 +77,8 @@
         :visible.sync="relativeEntity.show"
         :detail-code.sync="relativeEntity.code"
         :form-code="relativeEntity.formCode"
+        :menu-code="relativeEntity.menuCode"
+        :localName="relativeEntity.componentName"
         @hide-view="closeEntityDetail()"/>
     </div>
   </div>

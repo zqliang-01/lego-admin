@@ -28,7 +28,7 @@
           type="primary"
           @click.native="handleTypeClick('edit')">编辑</el-button>
         <el-button
-          v-if="auth.update"
+          v-if="auth.update && formCode"
           :icon="'print' | iconPre"
           class="head-handle-button xr-btn--orange"
           type="primary"
@@ -107,6 +107,7 @@ export default {
         return []
       }
     },
+    formCode: String,
     pageCodes: Array
   },
   computed: {

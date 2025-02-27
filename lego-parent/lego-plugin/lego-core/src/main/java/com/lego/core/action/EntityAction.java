@@ -7,6 +7,7 @@ import com.lego.core.data.hibernate.entity.BusEntity;
 import com.lego.core.exception.CoreException;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.EntityUtil;
+import com.lego.core.util.StringUtil;
 import com.lego.core.vo.GenericConditionItemVO;
 import com.lego.core.vo.GenericConditionVO;
 
@@ -17,10 +18,16 @@ public abstract class EntityAction<E extends BaseEntity, D extends IGenericDao<E
 
     protected E targetEntity;
     protected D entityDao;
+    private String checkStatus;
 
     protected EntityAction(String permissionCode, String operatorCode) {
         super(permissionCode, operatorCode);
         this.entityDao = getDao(getDaoClass());
+    }
+
+    protected EntityAction(String permissionCode, String operatorCode, String checkStatus) {
+        this(permissionCode, operatorCode);
+        this.checkStatus = checkStatus;
     }
 
     @SuppressWarnings("unchecked")
@@ -41,6 +48,9 @@ public abstract class EntityAction<E extends BaseEntity, D extends IGenericDao<E
             BusEntity busEntity = (BusEntity) targetEntity;
             if (ActionType.ADD == getActionType()) {
                 busEntity.setCreatorCode(operatorCode);
+            }
+            if (StringUtil.isNotBlank(checkStatus)) {
+                busEntity.setCheckStatus(checkStatus);
             }
             busEntity.setUpdateTime(DateUtil.currentDateTime());
         }

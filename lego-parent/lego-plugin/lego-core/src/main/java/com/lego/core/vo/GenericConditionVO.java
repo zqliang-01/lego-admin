@@ -2,7 +2,6 @@ package com.lego.core.vo;
 
 import com.lego.core.util.StringUtil;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +11,6 @@ public class GenericConditionVO extends PageVO {
 
 	private static final long serialVersionUID = 1L;
 
-	@Setter
 	private String orderType;
 	private List<GenericConditionItemVO> items = new ArrayList<GenericConditionItemVO>();
 
@@ -43,6 +41,11 @@ public class GenericConditionVO extends PageVO {
 			item.setIndex(items.size());
 		}
 		this.items.add(item);
+		return this;
+	}
+
+	public GenericConditionVO setOrderType(String orderType) {
+		this.orderType = orderType;
 		return this;
 	}
 }

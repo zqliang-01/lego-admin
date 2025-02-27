@@ -1,16 +1,15 @@
 package com.lego.crm.vo;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
-import com.lego.core.vo.VO;
-
+import com.lego.core.vo.CreateVO;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 @Getter
 @Setter
-public class CrmLeadCreateVO extends VO {
+public class CrmLeadCreateVO extends CreateVO {
 
     private static final long serialVersionUID = 1L;
 

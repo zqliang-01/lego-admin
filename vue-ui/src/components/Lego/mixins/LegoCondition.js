@@ -4,7 +4,7 @@ export default {
      * 根据类型获取条件
      */
     getConditionByFormType(formType) {
-      if (['text', 'textarea', 'website', 'mobile', 'email'].includes(formType)) {
+      if (['text', 'textarea', 'website', 'mobile', 'email', 'richTextEditor'].includes(formType)) {
         return [
           { label: '等于', disabled: false, type: 'equals' },
           { label: '不等于', disabled: false, type: 'notEquals' },

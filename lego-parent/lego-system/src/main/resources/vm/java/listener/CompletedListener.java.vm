@@ -28,6 +28,7 @@ public class ${ClassName}CompletedListener implements IFlowableCompletedListener
             return code;
         }
         ${ClassName}CreateVO vo = BeanUtil.toBean(variables, ${ClassName}CreateVO.class);
+        vo.setCheckStatus(FlowableCheckStatus.checking);
         return ${FieldName}Service.add(Constants.loginCode.get(), vo);
     }
 

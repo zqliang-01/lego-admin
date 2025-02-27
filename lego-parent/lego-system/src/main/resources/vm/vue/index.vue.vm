@@ -56,7 +56,7 @@
           show-overflow-tooltip>
           <template slot-scope="{ row, column }">
             <field-view
-              :props="item"
+              :item="item"
               :form-type="item.formType"
               :value="row[column.property]"
               @clickEntity="handleEntityClick" />
@@ -100,12 +100,16 @@
       :detail-code.sync="relativeEntity.code"
       :form-code="relativeEntity.formCode"
       :page-codes="relativeEntity.pageCodes"
+      :menu-code="relativeEntity.menuCode"
+      :localName="relativeEntity.componentName"
       @handle="actionHandle"
       @hide-view="relativeEntity.show=false"/>
     <!-- 新建 -->
     <lego-all-create
       :visible.sync="createShow"
       :form-code="formCode"
+      :menu-code="menuCode"
+      localName="${ClassName}Create"
       @close="createShow = false"
       @handle="actionHandle"
     />
@@ -122,12 +126,13 @@ import {
 import IndexMixin from '@/components/Lego/mixins/LegoIndex'
 
 export default {
-  name: 'CrmLeadIndex',
+  name: '${ClassName}Index',
   mixins: [IndexMixin],
   data() {
     return {
       createShow: false,
       menuCode: '${PermissionCode}', // 菜单编码
+      localName: '${ClassName}Detail',
       unionKey: [], // 表格对象唯一键
       listRequest: ${FieldName}ListAPI,
       deleteRequest: ${FieldName}DeleteAPI,

@@ -46,7 +46,7 @@
               <template v-if="['isNotNull', 'isNull'].includes(formItem.type)">
                 &nbsp;
               </template>
-              <template v-else>
+              <template v-else-if='formItem.formType'>
                 <field
                   :item="formItem"
                   :index="index"

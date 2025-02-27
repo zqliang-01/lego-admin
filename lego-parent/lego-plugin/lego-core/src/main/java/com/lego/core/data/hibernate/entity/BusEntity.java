@@ -21,6 +21,7 @@ public class BusEntity extends BaseEntity {
     @Setter
     private String creatorCode;
     @Getter
+    @Setter
     private String checkStatus;
 
     protected BusEntity() {
@@ -32,7 +33,7 @@ public class BusEntity extends BaseEntity {
 
     protected BusEntity(String code, String name) {
         super(code, name);
-        this.checkStatus = FlowableCheckStatus.checking;
+        this.checkStatus = FlowableCheckStatus.completed;
     }
 
     public void updateCheckStatus(String checkStatus) {

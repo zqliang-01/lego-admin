@@ -28,6 +28,7 @@ public class CrmContractCompletedListener implements IFlowableCompletedListener 
             return code;
         }
         CrmContractCreateVO vo = BeanUtil.toBean(variables, CrmContractCreateVO.class);
+        vo.setCheckStatus(FlowableCheckStatus.checking);
         return contractService.add(Constants.loginCode.get(), vo);
     }
 

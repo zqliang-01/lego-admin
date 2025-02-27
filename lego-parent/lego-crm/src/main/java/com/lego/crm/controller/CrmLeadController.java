@@ -36,8 +36,7 @@ public class CrmLeadController extends BaseController {
     @PostMapping("/add")
     @SaCheckPermission("crm_lead_add")
     public JsonResponse<Object> add(@RequestBody CrmLeadCreateVO vo) {
-        String code = leadService.add(getLoginCode(), vo);
-        leadService.updateCheckStatus(code, FlowableCheckStatus.completed);
+        leadService.add(getLoginCode(), vo);
         return JsonResponse.success();
     }
 

@@ -15,7 +15,7 @@ public class Add${ClassName}Action extends AddAction<${ClassName}, I${ClassName}
     private ${ClassName}CreateVO vo;
 
     public Add${ClassName}Action(String operatorCode, ${ClassName}CreateVO vo) {
-        super("${PermissionCode}", operatorCode);
+        super("${PermissionCode}", operatorCode, vo.getCheckStatus());
         this.vo = vo;
     }
 

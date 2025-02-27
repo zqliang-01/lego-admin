@@ -200,15 +200,23 @@ export default {
         this.$set(this.relativeEntity, 'code', row.code)
         this.$set(this.relativeEntity, 'formCode', this.formCode)
         this.$set(this.relativeEntity, 'pageCodes', this.pageCodes)
+        this.$set(this.relativeEntity, 'menuCode', this.menuCode)
+        this.$set(this.relativeEntity, 'componentName', this.localName)
         return
       }
     },
 
     handleEntityClick(data) {
+      console.log(data)
       this.$set(this.relativeEntity, 'show', true)
       this.$set(this.relativeEntity, 'code', data.value.code)
-      this.$set(this.relativeEntity, 'formCode', data.field.relativeForm.code)
+      if (data.field.relativeForm) {
+        this.$set(this.relativeEntity, 'formCode', data.field.relativeForm.code)
+      }
+      this.$set(this.relativeEntity, 'menuCode', data.field.menuCode)
+      this.$set(this.relativeEntity, 'componentName', data.field.componentName)
       this.$set(this.relativeEntity, 'pageCodes', [])
+      console.log(this.relativeEntity)
     },
     closeEntityDetail(item) {
       item.show = false

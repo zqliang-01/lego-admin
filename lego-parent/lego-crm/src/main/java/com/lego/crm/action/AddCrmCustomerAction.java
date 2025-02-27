@@ -12,7 +12,7 @@ public class AddCrmCustomerAction extends AddAction<CrmCustomer, ICrmCustomerDao
     private CrmCustomerCreateVO vo;
 
     public AddCrmCustomerAction(String operatorCode, CrmCustomerCreateVO vo) {
-        super("crm_customer", operatorCode);
+        super("crm_customer", operatorCode, vo.getCheckStatus());
         this.vo = vo;
     }
 

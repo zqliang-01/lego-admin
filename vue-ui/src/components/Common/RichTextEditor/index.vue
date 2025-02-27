@@ -5,6 +5,8 @@
       v-model="content"
       :init="getEditConfig()"
       :height="250"
+      :uploadAPI="uploadAPI"
+      :previewUrl="previewUrl"
       class="rich-txt"/>
   </div>
 </template>
@@ -23,7 +25,13 @@ export default {
     value: {
       type: String,
       default: ''
-    }
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    uploadAPI: Function,
+    previewUrl: String
   },
   data() {
     return {
@@ -44,6 +52,7 @@ export default {
         menubar: false,
         statusbar: false,
         toolbar_sticky: true,
+        content_editable: !this.disabled,
         paste_data_images: true, // 允许粘贴图片
         paste_enable_default_filters: false,
         paste_retain_style_properties: 'border', // 粘贴内容时要保留的样式

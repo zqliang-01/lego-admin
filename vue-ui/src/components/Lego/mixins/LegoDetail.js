@@ -72,7 +72,7 @@ export default {
       handler: function(newVal, oldVal) {
         if (this.visible) {
           this.detailCode = this.detailForm.detailCode
-          if (this.formCode !== this.detailForm.formCode) {
+          if (!this.formCode || this.formCode !== this.detailForm.formCode) {
             this.formCode = this.detailForm.formCode
             this.initFieldList()
           } else {
@@ -208,7 +208,11 @@ export default {
 
     handleEntityClick(data) {
       this.relativeEntity.code = data.value.code
-      this.relativeEntity.formCode = data.field.relativeForm.code
+      if (data.field.relativeForm) {
+        this.relativeEntity.formCode = data.field.relativeForm.code
+      }
+      this.relativeEntity.menuCode = data.field.menuCode
+      this.relativeEntity.componentName = data.field.componentName
       this.relativeEntity.show = true
     },
     closeEntityDetail() {

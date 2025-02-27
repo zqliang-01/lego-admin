@@ -28,6 +28,8 @@
   <rich-text-editor
     v-else-if="item.formType == 'richTextEditor'"
     v-model="model"
+    :uploadAPI="item.uploadAPI"
+    :previewUrl="item.previewUrl"
     :disabled="disableStatus"
     @input="commonChange(item, index, $event)"/>
   <el-input-number

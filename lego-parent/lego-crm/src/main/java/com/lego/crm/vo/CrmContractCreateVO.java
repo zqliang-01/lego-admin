@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import com.lego.core.data.hibernate.entity.AddressEntity;
 import java.util.Date;
 
-import com.lego.core.vo.VO;
+import com.lego.core.vo.CreateVO;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CrmContractCreateVO extends VO {
+public class CrmContractCreateVO extends CreateVO {
 
     private static final long serialVersionUID = 1L;
 

@@ -45,8 +45,8 @@ public class GenericDao<T extends BaseEntity> extends LegoJpaRepository<T, Long>
         return new QueryHandler<D>(sql, this.entityManager, resultClass);
     }
 
-    protected QueryHandler<T> createQueryHandler(String sql, Class<T> resultClass, Class<?>... domainClass) {
-        return new QueryHandler<T>(sql, this.entityManager, resultClass, domainClass);
+    protected <D> QueryHandler<D> createQueryHandler(String sql, Class<D> resultClass, Class<?>... domainClass) {
+        return new QueryHandler<D>(sql, this.entityManager, resultClass, domainClass);
     }
 
     @Override

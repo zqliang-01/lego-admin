@@ -36,8 +36,7 @@ public class CrmContractController extends BaseController {
     @PostMapping("/add")
     @SaCheckPermission("crm_contract_add")
     public JsonResponse<Object> add(@RequestBody CrmContractCreateVO vo) {
-        String code = contractService.add(getLoginCode(), vo);
-        contractService.updateCheckStatus(code, FlowableCheckStatus.completed);
+        contractService.add(getLoginCode(), vo);
         return JsonResponse.success();
     }
 

@@ -98,47 +98,6 @@
 			"navigationBarTitleText": "通用详情",
 			"enablePullDownRefresh": true
 		}
-	},
-	{
-		"path": "pages/app/oa/start/index",
-		"style": {
-			"navigationBarTitleText": "发起审批",
-			"enablePullDownRefresh": true
-		}
-	},
-	{
-		"path": "pages/app/oa/start/startForm",
-		"style": {
-			"navigationBarTitleText": "发起审批表单"
-		}
-	},
-	{
-		"path": "pages/app/oa/owner/index",
-		"style": {
-			"navigationBarTitleText": "我的流程",
-			"enablePullDownRefresh": true
-		}
-	},
-	{
-		"path": "pages/app/oa/undo/index",
-		"style": {
-			"navigationBarTitleText": "待办任务",
-			"enablePullDownRefresh": true
-		}
-	},
-	{
-		"path": "pages/app/oa/claim/index",
-		"style": {
-			"navigationBarTitleText": "待签任务",
-			"enablePullDownRefresh": true
-		}
-	},
-	{
-		"path": "pages/app/oa/finished/index",
-		"style": {
-			"navigationBarTitleText": "已办任务",
-			"enablePullDownRefresh": true
-		}
 	}],
 	"globalStyle": {
 		"navigationStyle": "custom",

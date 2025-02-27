@@ -29,6 +29,7 @@
 </template>
 
 <script>
+import loader from './components/loader'
 import * as PermissionApi from '@/api/app/permission'
 import { isObject } from '@/utils/util'
 
@@ -57,19 +58,7 @@ export default {
 			  '#F661AC',
 			  '#8652EE'
 			],
-			systemAppList: [
-				{
-					code: 'oa',
-					name: '任务审批',
-					list: [
-						{ code: 'oa_start', name: '发起审批', icon: 'top', path: 'pages/app/oa/start/index' },
-						{ code: 'oa_owner', name: '我的流程', icon: 'my-task', path: 'pages/app/oa/owner/index' },
-						{ code: 'oa_undo', name: '待办任务', icon: 'contract', path: 'pages/app/oa/undo/index' },,
-						{ code: 'oa_unclaimed', name: '待签任务', icon: 'icon-related-tasks', path: 'pages/app/oa/claim/index' },
-						{ code: 'oa_finished', name: '已办任务', icon: 'icon-task-state', path: 'pages/app/oa/finished/index' }
-					]
-				}
-			]
+			systemAppList: loader
 		}
 	},
 	onLoad() {
@@ -85,8 +74,8 @@ export default {
 						let systemApp = app.systemAppList.find(systemApp => systemApp.code === data.code)
 						if (systemApp) {
 							app.appList.push({
-								code: systemApp.code,
-								name: systemApp.name,
+								code: data.code,
+								name: data.name,
 								list: systemApp.list.filter(children => {
 									return children.auth === false || app.systemAppAuth(children, data.childrens)
 								})
@@ -123,6 +112,9 @@ export default {
 			return appList
 		},
 		systemAppAuth(systemApp, childrens) {
+			if (systemApp.auth) {
+				return true
+			}
 			const app = this
 			let auth = false
 			childrens.forEach(children => {

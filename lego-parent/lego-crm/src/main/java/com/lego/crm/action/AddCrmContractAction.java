@@ -14,7 +14,7 @@ public class AddCrmContractAction extends AddAction<CrmContract, ICrmContractDao
     private CrmContractCreateVO vo;
 
     public AddCrmContractAction(String operatorCode, CrmContractCreateVO vo) {
-        super("crm_contract", operatorCode);
+        super("crm_contract", operatorCode, vo.getCheckStatus());
         this.vo = vo;
     }
 

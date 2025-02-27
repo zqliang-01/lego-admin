@@ -58,9 +58,14 @@ export default {
       if (field) {
         formItem.name = field.name
         formItem.formType = field.formType
+        if (['text', 'textarea', 'website', 'mobile', 'email', 'richTextEditor'].includes(field.formType)) {
+          formItem.formType = 'text'
+        }
         formItem.setting = field.setting
         formItem.request = field.request
         formItem.relativeForm = field.relativeForm
+        formItem.queryApi = field.queryApi
+        formItem.fieldList = field.fieldList
         formItem.type = 'is'
         formItem.fieldForm = {}
         if (field.formType === 'boolean') {

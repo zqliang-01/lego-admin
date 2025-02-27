@@ -28,6 +28,7 @@ public class CrmLeadCompletedListener implements IFlowableCompletedListener {
             return code;
         }
         CrmLeadCreateVO vo = BeanUtil.toBean(variables, CrmLeadCreateVO.class);
+        vo.setCheckStatus(FlowableCheckStatus.checking);
         return leadService.add(Constants.loginCode.get(), vo);
     }
 

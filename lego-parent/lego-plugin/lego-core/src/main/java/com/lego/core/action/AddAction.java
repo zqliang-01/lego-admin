@@ -15,6 +15,10 @@ public abstract class AddAction<E extends BaseEntity, D extends IGenericDao<E>> 
         super(permissionCode, operatorCode);
     }
 
+    public AddAction(String permissionCode, String operatorCode, String checkStatus) {
+        super(permissionCode, operatorCode, checkStatus);
+    }
+
     @Override
     protected void doRun() {
         setTargetEntity(createTargetEntity());

@@ -83,9 +83,20 @@ $http.requestEnd = options => {
   }
 }
 
+$http.requestError = (res) => {
+	console.log(res)
+	if (res.code !== 200) {
+		uni.showToast({
+			title: res.msg,
+			icon: "none",
+			duration: 2500
+		}, 10)
+	}
+}
+
 // 登录弹窗次数
 let loginPopupNum = 0
-$http.dataFactory = async res => {
+$http.dataFactory = async (res) => {
   // console.log("接口请求数据", {
   //   url: res.url,
   //   resolve: res.response,
@@ -105,45 +116,31 @@ $http.dataFactory = async res => {
     try {
       httpData = JSON.parse(httpData)
     } catch {
-      httpData = false
+			return Promise.reject({
+				code: 9999,
+				msg: "返回数据验证不通过"
+			})
     }
   }
-  if (httpData === false || typeof httpData !== 'object') {
-    return Promise.reject({
-      code: 9999,
-      msg: "返回数据验证不通过"
-    })
-  }
-	if (httpData.code !== 200) {
-		if (httpData.code === 1000) {
-		  if (loginPopupNum <= 0) {
-		    loginPopupNum++
-		    uni.showModal({
-		      title: '温馨提示',
-		      content: '此时此刻需要您登录喔~',
-		      confirmText: "去登录",
-		      cancelText: "再逛会",
-		      success: res => {
-		        loginPopupNum--
-		        if (res.confirm) {
-							store.dispatch('Logout')
-		          uni.navigateTo({
-		            url: "/pages/login/index"
-		          })
-		        }
-		      }
-		    })
-		  }
-		} else if (res.isPrompt) {
-			setTimeout(() => {
-				uni.showToast({
-					title: httpData.msg,
-					icon: "none",
-					duration: 2500
-				}, 10)
-			})
-		}
-		return Promise.reject(httpData)
+	if (httpData.code === 1000 && loginPopupNum <= 0) {
+		loginPopupNum++
+		uni.showModal({
+			title: '温馨提示',
+			content: '此时此刻需要您登录喔~',
+			confirmText: "去登录",
+			cancelText: "再逛会",
+			success: res => {
+				loginPopupNum--
+				if (res.confirm) {
+					store.dispatch('Logout')
+					uni.navigateTo({
+						url: "/pages/login/index"
+					})
+				}
+			}
+		})
+	} else if (httpData.code !== 200) {
+		return Promise.resolve(httpData)
 	}
 	return Promise.resolve(httpData)
 }

@@ -4,26 +4,28 @@
       v-show="selectionList.length == 0"
       class="th-container">
       <slot name="custom"/>
-      <div>场景：</div>
-      <el-popover
-        v-model="showScene"
-        trigger="click"
-        popper-class="no-padding-popover"
-        width="180">
-        <el-input
-          slot="reference"
-          v-model="sceneName"
-          :readonly="true"
-          class="scene-select">
-          <i slot="suffix" :class="['el-input__icon', 'el-icon-' + iconClass]" />
-        </el-input>
-        <lego-scene-list
-          ref="sceneList"
-          :form-code="formCode"
-          @scene="sceneSelect"
-          @scene-handle="sceneHandle"
-          @hidden-scene="showScene=false" />
-      </el-popover>
+      <template v-if="formCode">
+        <div>场景：</div>
+        <el-popover
+          v-model="showScene"
+          trigger="click"
+          popper-class="no-padding-popover"
+          width="180">
+          <el-input
+            slot="reference"
+            v-model="sceneName"
+            :readonly="true"
+            class="scene-select">
+            <i slot="suffix" :class="['el-input__icon', 'el-icon-' + iconClass]" />
+          </el-input>
+          <lego-scene-list
+            ref="sceneList"
+            :form-code="formCode"
+            @scene="sceneSelect"
+            @scene-handle="sceneHandle"
+            @hidden-scene="showScene=false" />
+        </el-popover>
+      </template>
       <el-button
         v-if="showFilterView"
         :icon="'screening' | iconPre"
@@ -42,7 +44,7 @@
         :field-list="fieldList"
         :dialog-visible.sync="showFilter"
         :filter-obj="filterObj"
-        :save-scene="true"
+        :save-scene="saveScene"
         @filter="handleFilter" />
       <slot />
     </flexbox>
@@ -87,7 +89,7 @@ import LegoSceneList from './LegoScene/List'
 import LegoSceneSet from './LegoScene/Set'
 import LegoSceneCreate from './LegoScene/Create'
 import { Loading } from 'element-ui'
-import { isArray } from '@/utils/types'
+import { isArray, isEmpty } from '@/utils/types'
 import { getMenuAuth } from '@/utils/auth'
 
 export default {
@@ -148,6 +150,9 @@ export default {
     // 展示筛选
     showFilterView() {
       return true
+    },
+    saveScene() {
+      return !isEmpty(this.formCode)
     }
   },
   watch: {

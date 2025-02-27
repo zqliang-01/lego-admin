@@ -13,7 +13,7 @@ public class AddCrmLeadAction extends AddAction<CrmLead, ICrmLeadDao> {
     private CrmLeadCreateVO vo;
 
     public AddCrmLeadAction(String operatorCode, CrmLeadCreateVO vo) {
-        super("crm_lead", operatorCode);
+        super("crm_lead", operatorCode, vo.getCheckStatus());
         this.vo = vo;
     }
 

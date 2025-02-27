@@ -100,12 +100,16 @@
       :detail-code.sync="relativeEntity.code"
       :form-code="relativeEntity.formCode"
       :page-codes="relativeEntity.pageCodes"
+      :menu-code="relativeEntity.menuCode"
+      :localName="relativeEntity.componentName"
       @handle="actionHandle"
       @hide-view="relativeEntity.show=false"/>
     <!-- 新建 -->
     <lego-all-create
       :visible.sync="createShow"
       :form-code="formCode"
+      :menu-code="menuCode"
+      localName="CrmLeadCreate"
       @close="createShow = false"
       @handle="actionHandle"
     />

@@ -11,6 +11,7 @@
       <lego-detail-head
         :action-types="actionTypes"
         :auth="auth"
+        :formCode="formCode"
         :detail="detailData"
         :head-field-list="headFieldList"
         :page-codes="pageCodes"
@@ -63,13 +64,6 @@
       @close="isCreate = false"
       @handle="actionHandle"
     />
-    <el-button
-      v-if="auth.detail"
-      class="firse-button"
-      @click="showImportInfo= !showImportInfo">
-      重<br>要<br>信<br>息<br>
-      <i :class="{ 'is-reverse': !showImportInfo }" class="el-icon-arrow-right el-icon--right" />
-    </el-button>
     <div v-show="relativeEntity.show" class="full-container">
       <lego-all-detail
         :visible.sync="relativeEntity.show"

@@ -36,8 +36,7 @@ public class CrmCustomerController extends BaseController {
     @PostMapping("/add")
     @SaCheckPermission("crm_customer_add")
     public JsonResponse<Object> add(@RequestBody CrmCustomerCreateVO vo) {
-        String code = customerService.add(getLoginCode(), vo);
-        customerService.updateCheckStatus(code, FlowableCheckStatus.completed);
+        customerService.add(getLoginCode(), vo);
         return JsonResponse.success();
     }
 

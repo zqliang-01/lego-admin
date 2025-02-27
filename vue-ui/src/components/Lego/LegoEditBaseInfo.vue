@@ -21,7 +21,7 @@
           :key="index"
           :prop="item.fieldCode"
           :class="[{'is-block': isBlockShowField(item)}]">
-          <span v-if="!isBlockShowField(item)" slot="label">
+          <span v-if="!item.simpleType" slot="label">
             {{ item.name }}
           </span>
           <field
@@ -139,7 +139,7 @@ export default {
      * 是整行展示字段
      */
     isBlockShowField(item) {
-      return item.simpleType
+      return item.simpleType || item.block
     },
 
     /**
@@ -259,8 +259,10 @@ export default {
     }
 
     &.is-block {
+      display: flex;
       flex-basis: 100% !important;
       .el-form-item__content {
+        flex: 1;
         margin-left: 0 !important;
       }
     }

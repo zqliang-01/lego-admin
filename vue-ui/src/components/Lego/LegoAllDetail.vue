@@ -35,7 +35,7 @@
 </template>
 <script type="text/javascript">
 import LegoDetail from './LegoDetail'
-import crmDetail from '@/views/crm/components/detail'
+import Detail from './loader/allDetail'
 import { getMenuAuth } from '@/utils/auth'
 import { customFormPermissionGetAPI } from '@/api/admin/formField'
 import { mapGetters } from 'vuex'
@@ -43,8 +43,8 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'LegoAllDetail',
   components: {
-    LegoDetail,
-    ...crmDetail
+    ...Detail,
+    LegoDetail
   },
   props: {
     visible: {
@@ -61,7 +61,9 @@ export default {
         return []
       }
     },
-    detailCode: String
+    detailCode: String,
+    menuCode: String,
+    localName: String
   },
   computed: {
     ...mapGetters([
@@ -86,30 +88,50 @@ export default {
   },
   methods: {
     handleOpen() {
-      this.loading = true
       this.detailForm = {
         formCode: this.formCode,
         detailCode: this.detailCode
       }
-      this.hasPermission = false
-      customFormPermissionGetAPI(this.formCode).then(res => {
-        this.loading = false
-        this.auth = getMenuAuth(res.data.permissionCode)
+      if (this.formCode) {
+        this.loading = true
+        this.hasPermission = false
+        customFormPermissionGetAPI(this.formCode).then(res => {
+          this.loading = false
+          this.auth = getMenuAuth(res.data.permissionCode)
+          if (!this.auth || !this.auth.code) {
+            this.hasPermission = false
+            return
+          }
+          this.hasPermission = true
+          if (this.auth.dynamicRoute) {
+            this.componentName = 'LegoDetail'
+          } else {
+            this.componentName = res.data.className + 'Detail'
+          }
+          this.topIndex = this.activeIndex
+          this.$store.commit('SET_ACTIVEINDEX', 50)
+        }).catch(() => {
+          this.loading = false
+        })
+      } else if (this.menuCode) {
+        this.auth = getMenuAuth(this.menuCode)
         if (!this.auth || !this.auth.code) {
           this.hasPermission = false
           return
         }
-        this.hasPermission = true
-        if (this.auth.dynamicRoute) {
-          this.componentName = 'LegoDetail'
-        } else {
-          this.componentName = res.data.className + 'Detail'
+        if (!this.localName) {
+          this.$message.error('未注册的组件[' + this.localName + ']操作失败！')
+          this.hasPermission = false
+          return
         }
+        this.hasPermission = true
+        this.componentName = this.localName
         this.topIndex = this.activeIndex
         this.$store.commit('SET_ACTIVEINDEX', 50)
-      }).catch(() => {
-        this.loading = false
-      })
+        return
+      } else {
+        this.hasPermission = false
+      }
     },
     handleClose() {
       this.$emit('hide-view')
@@ -119,16 +141,6 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-::v-deep .lego-detail {
-  min-width: 926px;
-  border-radius: 4px;
-  background-color: #f5f6f9;
-}
-
-::v-deep .el-drawer__body {
-  overflow: hidden !important;
-}
-
 .close-btn {
   position: fixed;
   z-index: 100;
