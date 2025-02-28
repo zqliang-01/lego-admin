@@ -140,7 +140,7 @@ $http.dataFactory = async (res) => {
 			}
 		})
 	} else if (httpData.code !== 200) {
-		return Promise.resolve(httpData)
+		return Promise.reject(httpData)
 	}
 	return Promise.resolve(httpData)
 }
