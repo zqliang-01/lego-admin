@@ -84,7 +84,6 @@ $http.requestEnd = options => {
 }
 
 $http.requestError = (res) => {
-	console.log(res)
 	if (res.code !== 200) {
 		uni.showToast({
 			title: res.msg,

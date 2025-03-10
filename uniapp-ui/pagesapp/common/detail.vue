@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import DetailInfo from '../components/detailInfo'
-import DetailLog from '../components/detailLog'
-import DetailFile from '../components/detailFile'
-import DetailHead from '../components/detailHead'
+import DetailInfo from './components/detailInfo'
+import DetailLog from './components/detailLog'
+import DetailFile from './components/detailFile'
+import DetailHead from './components/detailHead'
 
 import * as FieldAPI from '@/api/form/field'
 import * as FormAPI from '@/api/form/index'
@@ -120,7 +120,7 @@ export default {
 			this.currentType = data.code
 		},
 		handleUpdate() {
-			this.$navTo('pages/app/common/create', {formCode: this.formCode, detailCode: this.detailData.code})
+			this.$navTo('pagesapp/common/create', {formCode: this.formCode, detailCode: this.detailData.code})
 		},
 		onPullDownRefresh() {
 			this.initData()

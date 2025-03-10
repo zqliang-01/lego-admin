@@ -126,10 +126,10 @@ export default {
 			this.handleQuery()
 		},
 		handleAdd() {
-			this.$navTo('pages/app/common/create', {formCode: this.formData.form.code})
+			this.$navTo('pagesapp/common/create', {formCode: this.formData.form.code})
 		},
 		handleDetail(data) {
-			this.$navTo('pages/app/common/detail', {formCode: this.formData.form.code, detailCode: data.code})
+			this.$navTo('pagesapp/common/detail', {formCode: this.formData.form.code, detailCode: data.code})
 		}
 	}
 }

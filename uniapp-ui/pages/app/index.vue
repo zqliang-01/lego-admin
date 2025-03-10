@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import loader from './components/loader'
+import loader from '@/pagesapp/components/loader'
 import * as PermissionApi from '@/api/app/permission'
 import { isObject } from '@/utils/util'
 
@@ -129,7 +129,7 @@ export default {
 		handleClick(item) {
 			if (item.type === 'dynamic') {
 				const data = { formCode: item.formCode, name: item.name, menuCode: item.code }
-				this.$navTo('pages/app/common/index', data)
+				this.$navTo('pagesapp/common/index', data)
 			} else if (item.path) {
 				this.$navTo(item.path)
 			} else {

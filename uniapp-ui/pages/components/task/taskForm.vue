@@ -7,7 +7,7 @@
 			labelWidth="auto"
 			labelAlign="right"
 			errorType="border-bottom">
-			<view class="lego-card">
+			<view v-if="fieldList.length > 0" class="lego-card">
 				<FormItems
 					v-for="(children, index) in fieldList"
 					:key="index"

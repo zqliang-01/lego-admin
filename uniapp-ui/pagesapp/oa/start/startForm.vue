@@ -119,7 +119,7 @@ export default {
 						content: '流程发起成功，可到“我的流程”中查看发起的审批！',
 						success: (res) => {
 							if (res.confirm) {
-								app.$navTo('pages/app/oa/owner/index')
+								app.$navTo('pagesapp/oa/owner/index')
 							}
 						},
 						fail: () => {

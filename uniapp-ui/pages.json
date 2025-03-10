@@ -78,26 +78,31 @@
 		"style": {
 			"navigationBarTitleText": "审批详情"
 		}
-	},
-	{
-		"path": "pages/app/common/index",
-		"style": {
-			"navigationBarTitleText": "通用查询",
-			"enablePullDownRefresh": true
-		}
-	},
-	{
-		"path": "pages/app/common/create",
-		"style": {
-			"navigationBarTitleText": "通用创建"
-		}
-	},
-	{
-		"path": "pages/app/common/detail",
-		"style": {
-			"navigationBarTitleText": "通用详情",
-			"enablePullDownRefresh": true
-		}
+	}],
+	"subPackages": [{
+		"root": "pagesapp",
+		"pages": [
+			{
+				"path": "common/index",
+				"style": {
+					"navigationBarTitleText": "通用查询",
+					"enablePullDownRefresh": true
+				}
+			},
+			{
+				"path": "common/create",
+				"style": {
+					"navigationBarTitleText": "通用创建"
+				}
+			},
+			{
+				"path": "common/detail",
+				"style": {
+					"navigationBarTitleText": "通用详情",
+					"enablePullDownRefresh": true
+				}
+			}
+		]
 	}],
 	"globalStyle": {
 		"navigationStyle": "custom",

@@ -84,7 +84,7 @@ export default {
 			if (item.formType === 'entity') {
 				const entityCode = this.detailData[item.fieldCode].code
 				const data = {formCode: item.relativeForm.code, detailCode: entityCode}
-				this.$navTo('pages/app/common/detail', data)
+				this.$navTo('pagesapp/common/detail', data)
 			}
 		}
 	}

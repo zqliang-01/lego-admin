@@ -78,7 +78,7 @@ export default {
 						name: item.name,
 						formKey: res.data
 					}
-					app.$navTo('pages/app/oa/start/startForm', task)
+					app.$navTo('pagesapp/oa/start/startForm', task)
 					return
 				}
 				DefinitionAPI.start({
@@ -90,7 +90,7 @@ export default {
 						content: '流程发起成功，可到“我的流程”中查看发起的审批！',
 						success: function (res) {
 							if (res.confirm) {
-								app.$navTo('pages/app/oa/owner/index')
+								app.$navTo('pagesapp/oa/owner/index')
 							}
 						}
 					})

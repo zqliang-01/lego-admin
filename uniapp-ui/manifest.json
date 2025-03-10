@@ -92,6 +92,9 @@
         "lazyCodeLoading" : "requiredComponents",
         "unipush" : {
             "enable" : true
+        },
+        "optimization" : {
+            "subpackages" : true
         }
     },
     "mp-alipay" : {
