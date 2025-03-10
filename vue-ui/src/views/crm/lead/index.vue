@@ -10,7 +10,6 @@
       title="线索（自定义）"
       placeholder="请输入名称"
       main-title="新建线索"
-      @on-handle="listHeadHandle"
       @on-search="commonSearch"
       @on-export="exportInfos" />
     <div class="lego-container">

@@ -28,6 +28,12 @@
         :icon="'export' | iconPre"
         class="dup-check-btn"
         @click="handleTypeDrop('export')">导出</el-button>
+      <el-button
+        v-for="(item, index) in topTypes"
+        :key="index"
+        :icon="item.icon | iconPre"
+        class="dup-check-btn"
+        @click="handleTypeDrop(item.type)">{{ item.name }}</el-button>
       <el-dropdown
         v-if="moreTypes.length > 0"
         trigger="click"
@@ -72,6 +78,14 @@ export default {
       type: Boolean,
       default: true
     },
+    topTypes: {
+      type: Array,
+      default: () => []
+    },
+    moreTypes: {
+      type: Array,
+      default: () => []
+    },
     search: String, // 用于联动
     // 自定义方法
     createFun: Function
@@ -79,19 +93,12 @@ export default {
   data() {
     return {
       inputContent: '',
-      /** 更多操作 */
-      moreTypes: [],
       isCreate: false // 是创建
     }
   },
   computed: {
     auth() {
       return getMenuAuth(this.menuCode)
-    }
-  },
-  mounted() {
-    if (this.auth && this.auth.export) {
-      // this.moreTypes.push({ type: 'export', name: '导出', icon: 'export' })
     }
   },
   methods: {
@@ -102,6 +109,8 @@ export default {
         }).then(() => {
           this.$emit('on-export')
         })
+      } else {
+        this.$emit('on-handle', command)
       }
     },
     createClick() {
@@ -121,11 +130,6 @@ export default {
     // 进行搜索操作
     searchInput() {
       this.$emit('on-search', this.inputContent)
-    },
-    // 创建数据页面 保存成功
-    createSaveSuccess(data) {
-      // 回到保存成功
-      this.$emit('on-handle', { type: 'save-success' })
     },
     hideView() {
       this.isCreate = false

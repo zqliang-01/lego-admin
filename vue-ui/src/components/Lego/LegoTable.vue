@@ -2,15 +2,15 @@
   <div>
     <el-table
       v-loading="loading"
-      id="legoTable"
+      ref="legoTable"
       :data="dataList"
-      :height="tableHeight + tableHeighOverly"
-      :row-key="selection ? 'code' : ''"
+      :height="height"
+      :row-key="multiple ? 'code' : ''"
       highlight-current-row
       style="width: 100%"
       @selection-change="handleSelectionChange">
       <el-table-column
-        v-if="selection"
+        v-if="multiple"
         show-overflow-tooltip
         reserve-selection
         type="selection"
@@ -81,7 +81,7 @@ export default {
       type: Boolean,
       default: true
     },
-    selection: {
+    multiple: {
       type: Boolean,
       default: false
     },
@@ -106,6 +106,10 @@ export default {
     total: {
       type: Number,
       default: 15
+    },
+    selectedCodes: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -114,6 +118,22 @@ export default {
       tableCurrentPage: 1,
       tableHeight: document.documentElement.clientHeight - 165, // 表的高度
       pageSizes: [15, 30, 60, 100]
+    }
+  },
+  watch: {
+    dataList: {
+      handler(val) {
+        if (val && val.length > 0) {
+          this.handleInitSelect()
+        }
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  computed: {
+    height() {
+      return this.tableHeight + this.tableHeighOverly
     }
   },
   created() {
@@ -149,6 +169,17 @@ export default {
     },
     handleClearSelection() {
       this.$refs.legoTable.clearSelection()
+    },
+    handleInitSelect() {
+      if (this.multiple && this.selectedCodes.length > 0) {
+        this.$nextTick(() => {
+          this.dataList.forEach(data => {
+            if (this.selectedCodes.includes(data.code)) {
+              this.$refs.legoTable.toggleRowSelection(data, true)
+            }
+          })
+        })
+      }
     }
   }
 }

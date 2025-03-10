@@ -325,10 +325,9 @@ export default {
           this.getMainTable().clearSelection()
           this.getList()
           loading.close()
+        }).catch(() => {
+          loading.close()
         })
-          .catch(() => {
-            loading.close()
-          })
       }
     },
 
@@ -349,18 +348,6 @@ export default {
     setSave() {
       this.getFieldList(true)
     },
-
-    /**
-     * 页面头部操作
-     */
-    listHeadHandle(data) {
-      if (data.type === 'save-success') {
-        // 重新请求第一页数据
-        this.currentPage = 1
-        this.getList()
-      }
-    },
-
     /**
      * 字段排序
      */
