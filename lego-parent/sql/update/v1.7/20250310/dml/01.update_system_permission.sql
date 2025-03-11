@@ -1,0 +1,1 @@
+UPDATE sys_permission t SET t.NAME = '系统设置' WHERE t.CODE = 'manage_system';

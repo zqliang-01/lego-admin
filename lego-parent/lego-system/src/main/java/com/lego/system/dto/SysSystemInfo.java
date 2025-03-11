@@ -13,4 +13,5 @@ public class SysSystemInfo extends DTO {
     private String companyName;
     private String companyLogo;
     private String version;
+    private String rootPath;
 }

@@ -1,24 +1,18 @@
 package com.lego.core.module.version;
 
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.core.util.ReUtil;
-import com.lego.core.common.Constants;
 import com.lego.core.data.DataSourceConfig;
 import com.lego.core.enums.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
+import com.lego.core.util.SqlRunnerUtil;
 import com.lego.core.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.jdbc.ScriptRunner;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
@@ -26,7 +20,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 @Slf4j
 @Component
@@ -89,7 +82,7 @@ public class VersionManager implements InitializingBean {
                 String newVersion = fileLoader.getNewVersion(currentVersion);
                 log.info("当前系统版本[{}]非最新版本[{}]，启动版本更新流程", currentVersion, newVersion);
                 Map<String, String> newVersions = fileLoader.loadNewVersion(currentVersion);
-                runBatchSql(newVersions, connection, false);
+                SqlRunnerUtil.runBatchSql(newVersions, connection, false);
                 PreparedStatement pstmt = connection.prepareStatement(UPDATE_VERSION_SQL);
                 pstmt.setString(1, newVersion);
                 pstmt.executeUpdate();
@@ -111,7 +104,7 @@ public class VersionManager implements InitializingBean {
         Map<String, String> initSql = fileLoader.load(INIT_SQL_FOLDER);
         try (Connection connection = dataSourceConfig.getDataSource().getConnection()) {
             this.initializing = true;
-            runBatchSql(initSql, connection, true);
+            SqlRunnerUtil.runBatchSql(initSql, connection, true);
             this.needInit = false;
             log.info("系统初始化完成");
             return getCurrentVersion(connection);
@@ -133,40 +126,5 @@ public class VersionManager implements InitializingBean {
         String currentVersion = result.getString("value");
         BusinessException.check(StringUtil.isNotBlank(currentVersion), "当前版本过旧，未检测到版本信息！");
         return currentVersion;
-    }
-
-    private void runBatchSql(Map<String, String> sqlFiles, Connection connection, boolean autoCommit) throws IOException {
-        if (!sqlFiles.isEmpty()) {
-            ScriptRunner runner = new ScriptRunner(connection);
-            runner.setDelimiter("~");
-            runner.setLogWriter(null);
-            runner.setAutoCommit(autoCommit);
-            runner.setStopOnError(true);
-            for (Map.Entry<String, String> sqlFile : sqlFiles.entrySet()) {
-                String name = sqlFile.getKey();
-                String content = sqlFile.getValue();
-                runSql(name, content, runner);
-            }
-        }
-    }
-
-    private void runSql(String name, String content, ScriptRunner runner) {
-        log.info("执行脚本：{}", name);
-        String fileType = StringUtil.substringLastAfter(name, ".");
-        if ("sql".equals(fileType)) {
-            Pattern pattern = Pattern.compile("--.*", Pattern.MULTILINE);
-            content = ReUtil.replaceAll(content, pattern, "");
-            pattern = Pattern.compile("[ \\t]*;$", Pattern.MULTILINE);
-            content = ReUtil.replaceAll(content, pattern, "~");
-            pattern = Pattern.compile("\bINSERT\\s+INTO\b", Pattern.MULTILINE);
-            content = ReUtil.replaceAll(content, pattern, "INSERT /*+ append */ INTO");
-        } else {
-            content = ReUtil.replaceAll(content, "[ \\t]*;$", "~");
-        }
-        InputStream inputStream = IoUtil.toStream(content, Constants.DEFAULT_CHARSET);
-        if (null != inputStream) {
-            runner.runScript(new InputStreamReader(inputStream, Constants.DEFAULT_CHARSET));
-            IoUtil.close(inputStream);
-        }
     }
 }

@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,11 +62,18 @@ public class SysConfigController extends BaseController {
         return JsonResponse.success(new SysVersionInfo(currentVersion, newVersion));
     }
 
-    @GetMapping("/update")
+    @PostMapping("/update")
     @SaCheckPermission("manage_system_update")
     public JsonResponse<Object> update() {
         String newVersion = versionManager.execUpdate();
         return JsonResponse.success(newVersion);
+    }
+
+    @PostMapping("/upload-package")
+    @SaCheckPermission("manage_system_update")
+    public JsonResponse<Object> uploadPackage(@RequestParam("file") MultipartFile file) {
+        configService.importPackage(getLoginCode(), file);
+        return JsonResponse.success();
     }
 
     @GetMapping("/list-app")

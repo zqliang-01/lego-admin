@@ -1,6 +1,6 @@
 
 CALL add_system_permission('manage', '管理后台', 'app', NULL, 'all', 1, 'local');
-CALL add_system_permission('manage_system', '企业首页', 'menu', 'manage', 'enterprise', 10, 'local');
+CALL add_system_permission('manage_system', '系统设置', 'menu', 'manage', 'enterprise', 10, 'local');
 CALL add_system_permission('manage_system_read', '查看', 'auth', 'manage_system', NULL, 101, NULL);
 CALL add_system_permission('manage_system_update', '修改', 'auth', 'manage_system', NULL, 102, NULL);
 

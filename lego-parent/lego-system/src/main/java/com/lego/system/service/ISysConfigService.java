@@ -1,6 +1,7 @@
 package com.lego.system.service;
 
 import com.lego.system.dto.SysSystemInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -15,4 +16,6 @@ public interface ISysConfigService {
     void update(List<String> value, String code);
 
     void update(String value, String code);
+
+    void importPackage(String operatorCode, MultipartFile file);
 }

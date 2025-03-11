@@ -6,6 +6,7 @@ import java.util.List;
 public interface SysPermissionCode {
 
     String manage = "manage";
+    String manageSystem = "manage_system";
     String manageUser = "manage_users";
     String manageRole = "manage_role";
     String manageCustomForm = "manage_customForm";

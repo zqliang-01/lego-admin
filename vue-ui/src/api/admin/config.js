@@ -31,6 +31,23 @@ export function systemCheckUpdateAPI() {
 
 export function systemUpdateAPI() {
   return request({
-    url: '/back-end/sys-config/update'
+    url: '/back-end/sys-config/update',
+    method: 'post'
+  })
+}
+
+export function appPackageUploadAPI(data, config = {}) {
+  var param = new FormData()
+  Object.keys(data).forEach(key => {
+    param.append(key, data[key])
+  })
+  return request({
+    url: '/back-end/sys-config/upload-package',
+    method: 'post',
+    data: param,
+    ...config,
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
   })
 }

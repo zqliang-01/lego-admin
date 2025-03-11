@@ -24,7 +24,7 @@ export default { type: 'manage', router: [
       path: 'systemconfig', // 企业首页
       component: () => import('@/views/admin/config'),
       meta: {
-        title: '企业首页',
+        title: '系统配置',
         icon: 'enterprise'
       }
     })
