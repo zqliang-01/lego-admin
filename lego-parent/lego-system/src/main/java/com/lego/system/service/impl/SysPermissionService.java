@@ -1,5 +1,6 @@
 package com.lego.system.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import com.lego.core.common.Constants;
 import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.TypeInfo;
@@ -7,6 +8,7 @@ import com.lego.system.action.AddSysPermissionAction;
 import com.lego.system.action.DeleteSysPermissionAction;
 import com.lego.system.action.ModifySysPermissionAction;
 import com.lego.system.assembler.SysPermissionAssembler;
+import com.lego.system.dao.ISysConfigDao;
 import com.lego.system.dao.ISysEmployeeDao;
 import com.lego.system.dao.ISysPermissionDao;
 import com.lego.system.dto.SysAppInfo;
@@ -16,6 +18,7 @@ import com.lego.system.entity.SysPermission;
 import com.lego.system.entity.simpletype.SysPermissionRouteType;
 import com.lego.system.entity.simpletype.SysPermissionType;
 import com.lego.system.service.ISysPermissionService;
+import com.lego.system.vo.SysConfigCode;
 import com.lego.system.vo.SysPermissionCreateVO;
 import com.lego.system.vo.SysPermissionModifyVO;
 import com.lego.system.vo.SysPermissionTypeCode;
@@ -26,6 +29,9 @@ import java.util.List;
 
 @Service
 public class SysPermissionService extends BaseService<ISysPermissionDao, SysPermissionAssembler> implements ISysPermissionService {
+
+    @Autowired
+    private ISysConfigDao configDao;
 
     @Autowired
     private ISysEmployeeDao employeeDao;
@@ -47,8 +53,10 @@ public class SysPermissionService extends BaseService<ISysPermissionDao, SysPerm
         if (employee.isAdmin()) {
             return assembler.createTree(dao.findByType(types));
         }
+        String value = configDao.findValueBy(SysConfigCode.APP_VALID_LIST);
+        List<String> valueAppCodes = StrUtil.split(value, ",");
         List<SysPermission> permissions = dao.findBy(employeeCode, types);
-        return assembler.createTree(permissions);
+        return assembler.create(permissions, valueAppCodes);
     }
 
     @Override

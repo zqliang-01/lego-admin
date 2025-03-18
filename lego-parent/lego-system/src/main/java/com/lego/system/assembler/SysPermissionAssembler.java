@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, SysPermission> {
@@ -67,5 +68,12 @@ public class SysPermissionAssembler extends TreeAssembler<SysPermissionInfo, Sys
             auth.put(permission.getRealm(), true);
         }
         return auth;
+    }
+
+    public List<SysPermissionInfo> create(List<SysPermission> permissions, List<String> valueAppCodes) {
+        List<SysPermissionInfo> infos = createTree(permissions);
+        return infos.stream()
+            .filter(p -> valueAppCodes.contains(p.getCode()))
+            .collect(Collectors.toList());
     }
 }
