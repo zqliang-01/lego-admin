@@ -15,7 +15,7 @@ import AccountLogin from './components/account-login'
 import WechatMpLogin from './components/wechat-mp-login'
 import * as UserApi from '@/api/manage/user'
 import * as LoginApi from '@/api/login'
-import { isEmpty } from '../../utils/verify'
+import { isEmpty } from '@/utils/verify'
 
 export default {
 	components: {
@@ -81,24 +81,17 @@ export default {
 		handleLoginSuccess(openid) {
 			const app = this
 			const platform = store.getters.platform
-			if (platform !== 'H5') {
+			if (platform !== 'H5' || isWechat()) {
 				app.handleUserBind(openid);
-			} else if (isWechat()) {
-				app.handleUserBind(openid);
-			} else if (app.redirectUrl) {
-				uni.reLaunch({url: app.redirectUrl})
 			} else {
-				uni.reLaunch({url: '/pages/index/index'})
+				app.handleSuccess()
 			}
 		},
 		handleUserBind(openid) {
 			const app = this
 			UserApi.bind(openid).then(result => {
 				app.$toast(result.msg)
-				if (app.redirectUrl) {
-					uni.reLaunch({url: this.redirectUrl})
-					return
-				}
+				app.handleSuccess()
 			})
 		}
 	}

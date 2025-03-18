@@ -85,10 +85,12 @@ $http.requestEnd = options => {
 
 $http.requestError = (res) => {
 	if (res.code !== 200) {
-		uni.showToast({
-			title: res.msg,
-			icon: "none",
-			duration: 2500
+		setTimeout(() => {
+			uni.showToast({
+				title: res.msg,
+				icon: "none",
+				duration: 2500
+			})
 		}, 10)
 	}
 }
@@ -134,8 +136,11 @@ $http.dataFactory = async (res) => {
 					store.dispatch('Logout')
 					const pages = getCurrentPages();
 					const currentPage = pages[pages.length - 1];
-					const currentPath = currentPage.__route__ || currentPage.route;
-					redTo('pages/login/index', { redirectUrl: '/' + currentPath })
+					let currentPath = currentPage.__route__ || currentPage.route;
+					if (currentPath) {
+						currentPath = '/' + currentPath
+					}
+					redTo('pages/login/index', { redirectUrl: currentPath })
 				}
 			}
 		})

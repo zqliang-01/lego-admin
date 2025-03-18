@@ -74,8 +74,8 @@ const user = {
 				LoginApi.logout(data).then(response => {
 					storage.remove(USER_ID)
 					storage.remove(ACCESS_TOKEN)
-					commit('SET_TOKEN', '')
-					commit('SET_USER_ID', '')
+					commit('SET_TOKEN', null)
+					commit('SET_USER_ID', null)
 					resolve()
 				}).catch(reject)
 			})
