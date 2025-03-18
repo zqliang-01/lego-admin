@@ -140,6 +140,10 @@ public class DateUtil {
         return DateUtils.addDays(date, amount);
     }
 
+    public static Date addMinutes(Date date, int amount) {
+        return DateUtils.addMinutes(date, amount);
+    }
+
     public static int daydiff(Date afterDateTime, Date beforeDateTime) {
         Date afterDate = toDate(afterDateTime);
         Date beforeDate = toDate(beforeDateTime);

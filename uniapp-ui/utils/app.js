@@ -98,7 +98,6 @@ export const getShareUrlParams = (params) => {
 		spm: store.getters.userId, // 推荐人ID
 		...params
 	})
-	console.log('转发url : ', path);
 	return path;
 }
 
@@ -123,6 +122,26 @@ export const navTo = (url, query = {}) => {
 	const queryStr = !util.isEmpty(query) ? '?' + util.urlEncode(query) : ''
 	// 普通页面, 使用navigateTo
 	uni.navigateTo({
+		url: `/${url}${queryStr}`
+	})
+	return true
+}
+
+export const redTo = (url, query = {}) => {
+	if (!url || url.length == 0) {
+		return false
+	}
+	// tabBar页面, 使用switchTab
+	if (util.inArray(url, getTabBarLinks())) {
+		uni.switchTab({
+			url: `/${url}`
+		})
+		return true
+	}
+	// 生成query参数
+	const queryStr = !util.isEmpty(query) ? '?' + util.urlEncode(query) : ''
+	// 普通页面, 使用navigateTo
+	uni.redirectTo({
 		url: `/${url}${queryStr}`
 	})
 	return true

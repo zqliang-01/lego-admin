@@ -19,7 +19,7 @@ $uni-ios-font: #1d1d1f; // 字体色
 $uni-ios-font-other: rgba($uni-ios-font, 0.8); // 其他字体色
 /* 行为相关颜色 */
 $uni-color-primary: #007aff;
-$uni-color-success: #4cd964;
+$uni-color-success: #3fb853;
 $uni-color-warning: #f0ad4e;
 $uni-color-error: #dd524d;
 
@@ -33,7 +33,7 @@ $uni-text-color-active:#fa2209; // 激活的颜色红
 
 /* 背景颜色 */
 $uni-bg-color:#ffffff;
-$uni-bg-color-grey:#f8f8f8;
+$uni-bg-color-grey:#fafafa;
 $uni-bg-color-hover:#f1f1f1;//点击状态颜色
 $uni-bg-color-mask:rgba(0, 0, 0, 0.4);//遮罩颜色
 
@@ -61,7 +61,7 @@ $uni-border-radius-infos: 20rpx;
 $uni-border-radius-circle: 50%;
 
 /* 水平间距 */
-$uni-spacing-row-sm: 10px;
+$uni-spacing-row-sm: 20rpx;
 $uni-spacing-row-base: 20rpx;
 $uni-spacing-row-lg: 30rpx;
 

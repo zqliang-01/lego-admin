@@ -131,7 +131,7 @@ export default {
 				line-height: 38rpx;
 				margin-right: $uni-spacing-row-sm;
 				.icon {
-					margin-right: $uni-spacing-row-sm/2;
+					margin-right: 10rpx;
 				}
 				.text {
 					overflow: hidden;

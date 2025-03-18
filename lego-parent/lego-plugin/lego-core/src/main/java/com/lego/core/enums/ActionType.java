@@ -9,7 +9,8 @@ public enum ActionType {
     MODIFY("modify", "修改"),
     DELETE("delete", "删除"),
     LOGIN("login", "登录"),
-    EXPORT("export", "导出");
+    EXPORT("export", "导出"),
+    IMPORT("import", "导入");
 
     private String code;
     private String name;

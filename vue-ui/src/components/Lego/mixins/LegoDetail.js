@@ -232,6 +232,7 @@ export default {
      */
     hideView() {
       this.$emit('hide-view')
+      this.$store.commit('SET_ACTIVEINDEX', -50)
     }
   },
 

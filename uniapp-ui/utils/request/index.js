@@ -2,7 +2,7 @@ import store from '@/store'
 import config from '@/config'
 import storage from '@/utils/storage'
 import request from './request'
-import { isWechat } from '../app';
+import { isWechat, redTo } from '../app';
 
 // 后端api地址
 const baseURL = config.apiUrl;
@@ -132,9 +132,10 @@ $http.dataFactory = async (res) => {
 				loginPopupNum--
 				if (res.confirm) {
 					store.dispatch('Logout')
-					uni.navigateTo({
-						url: "/pages/login/index"
-					})
+					const pages = getCurrentPages();
+					const currentPage = pages[pages.length - 1];
+					const currentPath = currentPage.__route__ || currentPage.route;
+					redTo('pages/login/index', { redirectUrl: '/' + currentPath })
 				}
 			}
 		})

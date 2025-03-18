@@ -39,8 +39,13 @@ export default {
     }
   },
   watch: {
-    formCode() {
-      this.initField()
+    visible: {
+      handler(val) {
+        if (val) {
+          this.initField()
+        }
+      },
+      immediate: true
     }
   },
   computed: {
