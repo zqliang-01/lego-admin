@@ -2,6 +2,7 @@
   <el-dialog
     :visible.sync="visible"
     :close-on-click-modal="false"
+    :append-to-body="true"
     title="高级筛选"
     width="900px"
     @close="handleCancel">

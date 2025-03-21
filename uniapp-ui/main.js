@@ -7,6 +7,7 @@ import bootstrap from './core/bootstrap'
 import {
   getPlatform,
   navTo,
+  redTo,
   showToast,
   showSuccess,
   showError,
@@ -19,8 +20,6 @@ Vue.config.productionTip = false
 
 App.mpType = 'app'
 
-// 当前运行的终端
-Vue.prototype.$platform = getPlatform()
 
 // 载入uView库
 Vue.use(uView)
@@ -40,8 +39,10 @@ Vue.prototype.$toast = showToast
 Vue.prototype.$success = showSuccess
 Vue.prototype.$error = showError
 Vue.prototype.$navTo = navTo
+Vue.prototype.$redTo = redTo
 Vue.prototype.$getShareUrlParams = getShareUrlParams
 Vue.prototype.$tokenName = config.tokenName
+Vue.prototype.$platform = getPlatform()
 
 // 实例化应用
 const app = new Vue({
