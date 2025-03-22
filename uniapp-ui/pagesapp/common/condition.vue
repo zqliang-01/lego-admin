@@ -8,13 +8,16 @@
 				:labelStyle="{color: '#666666', marginLeft: '40rpx'}"
 				:labelWidth="labelWidth"
 				labelAlign="left">
-				<view v-for="(item, index) in filterList" class="filter-item" :key="index">
+				<view
+					v-for="(item, index) in filterList"
+					class="filter-item"
+					:key="item.code">
 					<FormItem
 						:item="item.field"
 						:field-form="item.fieldForm"
 						:borderBottom="false"
 						class="filter-item_input"
-						@change="valueChange(item, arguments)"/>
+						@change="valueChange(index, arguments)"/>
 					<view class="filter-item_del">
 						<u-icon name="minus-circle-fill" color="#f43530" @click="handleDelete(index)"></u-icon>
 					</view>
@@ -62,7 +65,7 @@ import FormItem from '@/components/lego/form/formItem'
 import ModelMixin from '@/components/lego/form/modelMixin'
 import RuleMixin from '@/components/lego/form/ruleMixin'
 import { getDisplay } from '@/utils/data/address'
-import { calculateStrLength, isArray, isObject, isEmpty, getTreeName } from '@/utils/util'
+import { calculateStrLength, isArray, isObject, isEmpty, getTreeName, objDeepCopy } from '@/utils/util'
 import { separator } from '@/utils/number'
 
 export default {
@@ -113,7 +116,7 @@ export default {
 		init(){
 			const app = this
 			app.fieldList = []
-			app.formData.fields.forEach(field => {
+			objDeepCopy(app.formData.fields).forEach(field => {
 				app.initSettingValue(field)
 				field.required = false
 				app.fieldList.push(field)
@@ -127,17 +130,18 @@ export default {
 			})
 		},
 		actionSelect(item) {
+			const timestamp = new Date().getTime();
 			this.filterList.push({
-				code: item.fieldCode,
+				code: item.fieldCode + timestamp,
 				field: item,
 				fieldForm: {}
 			})
 			this.showAction = false
 		},
-		valueChange(item, args) {
+		valueChange(index, args) {
 			if (args.length > 1) {
-				item.field = args[0]
-				item.value = args[1]
+				this.filterList[index].field = args[0]
+				this.filterList[index].value = args[1]
 			}
 		},
 		handleValid() {

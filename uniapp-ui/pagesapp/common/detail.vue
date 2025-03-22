@@ -14,7 +14,7 @@
 				<u-button color="#ff7300" icon="edit-pen" iconColor="#fff" size="mini" text="编辑" @click="handleUpdate" />
 			</view>
 		</DetailHead>
-		<u-sticky bgColor="#fafafa" :offsetTop="offsetHeight">
+		<u-sticky bgColor="#f5f5f5" :offsetTop="offsetHeight">
 			<u-tabs
 				:lineWidth="0"
 				:list="tabList"
@@ -22,9 +22,11 @@
 				:scrollable="false"
 				@change="handleTypeChange"></u-tabs>
 		</u-sticky>
-		<DetailInfo v-show="currentType === 'info'" :fieldList="fieldList" :detailData="detailData"></DetailInfo>
-		<DetailLog v-show="currentType === 'log'" :type="currentType" :menuCode="menuCode" :detailCode="detailData.code"></DetailLog>
-		<DetailFile v-show="currentType === 'file'" :type="currentType" :menuCode="menuCode" :detailCode="detailData.code"></DetailFile>
+		<view class="detail-tab">
+			<DetailInfo v-show="currentType === 'info'" :fieldList="fieldList" :detailData="detailData"></DetailInfo>
+			<DetailLog v-show="currentType === 'log'" :type="currentType" :menuCode="menuCode" :detailCode="detailData.code"></DetailLog>
+			<DetailFile v-show="currentType === 'file'" :type="currentType" :menuCode="menuCode" :detailCode="detailData.code"></DetailFile>
+		</view>
 	</view>
 </template>
 
@@ -136,5 +138,8 @@ export default {
 	line-height: 17px;
 	font-weight: 550;
 	color: rgba(29, 29, 31, .8);
+}
+.detail-tab {
+	padding-top: 20rpx;
 }
 </style>
