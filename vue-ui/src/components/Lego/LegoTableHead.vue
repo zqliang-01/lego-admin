@@ -54,7 +54,7 @@
       <div class="selected—title">已选中 <span class="selected—count">{{ selectionList.length }}</span> 项</div>
       <flexbox class="selection-items-box">
         <el-button
-          v-for="(item, index) in getSelectionHandleItemsInfo()"
+          v-for="(item, index) in menuList"
           :icon="item.icon | iconPre"
           :key="index"
           type="primary"
@@ -115,6 +115,10 @@ export default {
       default: ''
     },
     fieldList: {
+      type: Array,
+      default: []
+    },
+    menuList: {
       type: Array,
       default: []
     },
@@ -226,22 +230,6 @@ export default {
         return
       }
       this.handleCallBack({ type: type })
-    },
-    /** 获取展示items */
-    getSelectionHandleItemsInfo() {
-      const handleInfos = [
-        {
-          name: '导出选中',
-          type: 'export',
-          icon: 'export'
-        },
-        {
-          name: '删除',
-          type: 'delete',
-          icon: 'delete'
-        }
-      ]
-      return handleInfos
     },
     // 子组件 回调的 结果
     handleCallBack(data) {

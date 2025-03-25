@@ -16,6 +16,7 @@
       <lego-table-head
         ref="legoTableHead"
         :sort-data="sortData"
+        :menu-list="headMenuList"
         :field-list="filterFieldList"
         :form-code="formCode"
         :menu-code="menuCode"

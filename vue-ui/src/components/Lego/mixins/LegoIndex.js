@@ -55,6 +55,24 @@ export default {
       return this.fieldList.filter(field => {
         return !['picture'].includes(field.formType)
       })
+    },
+    headMenuList() {
+      const menuList = []
+      if (this.auth && this.auth.export) {
+        menuList.push({
+          name: '导出选中',
+          type: 'export',
+          icon: 'export'
+        })
+      }
+      if (this.auth && this.auth.delete) {
+        menuList.push({
+          name: '删除',
+          type: 'delete',
+          icon: 'delete'
+        })
+      }
+      return menuList
     }
   },
   watch: {
@@ -207,7 +225,6 @@ export default {
     },
 
     handleEntityClick(data) {
-      console.log(data)
       this.$set(this.relativeEntity, 'show', true)
       this.$set(this.relativeEntity, 'code', data.value.code)
       if (data.field.relativeForm) {
@@ -369,7 +386,7 @@ export default {
      * 当拖动表头改变了列的宽度的时候会触发该事件
      */
     handleHeaderDragend(newWidth, oldWidth, column, event) {
-      if (column.property && newWidth !== oldWidth) {
+      if (this.formCode && column.property && newWidth !== oldWidth) {
         var field = this.fieldList.find(field => field.fieldCode === column.property)
         if (field) {
           columnWidthModifyAPI({
