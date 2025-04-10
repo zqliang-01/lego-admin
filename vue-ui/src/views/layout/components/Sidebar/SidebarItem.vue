@@ -96,13 +96,15 @@ export default {
   watch: {
     activeMenu: {
       handler(val) {
-        if (val.endsWith(this.item.path)) {
+        let path = this.item.path
+        if (path && !path.startsWith('/')) {
+          path = '/' + path
+        }
+        if (val.endsWith(path)) {
           let title = this.name
           const meta = this.item.meta
           if (meta.title) {
             title += ' - ' + meta.title
-          } else if (params && params.title) {
-            title += ' - ' + params.title
           }
           document.title = title
         }
