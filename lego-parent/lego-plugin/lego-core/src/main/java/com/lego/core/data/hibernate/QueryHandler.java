@@ -91,8 +91,16 @@ public class QueryHandler<T> extends BaseHandler<T> {
         return null;
     }
 
+    public List<T> limitedFindHQL(String hql, Map<String, ?> values, int firstResult, int maxResults) {
+        return super.limitedFindHQL(hql, values, firstResult, maxResults);
+    }
+
     public List<T> findList() {
         return findHQL(getSql(), this.params);
+    }
+
+    public List<T> findList(int limit) {
+        return limitedFindHQL(getSql(), this.params, 0, limit);
     }
 
     public List<T> findSqlList() {
