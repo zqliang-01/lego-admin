@@ -18,7 +18,7 @@
             @click="handleCheckUpdate">检查更新</el-button>
         </el-input>
       </div>
-      <div class="section-content" v-loading="packageLoading">
+      <div v-if="rootPath" class="section-content" v-loading="packageLoading">
         <div class="name">
           应用模块导入
           <el-tooltip effect="dark" placement="top" content="选择导入的模块源码文件包进行模块导入">
