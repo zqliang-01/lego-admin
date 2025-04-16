@@ -3,8 +3,8 @@
     <a
       v-for="(icon, index) in iconData"
       :key="index"
-      @click="selectItem(icon.value)">
-      <i :class="icon.value | iconPre" />
+      @click="selectItem(icon.font_class)">
+      <i :class="icon.font_class | iconPre" />
       <span>{{ icon.name }}</span>
     </a>
   </div>

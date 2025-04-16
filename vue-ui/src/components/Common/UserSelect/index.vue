@@ -25,7 +25,7 @@
           default-expand-all
           @node-click="changeDeptClick">
           <flexbox slot-scope="{ node }" :class="{ 'is-current': node.isCurrent}" class="node-data">
-            <i v-if="node.level == 1" :class="'department' | iconPre" />
+            <i v-if="node.level == 1" :class="'box-double' | iconPre" />
             <span v-else class="node-data__mark" />
             <div class="node-data__label text-one-line ">{{ node.label }}</div>
             <i
@@ -144,7 +144,7 @@ export default {
       flex-shrink: 0;
     }
 
-    .lego-department {
+    .lego-box-double {
       margin-right: 8px;
     }
 

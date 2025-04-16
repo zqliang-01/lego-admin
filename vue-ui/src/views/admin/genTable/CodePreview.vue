@@ -23,7 +23,7 @@
           <flexbox slot-scope="{ node }" :class="{ 'is-current': node.isCurrent}" class="node-data">
             <i
               v-if="node.childNodes && node.childNodes.length"
-              :class="'department' | iconPre"/>
+              :class="'box-double' | iconPre"/>
             <span v-else class="node-data__mark" />
             <div class="node-data__label text-one-line ">{{ node.label }}</div>
           </flexbox>

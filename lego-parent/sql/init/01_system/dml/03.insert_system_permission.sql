@@ -20,7 +20,7 @@ CALL add_system_permission('manage_role_update', '修改', 'auth', 'manage_role'
 CALL add_system_permission('manage_role_delete', '删除', 'auth', 'manage_role', NULL, 134, NULL);
 CALL add_system_permission('manage_role_auth', '授权', 'auth', 'manage_role', NULL, 135, NULL);
 
-CALL add_system_permission('manage_genTable', '代码生成', 'menu', 'manage', 'approval-11', 14, 'local');
+CALL add_system_permission('manage_genTable', '代码生成', 'menu', 'manage', 'convert', 14, 'local');
 CALL add_system_permission('manage_genTable_read', '查看', 'auth', 'manage_genTable', NULL, 141, NULL);
 CALL add_system_permission('manage_genTable_sync', '同步', 'auth', 'manage_genTable', NULL, 142, NULL);
 CALL add_system_permission('manage_genTable_update', '更新', 'auth', 'manage_genTable', NULL, 143, NULL);

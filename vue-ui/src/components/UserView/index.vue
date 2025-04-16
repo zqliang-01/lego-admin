@@ -20,7 +20,7 @@
       </flexbox>
       <div class="xr-mian__bd">
         <flexbox class="info-cell">
-          <i :class="'department' | iconPre" />
+          <i :class="'box-double' | iconPre" />
           <div class="info-cell__label">部门</div>
           <div class="info-cell__value text-one-line">{{ userData.dept.name }}</div>
         </flexbox>
