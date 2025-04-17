@@ -59,7 +59,7 @@
 <style lang="scss">
   /* 引入uView库样式 */
   @import "@/uni_modules/uview-ui/index.scss";
-	@import './iconfont/iconfont.css';
+	@import '@/static/fonts/iconfont.css';
 	.com-loadmore {
 		padding: 15rpx;
 		.u-more-text {

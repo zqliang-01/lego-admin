@@ -1,8 +1,8 @@
 @font-face {
-  font-family: "lego"; /* Project id 4824716 */
-  src: url('@/iconfont/iconfont.woff2?t=1744790556715') format('woff2'),
-       url('@/iconfont/iconfont.woff?t=1744790556715') format('woff'),
-       url('@/iconfont/iconfont.ttf?t=1744790556715') format('truetype');
+  font-family: "lego";
+	src: url('https://admin.zqliang.cn/fonts/iconfont.f9f03cab.woff2?t=1744788048616') format('woff2'),
+			 url('https://admin.zqliang.cn/fonts/iconfont.32b8c7e1.woff?t=1744788048616') format('woff'),
+			 url('https://admin.zqliang.cn/fonts/iconfont.383437a5.ttf?t=1744788048616') format('truetype');
 }
 
 .lego {

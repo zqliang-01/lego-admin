@@ -1,12 +1,12 @@
 <template>
   <div class="icon-container">
-    <a
+    <div class="icon-item"
       v-for="(icon, index) in iconData"
       :key="index"
       @click="selectItem(icon.font_class)">
       <i :class="icon.font_class | iconPre" />
       <span>{{ icon.name }}</span>
-    </a>
+    </div>
   </div>
 </template>
 <script>
@@ -31,16 +31,21 @@ export default {
 <style lang='scss' scoped>
 @import '@/styles/emoji-sprite.scss';
 .icon-container {
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
     margin: 10px;
-    a {
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    .icon-item {
       float: left;
-      overflow: hidden;
-      height: 60px;
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       width: 60px;
-      text-align: center;
+      height: 60px;
+      cursor: pointer;
       transition: all ease-out 0.2s;
       border-radius: 4px;
       margin: 5px;
