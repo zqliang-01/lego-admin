@@ -11,7 +11,7 @@
           type="text"
           @focus="focusKey = 'username'"
           @blur="checkFromItem('username', form.username)"
-          @keyup.enter.native="debouncedHandleLogin"
+          @keyup.enter="debouncedHandleLogin"
         />
       </el-form-item>
       <el-form-item>
@@ -23,7 +23,7 @@
           placeholder="请输入密码"
           type="password"
           @focus="focusKey = 'password'"
-          @keyup.enter.native="debouncedHandleLogin"
+          @keyup.enter="debouncedHandleLogin"
           @blur="checkForm"
         />
       </el-form-item>
@@ -36,7 +36,7 @@
           placeholder="请输入验证码"
           style="width: 63%"
           @focus="focusKey = 'code'"
-          @keyup.enter.native="debouncedHandleLogin"
+          @keyup.enter="debouncedHandleLogin"
           @blur="checkForm"
         />
         <div class="login-code">
@@ -54,7 +54,7 @@
 
     <div :class="{ ok: !Boolean(errorInfo) }" class="error-info">
       <div v-if="errorInfo" class="box">
-        <img src="~@/assets/login/error.png" alt="" class="icon" >
+        <img src="@/assets/login/error.png" alt="" class="icon" >
         <span>{{ errorInfo }}</span>
       </div>
     </div>
@@ -65,147 +65,154 @@
   </div>
 </template>
 
-<script>
-import {
-  getCodeImg,
-  systemInitAPI
-} from '@/api/login'
-import { Loading } from 'element-ui'
-
-import Mixins from './Mixins'
+<script setup>
+import { ref, onMounted, watch, nextTick } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { ElLoading, ElMessage } from 'element-plus'
 import { debounce } from 'throttle-debounce'
+import { getCodeImg, systemInitAPI } from '@/api/login'
+import { checkFromItem, setError, clearError } from './Mixins'
 
-export default {
-  name: 'LoginByPwd',
-  mixins: [Mixins],
-  data() {
-    const pwdReg = /^(?=.*[a-zA-Z])(?=.*\d).{6,20}$/
-    return {
-      redirect: undefined,
-      rememberMe: false,
-      codeUrl: '',
-      captchaCode: '',
-      form: {
-        username: 'test',
-        password: 'test123',
-        code: ''
-      },
-      errorInfo: null,
-      validateRes: {
-        username: true,
-        password: true,
-        code: true
-      },
-      rules: {
-        username: [{ required: true, msg: '用户名不能为空' }],
-        password: [{ required: true, msg: '密码不能为空' }, { reg: pwdReg, msg: '密码由6-20位字母、数字组成' }],
-        code: [{ required: true, msg: '验证码不能为空' }]
-      }
-    }
-  },
-  watch: {
-    $route: {
-      handler: function(route) {
-        this.redirect = route.query && route.query.redirect
-      },
-      immediate: true
-    }
-  },
-  mounted() {
-    this.$nextTick(() => {
-      this.$refs.username.focus()
-    })
-    this.getCode()
-  },
-  created() {
-    this.debouncedHandleLogin = debounce(300, this.handleLogin)
-    const username = localStorage.getItem('account')
-    if (username) {
-      this.form = {
-        username,
-        password: ''
-      }
-    } else if (this.$route.query.username) {
-      this.form = {
-        username: this.$route.query.username,
-        password: this.$route.query.password || ''
-      }
-    }
-  },
-  methods: {
-    getCode() {
-      getCodeImg().then(res => {
-        this.codeUrl = 'data:image/gif;base64,' + res.data.image
-        this.captchaCode = res.data.code
-        this.form.token = res.data.token
-      })
-    },
-    /**
-     * 登录
-     */
-    handleLogin() {
-      const flag = this.checkForm()
-      if (!flag) return
-      if (this.rememberMe) {
-        localStorage.setItem('account', this.form.username)
-      } else {
-        localStorage.removeItem('account')
-      }
+const router = useRouter()
+const route = useRoute()
+const store = useStore()
 
-      const loading = Loading.service({
-        target: document.querySelector('.login-main-content')
-      })
-      this.$store.dispatch('Login', this.form).then((res) => {
-        if (res.data.needInit) {
-          loading.close()
-          this.$confirm('检测到系统尚未初始化，是否执行初始化操作，注意！初始化操作将重置系统数据，请确认是否继续！', '提示').then(() => {
-            this.handleInit()
-          }).catch(() => {})
-          return
-        }
-        this.$router.push({ path: this.redirect || '/' })
-      }).catch(() => {
-        loading.close()
-      })
-    },
-    handleInit() {
-      const loading = Loading.service({
-        text: '系统初始化中，请稍后。。。'
-      })
-      systemInitAPI().then(res => {
-        loading.close()
-        this.$alert('系统初始化成功，当前系统版本' + res.data + '，请重新登陆！', '提示')
-        return
-      }).catch(() => {
-        loading.close()
-      })
-    },
-    /**
-     * 校验登录表单
-     */
-    checkForm() {
-      this.clearError()
-      const arr = ['username', 'password', 'code']
-      for (let i = 0; i < arr.length; i++) {
-        const res = this.checkFromItem(arr[i], this.form[arr[i]] || null)
-        if (!res) return false
-      }
-      if (this.form.code.toLowerCase() !== this.captchaCode.toLowerCase()) {
-        this.setError('code', '验证码不一致，请重新输入！')
-        return false
-      }
-      return true
-    },
+const pwdReg = /^(?=.*[a-zA-Z])(?=.*\d).{6,20}$/
 
-    clearError() {
-      this.errorInfo = null
-      this.validateRes = {
-        username: true,
-        password: true,
-        code: true
-      }
+const username = ref(null)
+const password = ref(null)
+const code = ref(null)
+const redirect = ref(undefined)
+const rememberMe = ref(false)
+const codeUrl = ref('')
+const captchaCode = ref('')
+const focusKey = ref('')
+const errorInfo = ref(null)
+
+const form = ref({
+  username: 'test',
+  password: 'test123',
+  code: '',
+  token: ''
+})
+
+const validateRes = ref({
+  username: true,
+  password: true,
+  code: true
+})
+
+const rules = {
+  username: [{ required: true, msg: '用户名不能为空' }],
+  password: [{ required: true, msg: '密码不能为空' }, { reg: pwdReg, msg: '密码由6-20位字母、数字组成' }],
+  code: [{ required: true, msg: '验证码不能为空' }]
+}
+
+// 监听路由变化
+watch(() => route.query, (query) => {
+  redirect.value = query.redirect
+}, { immediate: true })
+
+// 初始化
+onMounted(() => {
+  nextTick(() => {
+    username.value.focus()
+  })
+  getCode()
+  
+  const account = localStorage.getItem('account')
+  if (account) {
+    form.value = {
+      username: account,
+      password: ''
+    }
+  } else if (route.query.username) {
+    form.value = {
+      username: route.query.username,
+      password: route.query.password || ''
     }
   }
+})
+
+// 防抖登录方法
+const debouncedHandleLogin = debounce(300, handleLogin)
+
+// 获取验证码
+const getCode = async () => {
+  try {
+    const res = await getCodeImg()
+    codeUrl.value = 'data:image/gif;base64,' + res.data.image
+    captchaCode.value = res.data.code
+    form.value.token = res.data.token
+  } catch (error) {
+    console.error('获取验证码失败:', error)
+  }
+}
+
+// 登录方法
+const handleLogin = async () => {
+  const flag = checkForm()
+  if (!flag) return
+  
+  if (rememberMe.value) {
+    localStorage.setItem('account', form.value.username)
+  } else {
+    localStorage.removeItem('account')
+  }
+
+  const loading = ElLoading.service({
+    target: document.querySelector('.login-main-content')
+  })
+
+  try {
+    const res = await store.dispatch('Login', form.value)
+    if (res.data.needInit) {
+      loading.close()
+      try {
+        await ElMessageBox.confirm(
+          '检测到系统尚未初始化，是否执行初始化操作，注意！初始化操作将重置系统数据，请确认是否继续！',
+          '提示'
+        )
+        handleInit()
+      } catch {
+        // 用户取消操作
+      }
+      return
+    }
+    router.push({ path: redirect.value || '/' })
+  } catch (error) {
+    loading.close()
+  }
+}
+
+// 系统初始化
+const handleInit = async () => {
+  const loading = ElLoading.service({
+    text: '系统初始化中，请稍后。。。'
+  })
+  try {
+    const res = await systemInitAPI()
+    loading.close()
+    ElMessage.alert('系统初始化成功，当前系统版本' + res.data + '，请重新登陆！', '提示')
+  } catch (error) {
+    loading.close()
+  }
+}
+
+// 校验表单
+const checkForm = () => {
+  clearError()
+  const arr = ['username', 'password', 'code']
+  for (let i = 0; i < arr.length; i++) {
+    const res = checkFromItem(arr[i], form.value[arr[i]] || null, rules)
+    if (!res) return false
+  }
+  if (form.value.code.toLowerCase() !== captchaCode.value.toLowerCase()) {
+    setError('code', '验证码不一致，请重新输入！')
+    return false
+  }
+  return true
 }
 </script>
 
@@ -245,7 +252,7 @@ export default {
     }
   }
 
-  ::v-deep .el-checkbox {
+  :deep(.el-checkbox) {
     .el-checkbox__inner {
       width: 14px;
       height: 14px;

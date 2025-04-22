@@ -69,90 +69,79 @@
   </div>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
-import SidebarItem from './SidebarItem'
+<script setup>
+import { computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
+import SidebarItem from './SidebarItem.vue'
 import variables from './variables.module.scss'
 
-export default {
-  components: { SidebarItem },
-  props: {
-    items: {
-      type: Array,
-      default: () => {
-        return []
-      }
-    },
-    addOffset: {
-      type: Number,
-      default: 70
-    },
-    showCreateButton: {
-      type: Boolean,
-      default: true
-    },
-    createButtonTitle: {
-      type: String,
-      default: ''
-    },
-    createButtonIcon: {
-      type: String,
-      default: 'el-icon-plus'
-    },
-    // 防止菜单被底部布局遮住
-    paddingBottom: {
-      type: String,
-      default: '48px'
-    }
+const props = defineProps({
+  items: {
+    type: Array,
+    default: () => []
   },
-  data() {
-    return {
-      buttonCollapse: false
-    }
+  addOffset: {
+    type: Number,
+    default: 70
   },
-  computed: {
-    ...mapGetters(['collapse']),
-    activeMenu() {
-      const { meta, path } = this.$route
-      if (meta.activeMenu) {
-        return meta.activeMenu
-      }
-      return path
-    },
-    variables() {
-      return variables
-    }
+  showCreateButton: {
+    type: Boolean,
+    default: true
   },
-  watch: {
-    collapse: function(val) {
-      if (val) {
-        this.buttonCollapse = val
-      } else {
-        setTimeout(() => {
-          this.buttonCollapse = val
-        }, 300)
-      }
-    }
+  createButtonTitle: {
+    type: String,
+    default: ''
   },
-  mounted() {
-    this.buttonCollapse = this.collapse
+  createButtonIcon: {
+    type: String,
+    default: 'el-icon-plus'
   },
-  methods: {
-    toggleSideBarClick() {
-      this.$store.commit('SET_COLLAPSE', !this.collapse)
-    },
-
-    // 快速创建
-    quicklyCreate() {
-      this.$emit('quicklyCreate')
-    },
-
-    handleSelect(key, keyPath) {
-      this.$emit('select', key, keyPath)
-    }
+  paddingBottom: {
+    type: String,
+    default: '48px'
   }
+})
+
+const emit = defineEmits(['quicklyCreate', 'select'])
+
+const store = useStore()
+const route = useRoute()
+const buttonCollapse = ref(false)
+
+const collapse = computed(() => store.getters.collapse)
+
+const activeMenu = computed(() => {
+  const { meta, path } = route
+  if (meta.activeMenu) {
+    return meta.activeMenu
+  }
+  return path
+})
+
+watch(collapse, (val) => {
+  if (val) {
+    buttonCollapse.value = val
+  } else {
+    setTimeout(() => {
+      buttonCollapse.value = val
+    }, 300)
+  }
+}, { immediate: true })
+
+const toggleSideBarClick = () => {
+  store.commit('SET_COLLAPSE', !collapse.value)
+}
+
+const quicklyCreate = () => {
+  emit('quicklyCreate')
+}
+
+const handleSelect = (key, keyPath) => {
+  emit('select', key, keyPath)
 }
 </script>
+
 <style lang="scss" scoped>
 @import './variables.module.scss';
 
@@ -165,12 +154,12 @@ export default {
   overflow: auto;
   flex-shrink: 0;
 
-  ::v-deep *::-webkit-scrollbar {
+  :deep(*::-webkit-scrollbar) {
     width: 0px !important;
     height: 0px !important;
   }
 
-  ::v-deep .scrollbar-wrapper {
+  :deep(.scrollbar-wrapper) {
     overflow-x: hidden !important;
     margin: 0px !important;
   }
@@ -202,24 +191,23 @@ export default {
 }
 
 .el-menu-vertical.el-menu--collapse {
-  ::v-deep .el-submenu__icon-arrow {
+  :deep(.el-submenu__icon-arrow) {
     display: none;
   }
 
-  ::v-deep .el-submenu__title {
+  :deep(.el-submenu__title) {
     span {
       display: none;
     }
   }
 
-  ::v-deep .menu-item-content {
+  :deep(.menu-item-content) {
     text-overflow: clip;
   }
-  ::v-deep .el-menu {
+  :deep(.el-menu) {
     background-color: $menuBg !important;
   }
 }
-// 创建
 
 .create-button-container {
   padding: 15px 14px;
@@ -231,7 +219,6 @@ export default {
   left: 0;
   right: 0;
   z-index: 2;
-
 
   .create-button {
     display: flex;
@@ -267,7 +254,6 @@ export default {
   }
 }
 
-// 底部按钮
 .sidebar-bottom {
   position: absolute;
   bottom: 0;
@@ -302,4 +288,3 @@ export default {
   transform: rotate(180deg);
 }
 </style>
-

@@ -40,7 +40,7 @@
       :index="resolvePath(item.path)"
       :class="{ 'is-select': activeMenu == resolvePath(item.path)}"
       popper-append-to-body>
-      <template slot="title">
+      <template #title>
         <item
           v-if="item.meta"
           :icon="item.meta && item.meta.icon"
@@ -59,83 +59,70 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import path from 'path'
-import { mapGetters } from 'vuex'
 import { isExternal } from '@/utils/validate'
-import Item from './Item'
-import AppLink from './Link'
-import FixiOSBug from './FixiOSBug'
+import Item from './Item.vue'
+import AppLink from './Link.vue'
+import FixiOSBug from './FixiOSBug.js'
 
-export default {
-  name: 'SidebarItem',
-  components: { Item, AppLink },
-  mixins: [FixiOSBug],
-  props: {
-    // route object
-    item: {
-      type: Object,
-      required: true
-    },
-    basePath: {
-      type: String,
-      default: ''
-    },
-    activeMenu: String,
-    collapse: Boolean
+const props = defineProps({
+  item: {
+    type: Object,
+    required: true
   },
-  computed: {
-    ...mapGetters(['name'])
+  basePath: {
+    type: String,
+    default: ''
   },
-  data() {
-    // To fix https://github.com/PanJiaChen/vue-admin-template/issues/237
-    // TODO: refactor with render function
-    this.onlyOneChild = null
-    return {}
-  },
-  watch: {
-    activeMenu: {
-      handler(val) {
-        let path = this.item.path
-        if (path && !path.startsWith('/')) {
-          path = '/' + path
-        }
-        if (val.endsWith(path)) {
-          let title = this.name
-          const meta = this.item.meta
-          if (meta.title) {
-            title += ' - ' + meta.title
-          }
-          document.title = title
-        }
-      },
-      immediate: true
-    }
-  },
-  methods: {
-    resolvePath(routePath) {
-      if (isExternal(routePath)) {
-        return routePath
-      }
-      if (isExternal(this.basePath)) {
-        return this.basePath
-      }
-      return path.resolve(this.basePath, routePath)
-    }
+  activeMenu: String,
+  collapse: Boolean
+})
+
+const store = useStore()
+const route = useRoute()
+const name = computed(() => store.getters.name)
+
+const resolvePath = (routePath) => {
+  if (isExternal(routePath)) {
+    return routePath
   }
+  if (isExternal(props.basePath)) {
+    return props.basePath
+  }
+  return path.resolve(props.basePath, routePath)
 }
+
+watch(() => route.path, (val) => {
+  let path = props.item.path
+  if (path && !path.startsWith('/')) {
+    path = '/' + path
+  }
+  if (val.endsWith(path)) {
+    let title = name.value
+    const meta = props.item.meta
+    if (meta?.title) {
+      title += ' - ' + meta.title
+    }
+    document.title = title
+  }
+}, { immediate: true })
 </script>
+
 <style lang="scss" scoped>
 @import './variables.module.scss';
 
 .menu-wrapper {
-  ::v-deep .el-submenu__title {
+  :deep(.el-submenu__title) {
     height: auto;
     line-height: normal;
     color: #bebec0;
   }
 
-  ::v-deep .el-submenu.is-active {
+  :deep(.el-submenu.is-active) {
     .el-submenu__title {
       span,
       i:first-child {
@@ -144,7 +131,6 @@ export default {
     }
   }
 }
-
 
 .el-menu-item {
   height: auto;
@@ -159,13 +145,12 @@ export default {
   height: auto;
 }
 
-// element自带的有问题 is-active 换成 is-select
 .el-menu-item.is-select {
   height: auto;
   .menu-item-content {
     background-color: #2362fb !important;
     color: white !important;
-    ::v-deep i {
+    :deep i {
       color: white !important;
     }
   }
@@ -175,7 +160,7 @@ export default {
   .menu-item-content {
     background-color: rgba($color: #fff, $alpha: 0.1);
     color: white;
-    ::v-deep i {
+    :deep i {
       color: white !important;
     }
   }

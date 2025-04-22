@@ -5,11 +5,10 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AppMain',
-  computed: {}
-}
+<script setup>
+defineOptions({
+  name: 'AppMain'
+})
 </script>
 
 <style scoped>

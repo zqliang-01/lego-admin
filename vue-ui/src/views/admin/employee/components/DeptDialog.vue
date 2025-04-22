@@ -2,7 +2,7 @@
   <el-dialog
     v-loading="loading"
     :title="title"
-    :visible="visible"
+    :model-value="visible"
     :close-on-click-modal="false"
     :modal-append-to-body="true"
     :append-to-body="true"
@@ -63,151 +63,135 @@
           :disabled="item.disabled"/>
       </el-form-item>
     </el-form>
-    <span
-      slot="footer"
-      class="dialog-footer">
-      <el-button
-        type="primary"
-        @click="submit">保 存</el-button>
-      <el-button @click="handleCancel">取 消</el-button>
-    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="submit">保 存</el-button>
+        <el-button @click="handleCancel">取 消</el-button>
+      </span>
+    </template>
   </el-dialog>
 </template>
-<script>
-import { deptAddAPI, deptModifyAPI } from '@/api/admin/dept'
-import SelectTree from '@/components/Common/SelectTree'
 
-export default {
-  name: 'DeptDialog',
-  components: {
-    SelectTree
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { ElMessage } from 'element-plus'
+import SelectTree from '@/components/Common/SelectTree'
+import { deptAddAPI, deptModifyAPI } from '@/api/admin/dept'
+
+const props = defineProps({
+  creatable: {
+    type: Boolean,
+    default: true
   },
-  props: {
-    creatable: {
-      type: Boolean,
-      default: true
-    },
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    optionsList: Object,
-    data: Object
+  visible: {
+    type: Boolean,
+    required: true
   },
-  data() {
-    return {
-      loading: false,
-      submitForm: {
-        code: '',
-        name: '',
-        parentCode: '',
-        leader: '',
-        enable: true
-      },
-      dialogRules: {
-        code: [
-          { required: true, message: '工号不能为空', trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '姓名不能为空', trigger: 'blur' }
-        ],
-        leader: [
-          { required: true, message: '负责人不能为空', trigger: 'blur' }
-        ]
-      }
-    }
+  optionsList: {
+    type: Object,
+    required: true
   },
-  computed: {
-    title() {
-      return this.creatable ? '创建部门' : '修改部门'
-    },
-    fieldList() {
-      return [
-        { field: 'code', value: '部门编码', disabled: !this.creatable },
-        { field: 'name', value: '部门姓名', disabled: false },
-        { field: 'parentCode', value: '上级部门', type: 'selectTree', optionCode: 'deptList', disabled: false },
-        { field: 'leader', value: '部门负责人', type: 'select', optionCode: 'employeeList', disabled: false },
-        { field: 'enable', value: '状态', type: 'boolean', disabled: false }
-      ]
-    }
-  },
-  watch: {
-    data: {
-      handler() {
-        if (!this.data) {
-          return
-        }
-        this.fieldList.forEach(field => {
-          let value = this.data[field.field]
-          if (value && field.type === 'select') {
-            this.submitForm[field.field] = value.code
-          } else {
-            if (!value && field.type != 'boolean') {
-              value = ''
-            }
-            this.submitForm[field.field] = value
-          }
-        })
-      },
-      deep: true,
-      immediate: true
-    }
-  },
-  methods: {
-    handleCancel() {
-      this.$emit('update:visible', false)
-    },
-    submit() {
-      this.$refs.deptDialogRef.validate(valid => {
-        if (!valid) {
-          return
-        }
-        this.loading = true
-        if (this.creatable) {
-          deptAddAPI(this.submitForm).then(res => {
-            this.loading = false
-            this.$emit('success')
-            this.$message.success('新增成功')
-          })
-            .catch(() => {
-              this.loading = false
-            })
-          return
-        }
-        deptModifyAPI(this.submitForm).then(res => {
-          this.loading = false
-          this.$emit('success')
-          this.$message.success('更新成功')
-        })
-          .catch(() => {
-            this.loading = false
-          })
-      })
-    }
+  data: {
+    type: Object,
+    default: () => ({})
   }
+})
+
+const emit = defineEmits(['update:visible', 'success'])
+
+const loading = ref(false)
+const deptDialogRef = ref(null)
+const submitForm = ref({
+  code: '',
+  name: '',
+  parentCode: '',
+  leader: '',
+  enable: true
+})
+
+const dialogRules = ref({
+  code: [
+    { required: true, message: '部门编码不能为空', trigger: 'blur' }
+  ],
+  name: [
+    { required: true, message: '部门名称不能为空', trigger: 'blur' }
+  ],
+  leader: [
+    { required: true, message: '负责人不能为空', trigger: 'blur' }
+  ]
+})
+
+const title = computed(() => props.creatable ? '创建部门' : '修改部门')
+
+const fieldList = computed(() => [
+  { field: 'code', value: '部门编码', disabled: !props.creatable },
+  { field: 'name', value: '部门名称', disabled: false },
+  { field: 'parentCode', value: '上级部门', type: 'selectTree', optionCode: 'deptList', disabled: false },
+  { field: 'leader', value: '部门负责人', type: 'select', optionCode: 'employeeList', disabled: false },
+  { field: 'enable', value: '状态', type: 'boolean', disabled: false }
+])
+
+watch(() => props.data, (val) => {
+  if (!val) return
+  
+  fieldList.value.forEach(field => {
+    let value = val[field.field]
+    if (value && field.type === 'select') {
+      submitForm.value[field.field] = value.code
+    } else {
+      if (!value && field.type != 'boolean') {
+        value = ''
+      }
+      submitForm.value[field.field] = value
+    }
+  })
+}, { deep: true, immediate: true })
+
+const handleCancel = () => {
+  emit('update:visible', false)
+}
+
+const submit = () => {
+  deptDialogRef.value.validate(valid => {
+    if (!valid) return
+    
+    loading.value = true
+    const requestAPI = props.creatable ? deptAddAPI : deptModifyAPI
+    
+    requestAPI(submitForm.value).then(() => {
+      loading.value = false
+      ElMessage.success(props.creatable ? '新增成功' : '更新成功')
+      emit('success')
+    }).catch(() => {
+      loading.value = false
+    })
+  })
 }
 </script>
+
 <style lang="scss" scoped>
-/* 新建和编辑 */
 .new-dialog-form {
   height: 47vh;
   overflow-y: auto;
   padding: 20px;
 }
-.new-dialog-form ::v-deep .el-form-item {
+
+.new-dialog-form :deep(.el-form-item) {
   width: 50%;
   margin: 0;
   padding-bottom: 10px;
-}
-.new-dialog-form ::v-deep .el-form-item .el-form-item__label {
-  padding: 0;
-}
-.new-dialog-form {
-  ::v-deep .el-form-item:nth-child(even) {
+  
+  .el-form-item__label {
+    padding: 0;
+  }
+  
+  &:nth-child(even) {
     padding-left: 15px;
   }
-
-  ::v-deep .el-form-item:nth-child(odd) {
+  
+  &:nth-child(odd) {
     padding-right: 15px;
   }
 }

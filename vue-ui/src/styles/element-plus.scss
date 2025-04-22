@@ -1,0 +1,85 @@
+/* Element Plus 组件样式重置 */
+
+.el-input .el-input__inner {
+  padding: 0 8px;
+}
+
+.el-input__suffix {
+  line-height: 35px;
+}
+
+.el-textarea .el-textarea__inner {
+  padding: 5px 8px;
+}
+
+.el-radio .el-radio__label {
+  padding-left: 8px;
+}
+
+.el-checkbox .el-checkbox__label {
+  padding-left: 8px;
+}
+
+table {
+  width: 100% !important;
+}
+
+/* 弹窗样式 */
+.el-dialog__footer {
+  padding: 10px !important;
+  background-color: #F7F8FA;
+  border-top: 1px solid $xr-border-line-color;
+}
+
+.el-dialog__close {
+  font-weight: 600 !important;
+  font-size: 18px !important;
+}
+
+.el-dialog__title {
+  font-weight: 600 !important;
+}
+
+/* 消息框 */
+.el-message-box__title {
+  font-weight: 600 !important;
+}
+
+.el-message-box__close {
+  font-weight: 600 !important;
+  font-size: 18px !important;
+}
+
+.el-message-box {
+  padding: 0 !important;
+}
+
+.el-message-box__btns {
+  padding: 8px 15px !important;
+  background-color: #F7F8FA;
+  border-top: 1px solid $xr-border-line-color;
+}
+
+.el-message-box__content {
+  padding-bottom: 20px !important;
+}
+
+.el-checkbox .el-checkbox__label,
+.el-checkbox__input.is-checked + .el-checkbox__label,
+.el-radio__input.is-checked + .el-radio__label,
+.el-radio .el-radio__label {
+  color: #333 !important;
+}
+
+.el-upload-list__item {
+  transition: none !important;
+}
+
+.el-submenu-more {
+  .el-menu {
+    padding: 15px 0;
+  }
+  .el-menu-item + .el-menu-item {
+    margin-top: 10px;
+  }
+}

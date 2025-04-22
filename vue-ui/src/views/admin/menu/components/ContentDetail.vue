@@ -15,120 +15,148 @@
     </lego-create-sections>
   </el-form>
 </template>
-<script>
+
+<script setup>
+import { ref, reactive, computed, watch, onMounted } from 'vue'
 import LegoCreateSections from '@/components/Lego/LegoCreateSections'
 import FormItems from '@/components/Common/Form/FormItems'
-import GenerateRulesMixin from '@/components/Mixins/GenerateRules'
+import { useGenerateRules } from '@/components/Mixins/GenerateRules'
 import { getFormFieldValue } from '@/components/Common/Form/utils'
 import { permissionRouteTypeListAPI } from '@/api/admin/permission'
 import { customFormSimpleListAPI } from '@/api/admin/formField'
 import { definitionSimpleValidListAPI } from '@/api/report/definition'
 
-export default {
-  components: {
-    LegoCreateSections,
-    FormItems
+const props = defineProps({
+  menuData: {
+    type: Object,
+    required: true
   },
-  mixins: [GenerateRulesMixin],
-  props: {
-    menuData: Object,
-    fieldForm: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
-    fieldRule: Object,
-    menuType: String
+  fieldForm: {
+    type: Object,
+    default: () => ({})
   },
-  computed: {
-    fieldList() {
-      if (this.menuType === 'menu') {
-        return this.formFieldList
-      }
-      return this.reportFieldList
-    }
+  fieldRule: {
+    type: Object,
+    required: true
   },
-  data() {
-    return {
-      formList: [],
-      reportList: [],
-      permissionRouteTypes: [],
-      formFieldList: [
-        [
-          { fieldCode: 'form', name: '表单', formType: 'select', clearable: true, tipType: 'tooltip', inputTips: '业务关联表单信息，动态路由时会自动基于表单创建页面内容' },
-          { fieldCode: 'routeType', name: '路由类型', formType: 'select', precisions: 1, tipType: 'tooltip', inputTips: '模块路由定义，动态路由页面内容受后台控制' }
-        ]
-      ],
-      reportFieldList: [
-        [
-          { fieldCode: 'relateCode', name: '报表', formType: 'select', clearable: true, tipType: 'tooltip', inputTips: '选择自定义报表，需到报表管理模块进行报表维护' },
-          { fieldCode: 'routeType', name: '路由类型', formType: 'select', precisions: 1, tipType: 'tooltip', inputTips: '模块路由定义，动态路由页面内容受后台控制' }
-        ]
-      ]
-    }
-  },
-  watch: {
-    menuType() {
-      this.resetForm()
-    },
-    menuData: {
-      handler() {
-        this.resetForm()
-      },
-      deep: true,
-      immediate: true
-    }
-  },
-  mounted() {
-    this.initRequest()
-  },
-  methods: {
-    async initRequest() {
-      await permissionRouteTypeListAPI().then(res => {
-        this.permissionRouteTypes = res.data
-      })
-      await customFormSimpleListAPI().then(res => {
-        this.formList = res.data
-      })
-      await definitionSimpleValidListAPI().then(res => {
-        this.reportList = res.data
-      })
-      this.resetForm()
-    },
-    resetForm() {
-      this.formFieldList.forEach(fields => {
-        fields.forEach(field => {
-          if (field.fieldCode === 'form') {
-            this.$set(field, 'setting', this.formList)
-          }
-          if (field.fieldCode === 'routeType') {
-            this.$set(field, 'setting', this.permissionRouteTypes)
-          }
-          this.$set(field, 'value', this.menuData[field.fieldCode])
-          this.$set(this.fieldRule, field.fieldCode, this.getRules(field))
-          this.$set(this.fieldForm, field.fieldCode, getFormFieldValue(field, false))
-        })
-      })
-      this.reportFieldList.forEach(fields => {
-        fields.forEach(field => {
-          if (field.fieldCode === 'relateCode') {
-            this.$set(field, 'setting', this.reportList)
-          }
-          if (field.fieldCode === 'routeType') {
-            this.$set(field, 'setting', this.permissionRouteTypes)
-          }
-          this.$set(field, 'value', this.menuData[field.fieldCode])
-          this.$set(this.fieldRule, field.fieldCode, this.getRules(field))
-          this.$set(this.fieldForm, field.fieldCode, getFormFieldValue(field, false))
-        })
-      })
-    },
-    handleChangeValue(field, index, value) {
-      this.$emit('change', field, index, value)
-    }
+  menuType: {
+    type: String,
+    required: true
   }
+})
+
+const emit = defineEmits(['change'])
+const { getRules } = useGenerateRules()
+
+const formList = ref([])
+const reportList = ref([])
+const permissionRouteTypes = ref([])
+
+const formFieldList = reactive([
+  [
+    { 
+      fieldCode: 'form', 
+      name: '表单', 
+      formType: 'select', 
+      clearable: true, 
+      tipType: 'tooltip', 
+      inputTips: '业务关联表单信息，动态路由时会自动基于表单创建页面内容',
+      setting: []
+    },
+    { 
+      fieldCode: 'routeType', 
+      name: '路由类型', 
+      formType: 'select', 
+      precisions: 1, 
+      tipType: 'tooltip', 
+      inputTips: '模块路由定义，动态路由页面内容受后台控制',
+      setting: []
+    }
+  ]
+])
+
+const reportFieldList = reactive([
+  [
+    { 
+      fieldCode: 'relateCode', 
+      name: '报表', 
+      formType: 'select', 
+      clearable: true, 
+      tipType: 'tooltip', 
+      inputTips: '选择自定义报表，需到报表管理模块进行报表维护',
+      setting: []
+    },
+    { 
+      fieldCode: 'routeType', 
+      name: '路由类型', 
+      formType: 'select', 
+      precisions: 1, 
+      tipType: 'tooltip', 
+      inputTips: '模块路由定义，动态路由页面内容受后台控制',
+      setting: []
+    }
+  ]
+])
+
+const fieldList = computed(() => {
+  return props.menuType === 'menu' ? formFieldList : reportFieldList
+})
+
+const resetForm = () => {
+  formFieldList[0].forEach(field => {
+    if (field.fieldCode === 'form') {
+      field.setting = formList.value
+    }
+    if (field.fieldCode === 'routeType') {
+      field.setting = permissionRouteTypes.value
+    }
+    field.value = props.menuData[field.fieldCode]
+    props.fieldRule[field.fieldCode] = getRules(field)
+    props.fieldForm[field.fieldCode] = getFormFieldValue(field, false)
+  })
+
+  reportFieldList[0].forEach(field => {
+    if (field.fieldCode === 'relateCode') {
+      field.setting = reportList.value
+    }
+    if (field.fieldCode === 'routeType') {
+      field.setting = permissionRouteTypes.value
+    }
+    field.value = props.menuData[field.fieldCode]
+    props.fieldRule[field.fieldCode] = getRules(field)
+    props.fieldForm[field.fieldCode] = getFormFieldValue(field, false)
+  })
 }
+
+const initRequest = async () => {
+  const [routeTypes, forms, reports] = await Promise.all([
+    permissionRouteTypeListAPI(),
+    customFormSimpleListAPI(),
+    definitionSimpleValidListAPI()
+  ])
+  
+  permissionRouteTypes.value = routeTypes.data
+  formList.value = forms.data
+  reportList.value = reports.data
+  
+  resetForm()
+}
+
+const handleChangeValue = (field, index, value) => {
+  emit('change', field, index, value)
+}
+
+watch(() => props.menuType, () => {
+  resetForm()
+})
+
+watch(() => props.menuData, () => {
+  resetForm()
+}, { deep: true, immediate: true })
+
+onMounted(() => {
+  initRequest()
+})
 </script>
 
 <style lang="scss" scoped>

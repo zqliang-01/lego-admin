@@ -18,7 +18,8 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref } from 'vue'
 import BpmnImport from './tools/Import'
 import BpmnExports from './tools/Exports'
 import BpmnPreviews from './tools/Previews'
@@ -26,22 +27,32 @@ import BpmnAligns from './tools/Aligns'
 import BpmnScales from './tools/Scales'
 import BpmnCommands from './tools/Commands'
 import BpmnExternals from './tools/Externals'
-export default {
-  name: 'BpmnToolbar',
-  components: { BpmnExternals, BpmnCommands, BpmnScales, BpmnAligns, BpmnPreviews, BpmnExports, BpmnImport },
-  data() {
-    return {
-      showImport: false,
-      showExport: false
-    }
-  },
-  methods: {
-    handleSave() {
-      this.$emit('save')
-    },
-    handleCancel() {
-      this.$emit('cancel')
-    }
-  }
+
+const showImport = ref(false)
+const showExport = ref(false)
+
+const handleSave = () => {
+  emit('save')
 }
+
+const handleCancel = () => {
+  emit('cancel')
+}
+
+defineEmits(['save', 'cancel'])
 </script>
+
+<style scoped>
+.bpmn-toolbar {
+  padding: 8px 10px;
+  background: #f8f8f8;
+  border-bottom: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bpmn-toolbar .el-button-group {
+  margin-right: 15px;
+}
+</style>

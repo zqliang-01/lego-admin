@@ -21,7 +21,7 @@
         @onList="getList"
         @onEdit="handleTable"
         @onClickField="handleField">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button
             v-if="manage.workflow.model.update"
             type="text"
@@ -54,165 +54,166 @@
       :field-list="fieldList"
       :action="action"
       @handle="actionHandle"
-      @close="isCreate = false"
+      @update:visible="val => isCreate = val"
     />
-    <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
-      <bpmn-viewer :key="modelId" :xml.sync="processXml"/>
+    <el-dialog
+      title="流程信息"
+      v-model:visible="processVisible"
+      width="70%"
+      append-to-body>
+      <bpmn-viewer :key="modelId" v-model:xml="processXml"/>
     </el-dialog>
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import Create from './Create'
+import XrHeader from '@/components/XrHeader'
+import LegoTable from '@/components/Lego/LegoTable'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
 import {
   modelListAPI,
   modelDeployAPI,
   modelDeleteAPI,
   modelBpmnXmlGetAPI
 } from '@/api/admin/workflow/model'
-import { mapGetters } from 'vuex'
-import Create from './Create'
-import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/Lego/LegoTable'
-import FieldView from '@/components/Common/Form/FieldView'
-import BpmnViewer from '@/components/Bpmn/components/Viewer'
 
-export default {
-  name: 'WorkflowModel',
-  components: {
-    Create,
-    XrHeader,
-    LegoTable,
-    FieldView,
-    BpmnViewer
-  },
-  computed: {
-    ...mapGetters(['manage'])
-  },
-  data() {
-    return {
-      loading: false,
-      isCreate: false,
-      processXml: '',
-      processVisible: false,
-      previewVisible: false,
-      modelId: '',
-      dataList: [],
-      currentPage: 1,
-      pageSize: 15,
-      total: 0,
-      search: '',
-      action: {
-        type: 'update',
-        detailData: {}
-      },
-      fieldList: [
-        [
-          { fieldCode: 'id', name: '模型ID', formType: 'text', width: '260', unique: true },
-          { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true }
-        ],
-        [
-          { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true },
-          { fieldCode: 'description', name: '备注', formType: 'text', width: '100' }
-        ],
-        [
-          { fieldCode: 'version', name: '版本', formType: 'text', width: '100', show: false },
-          { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150', show: false }
-        ]
-      ]
-    }
-  },
-  created() {
-    this.refresh()
-  },
-  methods: {
-    refresh() {
-      this.getList()
-    },
-    getList(pageSize = this.pageSize, currentPage = this.currentPage) {
-      this.loading = true
-      modelListAPI({
-        name: this.search,
-        pageIndex: currentPage,
-        pageSize: pageSize
-      }).then(res => {
-        this.dataList = res.data.result
-        this.total = res.data.totalCount
-        this.currentPage = res.data.pageIndex
-        this.loading = false
+const store = useStore()
+const router = useRouter()
+const loading = ref(false)
+const isCreate = ref(false)
+const processVisible = ref(false)
+const processXml = ref('')
+const modelId = ref('')
+const dataList = ref([])
+const currentPage = ref(1)
+const pageSize = ref(15)
+const total = ref(0)
+const search = ref('')
+
+const action = ref({
+  type: 'update',
+  detailData: {}
+})
+
+const fieldList = ref([
+  [
+    { fieldCode: 'id', name: '模型ID', formType: 'text', width: '260', unique: true },
+    { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true }
+  ],
+  [
+    { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true },
+    { fieldCode: 'description', name: '备注', formType: 'text', width: '100' }
+  ],
+  [
+    { fieldCode: 'version', name: '版本', formType: 'text', width: '100', show: false },
+    { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150', show: false }
+  ]
+])
+
+const manage = computed(() => store.getters.manage)
+
+onMounted(() => {
+  refresh()
+})
+
+const refresh = () => {
+  getList()
+}
+
+const getList = (pageSizeVal = pageSize.value, currentPageVal = currentPage.value) => {
+  loading.value = true
+  modelListAPI({
+    name: search.value,
+    pageIndex: currentPageVal,
+    pageSize: pageSizeVal
+  }).then(res => {
+    dataList.value = res.data.result
+    total.value = res.data.totalCount
+    currentPage.value = res.data.pageIndex
+    loading.value = false
+  }).catch(() => {
+    loading.value = false
+  })
+}
+
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  getList()
+}
+
+const handleCurrentChange = (val) => {
+  currentPage.value = val
+  getList()
+}
+
+const handleTable = (type, item, index) => {
+  if (type === 'design') {
+    router.push({
+      name: 'modelDesign',
+      params: {
+        modelId: item.id
+      }
+    })
+    return
+  }
+  if (type === 'depoly') {
+    loading.value = true
+    modelDeployAPI(item.id).then(() => {
+      loading.value = false
+      ElMessage.success('部署成功！')
+      refresh()
+    }).catch(() => {
+      loading.value = false
+    })
+    return
+  }
+  if (type === 'delete') {
+    ElMessageBox.confirm(`此操作将永久删除[${item.name}]的[${item.version}]版本，是否继续?`, '提示', {
+      type: 'warning'
+    }).then(() => {
+      modelDeleteAPI(item.id).then(() => {
+        ElMessage.success('删除成功！')
+        refresh()
       })
-        .catch(() => {
-          this.loading = false
-        })
-    },
-    handleSizeChange(val) {
-      this.pageSize = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val
-      this.getList()
-    },
-    handleTable(type, item, index) {
-      if (type === 'design') {
-        this.$router.push({
-          name: 'modelDesign',
-          params: {
-            modelId: item.id
-          }
-        })
-        return
-      }
-      if (type === 'depoly') {
-        this.loading = true
-        modelDeployAPI(item.id).then(() => {
-          this.loading = true
-          this.$message.success('部署成功！')
-          this.refresh()
-        }).catch(() => {
-          this.loading = false
-        })
-        return
-      }
-      if (type === 'delete') {
-        this.$confirm(`此操作将永久删除[${item.name}]的[${item.version}]版本，是否继续?`, '提示', {
-          type: 'warning'
-        }).then(() => {
-          modelDeleteAPI(item.id).then(() => {
-            this.$message.success('删除成功！')
-            this.refresh()
-          })
-        })
-        return
-      }
-      this.action.type = 'update'
-      this.action.detailData = item
-      this.isCreate = true
-    },
-    handleField(data, row) {
-      if (data && data.field.fieldCode === 'name') {
-        modelBpmnXmlGetAPI(row.id).then(res => {
-          this.modelId = row.id
-          this.processXml = res.data
-          this.processVisible = true
-        })
-        return
-      }
-    },
-    onSearch(value) {
-      this.search = value
-      this.getList()
-    },
-    onCreate() {
-      this.action.type = 'save'
-      this.action.detailData = {}
-      this.isCreate = true
-    },
-    actionHandle(data) {
-      if (data.type === 'save-success') {
-        this.$message.success('模型保存成功！')
-        this.refresh()
-      }
-    }
+    })
+    return
+  }
+  action.value.type = 'update'
+  action.value.detailData = item
+  isCreate.value = true
+}
+
+const handleField = (data, row) => {
+  if (data && data.field.fieldCode === 'name') {
+    modelBpmnXmlGetAPI(row.id).then(res => {
+      modelId.value = row.id
+      processXml.value = res.data
+      processVisible.value = true
+    })
+    return
+  }
+}
+
+const onSearch = (value) => {
+  search.value = value
+  getList()
+}
+
+const onCreate = () => {
+  action.value.type = 'save'
+  action.value.detailData = {}
+  isCreate.value = true
+}
+
+const actionHandle = (data) => {
+  if (data.type === 'save-success') {
+    ElMessage.success('模型保存成功！')
+    refresh()
   }
 }
 </script>

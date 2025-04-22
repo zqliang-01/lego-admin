@@ -43,107 +43,90 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { ElMessage } from 'element-plus'
 import { systemInfoModifyAPI } from '@/api/admin/config'
 import { fileUploadAPI, filePreviewUrl } from '@/api/common'
-
 import EditImage from '@/components/EditImage'
-import { mapGetters } from 'vuex'
 
-export default {
-  name: 'BaseInfo',
-  components: {
-    EditImage
-  },
-  props: {
-    systemInfo: {
-      type: Object,
-      required: true
+const props = defineProps({
+  systemInfo: {
+    type: Object,
+    required: true
+  }
+})
+
+const store = useStore()
+const loading = ref(false)
+const showEditImage = ref(false)
+const editImage = ref(null)
+const editFile = ref(null)
+const companyName = ref('')
+const companyLogo = ref('')
+
+const systemSaveAuth = computed(() => {
+  const manage = store.getters.manage
+  return manage && manage.system && manage.system.update
+})
+
+const logoUrl = computed(() => filePreviewUrl + companyLogo.value)
+
+watch(() => props.systemInfo, (val) => {
+  companyName.value = val.companyName || ''
+  companyLogo.value = val.companyLogo || ''
+}, { deep: true, immediate: true })
+
+const fileUpload = (content) => {
+  const reader = new FileReader()
+  reader.onload = function(e) {
+    let result
+    if (typeof e.target.result === 'object') {
+      result = window.URL.createObjectURL(new Blob([e.target.result]))
+    } else {
+      result = e.target.result
     }
-  },
-  data() {
-    return {
-      loading: false,
-      showEditImage: false,
-      editImage: null,
-      editFile: null,
-      companyName: '',
-      companyLogo: ''
-    }
-  },
-  watch: {
-    systemInfo: {
-      handler(val) {
-        this.companyName = val.companyName || ''
-        this.companyLogo = val.companyLogo || ''
-      },
-      deep: true,
-      immediate: true
-    }
-  },
-  computed: {
-    ...mapGetters(['manage']),
-    systemSaveAuth() {
-      return this.manage && this.manage.system && this.manage.system.update
-    },
-    logoUrl() {
-      return filePreviewUrl + this.companyLogo
-    }
-  },
-  methods: {
-    /**
-     * 附件上传
-     */
-    fileUpload(content) {
-      const reader = new FileReader()
-      var self = this
-      reader.onload = function(e) {
-        let result
-        if (typeof e.target.result === 'object') {
-          // 把Array Buffer转化为blob 如果是base64不需要
-          result = window.URL.createObjectURL(new Blob([e.target.result]))
-        } else {
-          result = e.target.result
-        }
-        self.editImage = result
-        self.editFile = content.file
-        self.showEditImage = true
-      }
-      reader.readAsDataURL(content.file)
-    },
-    deleteCompanyLogo() {
-      this.companyLogo = ''
-    },
-    submiteImage(data) {
-      this.loading = true
-      fileUploadAPI({
-        file: new File([data.blob], data.file.name),
-        entityCode: 'manage',
-        permissionCode: 'manage'
-      }).then(res => {
-        this.companyLogo = res.data || ''
-        this.loading = false
-      }).catch(() => {
-        this.loading = false
-      })
-    },
-    save() {
-      if (!this.companyName) {
-        this.$message.error('系统名称不能为空')
-      } else {
-        this.loading = true
-        systemInfoModifyAPI({
-          name: this.companyName,
-          logo: this.companyLogo
-        }).then(res => {
-          this.loading = false
-          this.$message.success('操作成功')
-          this.getDetail()
-        }).catch(() => {
-          this.loading = false
-        })
-      }
-    }
+    editImage.value = result
+    editFile.value = content.file
+    showEditImage.value = true
+  }
+  reader.readAsDataURL(content.file)
+}
+
+const deleteCompanyLogo = () => {
+  companyLogo.value = ''
+}
+
+const submiteImage = (data) => {
+  loading.value = true
+  fileUploadAPI({
+    file: new File([data.blob], data.file.name),
+    entityCode: 'manage',
+    permissionCode: 'manage'
+  }).then(res => {
+    companyLogo.value = res.data || ''
+    loading.value = false
+  }).catch(() => {
+    loading.value = false
+  })
+}
+
+const save = () => {
+  if (!companyName.value) {
+    ElMessage.error('系统名称不能为空')
+  } else {
+    loading.value = true
+    systemInfoModifyAPI({
+      name: companyName.value,
+      logo: companyLogo.value
+    }).then(res => {
+      loading.value = false
+      ElMessage.success('操作成功')
+      emit('update')
+    }).catch(() => {
+      loading.value = false
+    })
   }
 }
 </script>
@@ -186,7 +169,7 @@ export default {
   line-height: 80px;
   text-align: center;
 }
-.upload ::v-deep .el-upload-dragger {
+.upload :deep(.el-upload-dragger) {
   width: 300px;
   height: 80px;
 }
@@ -215,4 +198,3 @@ export default {
   }
 }
 </style>
-

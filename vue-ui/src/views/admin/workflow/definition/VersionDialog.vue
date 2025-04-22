@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     title="部署版本信息"
-    :visible="visible"
+    :model-value="visible"
     :close-on-click-modal="false"
     :modal-append-to-body="true"
     append-to-body
@@ -20,25 +20,24 @@
         :prop="item.fieldCode"
         :label="item.name"
         show-overflow-tooltip>
-        <template slot-scope="scope">
+        <template #default="scope">
           <field-view
             :item="item"
             :form-type="item.formType"
             :value="scope.row[item.fieldCode]"
-            @clickValue="handleField($event, scope.row, scope.$index)">
-          </field-view>
+            @clickValue="handleField($event, scope.row, scope.$index)"/>
         </template>
       </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
         width="150">
-        <template slot-scope="scope">
+        <template #default="scope">
           <el-button
             v-if="manage.workflow.definition.update"
             type="text"
             size="small"
-            @click="handleTable('edit', scope.row, scope.$index)">{{ scope.row.active | statusName }}</el-button>
+            @click="handleTable('edit', scope.row, scope.$index)">{{ scope.row.active ? '挂起' : '激活' }}</el-button>
           <el-button
             v-if="manage.workflow.definition.delete"
             type="text"
@@ -52,7 +51,7 @@
       <el-pagination
         :current-page="currentPage"
         :page-sizes="pageSizes"
-        :page-size.sync="pageSize"
+        :page-size="pageSize"
         :total="total"
         :pager-count="5"
         class="p-bar"
@@ -61,12 +60,23 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"/>
     </div>
-    <el-dialog title="流程信息" :visible.sync="processVisible" width="70%" append-to-body>
-      <bpmn-viewer :key="definitionId" :xml.sync="definitionXml"/>
+    <el-dialog
+      title="流程信息"
+      :model-value="processVisible"
+      width="70%"
+      append-to-body
+      @close="processVisible = false">
+      <bpmn-viewer :key="definitionId" v-model:xml="definitionXml"/>
     </el-dialog>
   </el-dialog>
 </template>
-<script>
+
+<script setup>
+import { ref, computed, watch, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import FieldView from '@/components/Common/Form/FieldView'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
 import {
   definitionDeleteAPI,
   definitionActiveAPI,
@@ -74,142 +84,142 @@ import {
   definitionHistoryListAPI,
   definitionBpmnXmlGetAPI
 } from '@/api/admin/workflow/definition'
-import FieldView from '@/components/Common/Form/FieldView'
-import BpmnViewer from '@/components/Bpmn/components/Viewer'
-import { mapGetters } from 'vuex'
 
-export default {
-  name: 'DefinitionVersionDialog',
-  components: {
-    FieldView,
-    BpmnViewer
+const props = defineProps({
+  visible: {
+    type: Boolean,
+    default: false
   },
-  props: {
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    definitionKey: String
-  },
-  data() {
-    return {
-      loading: false,
-      processVisible: false,
-      definitionXml: '',
-      definitionId: '',
-      dataList: [],
-      currentPage: 1,
-      pageSize: 15,
-      pageSizes: [15, 30, 60, 100],
-      total: 0,
-      tableHeight: document.documentElement.clientHeight - 400, // 表的高度
-      fieldList: [
-        { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true, xAxis: 0, yAxis: 1 },
-        { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true, xAxis: 1, yAxis: 0 },
-        { fieldCode: 'version', name: '版本', formType: 'text', width: '50', required: true, editable: false },
-        { fieldCode: 'active', name: '是否激活', formType: 'boolean', width: '100', editable: false }
-      ]
-    }
-  },
-  computed: {
-    ...mapGetters(['manage'])
-  },
-  filters: {
-    statusName(status) {
-      return status ? '挂起' : '激活'
-    }
-  },
-  watch: {
-    definitionKey() {
-      this.refresh()
-    }
-  },
-  created() {
-    window.onresize = () => {
-      self.tableHeight = document.documentElement.clientHeight - 140
-    }
-    this.refresh()
-  },
-  methods: {
-    handleCancel() {
-      this.$emit('update:visible', false)
-    },
-    refresh() {
-      this.loading = true
-      definitionHistoryListAPI({
-        key: this.definitionKey,
-        pageIndex: this.currentPage,
-        pageSize: this.pageSize
-      }).then(res => {
-        this.dataList = res.data.result
-        this.total = res.data.totalCount
-        this.currentPage = res.data.pageIndex
-        this.loading = false
+  definitionKey: String
+})
+
+const emit = defineEmits(['update:visible', 'save-success'])
+
+const store = useStore()
+const loading = ref(false)
+const processVisible = ref(false)
+const definitionXml = ref('')
+const definitionId = ref('')
+const dataList = ref([])
+const currentPage = ref(1)
+const pageSize = ref(15)
+const pageSizes = ref([15, 30, 60, 100])
+const total = ref(0)
+const tableHeight = ref(document.documentElement.clientHeight - 400)
+
+const fieldList = ref([
+  { fieldCode: 'name', name: '名称', formType: 'text', width: '150', required: true, clickable: true },
+  { fieldCode: 'key', name: '模型标识', formType: 'text', width: '150', required: true },
+  { fieldCode: 'version', name: '版本', formType: 'text', width: '50', required: true, editable: false },
+  { fieldCode: 'active', name: '是否激活', formType: 'boolean', width: '100', editable: false }
+])
+
+const manage = computed(() => store.getters.manage)
+
+watch(() => props.definitionKey, () => {
+  refresh()
+})
+
+onMounted(() => {
+  window.onresize = () => {
+    tableHeight.value = document.documentElement.clientHeight - 140
+  }
+  refresh()
+})
+
+const refresh = () => {
+  loading.value = true
+  definitionHistoryListAPI({
+    key: props.definitionKey,
+    pageIndex: currentPage.value,
+    pageSize: pageSize.value
+  }).then(res => {
+    dataList.value = res.data.result
+    total.value = res.data.totalCount
+    currentPage.value = res.data.pageIndex
+    loading.value = false
+  }).catch(() => {
+    loading.value = false
+  })
+}
+
+const handleCancel = () => {
+  emit('update:visible', false)
+}
+
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  refresh()
+}
+
+const handleCurrentChange = (val) => {
+  currentPage.value = val
+  refresh()
+}
+
+const handleTable = (type, item, index) => {
+  if (type === 'edit') {
+    loading.value = true
+    if (item.active) {
+      definitionSuspendAPI(item.id).then(() => {
+        loading.value = false
+        ElMessage.success('挂起成功！')
+        refresh()
+        emit('save-success')
       }).catch(() => {
-        this.loading = false
+        loading.value = false
       })
-    },
-    handleSizeChange(val) {
-      this.pageSize = val
-      this.refresh()
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val
-      this.refresh()
-    },
-    handleTable(type, item, index) {
-      if (type === 'edit') {
-        this.loading = true
-        if (item.active) {
-          definitionSuspendAPI(item.id).then(() => {
-            this.loading = false
-            this.$message.success('挂起成功！')
-            this.refresh()
-            this.$emit('save-success')
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          definitionActiveAPI(item.id).then(() => {
-            this.loading = false
-            this.$message.success('激活成功！')
-            this.refresh()
-            this.$emit('save-success')
-          }).catch(() => {
-            this.loading = false
-          })
-        }
-        return
-      }
-      if (type === 'delete') {
-        this.$confirm(`此操作将永久删除[${item.name}]的[${item.version}]版本，是否继续?`, '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.loading = true
-          definitionDeleteAPI(item.id).then(() => {
-            this.loading = false
-            this.$message.success('删除成功！')
-            this.refresh()
-            this.$emit('save-success')
-          }).catch(() => {
-            this.loading = false
-          })
-        })
-        return
-      }
-    },
-    handleField(data, row) {
-      if (data && data.field.fieldCode === 'name') {
-        definitionBpmnXmlGetAPI(row.id).then(res => {
-          this.definitionId = row.id
-          this.definitionXml = res.data
-          this.processVisible = true
-        })
-        return
-      }
+    } else {
+      definitionActiveAPI(item.id).then(() => {
+        loading.value = false
+        ElMessage.success('激活成功！')
+        refresh()
+        emit('save-success')
+      }).catch(() => {
+        loading.value = false
+      })
     }
+    return
+  }
+  if (type === 'delete') {
+    ElMessageBox.confirm(`此操作将永久删除[${item.name}]的[${item.version}]版本，是否继续?`, '提示', {
+      type: 'warning'
+    }).then(() => {
+      loading.value = true
+      definitionDeleteAPI(item.id).then(() => {
+        loading.value = false
+        ElMessage.success('删除成功！')
+        refresh()
+        emit('save-success')
+      }).catch(() => {
+        loading.value = false
+      })
+    })
+    return
+  }
+}
+
+const handleField = (data, row) => {
+  if (data && data.field.fieldCode === 'name') {
+    definitionBpmnXmlGetAPI(row.id).then(res => {
+      definitionId.value = row.id
+      definitionXml.value = res.data
+      processVisible.value = true
+    })
+    return
   }
 }
 </script>
+
 <style lang="scss" scoped>
+.p-contianer {
+  position: relative;
+  background-color: white;
+  height: 44px;
+  .p-bar {
+    float: right;
+    margin: 5px 100px 0 0;
+    font-size: 14px !important;
+  }
+}
 </style>

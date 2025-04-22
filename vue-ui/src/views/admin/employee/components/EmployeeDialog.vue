@@ -2,7 +2,7 @@
   <el-dialog
     v-loading="loading"
     :title="title"
-    :visible="visible"
+    :model-value="visible"
     :close-on-click-modal="false"
     :modal-append-to-body="true"
     :append-to-body="true"
@@ -64,156 +64,140 @@
           :disabled="item.disabled"/>
       </el-form-item>
     </el-form>
-    <span
-      slot="footer"
-      class="dialog-footer">
-      <el-button
-        type="primary"
-        @click="submit">保 存</el-button>
-      <el-button @click="handleCancel">取 消</el-button>
-    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="submit">保 存</el-button>
+        <el-button @click="handleCancel">取 消</el-button>
+      </span>
+    </template>
   </el-dialog>
 </template>
-<script>
-import { employeeAddAPI, employeeModifyAPI } from '@/api/admin/employee'
-import SelectTree from '@/components/Common/SelectTree'
 
-export default {
-  name: 'EmployeeDialog',
-  components: {
-    SelectTree
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { ElMessage } from 'element-plus'
+import SelectTree from '@/components/Common/SelectTree'
+import { employeeAddAPI, employeeModifyAPI } from '@/api/admin/employee'
+
+const props = defineProps({
+  creatable: {
+    type: Boolean,
+    default: true
   },
-  props: {
-    creatable: {
-      type: Boolean,
-      default: true
-    },
-    visible: {
-      type: Boolean,
-      default: false
-    },
-    optionsList: Object,
-    data: Object
+  visible: {
+    type: Boolean,
+    required: true
   },
-  data() {
-    return {
-      loading: false,
-      submitForm: {
-        code: '',
-        name: '',
-        dept: '',
-        roles: [],
-        enable: true
-      },
-      dialogRules: {
-        name: [
-          { required: true, message: '姓名不能为空', trigger: 'blur' }
-        ],
-        dept: [
-          { required: true, message: '部门不能为空', trigger: 'blur' }
-        ],
-        roles: [
-          { required: true, message: '角色不能为空', trigger: 'blur' }
-        ]
-      }
-    }
+  optionsList: {
+    type: Object,
+    required: true
   },
-  computed: {
-    title() {
-      return this.creatable ? '创建员工' : '修改员工'
-    },
-    fieldList() {
-      return [
-        { field: 'code', value: '工号', disabled: true },
-        { field: 'name', value: '姓名', disabled: false },
-        { field: 'dept', value: '部门', type: 'selectTree', optionCode: 'deptList', disabled: false },
-        { field: 'roles', value: '角色', type: 'multipleSelect', optionCode: 'roleList', disabled: false },
-        { field: 'enable', value: '状态', type: 'boolean', disabled: false }
-      ]
-    }
-  },
-  watch: {
-    data: {
-      handler() {
-        if (!this.data) {
-          return
-        }
-        this.fieldList.forEach(field => {
-          let value = this.data[field.field]
-          if (value && field.type === 'selectTree') {
-            this.submitForm[field.field] = value.code
-          } else if (value && field.type === 'multipleSelect') {
-            this.submitForm[field.field] = []
-            value.forEach(element => {
-              this.submitForm[field.field].push(element.code)
-            })
-          } else {
-            if (!value && field.type != 'boolean') {
-              value = ''
-            }
-            this.submitForm[field.field] = value
-          }
-        })
-      },
-      deep: true,
-      immediate: true
-    }
-  },
-  methods: {
-    handleCancel() {
-      this.$emit('update:visible', false)
-    },
-    submit() {
-      this.$refs.employeeDialogRef.validate(valid => {
-        if (!valid) {
-          return
-        }
-        this.loading = true
-        if (this.creatable) {
-          employeeAddAPI(this.submitForm).then(res => {
-            this.loading = false
-            this.$message.success('新增成功')
-            this.$emit('success')
-          })
-            .catch(() => {
-              this.loading = false
-            })
-          return
-        }
-        employeeModifyAPI(this.submitForm).then(res => {
-          this.loading = false
-          this.$message.success('更新成功')
-          this.$emit('success')
-        })
-          .catch(() => {
-            this.loading = false
-          })
-      })
-    }
+  data: {
+    type: Object,
+    default: () => ({})
   }
+})
+
+const emit = defineEmits(['update:visible', 'success'])
+
+const loading = ref(false)
+const employeeDialogRef = ref(null)
+const submitForm = ref({
+  code: '',
+  name: '',
+  dept: '',
+  roles: [],
+  enable: true
+})
+
+const dialogRules = ref({
+  name: [
+    { required: true, message: '姓名不能为空', trigger: 'blur' }
+  ],
+  dept: [
+    { required: true, message: '部门不能为空', trigger: 'blur' }
+  ],
+  roles: [
+    { required: true, message: '角色不能为空', trigger: 'blur' }
+  ]
+})
+
+const title = computed(() => props.creatable ? '创建员工' : '修改员工')
+
+const fieldList = computed(() => [
+  { field: 'code', value: '工号', disabled: true },
+  { field: 'name', value: '姓名', disabled: false },
+  { field: 'dept', value: '部门', type: 'selectTree', optionCode: 'deptList', disabled: false },
+  { field: 'roles', value: '角色', type: 'multipleSelect', optionCode: 'roleList', disabled: false },
+  { field: 'enable', value: '状态', type: 'boolean', disabled: false }
+])
+
+watch(() => props.data, (val) => {
+  if (!val) return
+  
+  fieldList.value.forEach(field => {
+    let value = val[field.field]
+    if (value && field.type === 'selectTree') {
+      submitForm.value[field.field] = value.code
+    } else if (value && field.type === 'multipleSelect') {
+      submitForm.value[field.field] = []
+      value.forEach(element => {
+        submitForm.value[field.field].push(element.code)
+      })
+    } else {
+      if (!value && field.type != 'boolean') {
+        value = ''
+      }
+      submitForm.value[field.field] = value
+    }
+  })
+}, { deep: true, immediate: true })
+
+const handleCancel = () => {
+  emit('update:visible', false)
+}
+
+const submit = () => {
+  employeeDialogRef.value.validate(valid => {
+    if (!valid) return
+    
+    loading.value = true
+    const requestAPI = props.creatable ? employeeAddAPI : employeeModifyAPI
+    
+    requestAPI(submitForm.value).then(() => {
+      loading.value = false
+      ElMessage.success(props.creatable ? '新增成功' : '更新成功')
+      emit('success')
+    }).catch(() => {
+      loading.value = false
+    })
+  })
 }
 </script>
+
 <style lang="scss" scoped>
-/* 新建和编辑 */
 .new-dialog-form {
   height: 47vh;
   overflow-y: auto;
   padding: 20px;
 }
-.new-dialog-form ::v-deep .el-form-item {
+
+.new-dialog-form :deep(.el-form-item) {
   width: 50%;
   margin: 0;
   padding-bottom: 10px;
-}
-.new-dialog-form ::v-deep .el-form-item .el-form-item__label {
-  padding: 0;
-}
-.new-dialog-form {
-  ::v-deep .el-form-item:nth-child(even) {
+  
+  .el-form-item__label {
+    padding: 0;
+  }
+  
+  &:nth-child(even) {
     padding-left: 15px;
   }
-
-  ::v-deep .el-form-item:nth-child(odd) {
+  
+  &:nth-child(odd) {
     padding-right: 15px;
   }
 }

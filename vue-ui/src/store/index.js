@@ -1,14 +1,11 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import bpmn from './modules/bpmn'
-import app from './modules/app'
-import user from './modules/user'
-import permission from './modules/permission'
+import { createStore } from 'vuex'
 import getters from './getters'
+import app from './modules/app'
+import bpmn from './modules/bpmn'
+import permission from './modules/permission'
+import user from './modules/user'
 
-Vue.use(Vuex)
-
-const store = new Vuex.Store({
+const store = createStore({
   modules: {
     app,
     bpmn,

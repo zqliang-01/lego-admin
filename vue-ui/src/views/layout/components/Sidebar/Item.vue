@@ -2,7 +2,7 @@
   <div :class="{ 'is-close': collapse }" class="menu-item-content">
     <i
       v-if="icon"
-      :class="icon | iconPre"/>
+      :class="iconPre(icon)"/>
     <span class="side-bar-label">{{ title }}</span>
     <span v-if="count">({{ count }})</span>
     <el-badge
@@ -12,27 +12,27 @@
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed } from 'vue'
 
-export default {
-  name: 'Item',
-  components: {},
-  props: {
-    icon: String,
-    title: String,
-    num: [String, Number],
-    collapse: Boolean,
-    count: [String, Number]
-  },
-  data() {
-    return {}
-  },
-  computed: {},
-  watch: {},
-  mounted() {},
+const props = defineProps({
+  icon: String,
+  title: String,
+  num: [String, Number],
+  collapse: Boolean,
+  count: [String, Number]
+})
 
-  beforeDestroy() {},
-  methods: {}
+// 替代原来的过滤器功能
+const iconPre = (icon) => {
+  if (!icon) return ''
+  if (icon.startsWith('el-icon')) {
+    return icon
+  }
+  if (icon.startsWith('lego-')) {
+    return `lego ${icon}`
+  }
+  return `el-icon-${icon}`
 }
 </script>
 
@@ -77,7 +77,7 @@ export default {
   position: absolute;
   right: 4px;
   top: 6px;
-  ::v-deep .el-badge__content {
+  :deep(.el-badge__content) {
     border-width: 0;
   }
 }

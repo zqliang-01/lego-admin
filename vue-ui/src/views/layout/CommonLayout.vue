@@ -19,7 +19,7 @@
               v-for="(item, index) in quickAddList"
               :key="index"
               @click="addSkip(item)">
-            <i :class="item.icon | iconPre"/><span>{{ item.title }}</span></p>
+            <i :class="iconPre(item.icon)"/><span>{{ item.title }}</span></p>
           </div>
         </div>
       </sidebar>
@@ -28,116 +28,111 @@
       </el-main>
     </el-container>
     <lego-all-create
-      :visible.sync="createShow"
+      :visible="createShow"
       :form-code="formCode"
+      @update:visible="createShow = $event"
       @close="createShow = false"
       @handle="actionHandle"
     />
   </el-container>
 </template>
 
-<script>
-import { Navbar, Sidebar, AppMain, Welcome } from './components'
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 import { isObject } from '@/utils/types'
-import { mapGetters } from 'vuex'
+import { Navbar, Sidebar, AppMain, Welcome } from './components'
 
-export default {
-  name: 'CommonLayout',
-  props: {
-    currentAppCode: String
-  },
-  components: {
-    Navbar,
-    Sidebar,
-    AppMain,
-    Welcome
-  },
-  data() {
-    return {
-      formCode: '',
-      appCode: '',
-      quickAddList: [],
-      createShow: false
-    }
-  },
+const props = defineProps({
+  currentAppCode: String
+})
 
-  computed: {
-    ...mapGetters([
-      'menuRouters',
-      'navActiveIndex',
-      'allAuth'
-    ]),
-    currentRouters() {
-      return this.menuRouters[this.appCode]
-    },
-    appName() {
-      if (this.appCode) {
-        return this.allAuth[this.appCode].title
-      }
-      return ''
-    },
-    quickAddOffset() {
-      return Math.round(this.quickAddList.length / 2) * 25
-    },
-    showQuickAddButton() {
-      return this.quickAddList.length > 0
-    }
-  },
-  watch: {
-    $route(to, from) {
-      this.init()
-    }
-  },
-  mounted() {
-    this.init()
-  },
-  methods: {
-    init() {
-      const urls = this.$route.path.split('/')
-      this.appCode = this.$route.params.model || this.navActiveIndex
-      if (urls.length > 1 && urls[1] !== this.appCode) {
-        this.appCode = urls[1]
-      }
-      if (this.currentAppCode) {
-        this.appCode = this.currentAppCode
-      }
-      if (this.appCode) {
-        this.quickAddList = []
-        this.addQuickAddMenu(this.allAuth[this.appCode])
-        this.quickAddList.sort(function(a, b) {
-          return a.sn - b.sn
-        })
-      }
-    },
-    addSkip(item) {
-      this.formCode = item.formCode
-      this.createShow = true
-    },
-    actionHandle(data) {
-      if (data.type === 'save-success') {
-        this.$message.success('创建成功！')
-        return
-      }
-    },
-    addQuickAddMenu(obj) {
-      let hasChildren = false
-      for (const key in obj) {
-        if (isObject(obj[key])) {
-          hasChildren = true
-          this.addQuickAddMenu(obj[key])
-        }
-      }
-      if (!hasChildren && obj && obj.formCode && obj.add) {
-        this.quickAddList.push({
-          sn: obj.sn,
-          title: obj.title,
-          icon: obj.icon,
-          formCode: obj.formCode
-        })
-      }
-    }
+const store = useStore()
+const route = useRoute()
+
+const formCode = ref('')
+const appCode = ref('')
+const quickAddList = ref([])
+const createShow = ref(false)
+
+// 计算属性
+const menuRouters = computed(() => store.getters.menuRouters)
+const navActiveIndex = computed(() => store.getters.navActiveIndex)
+const allAuth = computed(() => store.getters.allAuth)
+
+const currentRouters = computed(() => menuRouters.value[appCode.value])
+const appName = computed(() => allAuth.value[appCode.value]?.title || '')
+const quickAddOffset = computed(() => Math.round(quickAddList.value.length / 2) * 25)
+const showQuickAddButton = computed(() => quickAddList.value.length > 0)
+
+// 方法
+const iconPre = (icon) => {
+  if (!icon) return ''
+  if (icon.startsWith('el-icon')) {
+    return icon
+  }
+  if (icon.startsWith('lego-')) {
+    return `lego ${icon}`
+  }
+  return `el-icon-${icon}`
+}
+
+const init = () => {
+  const urls = route.path.split('/')
+  appCode.value = route.params.model || navActiveIndex.value
+  if (urls.length > 1 && urls[1] !== appCode.value) {
+    appCode.value = urls[1]
+  }
+  if (props.currentAppCode) {
+    appCode.value = props.currentAppCode
+  }
+  if (appCode.value) {
+    quickAddList.value = []
+    addQuickAddMenu(allAuth.value[appCode.value])
+    quickAddList.value.sort((a, b) => a.sn - b.sn)
   }
 }
+
+const addSkip = (item) => {
+  formCode.value = item.formCode
+  createShow.value = true
+}
+
+const actionHandle = (data) => {
+  if (data.type === 'save-success') {
+    ElMessage.success('创建成功！')
+    return
+  }
+}
+
+const addQuickAddMenu = (obj) => {
+  let hasChildren = false
+  for (const key in obj) {
+    if (isObject(obj[key])) {
+      hasChildren = true
+      addQuickAddMenu(obj[key])
+    }
+  }
+  if (!hasChildren && obj?.formCode && obj.add) {
+    quickAddList.value.push({
+      sn: obj.sn,
+      title: obj.title,
+      icon: obj.icon,
+      formCode: obj.formCode
+    })
+  }
+}
+
+// 监听路由变化
+watch(route, () => {
+  init()
+})
+
+// 初始化
+onMounted(() => {
+  init()
+})
 </script>
 
 <style lang="scss" scoped>

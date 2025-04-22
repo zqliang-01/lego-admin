@@ -1,94 +1,106 @@
 import 'babel-polyfill'
-import Vue from 'vue'
+import mitt from 'mitt'
+import { createApp } from 'vue'
 import App from './App.vue'
-import store from './store'
 import router from './router'
+import store from './store'
 
-import 'normalize.css/normalize.css'
-import 'element-ui/lib/theme-chalk/index.css'
-import '@/styles/index.scss'
 import '@/components/Bpmn/theme/index.scss'
 import '@/permission'
+import '@/styles/index.scss'
+import 'element-plus/dist/index.css'
+import 'normalize.css/normalize.css'
 
 import config from '@/config'
 window.SystemConfig = config
-Vue.prototype.SystemConfig = config
 
 import cache from '@/utils/cache'
 cache.loadingCache()
 
-// 加载基础组件
-import ElementUI from 'element-ui'
-Vue.use(ElementUI)
-import VueBus from 'vue-bus'
-Vue.use(VueBus)
-import FileUpload from '@/components/FileUpload/index.js'
-Vue.use(FileUpload)
-import PreviewFile from '@/components/PreviewFile/main.js'
-Vue.use(PreviewFile)
-import PreviewImage from '@/components/PreviewImage/main.js'
-Vue.use(PreviewImage)
-// 限制数据数值
-import inputLimit from './directives/inputLimit'
-Vue.use(inputLimit)
-import vueNumeralFilterInstaller from './filters/vueNumeralFilter'
-Vue.use(vueNumeralFilterInstaller, { locale: 'chs' })
-// 处理时间的过滤器
-Vue.use(require('vue-moment'))
-import empty from './directives/empty'
-Vue.use(empty)
-import debounce from './directives/clickDebounce'
-Vue.use(debounce)
+// 加载 Element Plus
+import ElementPlus from 'element-plus'
+import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 
-import { Flexbox, FlexboxItem } from '@/components/Layout/Flexbox'
-Vue.component('flexbox', Flexbox)
-Vue.component('flexbox-item', FlexboxItem)
+// 导入组件
 import Avatar from '@/components/Avatar'
-Vue.component('xr-avatar', Avatar)
-import LegoAllDetail from '@/components/Lego/LegoAllDetail'
-Vue.component('LegoAllDetail', LegoAllDetail)
+import FileUpload from '@/components/FileUpload/index.js'
+import { Flexbox, FlexboxItem } from '@/components/Layout/Flexbox'
 import LegoAllCreate from '@/components/Lego/LegoAllCreate'
-Vue.component('LegoAllCreate', LegoAllCreate)
+import LegoAllDetail from '@/components/Lego/LegoAllDetail'
 import LegoIcon from '@/components/Lego/LegoIcon'
-Vue.component('LegoIcon', LegoIcon)
+import PreviewFile from '@/components/PreviewFile/main.js'
+import PreviewImage from '@/components/PreviewImage/main.js'
 
-/** 懒加载图片 */
-import VueSrc from './directives/src'
-Vue.directive('src', VueSrc)
-// 自定义全局点击空白处组件
+// 导入指令
+import debounce from './directives/clickDebounce'
 import clickoutside from './directives/clickoutside'
-Vue.directive('clickoutside', clickoutside)
-import elClickoutside from './directives/elClickoutside'
-Vue.directive('elclickoutside', elClickoutside)
 import clipboard from './directives/clipboard'
-Vue.directive('clipboard', clipboard)
+import elClickoutside from './directives/elClickoutside'
+import empty from './directives/empty'
+import inputLimit from './directives/inputLimit'
+import VueSrc from './directives/src'
 
-// 注册全局过滤器
-import * as filters from './filters'
-Object.keys(filters).forEach(key => {
-  Vue.filter(key, filters[key])
+// 创建应用实例
+const app = createApp(App)
+
+// 配置 Element Plus
+app.use(ElementPlus, {
+  locale: zhCn,
 })
-import moment from 'moment'
-moment.locale('zh_cn')
 
-import { Message } from 'element-ui'
-Vue.prototype.$message.success = function(msg) {
-  return Message({
-    message: msg,
-    duration: 1500,
-    type: 'success'
-  })
-}
-Vue.prototype.$message.error = function(msg) {
-  return Message({
-    message: msg,
-    duration: 1500,
-    type: 'error'
-  })
+// 注册组件
+app.component('flexbox', Flexbox)
+app.component('flexbox-item', FlexboxItem)
+app.component('xr-avatar', Avatar)
+app.component('LegoAllDetail', LegoAllDetail)
+app.component('LegoAllCreate', LegoAllCreate)
+app.component('LegoIcon', LegoIcon)
+
+// 注册指令
+app.directive('src', VueSrc)
+app.directive('clickoutside', clickoutside)
+app.directive('elclickoutside', elClickoutside)
+app.directive('clipboard', clipboard)
+app.use(inputLimit)
+app.use(empty)
+app.use(debounce)
+
+// 注册插件
+app.use(FileUpload)
+app.use(PreviewFile)
+app.use(PreviewImage)
+
+// 配置全局属性
+app.config.globalProperties.SystemConfig = config
+app.config.globalProperties.$filters = filters
+app.config.globalProperties.$moment = moment
+
+// 配置事件总线
+const emitter = mitt()
+app.config.globalProperties.$bus = emitter
+
+// 配置全局消息提示
+import { ElMessage } from 'element-plus'
+app.config.globalProperties.$message = {
+  success: (msg) => {
+    ElMessage({
+      message: msg,
+      duration: 1500,
+      type: 'success'
+    })
+  },
+  error: (msg) => {
+    ElMessage({
+      message: msg,
+      duration: 1500,
+      type: 'error'
+    })
+  }
 }
 
-new Vue({
-  router,
-  store,
-  render: (h) => h(App)
-}).$mount('#app')
+// 注册 store 和 router
+app.use(store)
+app.use(router)
+
+// 挂载应用
+app.mount('#app')

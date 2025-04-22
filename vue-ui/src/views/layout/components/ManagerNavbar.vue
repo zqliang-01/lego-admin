@@ -4,85 +4,94 @@
       v-src="logoUrl"
       :key="logo"
       class="logo"
-      @click="enterMainPage" >
+      @click="enterMainPage"
+    >
     <div class="nav-title">
       管理后台
     </div>
     <div
       class="back-home"
-      @click="enterHome">返回首页</div>
+      @click="enterHome"
+    >
+      返回首页
+    </div>
     <div
       class="go-out"
-      @click="enterLogin">退出系统</div>
+      @click="enterLogin"
+    >
+      退出系统
+    </div>
   </div>
 </template>
 
-<script>
+<script setup>
+import { computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
+import { ElMessageBox, ElLoading } from 'element-plus'
 import { filePreviewUrl } from '@/api/common'
-import { Loading } from 'element-ui'
-import { mapGetters } from 'vuex'
 
-export default {
-  components: {},
-  props: {
-    navIndex: {
-      type: [Number, String],
-      default: 0
-    }
-  },
-  data() {
-    return {}
-  },
-  computed: {
-    ...mapGetters(['logo', 'navActiveIndex']),
-    logoUrl() {
-      if (this.logo) {
-        return filePreviewUrl + this.logo
-      }
-      return require('@/assets/img/logo.png')
-    }
-  },
-  mounted() {
-    this.$store.commit('SET_NAVACTIVEINDEX', this.navIndex)
-  },
-  methods: {
-    enterHome() {
-      this.$router.replace({
-        path: '/'
-      })
-    },
-    enterLogin() {
-      this.$confirm('退出登录？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      })
-        .then(() => {
-          var loading = Loading.service({
-            target: document.getElementById('#app')
-          })
-          this.$store
-            .dispatch('LogOut')
-            .then(() => {
-              loading.close()
-              location.reload()
-            })
-            .catch(() => {
-              loading.close()
-              location.reload()
-            })
-        })
-        .catch(() => {})
-    },
+// Props 定义
+const props = defineProps({
+  navIndex: {
+    type: [Number, String],
+    default: 0
+  }
+})
 
-    /**
-     * 有客户权限点击logo 进入仪表盘
-     */
-    enterMainPage() {
-      this.$router.push('/')
+// 使用 store 和 router
+const store = useStore()
+const router = useRouter()
+
+// 计算属性
+const logo = computed(() => store.getters.logo)
+const logoUrl = computed(() => {
+  if (logo.value) {
+    return filePreviewUrl + logo.value
+  }
+  return new URL('@/assets/img/logo.png', import.meta.url).href
+})
+
+// 方法
+const enterHome = () => {
+  router.replace({
+    path: '/'
+  })
+}
+
+const enterLogin = async () => {
+  try {
+    await ElMessageBox.confirm('退出登录？', '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+
+    const loading = ElLoading.service({
+      target: document.getElementById('#app')
+    })
+
+    try {
+      await store.dispatch('LogOut')
+      loading.close()
+      location.reload()
+    } catch (error) {
+      loading.close()
+      location.reload()
     }
+  } catch {
+    // 用户取消操作
   }
 }
+
+const enterMainPage = () => {
+  router.push('/')
+}
+
+// 生命周期钩子
+onMounted(() => {
+  store.commit('SET_NAVACTIVEINDEX', props.navIndex)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -133,4 +142,3 @@ export default {
   cursor: pointer;
 }
 </style>
-

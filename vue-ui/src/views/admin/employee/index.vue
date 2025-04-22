@@ -23,7 +23,7 @@
                 v-for="(item, index) in employeeMenu"
                 :key="index"
                 :class="employeeMenuClass(item)"
-                @click.native="changeUserClick(item)">
+                @click="changeUserClick(item)">
                 <i :class="item.icon | iconPre" class="menu-item__icon" />
                 <div class="menu-item__content">
                   {{ item.label }}&nbsp;
@@ -82,8 +82,10 @@
       @success="editSuccess"/>
   </div>
 </template>
-<script>
-import { mapGetters } from 'vuex'
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import EmployeeList from './components/EmployeeList'
 import DeptDialog from './components/DeptDialog'
@@ -91,92 +93,89 @@ import { deptListAPI } from '@/api/admin/dept'
 import { employeeSimpleListAPI } from '@/api/admin/employee'
 import { roleSimpleListAPI } from '@/api/admin/role'
 
-export default {
-  name: 'EmployeeDept',
-  components: {
-    XrHeader,
-    EmployeeList,
-    DeptDialog
+const store = useStore()
+const loading = ref(false)
+const creatable = ref(true)
+const employeeName = ref('')
+const currentDept = ref({})
+const currentMenuData = ref({})
+const deptCreateDialog = ref(false)
+const deptTree = ref(null)
+
+const optionsList = ref({
+  deptList: [],
+  roleList: [],
+  employeeList: []
+})
+
+const deptTreeProps = {
+  label: 'name',
+  children: 'childrens'
+}
+
+const employeeMenu = ref([
+  {
+    icon: 'employees',
+    label: '所有员工',
+    type: 'all',
+    count: 0
   },
-  computed: {
-    ...mapGetters(['manage'])
+  {
+    icon: 'active-employee',
+    label: '激活员工',
+    type: 'enable',
+    count: 0
   },
-  data() {
-    return {
-      loading: false,
-      creatable: true,
-      employeeName: '', // 搜索
-      currentDept: {},
-      currentMenuData: {},
-      deptCreateDialog: false,
-      optionsList: {
-        deptList: [],
-        roleList: [],
-        employeeList: []
-      },
-      isNeedChild: false, // 是否查询子级部门员工 0不需要 1 需要
-      deptTreeProps: {
-        label: 'name',
-        children: 'childrens'
-      },
-      employeeMenu: [
-        {
-          icon: 'employees',
-          label: '所有员工',
-          type: 'all',
-          count: 0
-        },
-        {
-          icon: 'active-employee',
-          label: '激活员工',
-          type: 'enable',
-          count: 0
-        },
-        {
-          icon: 'inactive-employee',
-          label: '未激活员工',
-          type: 'disable',
-          count: 0
-        }
-      ]
-    }
-  },
-  mounted() {
-    this.listDept()
-    roleSimpleListAPI().then(res => {
-      this.optionsList.roleList = res.data
-    })
-    employeeSimpleListAPI().then(res => {
-      this.optionsList.employeeList = res.data
-    })
-  },
-  methods: {
-    headerSearch(search) {
-      this.employeeName = search
-    },
-    listDept() {
-      deptListAPI().then(res => {
-        this.optionsList.deptList = res.data
-      })
-    },
-    addDept() {
-      this.deptCreateDialog = true
-    },
-    changeDeptClick(data) {
-      this.currentDept = data
-    },
-    editSuccess() {
-      this.deptCreateDialog = false
-      this.listDept()
-    },
-    employeeMenuClass(item) {
-      return ['menu-item', { 'is-select': this.currentMenuData && this.currentMenuData.type == item.type }]
-    },
-    changeUserClick(item) {
-      this.currentMenuData = item
-      this.currentDept = {}
-    }
+  {
+    icon: 'inactive-employee',
+    label: '未激活员工',
+    type: 'disable',
+    count: 0
   }
+])
+
+const manage = computed(() => store.getters.manage)
+
+onMounted(() => {
+  listDept()
+  roleSimpleListAPI().then(res => {
+    optionsList.value.roleList = res.data
+  })
+  employeeSimpleListAPI().then(res => {
+    optionsList.value.employeeList = res.data
+  })
+})
+
+const headerSearch = (search) => {
+  employeeName.value = search
+}
+
+const listDept = () => {
+  deptListAPI().then(res => {
+    optionsList.value.deptList = res.data
+  })
+}
+
+const addDept = () => {
+  deptCreateDialog.value = true
+}
+
+const changeDeptClick = (data) => {
+  currentDept.value = data
+}
+
+const editSuccess = () => {
+  deptCreateDialog.value = false
+  listDept()
+}
+
+const employeeMenuClass = (item) => {
+  return ['menu-item', { 'is-select': currentMenuData.value && currentMenuData.value.type == item.type }]
+}
+
+const changeUserClick = (item) => {
+  currentMenuData.value = item
+  currentDept.value = {}
 }
 </script>
 
@@ -246,11 +245,11 @@ export default {
   right: 0;
 }
 /* 详情 */
-.employee-dep-management ::v-deep .el-dialog__wrapper {
+.employee-dep-management :deep(.el-dialog__wrapper) {
   margin-top: 60px !important;
 }
 
-.el-tree ::v-deep .el-tree-node__content {
+.el-tree :deep(.el-tree-node__content) {
   height: 40px;
 
   .node-data {
@@ -301,26 +300,26 @@ export default {
     background-color: $xr--background-color-base;
   }
 }
-.el-tree ::v-deep .el-tree-node__expand-icon {
+.el-tree :deep(.el-tree-node__expand-icon) {
   display: none;
 }
-.system-nav ::v-deep .el-tree-node > .el-tree-node__children {
+.system-nav :deep(.el-tree-node > .el-tree-node__children) {
   overflow: visible;
 }
-.system-nav ::v-deep .el-tree > .el-tree-node {
+.system-nav :deep(.el-tree > .el-tree-node) {
   min-width: 100%;
   display: inline-block !important;
 }
 
 .system-nav
-  ::v-deep
-  .el-tree--highlight-current
-  .el-tree-node.is-current
-  > .el-tree-node__content {
+  :deep(
+    .el-tree--highlight-current
+    .el-tree-node.is-current
+    > .el-tree-node__content) {
   background-color: white;
 }
 
-.system-nav ::v-deep .el-tree-node__content:hover {
+.system-nav :deep(.el-tree-node__content:hover) {
   background-color: white;
 }
 /* 设置flex布局 */
@@ -361,6 +360,4 @@ export default {
   width: 2px;
   background-color: #5383ed;
 }
-
 </style>
-

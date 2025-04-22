@@ -8,47 +8,36 @@
       icon-color="#2362FB"
       label="系统配置" />
     <div class="body" v-loading="loading">
-      <UpdateInfo :systemInfo="systemInfo"></UpdateInfo>
-      <BaseInfo :systemInfo="systemInfo"></BaseInfo>
+      <UpdateInfo :system-info="systemInfo" />
+      <BaseInfo :system-info="systemInfo" />
     </div>
   </flexbox>
 </template>
 
-<script>
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import BaseInfo from './components/BaseInfo'
 import UpdateInfo from './components/UpdateInfo'
 import XrHeader from '@/components/XrHeader'
 
-export default {
-  name: 'SystemConfig',
-  components: {
-    BaseInfo,
-    UpdateInfo,
-    XrHeader
-  },
-  computed: {
-  },
-  data() {
-    return {
-      loading: false,
-      systemInfo: {}
-    }
-  },
-  created() {
-    this.getDetail()
-  },
-  methods: {
-    getDetail() {
-      this.loading = true
-      this.$store.dispatch('GetSystemInfo').then(res => {
-        this.loading = false
-        this.systemInfo = res.data
-      }).catch(() => {
-        this.loading = false
-      })
-    }
+const store = useStore()
+const loading = ref(false)
+const systemInfo = ref({})
+
+const getDetail = async () => {
+  loading.value = true
+  try {
+    const res = await store.dispatch('GetSystemInfo')
+    systemInfo.value = res.data
+  } finally {
+    loading.value = false
   }
 }
+
+onMounted(() => {
+  getDetail()
+})
 </script>
 
 <style lang="scss" scoped>
@@ -67,4 +56,3 @@ export default {
   position: relative;
 }
 </style>
-

@@ -1,8 +1,5 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router'
 import syncRouter from './modules/index'
-
-Vue.use(Router)
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -44,18 +41,25 @@ export const constantRouterMap = [
   }
 ]
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+const router = createRouter({
+  history: createWebHashHistory(), // 使用 hash 模式，如果需要 history 模式，替换为 createWebHistory()
+  scrollBehavior: () => ({ top: 0 }), // y 改为 top
   routes: constantRouterMap
 })
 
-const router = createRouter()
-
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+// 重置路由方法
 export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
+  // 在 Vue Router 4 中，我们需要先删除所有路由
+  router.getRoutes().forEach(route => {
+    const { name } = route
+    if (name) {
+      router.hasRoute(name) && router.removeRoute(name)
+    }
+  })
+  // 然后添加基础路由
+  constantRouterMap.forEach(route => {
+    router.addRoute(route)
+  })
 }
 
 export default router

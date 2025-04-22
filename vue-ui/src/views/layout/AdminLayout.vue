@@ -12,32 +12,20 @@
   </el-container>
 </template>
 
-<script>
-import { mapGetters } from 'vuex'
+<script setup>
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 import { ManagerNavbar, Sidebar, AppMain } from './components'
 
-export default {
-  name: 'AdminLayout',
-  components: {
-    ManagerNavbar,
-    Sidebar,
-    AppMain
-  },
-  data() {
-    return {
-      routerItems: []
-    }
-  },
+// 使用 store
+const store = useStore()
 
-  computed: {
-    ...mapGetters(['manageRouters'])
-  },
+// 计算属性
+const manageRouters = computed(() => store.getters.manageRouters)
 
-  mounted() {},
-
-  methods: {
-    navClick(index) {}
-  }
+// 方法
+const navClick = (index) => {
+  // 处理导航点击事件
 }
 </script>
 

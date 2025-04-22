@@ -9,14 +9,13 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'Page404',
-  methods: {
-    handleBack() {
-      this.$router.push('/')
-    }
-  }
+<script setup>
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const handleBack = () => {
+  router.push('/')
 }
 </script>
 
@@ -29,7 +28,6 @@ export default {
   position: relative;
   top: 50%;
 
-  // transform: translateY(-50%);
   .pic {
     width: 600px;
     display: block;
@@ -82,4 +80,5 @@ export default {
       margin-top: 40px;
     }
   }
-}</style>
+}
+</style>

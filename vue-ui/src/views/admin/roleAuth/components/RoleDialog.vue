@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     v-loading="loading"
-    :visible="visible"
+    :model-value="visible"
     :append-to-body="true"
     :close-on-click-modal="false"
     :modal-append-to-body="true"
@@ -62,97 +62,92 @@
           :disabled="item.disabled"/>
       </el-form-item>
     </el-form>
-    <span
-      slot="footer"
-      class="dialog-footer">
-      <el-button
-        type="primary"
-        @click="handleConfirm">确 定</el-button>
-      <el-button @click="handleCancel">取 消</el-button>
-    </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="handleConfirm">确 定</el-button>
+        <el-button @click="handleCancel">取 消</el-button>
+      </span>
+    </template>
   </el-dialog>
 </template>
 
-<script>
-import {
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { ElMessage } from 'element-plus'
+import { 
   roleAddAPI,
   roleModifyAPI
 } from '@/api/admin/role'
 import { objDeepCopy } from '@/utils'
 
-export default {
-  name: 'RoleDialog',
-  props: {
-    creatable: {
-      type: Boolean,
-      default: true
-    },
-    role: Object,
-    visible: {
-      type: Boolean,
-      required: true,
-      default: false
-    },
-    optionsList: Object
+const props = defineProps({
+  creatable: {
+    type: Boolean,
+    default: true
   },
-  data() {
-    return {
-      loading: false,
-      submitForm: {
-        code: '',
-        name: ''
-      },
-      dialogRules: {
-        code: [
-          { required: true, message: '编码不能为空', trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '名称不能为空', trigger: 'blur' }
-        ]
-      }
-    }
+  role: Object,
+  visible: {
+    type: Boolean,
+    required: true,
+    default: false
   },
-  computed: {
-    roleRequest() {
-      return this.creatable ? roleAddAPI : roleModifyAPI
-    },
-    fieldList() {
-      return [
-        { field: 'code', value: '角色编码', disabled: !this.creatable },
-        { field: 'name', value: '角色名称', disabled: false }
-      ]
-    }
-  },
-  watch: {
-    visible() {
-      if (this.role && !this.creatable) {
-        this.submitForm = objDeepCopy(this.role)
-        return
-      }
-      this.submitForm = { code: '', name: '' }
-    }
-  },
-  methods: {
-    handleConfirm() {
-      this.$refs.dialogRef.validate(valid => {
-        if (!valid) {
-          return
-        }
-        this.loading = true
-        this.roleRequest(this.submitForm).then(res => {
-          this.loading = false
-          this.$message.success('操作成功')
-          this.$emit('success')
-          this.handleCancel()
-        }).catch(() => {
-          this.loading = false
-        })
-      })
-    },
-    handleCancel() {
-      this.$emit('update:visible', false)
-    }
+  optionsList: Object
+})
+
+const emit = defineEmits(['update:visible', 'success'])
+
+const loading = ref(false)
+const dialogRef = ref(null)
+const submitForm = ref({
+  code: '',
+  name: ''
+})
+
+const dialogRules = ref({
+  code: [
+    { required: true, message: '编码不能为空', trigger: 'blur' }
+  ],
+  name: [
+    { required: true, message: '名称不能为空', trigger: 'blur' }
+  ]
+})
+
+const roleRequest = computed(() => props.creatable ? roleAddAPI : roleModifyAPI)
+
+const fieldList = computed(() => [
+  { field: 'code', value: '角色编码', disabled: !props.creatable },
+  { field: 'name', value: '角色名称', disabled: false }
+])
+
+watch(() => props.visible, (val) => {
+  if (props.role && !props.creatable) {
+    submitForm.value = objDeepCopy(props.role)
+    return
   }
+  submitForm.value = { code: '', name: '' }
+})
+
+const handleConfirm = () => {
+  dialogRef.value.validate(valid => {
+    if (!valid) {
+      return
+    }
+    loading.value = true
+    roleRequest.value(submitForm.value).then(res => {
+      loading.value = false
+      ElMessage.success('操作成功')
+      emit('success')
+      handleCancel()
+    }).catch(() => {
+      loading.value = false
+    })
+  })
+}
+
+const handleCancel = () => {
+  emit('update:visible', false)
 }
 </script>
 
@@ -160,12 +155,12 @@ export default {
 .new-dialog-form {
   padding: 0px;
 }
-.new-dialog-form ::v-deep .el-form-item {
+.new-dialog-form :deep(.el-form-item) {
   width: 100%;
   margin: 0;
   padding-bottom: 10px;
 }
-.new-dialog-form ::v-deep .el-form-item .el-form-item__label {
+.new-dialog-form :deep(.el-form-item .el-form-item__label) {
   padding: 0;
 }
 </style>

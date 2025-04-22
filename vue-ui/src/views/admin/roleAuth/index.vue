@@ -1,4 +1,3 @@
-
 <template>
   <div class="role-authorization">
     <xr-header
@@ -33,11 +32,11 @@
               <i
                 v-if="manage.role.update"
                 class="el-icon-edit"
-                @click="roleHandleClick('edit', item)"/>
+                @click.stop="roleHandleClick('edit', item)"/>
               <i
                 v-if="manage.role.delete"
                 class="el-icon-delete"
-                @click="roleHandleClick('delete', item)"/>
+                @click.stop="roleHandleClick('delete', item)"/>
             </div>
           </div>
         </div>
@@ -56,79 +55,76 @@
     />
   </div>
 </template>
-<script>
-import { mapGetters } from 'vuex'
-import { roleSimpleListAPI } from '@/api/admin/role'
-import { roleDeleteAPI } from '@/api/admin/role'
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import XrHeader from '@/components/XrHeader'
 import RoleDialog from './components/RoleDialog'
 import TabContent from './components/TabContent'
-export default {
-  components: {
-    XrHeader,
-    RoleDialog,
-    TabContent
-  },
-  computed: {
-    ...mapGetters(['manage'])
-  },
-  data() {
-    return {
-      loading: false,
-      searchValue: '',
-      creatable: true,
-      roleCreateDialog: false,
-      currentRole: {},
-      roleList: []
+import { roleSimpleListAPI, roleDeleteAPI } from '@/api/admin/role'
+
+const store = useStore()
+const loading = ref(false)
+const searchValue = ref('')
+const creatable = ref(true)
+const roleCreateDialog = ref(false)
+const currentRole = ref({})
+const roleList = ref([])
+
+const manage = computed(() => store.getters.manage)
+
+const getRoleList = () => {
+  roleSimpleListAPI({ name: searchValue.value }).then(res => {
+    roleList.value = res.data
+    if (roleList.value && roleList.value.length > 0) {
+      currentRole.value = roleList.value[0]
     }
-  },
-  mounted() {
-    this.getRoleList()
-  },
-  methods: {
-    getRoleList() {
-      roleSimpleListAPI({ name: this.searchValue }).then(res => {
-        this.roleList = res.data
-        if (this.roleList && this.roleList.length > 0) {
-          this.currentRole = this.roleList[0]
-        }
+  })
+}
+
+const headerSearch = (val) => {
+  searchValue.value = val
+  getRoleList()
+}
+
+const addRole = () => {
+  creatable.value = true
+  roleCreateDialog.value = true
+}
+
+const roleMenuClick = (value) => {
+  currentRole.value = value
+}
+
+const roleHandleClick = (value, item) => {
+  currentRole.value = item
+  if (value === 'edit') {
+    creatable.value = false
+    roleCreateDialog.value = true
+  }
+  if (value === 'delete') {
+    ElMessageBox.confirm('此操作将永久删除[' + currentRole.value.name + ']是否继续?', '提示', {
+      type: 'warning'
+    }).then(() => {
+      loading.value = true
+      roleDeleteAPI(currentRole.value.code).then(() => {
+        getRoleList()
+        loading.value = false
+        ElMessage.success('删除成功')
+      }).catch(() => {
+        loading.value = false
       })
-    },
-    headerSearch(val) {
-      this.searchValue = val
-      this.getRoleList()
-    },
-    addRole() {
-      this.creatable = true
-      this.roleCreateDialog = true
-    },
-    roleMenuClick(value) {
-      this.currentRole = value
-    },
-    roleHandleClick(value, item) {
-      this.currentRole = item
-      if (value === 'edit') {
-        this.creatable = false
-        this.roleCreateDialog = true
-      }
-      if (value === 'delete') {
-        this.$confirm('此操作将永久删除[' + this.currentRole.name + ']是否继续?', '提示', {
-          type: 'warning'
-        }).then(() => {
-          this.loading = true
-          roleDeleteAPI(this.currentRole.code).then(res => {
-            this.getRoleList()
-            this.loading = false
-            this.$message.success('删除成功')
-          }).catch(() => {
-            this.loading = false
-          })
-        })
-      }
-    }
+    })
   }
 }
+
+onMounted(() => {
+  getRoleList()
+})
 </script>
+
 <style lang="scss" scoped>
 .role-authorization {
   padding: 0 15px;
@@ -175,7 +171,7 @@ export default {
   padding-top: 10px;
   position: relative;
 }
-.role-authorization ::v-deep .el-tree-node__expand-icon {
+.role-authorization :deep(.el-tree-node__expand-icon) {
   display: none;
 }
 .role-nav-box {

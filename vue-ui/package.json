@@ -13,7 +13,7 @@
     "@bpmn-io/add-exporter": "^0.2.0",
     "@bpmn-io/element-template-chooser": "^0.1.0",
     "@bpmn-io/properties-panel": "^2.2.0",
-    "@tinymce/tinymce-vue": "^3.2.0",
+    "@tinymce/tinymce-vue": "^4.0.7",
     "axios": "^0.21.4",
     "babel-polyfill": "^6.26.0",
     "bpmn-js": "^13.2.0",
@@ -31,7 +31,7 @@
     "diagram-js-grid-bg": "^1.0.3",
     "diagram-js-minimap": "^2.1.1",
     "echarts": "^4.3.0",
-    "element-ui": "^2.15.14",
+    "element-plus": "^2.4.3",
     "file-saver": "^2.0.5",
     "highlight.js": "^10.5.0",
     "html-docx-js": "^0.3.1",
@@ -44,15 +44,15 @@
     "sass-resources-loader": "^2.0.0",
     "signature_pad": "3.0.0-beta.4",
     "throttle-debounce": "^2.1.0",
-    "vue": "^2.6.11",
+    "vue": "^3.3.8",
     "vue-bus": "^1.1.0",
     "vue-codemirror": "^4.0.6",
     "vue-cropper": "^0.4.8",
     "vue-json-editor": "^1.4.3",
     "vue-moment": "^4.0.0",
-    "vue-router": "^3.4.9",
+    "vue-router": "^4.2.5",
     "vuedraggable": "2.24.3",
-    "vuex": "^3.6.2"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.16",
@@ -72,7 +72,7 @@
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
     "svg-sprite-loader": "^6.0.11",
-    "vue-template-compiler": "^2.6.14"
+    "@vue/compiler-sfc": "^3.3.8"
   },
   "engines": {
     "node": ">= 10.0.0",

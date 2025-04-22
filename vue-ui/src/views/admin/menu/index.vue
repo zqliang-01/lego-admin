@@ -55,74 +55,72 @@
     </div>
   </div>
 </template>
-<script>
-import { mapGetters } from 'vuex'
+
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import { useStore } from 'vuex'
 import XrHeader from '@/components/XrHeader'
 import Detail from './components/MenuDetail'
 import { permissionListAPI } from '@/api/admin/permission'
 
-export default {
-  name: 'Menu',
-  components: {
-    XrHeader,
-    Detail
-  },
-  computed: {
-    ...mapGetters(['manage']),
-    defaultExpandedKeys() {
-      if (this.currentMenu && this.currentMenu.code) {
-        return [this.currentMenu.code]
-      }
-      return []
-    }
-  },
-  data() {
-    return {
-      loading: false,
-      menuName: '', // 搜索
-      filterRouteStatus: false,
-      currentMenu: {},
-      menuList: [],
-      menuTreeProps: {
-        label: 'name',
-        children: 'childrens'
-      }
-    }
-  },
-  mounted() {
-    this.listMenu()
-  },
-  methods: {
-    filterRouteType(val) {
-      if (val) {
-        this.listMenu({
-          name: this.menuName,
-          routeType: 'Dynamic'
-        })
-        return
-      }
-      this.listMenu()
-    },
-    headerSearch(search) {
-      this.menuName = search
-      this.listMenu()
-    },
-    listMenu(data = { name: this.menuName }) {
-      permissionListAPI(data).then(res => {
-        this.menuList = res.data
-      })
-    },
-    changeMenuClick(data) {
-      this.currentMenu = data
-    },
-    saveSuccess() {
-      this.listMenu()
-    },
-    deleteSuccess() {
-      this.currentMenu = {}
-      this.listMenu()
-    }
+const store = useStore()
+const loading = ref(false)
+const menuName = ref('')
+const filterRouteStatus = ref(false)
+const currentMenu = ref({})
+const menuList = ref([])
+const menuTree = ref(null)
+
+const menuTreeProps = {
+  label: 'name',
+  children: 'childrens'
+}
+
+const manage = computed(() => store.getters.manage)
+const defaultExpandedKeys = computed(() => {
+  if (currentMenu.value && currentMenu.value.code) {
+    return [currentMenu.value.code]
   }
+  return []
+})
+
+onMounted(() => {
+  listMenu()
+})
+
+const filterRouteType = (val) => {
+  if (val) {
+    listMenu({
+      name: menuName.value,
+      routeType: 'Dynamic'
+    })
+    return
+  }
+  listMenu()
+}
+
+const headerSearch = (search) => {
+  menuName.value = search
+  listMenu()
+}
+
+const listMenu = (data = { name: menuName.value }) => {
+  permissionListAPI(data).then(res => {
+    menuList.value = res.data
+  })
+}
+
+const changeMenuClick = (data) => {
+  currentMenu.value = data
+}
+
+const saveSuccess = () => {
+  listMenu()
+}
+
+const deleteSuccess = () => {
+  currentMenu.value = {}
+  listMenu()
 }
 </script>
 
@@ -204,11 +202,11 @@ export default {
   right: 0;
 }
 /* 详情 */
-.menu-management ::v-deep .el-dialog__wrapper {
+.menu-management :deep(.el-dialog__wrapper) {
   margin-top: 60px !important;
 }
 
-.el-tree ::v-deep .el-tree-node__content {
+.el-tree :deep(.el-tree-node__content) {
   height: 40px;
 
   .node-data {
@@ -252,26 +250,26 @@ export default {
     background-color: $xr--background-color-base;
   }
 }
-.el-tree ::v-deep .el-tree-node__expand-icon {
+.el-tree :deep(.el-tree-node__expand-icon) {
   display: none;
 }
-.system-nav ::v-deep .el-tree-node > .el-tree-node__children {
+.system-nav :deep(.el-tree-node > .el-tree-node__children) {
   overflow: visible;
 }
-.system-nav ::v-deep .el-tree > .el-tree-node {
+.system-nav :deep(.el-tree > .el-tree-node) {
   min-width: 100%;
   display: inline-block !important;
 }
 
 .system-nav
-  ::v-deep
-  .el-tree--highlight-current
-  .el-tree-node.is-current
-  > .el-tree-node__content {
+  :deep(
+    .el-tree--highlight-current
+    .el-tree-node.is-current
+    > .el-tree-node__content) {
   background-color: white;
 }
 
-.system-nav ::v-deep .el-tree-node__content:hover {
+.system-nav :deep(.el-tree-node__content:hover) {
   background-color: white;
 }
 /* 设置flex布局 */
@@ -279,5 +277,4 @@ export default {
   display: flex;
   flex-direction: column;
 }
-
 </style>

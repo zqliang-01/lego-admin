@@ -7,10 +7,10 @@
       <flexbox class="selection-items-box">
         <el-button
           v-for="(item, index) in selectionInfo"
-          :icon="item.icon | iconPre"
+          :icon="item.icon"
           :key="index"
           type="primary"
-          @click.native="selectionBarClick(item.type)">{{ item.name }}</el-button>
+          @click="selectionBarClick(item.type)">{{ item.name }}</el-button>
       </flexbox>
     </flexbox>
     <flexbox
@@ -52,7 +52,7 @@
           :prop="item.fieldCode"
           :label="item.name"
           show-overflow-tooltip>
-          <template slot-scope="{ row }">
+          <template #default="{ row }">
             <field-view
               :item="item"
               :form-type="item.formType"
@@ -75,7 +75,7 @@
         <el-pagination
           :current-page="currentPage"
           :page-sizes="pageSizes"
-          :page-size.sync="pageSize"
+          :page-size="pageSize"
           :total="total"
           class="p-bar"
           background
@@ -87,197 +87,183 @@
 
     <employee-dialog
       :creatable="creatable"
-      :visible.sync="employeeCreateDialog"
+      :visible="employeeCreateDialog"
       :options-list="optionsList"
       :data="currentEmployee"
+      @update:visible="val => employeeCreateDialog = val"
       @success="editSuccess" />
 
     <dept-dialog
       :creatable="creatable"
-      :visible.sync="deptCreateDialog"
+      :visible="deptCreateDialog"
       :data="dept"
       :options-list="optionsList"
+      @update:visible="val => deptCreateDialog = val"
       @success="editDeptSuccess"/>
   </div>
 </template>
-<script>
-import { mapGetters } from 'vuex'
+
+<script setup>
+import { ref, computed, watch } from 'vue'
+import { useStore } from 'vuex'
+import { CirclePlus, Edit } from '@element-plus/icons-vue'
 import Reminder from '@/components/Reminder'
 import DeptDialog from './DeptDialog'
 import EmployeeDialog from './EmployeeDialog'
 import FieldView from '@/components/Common/Form/FieldView'
 import { employeeListAPI, employeeResetPasswordAPI } from '@/api/admin/employee'
 
-export default {
-  name: 'EmployeeList',
-  components: {
-    Reminder,
-    DeptDialog,
-    FieldView,
-    EmployeeDialog
-  },
-  props: {
-    name: String,
-    dept: Object,
-    type: String,
-    optionsList: Object
-  },
-  data() {
-    return {
-      loading: false,
-      creatable: true,
-      employeeList: [],
-      employeeCreateDialog: false,
-      deptCreateDialog: false,
-      currentEmployee: {},
-      selectionList: [],
-      tableHeight: document.documentElement.clientHeight - 220, // 表的高度
-      currentPage: 1,
-      pageSize: 15,
-      pageSizes: [15, 30, 45, 60],
-      total: 0,
-      fieldList: [
-        { fieldCode: 'code', name: '工号', formType: 'text', width: '150' },
-        { fieldCode: 'name', name: '姓名', formType: 'text', width: '150' },
-        { fieldCode: 'dept', name: '部门', formType: 'select', width: '150' },
-        { fieldCode: 'roles', name: '角色', formType: 'checkbox', width: '150' },
-        { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150' },
-        { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '100' }
-      ]
-    }
-  },
-  computed: {
-    ...mapGetters(['manage']),
-    selectionInfo: function() {
-      return [
-        {
-          name: '重置密码',
-          type: 'resetPassword',
-          icon: 'circle-password'
-        }
-      ]
-    }
-  },
-  watch: {
-    dept: {
-      handler() {
-        this.currentPage = 1
-        this.listEmployee()
-      },
-      deep: true,
-      immediate: true
-    },
-    type() {
-      this.currentPage = 1
-      this.listEmployee()
-    },
-    name() {
-      this.currentPage = 1
-      this.listEmployee()
-    }
-  },
-  methods: {
-    addEmployee() {
-      this.creatable = true
-      this.currentEmployee = { dept: this.dept, enable: true }
-      this.employeeCreateDialog = true
-    },
-    updateDept() {
-      if (!this.dept.code) {
-        this.$message.error('请先选择部门信息！')
-        return
-      }
-      this.creatable = false
-      this.deptCreateDialog = true
-    },
-    listEmployee() {
-      this.loading = true
-      const param = {
-        name: this.name,
-        deptCode: this.dept.code,
-        pageIndex: this.currentPage,
-        pageSize: this.pageSize
-      }
-      if (this.type === 'enable') {
-        param.enable = true
-      }
-      if (this.type === 'disable') {
-        param.enable = false
-      }
-      employeeListAPI(param).then(res => {
-        this.loading = false
-        this.total = res.data.totalCount
-        this.employeeList = res.data.result
-      }).catch(() => {
-        this.loading = false
-      })
-    },
-    handleSelectionChange(val) {
-      this.selectionList = val
-    },
-    editSuccess() {
-      this.employeeCreateDialog = false
-      this.listEmployee()
-    },
-    editDeptSuccess() {
-      this.deptCreateDialog = false
-      this.$emit('success')
-    },
-    fieldFormatter(fieldType, value) {
-      if (fieldType === 'multipleSelect') {
-        var values = []
-        value.forEach(element => {
-          values.push(element.name)
-        })
-        return values.join(',')
-      }
-      if (fieldType === 'select') {
-        return value.name
-      }
-      if (fieldType === 'boolean') {
-        return value ? '生效' : '失效'
-      }
-      return value
-    },
-    selectionBarClick(type) {
-      if (type === 'resetPassword') {
-        const codes = this.selectionList.map(item => {
-          return item.code
-        })
-        this.loading = true
-        employeeResetPasswordAPI(codes).then(res => {
-          this.$refs.employeeTable.clearSelection()
-          this.$message.success('密码重置成功！')
-          this.loading = false
-        }).catch(() => {
-          this.loading = false
-        })
-      }
-    },
-    handleSizeChange(val) {
-      this.pageSize = val
-      this.listEmployee()
-    },
-    handleCurrentChange(val) {
-      this.currentPage = val
-      this.listEmployee()
-    },
-    rowClick(row, column, event) {
-      if (column.property === 'code' && this.manage.users.update) {
-        this.creatable = false
-        this.currentEmployee = row
-        this.employeeCreateDialog = true
-      }
-    },
-    getStatusColor(status) {
-      if (status) {
-        return '#46CDCF'
-      }
-      return '#CCCCCC'
-    }
+const props = defineProps({
+  name: String,
+  dept: Object,
+  type: String,
+  optionsList: Object
+})
+
+const emit = defineEmits(['success'])
+
+const store = useStore()
+const loading = ref(false)
+const creatable = ref(true)
+const employeeList = ref([])
+const employeeCreateDialog = ref(false)
+const deptCreateDialog = ref(false)
+const currentEmployee = ref({})
+const selectionList = ref([])
+const tableHeight = ref(document.documentElement.clientHeight - 220)
+const currentPage = ref(1)
+const pageSize = ref(15)
+const pageSizes = ref([15, 30, 45, 60])
+const total = ref(0)
+const employeeTable = ref(null)
+
+const fieldList = ref([
+  { fieldCode: 'code', name: '工号', formType: 'text', width: '150' },
+  { fieldCode: 'name', name: '姓名', formType: 'text', width: '150' },
+  { fieldCode: 'dept', name: '部门', formType: 'select', width: '150' },
+  { fieldCode: 'roles', name: '角色', formType: 'checkbox', width: '150' },
+  { fieldCode: 'createTime', name: '创建时间', formType: 'text', width: '150' },
+  { fieldCode: 'enable', name: '状态', formType: 'boolean', width: '100' }
+])
+
+const manage = computed(() => store.getters.manage)
+const selectionInfo = computed(() => [
+  {
+    name: '重置密码',
+    type: 'resetPassword',
+    icon: 'circle-password'
+  }
+])
+
+watch(() => props.dept, () => {
+  currentPage.value = 1
+  listEmployee()
+}, { deep: true, immediate: true })
+
+watch(() => props.type, () => {
+  currentPage.value = 1
+  listEmployee()
+})
+
+watch(() => props.name, () => {
+  currentPage.value = 1
+  listEmployee()
+})
+
+const addEmployee = () => {
+  creatable.value = true
+  currentEmployee.value = { dept: props.dept, enable: true }
+  employeeCreateDialog.value = true
+}
+
+const updateDept = () => {
+  if (!props.dept.code) {
+    ElMessage.error('请先选择部门信息！')
+    return
+  }
+  creatable.value = false
+  deptCreateDialog.value = true
+}
+
+const listEmployee = () => {
+  loading.value = true
+  const param = {
+    name: props.name,
+    deptCode: props.dept.code,
+    pageIndex: currentPage.value,
+    pageSize: pageSize.value
+  }
+  if (props.type === 'enable') {
+    param.enable = true
+  }
+  if (props.type === 'disable') {
+    param.enable = false
+  }
+  employeeListAPI(param).then(res => {
+    loading.value = false
+    total.value = res.data.totalCount
+    employeeList.value = res.data.result
+  }).catch(() => {
+    loading.value = false
+  })
+}
+
+const handleSelectionChange = (val) => {
+  selectionList.value = val
+}
+
+const editSuccess = () => {
+  employeeCreateDialog.value = false
+  listEmployee()
+}
+
+const editDeptSuccess = () => {
+  deptCreateDialog.value = false
+  emit('success')
+}
+
+const selectionBarClick = (type) => {
+  if (type === 'resetPassword') {
+    const codes = selectionList.value.map(item => {
+      return item.code
+    })
+    loading.value = true
+    employeeResetPasswordAPI(codes).then(res => {
+      employeeTable.value.clearSelection()
+      ElMessage.success('密码重置成功！')
+      loading.value = false
+    }).catch(() => {
+      loading.value = false
+    })
   }
 }
+
+const handleSizeChange = (val) => {
+  pageSize.value = val
+  listEmployee()
+}
+
+const handleCurrentChange = (val) => {
+  currentPage.value = val
+  listEmployee()
+}
+
+const rowClick = (row, column, event) => {
+  if (column.property === 'code' && manage.value.users.update) {
+    creatable.value = false
+    currentEmployee.value = row
+    employeeCreateDialog.value = true
+  }
+}
+
+const getStatusColor = (status) => {
+  if (status) {
+    return '#46CDCF'
+  }
+  return '#CCCCCC'
+}
 </script>
+
 <style lang="scss" scoped>
 .selection-bar {
   font-size: 12px;
@@ -305,7 +291,7 @@ export default {
     font-size: 12px;
     height: 28px;
     border-radius: 14px;
-    ::v-deep i {
+    :deep i {
       font-size: 12px;
       margin-right: 5px;
     }
@@ -341,7 +327,7 @@ export default {
   display: inline-block;
 }
 
-.el-table ::v-deep .el-table-column--selection .cell {
+.el-table :deep .el-table-column--selection .cell {
   padding-left: 14px;
 }
 .flex-box {
