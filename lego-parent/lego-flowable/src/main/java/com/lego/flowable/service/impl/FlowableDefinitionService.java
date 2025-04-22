@@ -1,6 +1,6 @@
 package com.lego.flowable.service.impl;
 
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lego.core.dto.LegoPage;
@@ -14,6 +14,7 @@ import com.lego.flowable.mapper.FlowableDefinitionMapper;
 import com.lego.flowable.service.IFlowableDefinitionService;
 import com.lego.flowable.vo.FlowableDefinitionSearchVO;
 import com.lego.flowable.vo.FlowableTaskStartVO;
+import jakarta.servlet.http.HttpServletResponse;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.bpmn.model.StartEvent;
 import org.flowable.common.engine.impl.db.SuspensionState;
@@ -24,7 +25,6 @@ import org.flowable.image.ProcessDiagramGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.Arrays;
 
@@ -102,7 +102,7 @@ public class FlowableDefinitionService extends FlowableService<FlowableDefinitio
         ProcessEngineConfiguration engine = processEngine.getProcessEngineConfiguration();
         ProcessDiagramGenerator diagramGenerator = engine.getProcessDiagramGenerator();
         InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", Arrays.asList(), Arrays.asList(), engine.getActivityFontName(), engine.getLabelFontName(), engine.getAnnotationFontName(), engine.getClassLoader(), 1.0, true);
-        ServletUtil.write(response, in);
+        JakartaServletUtil.write(response, in);
     }
 
 }

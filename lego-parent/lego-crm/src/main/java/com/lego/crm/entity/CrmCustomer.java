@@ -1,9 +1,9 @@
 package com.lego.crm.entity;
 
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import com.lego.core.data.hibernate.entity.BusEntity;
 import com.lego.core.enums.PublicTypeEnum;

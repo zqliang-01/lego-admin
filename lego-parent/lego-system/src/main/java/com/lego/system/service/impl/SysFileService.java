@@ -2,7 +2,7 @@ package com.lego.system.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.util.StringUtil;
 import com.lego.core.web.upload.FileHandler;
@@ -15,11 +15,11 @@ import com.lego.system.dto.SysFileInfo;
 import com.lego.system.entity.SysFile;
 import com.lego.system.service.ISysFileService;
 import com.lego.system.vo.SysPermissionCode;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.List;
 
@@ -60,10 +60,10 @@ public class SysFileService extends BaseService<ISysFileDao, SysFileAssembler> i
         InputStream inputStream = fileHandler.download(file.getPath());
         final String contentType = ObjectUtil.defaultIfNull(FileUtil.getMimeType(file.getName()), "application/octet-stream");
         if (file.isImage()) {
-            ServletUtil.write(response, inputStream, contentType);
+            JakartaServletUtil.write(response, inputStream, contentType);
             return;
         }
-        ServletUtil.write(response, inputStream, contentType, file.getName());
+        JakartaServletUtil.write(response, inputStream, contentType, file.getName());
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 @Component
 public class FlowableDefinitionAssembler extends BaseAssembler<FlowableDefinitionInfo, ProcessDefinition> {

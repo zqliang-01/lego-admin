@@ -29,14 +29,14 @@
                 </exclusion>
                 <exclusion>
                     <groupId>cn.dev33</groupId>
-                    <artifactId>sa-token-spring-boot-starter</artifactId>
+                    <artifactId>sa-token-spring-boot3-starter</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <!-- Sa-Token 权限认证（Reactor响应式集成） -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
+            <artifactId>sa-token-reactor-spring-boot3-starter</artifactId>
             <version>${sa-token.version}</version>
         </dependency>
         <dependency>
@@ -65,31 +65,29 @@
         </resources>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <useUniqueVersions>false</useUniqueVersions>
-                            <mainClass>com.lego.gateway.LegoGatewayApplication</mainClass>
-                        </manifest>
-                    </archive>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <mainClass>com.lego.gateway.LegoGatewayApplication</mainClass>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
                 </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <groupId>org.apache.maven.plugins</groupId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
             </plugin>
         </plugins>
     </build>

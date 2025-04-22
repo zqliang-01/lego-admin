@@ -2,7 +2,7 @@ package com.lego.system.service;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.web.multipart.MultipartFile;
 

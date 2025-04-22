@@ -4,7 +4,7 @@ Configuration后面的status，这个用于设置log4j2自身内部的信息输�
 当设置成trace时，可以看到log4j2内部各种详细输出
 monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身，设置间隔秒数
 -->
-<Configuration status="INFO" monitorInterval="180" packages="com.evan" disableAnsi="false" >
+<Configuration status="ERROR" monitorInterval="180" packages="com.evan" disableAnsi="false" >
     <!--日志级别以及优先级排序:
     OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL
     -->
@@ -112,6 +112,7 @@ monitorInterval：Log4j能够自动检测修改配置文件和重新配置本身
         <Logger name="com.mybatis" level="ERROR"/>
         <Logger name="org.mybatis.spring" level="ERROR"/>
         <Logger name="com.baomidou" level="DEBUG"/>
+        <Logger name="org.ehcache" level="ERROR"/>
         <Logger name="org.hibernate" level="ERROR"/>
         <Logger name="net.sf.ehcache" level="ERROR"/>
         <Logger name="com.alibaba" level="ERROR"/>

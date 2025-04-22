@@ -3,7 +3,7 @@ package com.lego.core.data.hibernate;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.vo.PageVO;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

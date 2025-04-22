@@ -6,7 +6,7 @@ import com.lego.flowable.vo.FlowableDefinitionSearchVO;
 import com.lego.flowable.vo.FlowableTaskStartVO;
 import org.flowable.common.engine.impl.db.SuspensionState;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface IFlowableDefinitionService {
 

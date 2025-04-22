@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration
 @EnableConfigurationProperties(RedissonProperties.class)
-@ConditionalOnProperty(name = "spring.redis.enable", havingValue = "true")
+@ConditionalOnProperty(name = "spring.data.redis.enable", havingValue = "true")
 public class RedisConfiguration {
 
     @Autowired

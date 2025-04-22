@@ -1,6 +1,6 @@
 package com.lego.core.module.gen.handler;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lego.core.module.gen.GenConstants;
 
 public class FieldTypeBooleanHandler implements IFieldTypeHandler {

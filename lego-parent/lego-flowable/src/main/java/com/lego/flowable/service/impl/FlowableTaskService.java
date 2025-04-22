@@ -1,6 +1,6 @@
 package com.lego.flowable.service.impl;
 
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.lego.core.data.ICommonService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
@@ -27,6 +27,7 @@ import com.lego.flowable.vo.FlowableTaskLogType;
 import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
+import jakarta.servlet.http.HttpServletResponse;
 import org.flowable.bpmn.constants.BpmnXMLConstants;
 import org.flowable.bpmn.model.BpmnModel;
 import org.flowable.engine.ProcessEngineConfiguration;
@@ -42,7 +43,6 @@ import org.flowable.task.api.history.HistoricTaskLogEntry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -231,7 +231,7 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
         ProcessEngineConfiguration engineConfig = processEngine.getProcessEngineConfiguration();
         ProcessDiagramGenerator diagramGenerator = engineConfig.getProcessDiagramGenerator();
         InputStream in = diagramGenerator.generateDiagram(bpmnModel, "png", finishedTaskSet, finishedSequenceFlowSet, engineConfig.getActivityFontName(), engineConfig.getLabelFontName(), engineConfig.getAnnotationFontName(), engineConfig.getClassLoader(), 1.0, true);
-        ServletUtil.write(response, in);
+        JakartaServletUtil.write(response, in);
     }
 
 }

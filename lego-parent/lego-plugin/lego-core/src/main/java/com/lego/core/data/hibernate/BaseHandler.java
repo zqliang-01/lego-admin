@@ -2,12 +2,12 @@ package com.lego.core.data.hibernate;
 
 import com.lego.core.data.hibernate.entity.BaseEntity;
 import com.lego.core.exception.CoreException;
-import org.hibernate.query.internal.NativeQueryImpl;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.transform.Transformers;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TemporalType;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import jakarta.persistence.TemporalType;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.Calendar;
@@ -65,7 +65,7 @@ public class BaseHandler<T> {
         Query query = createSqlQuery(sql);
         setParameter(parameters, query);
         if (mapResult) {
-            query.unwrap(NativeQueryImpl.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+            query.unwrap(NativeQuery.class).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
         return query.getResultList();
     }

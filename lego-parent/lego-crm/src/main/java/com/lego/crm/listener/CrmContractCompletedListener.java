@@ -24,6 +24,7 @@ public class CrmContractCompletedListener implements IFlowableCompletedListener 
         String code = StringUtil.toString(variables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
         if (StringUtil.isNotBlank(code) && contractService.exists(code)) {
             CrmContractModifyVO vo = BeanUtil.toBean(variables, CrmContractModifyVO.class);
+            vo.setCheckDiff(false);
             contractService.update(Constants.loginCode.get(), vo);
             return code;
         }

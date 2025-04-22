@@ -2,7 +2,7 @@ package com.lego.doc.service.impl;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.lego.core.data.hibernate.impl.BaseService;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
@@ -14,11 +14,11 @@ import com.lego.doc.dao.IDocFileDao;
 import com.lego.doc.dto.DocFileInfo;
 import com.lego.doc.entity.DocFile;
 import com.lego.doc.service.IDocFileService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 
 @Service
@@ -62,7 +62,7 @@ public class DocFileService extends BaseService<IDocFileDao, DocFileAssembler> i
         DocFile file = dao.findByCode(code);
         InputStream inputStream = fileHandler.download(file.getPath());
         final String contentType = ObjectUtil.defaultIfNull(FileUtil.getMimeType(file.getName()), "application/octet-stream");
-        ServletUtil.write(response, inputStream, contentType, file.getName());
+        JakartaServletUtil.write(response, inputStream, contentType, file.getName());
     }
 
 }

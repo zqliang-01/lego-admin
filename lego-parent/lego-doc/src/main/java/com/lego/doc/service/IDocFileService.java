@@ -6,7 +6,7 @@ import com.lego.core.vo.GenericSearchVO;
 import com.lego.doc.dto.DocFileInfo;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface IDocFileService {
 

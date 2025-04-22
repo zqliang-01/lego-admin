@@ -6,7 +6,7 @@ import com.lego.flowable.dto.FlowableProcessNodeInfo;
 import com.lego.flowable.dto.IFlowableStartFormDetailInfo;
 import com.lego.flowable.vo.FlowableInstanceSearchVO;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface IFlowableInstanceService {
 

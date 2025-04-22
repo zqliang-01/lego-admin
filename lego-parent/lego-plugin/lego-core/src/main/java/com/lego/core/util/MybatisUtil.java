@@ -1,7 +1,6 @@
 package com.lego.core.util;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.metadata.PageList;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lego.core.exception.BusinessException;
 import lombok.experimental.UtilityClass;
@@ -56,8 +55,8 @@ public class MybatisUtil {
         }
 
         List<M> list = session.selectList(statementId, parameter);
-        if (list instanceof PageList) {
-            PageList<M> pageList = (PageList<M>) list;
+        if (list instanceof IPage) {
+            IPage<M> pageList = (IPage<M>) list;
             result.setRecords(pageList.getRecords());
             result.setTotal(pageList.getTotal());
         } else {

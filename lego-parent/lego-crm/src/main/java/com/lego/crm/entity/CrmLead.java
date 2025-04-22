@@ -3,12 +3,12 @@ package com.lego.crm.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.ManyToOne;
-import javax.persistence.JoinColumn;
-import javax.persistence.FetchType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 import com.lego.core.data.hibernate.entity.BusEntity;
 import com.lego.core.enums.PublicTypeEnum;

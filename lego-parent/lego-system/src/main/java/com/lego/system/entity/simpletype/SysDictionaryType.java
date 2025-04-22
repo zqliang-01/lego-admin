@@ -3,8 +3,8 @@ package com.lego.system.entity.simpletype;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.ReadableVO;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
 
 @Entity
 @DiscriminatorValue("SysDictionaryType")

@@ -3,7 +3,7 @@ package com.lego.system.controller;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.exception.BusinessException;
@@ -16,6 +16,8 @@ import com.lego.system.service.ISysPrintTemplateService;
 import com.lego.system.vo.SysPrintTemplateCreateVO;
 import com.lego.system.vo.SysPrintTemplateModifyVO;
 import com.lego.system.vo.SysPrintTemplatePrintVO;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.util.Arrays;
@@ -111,7 +111,7 @@ public class SysPrintTemplateController extends BaseController {
             }
             return;
         }
-        ServletUtil.write(response, JsonResponse.success().toJSONString(), "text/plain");
+        JakartaServletUtil.write(response, JsonResponse.success().toJSONString(), "text/plain");
     }
 
 }

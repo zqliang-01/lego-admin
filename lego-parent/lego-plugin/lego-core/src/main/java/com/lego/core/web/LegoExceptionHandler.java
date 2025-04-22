@@ -3,8 +3,8 @@ package com.lego.core.web;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.exception.NotPermissionException;
 import cn.hutool.core.collection.CollectionUtil;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
 import com.lego.core.common.Constants;
 import com.lego.core.enums.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
@@ -12,6 +12,7 @@ import com.lego.core.exception.CoreException;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.JsonResponse;
 import feign.codec.DecodeException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -112,7 +112,7 @@ public class LegoExceptionHandler {
         return handlerResponse(response, errorMsg, errorCode, e);
     }
 
-    @ExceptionHandler(value = BusinessException.class)
+    @ExceptionHandler(BusinessException.class)
     public ModelAndView businessErrorHandler(HttpServletResponse response, BusinessException e) throws IOException {
         Integer errorCode = e.getCode();
         String errorMsg = e.getMessage();

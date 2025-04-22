@@ -7,11 +7,11 @@ import com.lego.core.vo.ReadableVO;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Setter
 @Getter
@@ -23,7 +23,7 @@ public class DocPageUser extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "page_id")
-    private DocNode page;
+    private DocPage page;
 
     protected DocPageUser() {
     }

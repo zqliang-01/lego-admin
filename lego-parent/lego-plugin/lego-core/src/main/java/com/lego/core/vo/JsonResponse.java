@@ -1,7 +1,7 @@
 package com.lego.core.vo;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.lego.core.enums.ExceptionEnum;
 import lombok.Data;
 
@@ -67,7 +67,7 @@ public class JsonResponse<T> {
      * 响应失败结果
      */
     public static JsonResponse<Object> failed(String msg) {
-        return new JsonResponse<>(ExceptionEnum.UNKNOW_ERROR.getCode(), msg, new ArrayList<>());
+        return new JsonResponse<>(ExceptionEnum.UNKNOW_ERROR.getCode(), msg, null);
     }
 
     public static <T> JsonResponse<T> failed(T data) {
@@ -75,11 +75,11 @@ public class JsonResponse<T> {
     }
 
     public static JsonResponse<Object> failed(ExceptionEnum exceptionEnum) {
-        return new JsonResponse<>(exceptionEnum.getCode(), exceptionEnum.getMsg(), new ArrayList<>());
+        return new JsonResponse<>(exceptionEnum.getCode(), exceptionEnum.getMsg(), null);
     }
 
     public static JsonResponse<Object> failed(Integer code, String msg) {
-        return new JsonResponse<>(code, msg, new ArrayList<>());
+        return new JsonResponse<>(code, msg, null);
     }
 
     public static <T> JsonResponse<T> failed(Integer code, String msg, T data) {

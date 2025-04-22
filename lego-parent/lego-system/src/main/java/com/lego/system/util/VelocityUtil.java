@@ -151,14 +151,14 @@ public class VelocityUtil {
             String formType = column.getFormType();
             FieldTypeEnum fieldType = FieldTypeEnum.get(formType);
             if (fieldType == FieldTypeEnum.ENTITY) {
-                list.add("javax.persistence.FetchType");
-                list.add("javax.persistence.ManyToOne");
-                list.add("javax.persistence.JoinColumn");
+                list.add("jakarta.persistence.FetchType");
+                list.add("jakarta.persistence.ManyToOne");
+                list.add("jakarta.persistence.JoinColumn");
             }
             if (fieldType == FieldTypeEnum.ADDRESS) {
-                list.add("javax.persistence.AttributeOverride");
-                list.add("javax.persistence.AttributeOverrides");
-                list.add("javax.persistence.Embedded");
+                list.add("jakarta.persistence.AttributeOverride");
+                list.add("jakarta.persistence.AttributeOverrides");
+                list.add("jakarta.persistence.Embedded");
             }
         }
         return list;

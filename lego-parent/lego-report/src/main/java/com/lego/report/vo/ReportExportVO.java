@@ -4,7 +4,7 @@ import com.lego.core.vo.VO;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 @Getter

@@ -11,6 +11,10 @@ public class SelectByCode extends AbstractMethod {
 
 	private static final long serialVersionUID = 1L;
 
+	protected SelectByCode() {
+		super("selectByCode");
+	}
+
 	@Override
 	public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
         String sql = "SELECT %s FROM %s WHERE code=#{%s} %s";

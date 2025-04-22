@@ -5,13 +5,13 @@ import com.lego.core.exception.CoreException;
 import com.lego.core.util.DateUtil;
 import com.lego.core.util.StringUtil;
 import com.lego.core.vo.ReadableVO;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Version;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Version;
 import java.util.Date;
 
 @MappedSuperclass

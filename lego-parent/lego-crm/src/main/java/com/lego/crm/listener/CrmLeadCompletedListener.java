@@ -24,6 +24,7 @@ public class CrmLeadCompletedListener implements IFlowableCompletedListener {
         String code = StringUtil.toString(variables.get(FlowableProcessConstants.FORM_UNIQUE_KEY));
         if (StringUtil.isNotBlank(code) && leadService.exists(code)) {
             CrmLeadModifyVO vo = BeanUtil.toBean(variables, CrmLeadModifyVO.class);
+            vo.setCheckDiff(false);
             leadService.update(Constants.loginCode.get(), vo);
             return code;
         }

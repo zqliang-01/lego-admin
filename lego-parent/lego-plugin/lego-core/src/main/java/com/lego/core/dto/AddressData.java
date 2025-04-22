@@ -1,7 +1,8 @@
 package com.lego.core.dto;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.lego.core.util.StringUtil;
 
 public class AddressData {
@@ -9,7 +10,7 @@ public class AddressData {
     private static JSONArray data;
 
     public static void init(String dataStr) {
-        data = JSONObject.parseArray(dataStr);
+        data = JSON.parseArray(dataStr);
     }
 
     public static String getName(String code) {

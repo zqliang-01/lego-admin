@@ -1,13 +1,12 @@
 package com.lego.core.web;
 
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
-import com.alibaba.fastjson.support.config.FastJsonConfig;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.support.config.FastJsonConfig;
+import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
 import com.lego.core.common.Constants;
 import com.lego.core.data.ICommonService;
 import com.lego.core.feign.CommonService;
+import com.lego.core.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,27 +63,22 @@ public class LegoWebConfig implements WebMvcConfigurer {
     public FastJsonHttpMessageConverter getJsonMessageConverter() {
         FastJsonHttpMessageConverter converter = new FastJsonHttpMessageConverter();
         FastJsonConfig config = converter.getFastJsonConfig();
-        SerializeConfig serializeConfig = SerializeConfig.globalInstance;
-        serializeConfig.put(Long.class, ToStringSerializer.instance);
-        serializeConfig.put(Long.TYPE, ToStringSerializer.instance);
-        serializeConfig.put(BigDecimal.class, BigDecimalSerializer.instance);
-        config.setSerializeConfig(serializeConfig);
+        config.setWriterFeatures(getSerializerFeatures());
+        config.setDateFormat(DateUtil.dateTimePattern);
         config.setCharset(Constants.DEFAULT_CHARSET);
-        config.setSerializerFeatures(getSerializerFeatures());
         converter.setDefaultCharset(Constants.DEFAULT_CHARSET);
         converter.setSupportedMediaTypes(getSupportedMediaTypes());
         return converter;
     }
 
-    public static SerializerFeature[] getSerializerFeatures() {
-        return new SerializerFeature[]{
-            SerializerFeature.WriteNullStringAsEmpty,
-            SerializerFeature.WriteNullListAsEmpty,
-            SerializerFeature.WriteMapNullValue,
-            SerializerFeature.QuoteFieldNames,
-            SerializerFeature.WriteDateUseDateFormat,
-            SerializerFeature.PrettyFormat,
-            SerializerFeature.DisableCircularReferenceDetect};
+    public static JSONWriter.Feature[] getSerializerFeatures() {
+        return new JSONWriter.Feature[]{
+            JSONWriter.Feature.WriteNullStringAsEmpty,
+            JSONWriter.Feature.WriteNullListAsEmpty,
+            JSONWriter.Feature.WriteMapNullValue,
+            JSONWriter.Feature.WriteLongAsString,
+            JSONWriter.Feature.WriteBigDecimalAsPlain,
+            JSONWriter.Feature.PrettyFormat};
     }
 
     private static List<MediaType> getSupportedMediaTypes() {

@@ -2,11 +2,11 @@ package com.lego.core.data.hibernate.entity;
 
 import com.lego.core.data.hibernate.jpa.IJpaFilterName;
 import com.lego.core.module.flowable.FlowableCheckStatus;
+import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.Filter;
 
-import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 @MappedSuperclass

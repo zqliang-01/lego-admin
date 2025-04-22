@@ -1,7 +1,7 @@
 package com.lego.system.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.lego.core.util.StringUtil;
 import com.lego.system.action.ImportAppPackageAction;
 import com.lego.system.dao.ISysConfigDao;

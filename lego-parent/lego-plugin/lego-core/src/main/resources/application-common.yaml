@@ -12,6 +12,19 @@ spring:
   resources:
     static-locations:
       - file:public/
+  cloud:
+    openfeign:
+      client:
+        config:
+          default:
+            connect-timeout: 60000
+            read-timeout: 60000
+      sentinel:
+        enabled: true
+      httpclient:
+        enabled: false
+      okhttp:
+        enabled: true
 flowable:
   #enable-history-cleaning: true
   #history-cleaning-cycle: 0/1 * * * * ?
@@ -67,15 +80,3 @@ xxl:
       slow:
         max: 100
     logretentiondays: 30
-feign:
-  client:
-    config:
-      default:
-        connect-timeout: 60000
-        read-timeout: 60000
-  sentinel:
-    enabled: true
-  httpclient:
-    enabled: false
-  okhttp:
-    enabled: true

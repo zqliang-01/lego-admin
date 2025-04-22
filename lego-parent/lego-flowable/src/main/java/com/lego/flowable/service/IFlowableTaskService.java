@@ -10,7 +10,7 @@ import com.lego.flowable.vo.FlowableTaskRejectVO;
 import com.lego.flowable.vo.FlowableTaskSearchVO;
 import com.lego.flowable.vo.FlowableTaskTransferVO;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface IFlowableTaskService {

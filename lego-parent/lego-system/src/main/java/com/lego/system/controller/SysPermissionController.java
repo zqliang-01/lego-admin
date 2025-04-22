@@ -1,7 +1,7 @@
 package com.lego.system.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.lego.core.common.Constants;
 import com.lego.core.dto.TypeInfo;
 import com.lego.core.vo.JsonResponse;

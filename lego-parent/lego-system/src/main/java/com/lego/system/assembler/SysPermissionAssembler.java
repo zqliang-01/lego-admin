@@ -1,6 +1,6 @@
 package com.lego.system.assembler;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.lego.core.assembler.TreeAssembler;
 import com.lego.core.util.EntityUtil;
 import com.lego.system.dto.SysAppInfo;

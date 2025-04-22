@@ -12,6 +12,10 @@ public class SelectAll extends AbstractMethod {
 
 	private static final long serialVersionUID = 1L;
 
+	protected SelectAll() {
+		super("selectAll");
+	}
+
 	@Override
 	public MappedStatement injectMappedStatement(Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
 		String sql = "SELECT %s FROM %s ";

@@ -2,8 +2,8 @@ package com.lego.system.dto;
 
 import java.util.HashMap;
 
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.TypeReference;
 import com.lego.core.dto.DTO;
 import com.lego.core.util.StringUtil;
 

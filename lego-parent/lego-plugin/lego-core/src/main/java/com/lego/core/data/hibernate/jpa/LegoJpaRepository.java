@@ -1,11 +1,6 @@
 package com.lego.core.data.hibernate.jpa;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
-
-import javax.persistence.EntityManager;
-
+import jakarta.persistence.EntityManager;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +11,10 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 class LegoJpaRepository<T, ID> implements JpaRepositoryImplementation<T, ID> {
 
@@ -210,6 +209,16 @@ class LegoJpaRepository<T, ID> implements JpaRepositoryImplementation<T, ID> {
 	@Override
 	public boolean exists(Specification<T> spec) {
 		return jpaRepository.exists(spec);
+	}
+
+	@Override
+	public long delete(Specification<T> spec) {
+		return jpaRepository.delete(spec);
+	}
+
+	@Override
+	public <S extends T, R> R findBy(Specification<T> spec, Function<FetchableFluentQuery<S>, R> queryFunction) {
+		return jpaRepository.findBy(spec, queryFunction);
 	}
 
 	@Override

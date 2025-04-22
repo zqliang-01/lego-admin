@@ -17,33 +17,33 @@
 
 | 技术                                                                    | 说明                     | 版本         |
 |-----------------------------------------------------------------------|------------------------|------------|
-| [SpringBoot](https://spring.io/projects/spring-boot)                  | Java 框架                | 2.7.11     |
-| [SpringCloud](https://spring.io/projects/spring-cloud)                | SpringCloud 全家桶        | 2021.0.9   |
-| [SpringCloudAlibaba](https://spring.io/projects/spring-cloud-alibaba) | SpringCloudAlibaba 全家桶 | 2021.0.6.0 |
-| [mybatis-plus](https://mybatis.plus)                                  | 数据持久化框架                | 3.4.2      |
-| [flowable](https://www.flowable.com)                                  | 流程引擎                   | 6.8.0      |
+| [SpringBoot](https://spring.io/projects/spring-boot)                  | Java 框架                | 3.2.2      |
+| [SpringCloud](https://spring.io/projects/spring-cloud)                | SpringCloud 全家桶        | 2023.0.0   |
+| [SpringCloudAlibaba](https://spring.io/projects/spring-cloud-alibaba) | SpringCloudAlibaba 全家桶 | 2022.0.0.0 |
+| [mybatis-plus](https://mybatis.plus)                                  | 数据持久化框架                | 3.5.11      |
+| [flowable](https://www.flowable.com)                                  | 流程引擎                   | 7.0.1      |
 | [ShardingSphere](https://shardingsphere.apache.org)                   | 分库分表框架                 | 5.4.1      |
-| [sa-token](https://sa-token.cc)                                       | 权限认证框架                 | 1.34.0     |
-| [openfeign](https://cloud.spring.io/spring-cloud-openfeign)           | 远程调用框架                 | 3.1.9      |
-| [hutool](https://hutool.mydoc.io)                                     | 工具类库                   | 5.8.26     |
-| [easyexcel](https://easyexcel.opensource.alibaba.com)                 | excel 操作框架             | 3.2.1      |
+| [sa-token](https://sa-token.cc)                                       | 权限认证框架                 | 1.38.0     |
+| [openfeign](https://cloud.spring.io/spring-cloud-openfeign)           | 远程调用框架                 | 4.1.0      |
+| [hutool](https://hutool.mydoc.io)                                     | 工具类库                   | 5.8.37     |
+| [easyexcel](https://easyexcel.opensource.alibaba.com)                 | excel 操作框架             | 3.3.3      |
 | [velocity](https://velocity-technology.com)                           | 模板引擎                   | 2.3        |
-| [SpringDataJpa](https://github.com/spring-projects/spring-data-jpa)   | 数据持久化框架                | 2.7.11     |
+| [SpringDataJpa](https://github.com/spring-projects/spring-data-jpa)   | 数据持久化框架                | 3.2.2     |
 | [xxl-job](https://www.xuxueli.com/xxl-job/)                           | 分布式定时任务框架              | 2.4.1      |
 
 ### 软件架构
 
-前端基于 vue element-ui 框架分模块设计，后端使用 SpringBoot2 框架，持久层同时支持 mybatis-plus3（业务查询）、hibernate5（事务业务受理）。
+前端基于 vue element-ui 框架分模块设计，后端使用 SpringBoot3 框架，持久层同时支持 mybatis-plus3（业务查询）、hibernate6（事务业务受理）。
 支持微服务模块化开发部署，数据源可彻底隔离，基于 ShardingSphere5 定制开发多模型分库分片表数据源。
-一键代码生成，自定义表单设计，flowable 工作流设计等，一款开箱即用的新一代低代码开发框架 LegoAdmin
+一键代码生成，自定义表单设计，flowable工作流设计等，一款开箱即用的新一代低代码开发框架 LegoAdmin
 
 ### 安装教程
 
 #### 配置依赖环境
 
 - `mysql5.7`
-- `JDK1.8`
-- `maven3`
+- `JDK17`
+- `maven3.8`
 - `node` >= 10.0.0 建议 v21
 - `npm` >= 6.0.0 建议 v10
 

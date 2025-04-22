@@ -19,7 +19,7 @@ export function definitionSuspendAPI(data) {
 
 export function definitionStartAPI(data) {
   return request({
-    url: '/back-end/flowable-definition/start/',
+    url: '/back-end/flowable-definition/start',
     method: 'post',
     data: data,
     headers: {

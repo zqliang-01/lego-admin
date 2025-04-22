@@ -127,6 +127,7 @@ export default {
             this.startVisible = true
             return
           }
+          console.log(item)
           definitionStartAPI({
             definitionId: item.id
           }).then(() => {

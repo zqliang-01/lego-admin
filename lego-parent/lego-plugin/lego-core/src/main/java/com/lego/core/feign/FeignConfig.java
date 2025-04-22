@@ -1,7 +1,7 @@
 package com.lego.core.feign;
 
 import cn.dev33.satoken.same.SaSameUtil;
-import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.alibaba.fastjson2.support.spring6.http.converter.FastJsonHttpMessageConverter;
 import com.lego.core.enums.ExceptionEnum;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.exception.CoreException;
@@ -11,6 +11,8 @@ import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import feign.Response;
 import feign.codec.Decoder;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import okhttp3.ConnectionPool;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -41,11 +41,7 @@ public class FeignConfig implements RequestInterceptor {
 
     @Bean
     public Decoder feignDecoder() {
-        return new ResponseEntityDecoder(new FeignDecode(feignHttpMessageConverter()));
-    }
-
-    private ObjectFactory<HttpMessageConverters> feignHttpMessageConverter() {
-        return () -> new HttpMessageConverters(messageConverter);
+        return new ResponseEntityDecoder(new FeignDecode(() -> new HttpMessageConverters(messageConverter)));
     }
 
     @Bean
