@@ -18,11 +18,10 @@
       <div class="right">
         <div class="login-main-content">
           <div class="logo-box">
-            {{ titleMap[activeCom] }}
+            欢迎登录
           </div>
 
-          <component
-            :is="activeCom"/>
+          <LoginByPwd/>
 
           <div class="use-tip">
             <div>
@@ -53,22 +52,17 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import LoginByPwd from './component/LoginByPwd'
-import logoWhite from '@/assets/logo_white.png'
-import mainPic from '@/assets/login/main_pic.png'
-import chromeIcon from '@/assets/login/chrome.png'
-import firefoxIcon from '@/assets/login/firefox.png'
-import safariIcon from '@/assets/login/safari.png'
 import browser360Icon from '@/assets/login/360.png'
-import sougouIcon from '@/assets/login/sougou.png'
-import qqIcon from '@/assets/login/qq.png'
+import chromeIcon from '@/assets/login/chrome.png'
 import fastIcon from '@/assets/login/fast.png'
+import firefoxIcon from '@/assets/login/firefox.png'
+import mainPic from '@/assets/login/main_pic.png'
+import qqIcon from '@/assets/login/qq.png'
+import safariIcon from '@/assets/login/safari.png'
+import sougouIcon from '@/assets/login/sougou.png'
+import logoWhite from '@/assets/logo_white.png'
+import LoginByPwd from './component/LoginByPwd'
 
-const activeCom = ref('LoginByPwd')
-const titleMap = {
-  LoginByPwd: '欢迎登录'
-}
 </script>
 
 <style scoped lang="scss">

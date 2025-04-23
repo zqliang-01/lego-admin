@@ -24,11 +24,9 @@
 
 <script>
 import IconList from '@/components/IconList'
-import Emitter from 'element-ui/lib/mixins/emitter'
 
 export default {
   name: 'SelectIcon',
-  mixins: [Emitter],
   props: {
     value: [String, Number],
     placeholder: { type: String, default: '请选择' },
@@ -67,6 +65,20 @@ export default {
       this.$emit('input', this.currentIcon)
       this.$emit('change', this.currentIcon)
       this.dispatch('ElFormItem', 'el.form.change', this.currentIcon)
+    },
+    dispatch(componentName, eventName, params) {
+      let parent = this.$parent || this.$root
+      let name = parent.$options.name
+
+      while (parent && (!name || name !== componentName)) {
+        parent = parent.$parent
+        if (parent) {
+          name = parent.$options.name
+        }
+      }
+      if (parent) {
+        parent.$emit.apply(parent, [eventName].concat(params))
+      }
     }
   }
 }

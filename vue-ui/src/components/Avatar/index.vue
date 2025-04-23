@@ -140,7 +140,7 @@ export default {
 }
 
 .el-avatar {
-  ::v-deep img {
+  :deep(img) {
     width: 100%;
     background: white !important;
   }

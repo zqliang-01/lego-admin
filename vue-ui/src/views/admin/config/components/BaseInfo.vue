@@ -27,7 +27,7 @@
         type="primary"
         @click="save">保存</el-button>
     </div>
-    <edit-image
+    <EditImage
       :fixed-number="[15, 4]"
       :show="showEditImage"
       :image="editImage"
@@ -44,12 +44,13 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useStore } from 'vuex'
-import { ElMessage } from 'element-plus'
 import { systemInfoModifyAPI } from '@/api/admin/config'
-import { fileUploadAPI, filePreviewUrl } from '@/api/common'
+import { filePreviewUrl, fileUploadAPI } from '@/api/common'
 import EditImage from '@/components/EditImage'
+import { ElMessage } from 'element-plus'
+import { computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
+
 
 const props = defineProps({
   systemInfo: {

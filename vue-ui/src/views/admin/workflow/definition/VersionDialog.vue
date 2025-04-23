@@ -66,7 +66,7 @@
       width="70%"
       append-to-body
       @close="processVisible = false">
-      <bpmn-viewer :key="definitionId" v-model:xml="definitionXml"/>
+      <bpmn-viewer :key="definitionId" :xml="definitionXml"/>
     </el-dialog>
   </el-dialog>
 </template>

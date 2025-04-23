@@ -106,7 +106,6 @@ onMounted(() => {
       }
     })
   })
-  
   !currentElementId.value && setCurrentElement()
 })
 </script>

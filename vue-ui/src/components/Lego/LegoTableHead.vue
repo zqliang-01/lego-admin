@@ -83,14 +83,14 @@
 <script type="text/javascript">
 import { sceneAddAPI } from '@/api/scene'
 
+import { getMenuAuth } from '@/utils/auth'
+import { isArray, isEmpty } from '@/utils/types'
+import { ElLoading as Loading } from 'element-plus'
 import LegoFilterForm from './LegoFilter'
 import LegoFilterContent from './LegoFilter/Content'
+import LegoSceneCreate from './LegoScene/Create'
 import LegoSceneList from './LegoScene/List'
 import LegoSceneSet from './LegoScene/Set'
-import LegoSceneCreate from './LegoScene/Create'
-import { Loading } from 'element-ui'
-import { isArray, isEmpty } from '@/utils/types'
-import { getMenuAuth } from '@/utils/auth'
 
 export default {
   name: 'LegoTableHead',

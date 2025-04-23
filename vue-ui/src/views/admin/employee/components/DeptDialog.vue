@@ -135,7 +135,7 @@ const fieldList = computed(() => [
 
 watch(() => props.data, (val) => {
   if (!val) return
-  
+
   fieldList.value.forEach(field => {
     let value = val[field.field]
     if (value && field.type === 'select') {
@@ -156,10 +156,10 @@ const handleCancel = () => {
 const submit = () => {
   deptDialogRef.value.validate(valid => {
     if (!valid) return
-    
+
     loading.value = true
     const requestAPI = props.creatable ? deptAddAPI : deptModifyAPI
-    
+
     requestAPI(submitForm.value).then(() => {
       loading.value = false
       ElMessage.success(props.creatable ? '新增成功' : '更新成功')
@@ -182,15 +182,15 @@ const submit = () => {
   width: 50%;
   margin: 0;
   padding-bottom: 10px;
-  
+
   .el-form-item__label {
     padding: 0;
   }
-  
+
   &:nth-child(even) {
     padding-left: 15px;
   }
-  
+
   &:nth-child(odd) {
     padding-right: 15px;
   }

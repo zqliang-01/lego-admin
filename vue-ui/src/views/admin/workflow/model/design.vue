@@ -14,18 +14,18 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useStore } from 'vuex'
-import { ElMessage } from 'element-plus'
-import { debounce } from 'min-dash'
+import { modelBpmnXmlGetAPI, modelDesignAPI } from '@/api/admin/workflow/model'
+import '@/components/Bpmn/bpmn-icons'
 import BpmnDesigner from '@/components/Bpmn/components/Designer'
+import BpmnPanel from '@/components/Bpmn/components/Panel'
 import BpmnSettings from '@/components/Bpmn/components/Settings'
 import BpmnToolbar from '@/components/Bpmn/components/Toolbar'
-import BpmnPanel from '@/components/Bpmn/components/Panel'
-import '@/components/Bpmn/bpmn-icons'
-import { modelDesignAPI, modelBpmnXmlGetAPI } from '@/api/admin/workflow/model'
 import EventEmitter from '@/utils/bpmn/EventEmitter'
+import { ElMessage } from 'element-plus'
+import { debounce } from 'min-dash'
+import { computed, onMounted, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 const store = useStore()
 const route = useRoute()
@@ -69,9 +69,7 @@ onMounted(() => {
   document.body.addEventListener('contextmenu', (ev) => {
     ev.preventDefault()
   })
-  
   modelId.value = route.params.modelId
-  
   EventEmitter.on('modeler-init', (modeler) => {
     init(modeler)
   })

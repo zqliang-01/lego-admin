@@ -37,30 +37,30 @@
     </div>
 
     <version-dialog
-      v-model:visible="versionVisible"
+      :visible="versionVisible"
       :definition-key="definitionKey"
       @save-success="handleSaveSuccess"
     />
-    <el-dialog title="流程信息" v-model:visible="processVisible" width="70%" append-to-body>
-      <bpmn-viewer :key="definitionKey" v-model:xml="definitionXml"/>
+    <el-dialog title="流程信息" :visible="processVisible" width="70%" append-to-body>
+      <bpmn-viewer :key="definitionKey" :xml="definitionXml"/>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { ElMessage } from 'element-plus'
-import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/Lego/LegoTable'
-import VersionDialog from './VersionDialog'
-import BpmnViewer from '@/components/Bpmn/components/Viewer'
 import {
-  definitionListAPI,
+  definitionBpmnXmlGetAPI,
   definitionDeleteAPI,
-  definitionStartAPI,
-  definitionBpmnXmlGetAPI
+  definitionListAPI,
+  definitionStartAPI
 } from '@/api/admin/workflow/definition'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
+import LegoTable from '@/components/Lego/LegoTable'
+import XrHeader from '@/components/XrHeader'
+import { ElMessage } from 'element-plus'
+import { computed, onMounted, ref } from 'vue'
+import { useStore } from 'vuex'
+import VersionDialog from './VersionDialog'
 
 const store = useStore()
 const loading = ref(false)

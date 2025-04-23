@@ -13,9 +13,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-
-const props = defineProps({
+defineProps({
   icon: String,
   title: String,
   num: [String, Number],

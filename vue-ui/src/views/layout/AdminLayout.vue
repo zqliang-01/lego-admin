@@ -15,7 +15,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useStore } from 'vuex'
-import { ManagerNavbar, Sidebar, AppMain } from './components'
+import { AppMain, ManagerNavbar, Sidebar } from './components'
 
 // 使用 store
 const store = useStore()
@@ -23,10 +23,6 @@ const store = useStore()
 // 计算属性
 const manageRouters = computed(() => store.getters.manageRouters)
 
-// 方法
-const navClick = (index) => {
-  // 处理导航点击事件
-}
 </script>
 
 <style lang="scss" scoped>

@@ -33,15 +33,12 @@
 
 <script>
 import { isEmpty } from '@/utils/types'
-import Emitter from 'element-ui/lib/mixins/emitter'
 
 export default {
   // 自定义字段库 多选
   name: 'Checkbox',
 
   components: {},
-
-  mixins: [Emitter],
 
   props: {
     value: {},
@@ -103,7 +100,7 @@ export default {
     valueChange() {
       this.$emit('input', this.dataValue)
       this.$emit('change', this.dataValue)
-      this.dispatch('ElFormItem', 'el.form.change', this.dataValue)
+      this.$parent?.$emit('el.form.change', this.dataValue)
     },
 
     /**

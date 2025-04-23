@@ -40,7 +40,18 @@ $--avatar-background-color: $--color-primary;
 -------------------------- */
 $--badge-background-color: #FF6161;
 
-/* 改变 icon 字体路径变量，必需 */
-$--font-path: '~element-ui/lib/theme-chalk/fonts';
-
-@import "~element-ui/packages/theme-chalk/src/index";
+/* 使用Element Plus主题变量 */
+@forward "element-plus/theme-chalk/src/common/var.scss" with (
+  $colors: (
+    "primary": (
+      "base": #2362FB,
+    ),
+  ),
+  $border: (
+    "color": #e6e6e6,
+    "radius": 4px,
+  ),
+  $font: (
+    "size": 13px,
+  )
+);

@@ -40,10 +40,10 @@
   </el-dialog>
 </template>
 <script>
-import SelectTree from '@/components/Common/SelectTree'
-import { genTableMetaColumnListAPI } from '@/api/admin/genTableColumn'
 import { genTableSyncAPI } from '@/api/admin/genTable'
-import { Loading } from 'element-ui'
+import { genTableMetaColumnListAPI } from '@/api/admin/genTableColumn'
+import SelectTree from '@/components/Common/SelectTree'
+import { ElLoading as Loading } from 'element-plus'
 
 export default {
   name: 'TableSyncDialog',

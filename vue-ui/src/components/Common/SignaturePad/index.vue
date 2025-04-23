@@ -23,14 +23,19 @@
 </template>
 
 <script>
-import { fileGetAPI } from '@/api/common'
-import { fileUploadAPI } from '@/api/common'
+import { fileGetAPI, fileUploadAPI } from '@/api/common'
 
-import VueSignaturePad from './VueSignaturePad'
 import ImageView from '@/components/Common/ImageView'
-
-import { valueEquals } from 'element-ui/lib/utils/util'
 import { getImageData } from '@/utils'
+import VueSignaturePad from './VueSignaturePad'
+
+function valueEquals(a, b) {
+  if (a === b) return true
+  if (a instanceof Date && b instanceof Date) {
+    return a.getTime() === b.getTime()
+  }
+  return false
+}
 
 export default {
   // 签名
@@ -156,4 +161,3 @@ export default {
   }
 }
 </style>
-

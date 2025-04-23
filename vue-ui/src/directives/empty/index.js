@@ -1,10 +1,10 @@
-import Vue from 'vue'
-import Empty from './empty.vue'
 import {
   addClass,
-  removeClass,
-  getStyle
-} from 'element-ui/src/utils/dom'
+  getStyle,
+  removeClass
+} from '@/utils/dom'
+import Vue from 'vue'
+import Empty from './empty.vue'
 const EmptyMask = Vue.extend(Empty)
 /**
  * xs-empty-text

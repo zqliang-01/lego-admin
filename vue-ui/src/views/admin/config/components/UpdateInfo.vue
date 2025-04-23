@@ -57,7 +57,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { 
+import {
   systemCheckUpdateAPI,
   systemUpdateAPI,
   appPackageUploadAPI
@@ -99,7 +99,7 @@ const handleCheckUpdate = () => {
     versionLoading.value = false
     if (res.data.needUpdate) {
       ElMessageBox.confirm(
-        '发现新版本' + res.data.newVersion + '，是否执行更新！', 
+        '发现新版本' + res.data.newVersion + '，是否执行更新！',
         '提示'
       ).then(() => {
         handleUpdate(res.data.newVersion)

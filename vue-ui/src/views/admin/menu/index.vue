@@ -57,13 +57,11 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import XrHeader from '@/components/XrHeader'
-import Detail from './components/MenuDetail'
 import { permissionListAPI } from '@/api/admin/permission'
+import XrHeader from '@/components/XrHeader'
+import { onMounted, ref } from 'vue'
+import Detail from './components/MenuDetail'
 
-const store = useStore()
 const loading = ref(false)
 const menuName = ref('')
 const filterRouteStatus = ref(false)
@@ -75,14 +73,6 @@ const menuTreeProps = {
   label: 'name',
   children: 'childrens'
 }
-
-const manage = computed(() => store.getters.manage)
-const defaultExpandedKeys = computed(() => {
-  if (currentMenu.value && currentMenu.value.code) {
-    return [currentMenu.value.code]
-  }
-  return []
-})
 
 onMounted(() => {
   listMenu()

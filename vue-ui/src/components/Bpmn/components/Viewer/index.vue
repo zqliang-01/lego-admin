@@ -33,8 +33,8 @@
 
 <script>
 import BpmnViewer from 'bpmn-js/lib/Viewer'
-import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
 import { getBusinessObject } from 'bpmn-js/lib/util/ModelUtil'
+import MoveCanvasModule from 'diagram-js/lib/navigation/movecanvas'
 
 export default {
   name: 'BpmnViewer',
@@ -175,8 +175,8 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-@import '@/components/bpmn/theme/viewer.scss';
-::v-deep .bjs-powered-by {
+@import '@/components/Bpmn/theme/viewer.scss';
+:deep(.bjs-powered-by) {
   display: none !important;
 }
 </style>

@@ -140,11 +140,8 @@ export function fileSize(value) {
 }
 
 /** 获取最大 z-index 的值 */
-import {
-  PopupManager
-} from 'element-ui/lib/utils/popup'
 export function getMaxIndex() {
-  return PopupManager.nextZIndex()
+  return ElZIndex.nextZIndex()
 }
 
 /** 深拷贝 */
@@ -258,9 +255,7 @@ export function getFileTypeWithFileName(fileName) {
   return ''
 }
 
-import {
-  Message
-} from 'element-ui'
+import { ElMessage as Message } from 'element-plus'
 /**
  * 根据文件名验证文件是否通过
  * @param {*} fileName 文件名

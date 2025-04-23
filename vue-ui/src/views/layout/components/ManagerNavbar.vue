@@ -25,11 +25,11 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { ElMessageBox, ElLoading } from 'element-plus'
 import { filePreviewUrl } from '@/api/common'
+import { ElLoading, ElMessageBox } from 'element-plus'
+import { computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
 
 // Props 定义
 const props = defineProps({
@@ -59,7 +59,7 @@ const enterHome = () => {
   })
 }
 
-const enterLogin = async () => {
+const enterLogin = async() => {
   try {
     await ElMessageBox.confirm('退出登录？', '提示', {
       confirmButtonText: '确定',

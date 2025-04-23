@@ -1,12 +1,12 @@
 ## LegoAdmin前端
-基于element-ui框架开发，多模块动态路由VUE前端框架
+基于element-plus框架开发，多模块动态路由VUE前端框架
 ### 技术栈
 | 技术 | 说明 | 版本 |
 | --- | --- | --- |
 | [Vue](https://vuejs.org) | 框架 | 2.6.11 |
 | [Vuex](https://vuex.vuejs.org) | 全局状态管理框架 | 3.6.2 |
 | [Vue-router](https://router.vuejs.org) | 路由框架 | 3.4.9 |
-| [element-ui](https://element.eleme.cn) | ElementUI框架 | 2.15.14 |
+| [element-plus](https://element-plus.org) | ElementPlus框架 | 2.4.3 |
 | [bpmn-process-designer](https://gitee.com/MiyueSC/bpmn-process-designer) | Bpmn流程图设计框架 | 2.0.0 |
 | [Axios](https://github.com/axios/axios) | HTTP请求框架 | 0.18.0 |
 | [sass](https://sass-lang.com) | SCSS样式打包框架 | 1.32.7 |

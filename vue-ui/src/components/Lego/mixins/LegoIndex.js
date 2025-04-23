@@ -1,19 +1,18 @@
-import { columnWidthModifyAPI } from '@/api/admin/formField'
+import { columnWidthModifyAPI, tableHeaderFieldListAPI } from '@/api/admin/formField'
 import { permissionGetAPI } from '@/api/admin/permission'
-import { tableHeaderFieldListAPI } from '@/api/admin/formField'
 
-import LegoCommonMixin from './LegoCommon'
+import FieldView from '@/components/Common/Form/FieldView'
+import Empty from '@/components/Empty'
 import LegoListHead from '../LegoListHead'
 import LegoTableHead from '../LegoTableHead'
 import LegoTableSort from '../LegoTableSort'
-import Empty from '@/components/Empty'
-import FieldView from '@/components/Common/Form/FieldView'
+import LegoCommonMixin from './LegoCommon'
 
-import Lockr from 'lockr'
-import { Loading } from 'element-ui'
 import { downloadExcelWithResData } from '@/utils'
-import { isEmpty } from '@/utils/types'
 import { getMenuAuth } from '@/utils/auth'
+import { isEmpty } from '@/utils/types'
+import { ElLoading as Loading } from 'element-plus'
+import Lockr from 'lockr'
 
 export default {
   components: {

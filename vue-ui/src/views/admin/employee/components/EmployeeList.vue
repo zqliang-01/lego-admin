@@ -106,7 +106,6 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useStore } from 'vuex'
-import { CirclePlus, Edit } from '@element-plus/icons-vue'
 import Reminder from '@/components/Reminder'
 import DeptDialog from './DeptDialog'
 import EmployeeDialog from './EmployeeDialog'

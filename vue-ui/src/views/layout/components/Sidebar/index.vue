@@ -76,7 +76,7 @@ import { useRoute } from 'vue-router'
 import SidebarItem from './SidebarItem.vue'
 import variables from './variables.module.scss'
 
-const props = defineProps({
+defineProps({
   items: {
     type: Array,
     default: () => []

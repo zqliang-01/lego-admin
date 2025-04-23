@@ -1,8 +1,8 @@
-import { isArray, isObject, isEmpty } from '@/utils/types'
 import { separator } from '@/filters/vueNumeralFilter/filters'
 import { objDeepCopy } from '@/utils'
 import { getDisplay } from '@/utils/address'
-import { Message } from 'element-ui'
+import { isArray, isEmpty, isObject } from '@/utils/types'
+import { ElMessage as Message } from 'element-plus'
 
 /**
  * 获取自定义字段展示值

@@ -5,11 +5,10 @@
 </template>
 
 <script setup>
-import { onMounted, nextTick } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
 import cache from '@/utils/cache'
+import { nextTick, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
-const router = useRouter()
 const route = useRoute()
 
 // 监听文档可见性变化
@@ -41,7 +40,7 @@ const addDocumentVisibilityChange = () => {
 }
 
 // 设置最小高度
-const setMinHeight = async () => {
+const setMinHeight = async() => {
   await nextTick()
   const dpr = window.devicePixelRatio || 1
   const clientWidth = document.body.clientWidth

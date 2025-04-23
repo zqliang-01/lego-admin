@@ -45,7 +45,7 @@ const app = createApp(App)
 
 // 配置 Element Plus
 app.use(ElementPlus, {
-  locale: zhCn,
+  locale: zhCn
 })
 
 // 注册组件

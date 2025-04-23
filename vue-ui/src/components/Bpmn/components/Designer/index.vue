@@ -3,13 +3,13 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useStore } from 'vuex'
-import { debounce } from 'min-dash'
-import { createNewDiagram } from '@/utils/bpmn/xml'
 import { catchError } from '@/utils/bpmn/printCatch'
-import moduleAndExtensions from './moduleAndExtensions'
+import { createNewDiagram } from '@/utils/bpmn/xml'
+import { debounce } from 'min-dash'
+import { computed, ref, watch } from 'vue'
+import { useStore } from 'vuex'
 import initModeler from './initModeler'
+import moduleAndExtensions from './moduleAndExtensions'
 
 const props = defineProps({
   xml: {
@@ -26,8 +26,6 @@ const store = useStore()
 const designerRef = ref(null)
 
 const editor = computed(() => store.getters.getEditor)
-const modeler = computed(() => store.getters.getModeler)
-const modeling = computed(() => store.getters.getModeling)
 
 const bgClass = computed(() => {
   const bg = editor.value.bg
@@ -36,7 +34,7 @@ const bgClass = computed(() => {
   return ''
 })
 
-const reloadProcess = debounce(async (setting, oldSetting) => {
+const reloadProcess = debounce(async(setting, oldSetting) => {
   const modelerModules = moduleAndExtensions(setting)
 
   const modelerInstance = initModeler(designerRef.value, modelerModules)
@@ -47,7 +45,7 @@ const reloadProcess = debounce(async (setting, oldSetting) => {
   }
 }, 100)
 
-watch(editor, async (value, oldValue) => {
+watch(editor, async(value, oldValue) => {
   try {
     await reloadProcess(value, oldValue)
   } catch (e) {
@@ -64,14 +62,4 @@ watch(editor, async (value, oldValue) => {
   overflow: hidden;
 }
 
-.designer-with-bg {
-  background-image: url('~@/assets/img/grid.png');
-  background-repeat: repeat;
-}
-
-.designer-with-image {
-  background-image: url('~@/assets/img/background.jpg');
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-}
 </style>

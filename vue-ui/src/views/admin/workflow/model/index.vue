@@ -58,29 +58,29 @@
     />
     <el-dialog
       title="流程信息"
-      v-model:visible="processVisible"
+      :visible="processVisible"
       width="70%"
       append-to-body>
-      <bpmn-viewer :key="modelId" v-model:xml="processXml"/>
+      <bpmn-viewer :key="modelId" :xml="processXml"/>
     </el-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useStore } from 'vuex'
-import { useRouter } from 'vue-router'
-import { ElMessage, ElMessageBox } from 'element-plus'
-import Create from './Create'
-import XrHeader from '@/components/XrHeader'
-import LegoTable from '@/components/Lego/LegoTable'
-import BpmnViewer from '@/components/Bpmn/components/Viewer'
 import {
-  modelListAPI,
-  modelDeployAPI,
+  modelBpmnXmlGetAPI,
   modelDeleteAPI,
-  modelBpmnXmlGetAPI
+  modelDeployAPI,
+  modelListAPI
 } from '@/api/admin/workflow/model'
+import BpmnViewer from '@/components/Bpmn/components/Viewer'
+import LegoTable from '@/components/Lego/LegoTable'
+import XrHeader from '@/components/XrHeader'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import { computed, onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import Create from './Create'
 
 const store = useStore()
 const router = useRouter()
@@ -139,16 +139,6 @@ const getList = (pageSizeVal = pageSize.value, currentPageVal = currentPage.valu
   }).catch(() => {
     loading.value = false
   })
-}
-
-const handleSizeChange = (val) => {
-  pageSize.value = val
-  getList()
-}
-
-const handleCurrentChange = (val) => {
-  currentPage.value = val
-  getList()
 }
 
 const handleTable = (type, item, index) => {

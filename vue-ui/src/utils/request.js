@@ -1,14 +1,14 @@
-import axios from 'axios'
-import {
-  Message,
-  MessageBox
-} from 'element-ui'
 import {
   removeAuth
 } from '@/utils/auth'
+import axios from 'axios'
+import {
+  ElMessage as Message,
+  ElMessageBox as MessageBox
+} from 'element-plus'
 import qs from 'qs'
-import store from '../store'
 import { debounce } from 'throttle-debounce'
+import store from '../store'
 
 /**
  * 检查dom是否忽略

@@ -25,7 +25,7 @@ const store = useStore()
 const loading = ref(false)
 const systemInfo = ref({})
 
-const getDetail = async () => {
+const getDetail = async() => {
   loading.value = true
   try {
     const res = await store.dispatch('GetSystemInfo')

@@ -38,11 +38,11 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
 import { isObject } from '@/utils/types'
-import { Navbar, Sidebar, AppMain, Welcome } from './components'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { AppMain, Navbar, Sidebar } from './components'
 
 const props = defineProps({
   currentAppCode: String
@@ -62,7 +62,6 @@ const navActiveIndex = computed(() => store.getters.navActiveIndex)
 const allAuth = computed(() => store.getters.allAuth)
 
 const currentRouters = computed(() => menuRouters.value[appCode.value])
-const appName = computed(() => allAuth.value[appCode.value]?.title || '')
 const quickAddOffset = computed(() => Math.round(quickAddList.value.length / 2) * 25)
 const showQuickAddButton = computed(() => quickAddList.value.length > 0)
 

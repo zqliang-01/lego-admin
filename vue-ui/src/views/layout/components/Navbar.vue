@@ -99,13 +99,13 @@
 <script>
 import { filePreviewUrl } from '@/api/common'
 import { systemMessageUnreadCountAPI } from '@/api/systemMessage'
-import SystemMessage from './Message/SystemMessage'
 import NoticeMessage from './Message/NoticeMessage'
+import SystemMessage from './Message/SystemMessage'
 import NavManager from './NavManager'
 
+import { off, on } from '@/utils/dom'
+import { ElLoading as Loading } from 'element-plus'
 import { mapGetters } from 'vuex'
-import { Loading } from 'element-ui'
-import { on, off } from '@/utils/dom'
 
 export default {
   components: {
@@ -554,4 +554,3 @@ export default {
   }
 }
 </style>
-

@@ -52,8 +52,8 @@
 </template>
 
 <script type="text/javascript">
-import Message from 'element-ui'
 import { getMenuAuth } from '@/utils/auth'
+import { ElMessage as Message } from 'element-plus'
 
 export default {
   name: 'LegoListHead',

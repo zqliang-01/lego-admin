@@ -54,21 +54,21 @@ const permissionRouteTypes = ref([])
 
 const formFieldList = reactive([
   [
-    { 
-      fieldCode: 'form', 
-      name: '表单', 
-      formType: 'select', 
-      clearable: true, 
-      tipType: 'tooltip', 
+    {
+      fieldCode: 'form',
+      name: '表单',
+      formType: 'select',
+      clearable: true,
+      tipType: 'tooltip',
       inputTips: '业务关联表单信息，动态路由时会自动基于表单创建页面内容',
       setting: []
     },
-    { 
-      fieldCode: 'routeType', 
-      name: '路由类型', 
-      formType: 'select', 
-      precisions: 1, 
-      tipType: 'tooltip', 
+    {
+      fieldCode: 'routeType',
+      name: '路由类型',
+      formType: 'select',
+      precisions: 1,
+      tipType: 'tooltip',
       inputTips: '模块路由定义，动态路由页面内容受后台控制',
       setting: []
     }
@@ -77,21 +77,21 @@ const formFieldList = reactive([
 
 const reportFieldList = reactive([
   [
-    { 
-      fieldCode: 'relateCode', 
-      name: '报表', 
-      formType: 'select', 
-      clearable: true, 
-      tipType: 'tooltip', 
+    {
+      fieldCode: 'relateCode',
+      name: '报表',
+      formType: 'select',
+      clearable: true,
+      tipType: 'tooltip',
       inputTips: '选择自定义报表，需到报表管理模块进行报表维护',
       setting: []
     },
-    { 
-      fieldCode: 'routeType', 
-      name: '路由类型', 
-      formType: 'select', 
-      precisions: 1, 
-      tipType: 'tooltip', 
+    {
+      fieldCode: 'routeType',
+      name: '路由类型',
+      formType: 'select',
+      precisions: 1,
+      tipType: 'tooltip',
       inputTips: '模块路由定义，动态路由页面内容受后台控制',
       setting: []
     }
@@ -128,17 +128,15 @@ const resetForm = () => {
   })
 }
 
-const initRequest = async () => {
+const initRequest = async() => {
   const [routeTypes, forms, reports] = await Promise.all([
     permissionRouteTypeListAPI(),
     customFormSimpleListAPI(),
     definitionSimpleValidListAPI()
   ])
-  
   permissionRouteTypes.value = routeTypes.data
   formList.value = forms.data
   reportList.value = reports.data
-  
   resetForm()
 }
 

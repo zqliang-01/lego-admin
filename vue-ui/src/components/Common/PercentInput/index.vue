@@ -47,15 +47,13 @@
   </div>
 </template>
 <script>
-import Focus from 'element-ui/src/mixins/focus'
-import RepeatClick from 'element-ui/src/directives/repeat-click'
+import { ElRepeatClick } from 'element-plus'
 
 export default {
   name: 'PercentInput',
   directives: {
-    RepeatClick
+    RepeatClick: ElRepeatClick
   },
-  mixins: [Focus('input')],
   inject: {
     elForm: {
       default: ''
@@ -204,6 +202,9 @@ export default {
     innerInput.setAttribute('aria-valuenow', this.currentValue)
   },
   methods: {
+    focus() {
+      this.$refs.input?.focus()
+    },
     toPrecision(num, precision) {
       if (precision === undefined) precision = this.numPrecision
       return parseFloat(Math.round(num * Math.pow(10, precision)) / Math.pow(10, precision))

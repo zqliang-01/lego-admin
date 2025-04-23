@@ -1,5 +1,5 @@
 <template>
-  <component v-bind="linkProps(to)">
+  <component v-bind:is="linkProps(to)">
     <slot />
   </component>
 </template>
@@ -7,7 +7,7 @@
 <script setup>
 import { isExternal } from '@/utils/validate'
 
-const props = defineProps({
+defineProps({
   to: {
     type: String,
     required: true

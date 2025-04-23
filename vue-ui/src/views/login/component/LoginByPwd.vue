@@ -66,13 +66,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useStore } from 'vuex'
+import { getCodeImg, systemInitAPI } from '@/api/login'
 import { ElLoading, ElMessage } from 'element-plus'
 import { debounce } from 'throttle-debounce'
-import { getCodeImg, systemInitAPI } from '@/api/login'
-import { checkFromItem, setError, clearError } from './Mixins'
+import { nextTick, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { checkFromItem, clearError, setError } from './Mixins'
 
 const router = useRouter()
 const route = useRoute()
@@ -120,7 +120,6 @@ onMounted(() => {
     username.value.focus()
   })
   getCode()
-  
   const account = localStorage.getItem('account')
   if (account) {
     form.value = {
@@ -139,7 +138,7 @@ onMounted(() => {
 const debouncedHandleLogin = debounce(300, handleLogin)
 
 // 获取验证码
-const getCode = async () => {
+const getCode = async() => {
   try {
     const res = await getCodeImg()
     codeUrl.value = 'data:image/gif;base64,' + res.data.image
@@ -151,10 +150,9 @@ const getCode = async () => {
 }
 
 // 登录方法
-const handleLogin = async () => {
+const handleLogin = async() => {
   const flag = checkForm()
   if (!flag) return
-  
   if (rememberMe.value) {
     localStorage.setItem('account', form.value.username)
   } else {
@@ -187,7 +185,7 @@ const handleLogin = async () => {
 }
 
 // 系统初始化
-const handleInit = async () => {
+const handleInit = async() => {
   const loading = ElLoading.service({
     text: '系统初始化中，请稍后。。。'
   })

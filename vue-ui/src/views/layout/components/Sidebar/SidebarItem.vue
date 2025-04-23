@@ -60,14 +60,13 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue'
-import { useStore } from 'vuex'
-import { useRoute } from 'vue-router'
-import path from 'path'
 import { isExternal } from '@/utils/validate'
+import path from 'path'
+import { computed, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 import Item from './Item.vue'
 import AppLink from './Link.vue'
-import FixiOSBug from './FixiOSBug.js'
 
 const props = defineProps({
   item: {

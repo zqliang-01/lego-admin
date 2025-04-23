@@ -1,13 +1,13 @@
-import { checkAuth } from '@/utils/auth'; // 验权
+import { checkAuth } from '@/utils/auth' // 验权
 import { ElMessage } from 'element-plus'
-import NProgress from 'nprogress'; // Progress 进度条
-import 'nprogress/nprogress.css'; // Progress 进度条样式
+import NProgress from 'nprogress' // Progress 进度条
+import 'nprogress/nprogress.css' // Progress 进度条样式
 import router from './router'
 import store from './store'
 
 const whiteList = ['/login', '/welcome'] // 不重定向白名单
 
-router.beforeEach(async (to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 百度统计
   if (to.path && window._hmt) {
     window._hmt.push(['_trackPageview', '/#' + to.fullPath])
@@ -58,7 +58,7 @@ router.beforeEach(async (to, from, next) => {
 })
 
 // 处理动态路由添加
-const authNext = async (to, next, allRouters) => {
+const authNext = async(to, next, allRouters) => {
   // 清除所有现有路由
   router.getRoutes().forEach(route => {
     if (route.name) {

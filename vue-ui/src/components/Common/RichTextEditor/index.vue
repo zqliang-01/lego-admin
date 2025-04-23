@@ -13,11 +13,9 @@
 
 <script>
 import Tinymce from '@/components/Tinymce'
-import Emitter from 'element-ui/lib/mixins/emitter'
 
 export default {
   name: 'RichTextEditor',
-  mixins: [Emitter],
   components: {
     Tinymce
   },
