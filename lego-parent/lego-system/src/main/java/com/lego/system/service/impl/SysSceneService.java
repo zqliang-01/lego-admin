@@ -21,8 +21,8 @@ import java.util.List;
 public class SysSceneService extends BaseService<ISysSceneDao, SysSceneAssembler> implements ISysSceneService {
 
     @Override
-    public List<SysSceneInfo> findByForm(String formCode) {
-        List<SysScene> scene = dao.findByForm(formCode);
+    public List<SysSceneInfo> findByForm(String operatorCode, String formCode) {
+        List<SysScene> scene = dao.findByForm(operatorCode, formCode);
         return assembler.create(scene);
     }
 

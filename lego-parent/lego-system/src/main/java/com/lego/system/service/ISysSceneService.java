@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ISysSceneService {
 
-    List<SysSceneInfo> findByForm(String formCode);
+    List<SysSceneInfo> findByForm(String operatorCode, String formCode);
 
     List<SysSceneInfo> findBy(String operatorCode, String formCode, boolean visible);
 
