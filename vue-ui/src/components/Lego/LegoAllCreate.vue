@@ -56,7 +56,7 @@ export default {
         customFormPermissionGetAPI(this.formCode).then(res => {
           this.loading = false
           const auth = getMenuAuth(res.data.permissionCode)
-          if (!auth || !auth.add) {
+          if (!auth || (!auth.update && !auth.add)) {
             this.$message.error('无[' + this.formCode + ']操作权限！')
             this.$emit('close')
             return
@@ -73,7 +73,7 @@ export default {
         })
       } else if (this.menuCode) {
         const auth = getMenuAuth(this.menuCode)
-        if (!auth || !auth.add) {
+        if (!auth || (!auth.update && !auth.add)) {
           this.$message.error('无[' + this.menuCode + ']操作权限！')
           this.$emit('close')
           return
