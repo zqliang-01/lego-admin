@@ -27,8 +27,8 @@ public class SysSceneService extends BaseService<ISysSceneDao, SysSceneAssembler
     }
 
     @Override
-    public List<SysSceneInfo> findBy(String formCode, boolean visible) {
-        List<SysScene> scene = dao.findBy(formCode, visible);
+    public List<SysSceneInfo> findBy(String operatorCode, String formCode, boolean visible) {
+        List<SysScene> scene = dao.findBy(operatorCode, formCode, visible);
         return assembler.create(scene);
     }
 
