@@ -46,6 +46,12 @@ public class SysCommonController extends BaseController implements ISystemAPI {
     }
 
     @Override
+    @GetMapping("/get-dept-simple-by-employee")
+    public JsonResponse<TypeInfo> findDeptByEmployee(String employeeCode) {
+        return JsonResponse.success(commonService.findDeptByEmployee(employeeCode));
+    }
+
+    @Override
     @GetMapping("/get-dictionary-simple/{code}")
     public JsonResponse<TypeInfo> findDictionaryBy(String code) {
         return JsonResponse.success(commonService.findDictBy(code));

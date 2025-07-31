@@ -18,6 +18,8 @@ public interface ICommonService {
 
     TypeInfo findDeptBy(String code);
 
+    TypeInfo findDeptByEmployee(String employeeCode);
+
     TypeInfo findDictBy(String code);
 
     void addSysMessage(MessageCreateVO vo);

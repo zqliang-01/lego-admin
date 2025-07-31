@@ -27,10 +27,10 @@ import com.lego.system.mapper.SysEmployeeMapper;
 import com.lego.system.mapper.SysPermissionMapper;
 import com.lego.system.mapper.SysRoleMapper;
 import com.lego.system.vo.DataScopeType;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import jakarta.annotation.Resource;
 import java.util.Arrays;
 import java.util.List;
 
@@ -88,6 +88,12 @@ public class SysCommonService implements ICommonService {
     public TypeInfo findDeptBy(String code) {
         SysDept dept = deptDao.findByUnsureCode(code);
         return EntityUtil.toTypeInfo(dept);
+    }
+
+    @Override
+    public TypeInfo findDeptByEmployee(String employeeCode) {
+        SysEmployee operator = employeeDao.findByCode(employeeCode);
+        return EntityUtil.toTypeInfo(operator.getDept());
     }
 
     @Override

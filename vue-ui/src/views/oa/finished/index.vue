@@ -175,4 +175,4 @@ export default {
   border-top: 1px solid $xr-border-line-color;
   border-bottom: 1px solid $xr-border-line-color;
 }
-</style>../components/TaskDetail.vue
+</style>

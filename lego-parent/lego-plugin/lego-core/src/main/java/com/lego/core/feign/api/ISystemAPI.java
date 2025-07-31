@@ -27,6 +27,9 @@ public interface ISystemAPI {
     @GetMapping("/back-end/sys-common/get-dept-simple/{code}")
     JsonResponse<TypeInfo> findDeptBy(@PathVariable String code);
 
+    @GetMapping("/back-end/sys-common/get-dept-simple-by-employee")
+    JsonResponse<TypeInfo> findDeptByEmployee(@RequestParam("employeeCode") String employeeCode);
+
     @GetMapping("/back-end/sys-common/get-dictionary-simple/{code}")
     JsonResponse<TypeInfo> findDictionaryBy(@PathVariable String code);
 

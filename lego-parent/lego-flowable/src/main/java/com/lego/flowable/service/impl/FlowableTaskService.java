@@ -68,7 +68,7 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
     @Override
     public LegoPage<FlowableTaskInfo> findUndoBy(String employeeCode, FlowableTaskSearchVO vo) {
         List<String> candidateGroups = commonService.findRoleCodesBy(employeeCode);
-        TypeInfo dept = commonService.findDeptBy(employeeCode);
+        TypeInfo dept = commonService.findDeptByEmployee(employeeCode);
         candidateGroups.add(dept.getCode());
         TaskQuery taskQuery = taskService.createTaskQuery()
             .active()
@@ -98,7 +98,7 @@ public class FlowableTaskService extends FlowableService<FlowableTaskAssembler> 
     @Override
     public LegoPage<FlowableTaskInfo> findClaimdBy(String employeeCode, FlowableTaskSearchVO vo) {
         List<String> candidateGroups = commonService.findRoleCodesBy(employeeCode);
-        TypeInfo dept = commonService.findDeptBy(employeeCode);
+        TypeInfo dept = commonService.findDeptByEmployee(employeeCode);
         candidateGroups.add(dept.getCode());
         TaskQuery taskQuery = taskService.createTaskQuery()
             .active()
