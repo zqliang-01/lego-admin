@@ -91,6 +91,12 @@ public class SysCommonService implements ICommonService {
     }
 
     @Override
+    public TypeInfo findDeptByEmployee(String employeeCode) {
+        SysEmployee operator = employeeDao.findByCode(employeeCode);
+        return EntityUtil.toTypeInfo(operator.getDept());
+    }
+
+    @Override
     public TypeInfo findDictBy(String code) {
         SysDictionary dictionary = dictionaryDao.findByCode(code);
         return EntityUtil.toTypeInfo(dictionary);

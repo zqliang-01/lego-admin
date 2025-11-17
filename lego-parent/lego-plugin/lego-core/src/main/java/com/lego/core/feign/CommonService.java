@@ -31,6 +31,11 @@ public class CommonService implements ICommonService {
     }
 
     @Override
+    public TypeInfo findDeptByEmployee(String employeeCode) {
+        return systemClient.findDeptByEmployee(employeeCode).getData();
+    }
+
+    @Override
     public TypeInfo findDictBy(String code) {
         return systemClient.findDictionaryBy(code).getData();
     }

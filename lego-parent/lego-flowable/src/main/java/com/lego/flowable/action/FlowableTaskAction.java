@@ -32,7 +32,7 @@ public abstract class FlowableTaskAction extends FlowableAction {
     protected void preprocess() {
         TaskQuery taskQuery = taskService.createTaskQuery().active().taskId(taskId);
         List<String> candidateGroups = commonService.findRoleCodesBy(operatorCode);
-        candidateGroups.add(commonService.findDeptBy(operatorCode).getCode());
+        candidateGroups.add(commonService.findDeptByEmployee(operatorCode).getCode());
         taskQuery.taskCandidateOrAssigned(operatorCode).taskCandidateGroupIn(candidateGroups);
         this.task = taskQuery.singleResult();
         BusinessException.check(this.task != null, "当前任务审核人非[{0}]，审核失败！", operatorCode);
