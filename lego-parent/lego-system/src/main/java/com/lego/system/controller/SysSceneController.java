@@ -26,7 +26,7 @@ public class SysSceneController extends BaseController {
 
     @GetMapping("/list")
     public JsonResponse<List<SysSceneInfo>> list(String formCode) {
-        return JsonResponse.success(sceneService.findByForm(formCode));
+        return JsonResponse.success(sceneService.findByForm(getLoginCode(), formCode));
     }
 
     @GetMapping("/list-visible")

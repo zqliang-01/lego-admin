@@ -10,9 +10,10 @@ import java.util.List;
 public class SysSceneDao extends GenericDao<SysScene> implements ISysSceneDao {
 
     @Override
-    public List<SysScene> findByForm(String formCode) {
+    public List<SysScene> findByForm(String operatorCode, String formCode) {
         QueryHandler<SysScene> handler = createQueryHandler();
         handler.condition("t.form.code = :formCode").param("formCode", formCode);
+        handler.condition("t.employee.code = :operatorCode").param("operatorCode", operatorCode);
         return handler.findList();
     }
 
