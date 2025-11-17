@@ -1,7 +1,5 @@
 package com.lego.system.service;
 
-import java.util.List;
-
 import com.lego.core.dto.LegoPage;
 import com.lego.core.dto.TypeInfo;
 import com.lego.system.dto.SysEmployeeInfo;
@@ -12,6 +10,8 @@ import com.lego.system.vo.SysEmployeeModifyVO;
 import com.lego.system.vo.SysEmployeePasswordModifyVO;
 import com.lego.system.vo.SysEmployeeRoleModifyVO;
 import com.lego.system.vo.SysEmployeeSearchVO;
+
+import java.util.List;
 
 public interface ISysEmployeeService {
 

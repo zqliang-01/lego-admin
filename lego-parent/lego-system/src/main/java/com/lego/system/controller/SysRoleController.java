@@ -77,4 +77,5 @@ public class SysRoleController extends BaseController {
         roleService.deleteBy(code);
         return JsonResponse.success();
     }
+
 }

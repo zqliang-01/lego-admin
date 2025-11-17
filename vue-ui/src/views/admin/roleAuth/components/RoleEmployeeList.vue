@@ -2,7 +2,16 @@
   <div v-loading="loading" class="content-table">
     <flexbox class="content-table-header">
       <div class="content-table-header-reminder">
-        <span/>
+        <div v-if="selectionList.length > 0" style="flex: 1">
+          已选中
+          <span>
+            {{ selectionList.length }}
+          </span>
+          项
+        </div>
+        <el-button v-if="selectionList.length > 0"  plain type="danger" @click="removeEmployees">
+          移除用户
+        </el-button>
       </div>
       <el-button
         v-if="manage.role.update"
@@ -12,9 +21,13 @@
         @click="addEmployees"> 关联员工 </el-button>
     </flexbox>
     <el-table
+      ref="elTable"
       :data="tableData"
       :height="tableHeight"
-      style="width: 100%">
+      row-key="code"
+      style="width: 100%"
+      @selection-change="(values) => selectionList = values">
+      <el-table-column fixed="left" reserve-selection type="selection" width={50} />
       <el-table-column
         v-for="(item, index) in tableList"
         :prop="item.fieldCode"
@@ -32,15 +45,6 @@
               :style="{'background-color' : getStatusColor(row.enable) }"
               class="status-mark"/>
           </field-view>
-        </template>
-      </el-table-column>
-      <el-table-column v-if="manage.role.update" label="操作">
-        <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="small"
-            icon="el-icon-edit"
-            @click="editRole(scope.row)">编辑角色</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -66,7 +70,6 @@
     </div>
     <role-employee-dialog
       :visible.sync="visible"
-      :type="operationType"
       :code="operationCode"
       :codes="operationCodes"
       @success="editSuccess"
@@ -76,7 +79,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Reminder from '@/components/Reminder'
-import { employeeListAPI } from '@/api/admin/employee'
+import { employeeListAPI, employeeRoleModifyAPI } from '@/api/admin/employee'
 import FieldView from '@/components/Common/Form/FieldView'
 import RoleEmployeeDialog from './RoleEmployeeDialog'
 export default {
@@ -99,6 +102,7 @@ export default {
       operationType: '',
       operationCode: '',
       operationCodes: [],
+      selectionList: [],
       tableData: [],
       total: 0,
       pageSize: 15,
@@ -165,6 +169,19 @@ export default {
       this.operationCode = this.roleCode
       this.operationCodes = []
     },
+    removeEmployees() {
+      this.$confirm('确认移除所选用户？').then(() => {
+        employeeRoleModifyAPI({
+          roleCode: this.roleCode,
+          employeeCodes: this.selectionList.map(item => item.code),
+          action: 'remove'
+        }).then(() => {
+          this.$refs.elTable.clearSelection()
+          this.refreshUserList()
+          this.$message.success('操作成功！')
+        })
+      })
+    },
     editSuccess() {
       this.refreshUserList()
     },
@@ -206,6 +223,8 @@ export default {
   .content-table-header-reminder {
     flex: 1;
     margin-right: 5px;
+    display: flex;
+    align-items: center;
   }
 }
 .el-table {

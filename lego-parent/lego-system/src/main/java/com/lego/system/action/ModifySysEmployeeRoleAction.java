@@ -1,9 +1,7 @@
 package com.lego.system.action;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.lego.core.action.ModifyAction;
+import com.lego.core.action.MaintainAction;
+import com.lego.core.enums.ActionType;
 import com.lego.core.exception.BusinessException;
 import com.lego.core.util.StringUtil;
 import com.lego.system.dao.ISysEmployeeDao;
@@ -13,29 +11,48 @@ import com.lego.system.entity.SysRole;
 import com.lego.system.vo.SysEmployeeRoleModifyVO;
 import com.lego.system.vo.SysPermissionCode;
 
-public class ModifySysEmployeeRoleAction extends ModifyAction<SysEmployee, ISysEmployeeDao> {
+import java.util.List;
+
+public class ModifySysEmployeeRoleAction extends MaintainAction {
 
 	private SysEmployeeRoleModifyVO vo;
 
 	private ISysRoleDao roleDao = getDao(ISysRoleDao.class);
+	private ISysEmployeeDao employeeDao = getDao(ISysEmployeeDao.class);
 
 	public ModifySysEmployeeRoleAction(String operator, SysEmployeeRoleModifyVO vo) {
-		super(SysPermissionCode.manageUser, operator, vo.getCode());
+		super(SysPermissionCode.manageUser, operator);
 		this.vo = vo;
 	}
 
 	@Override
 	protected void preprocess() {
-    	BusinessException.check(StringUtil.isNotBlank(vo.getCodes()), "角色不能为空！");
+		BusinessException.check(StringUtil.isNotBlank(vo.getRoleCode()), "角色不能为空！");
+		BusinessException.check(StringUtil.isNotBlank(vo.getEmployeeCodes()), "用户不能为空！");
 	}
 
 	@Override
-	protected void doModify(SysEmployee entity) {
-		List<SysRole> roles = roleDao.findByCodes(vo.getCodes());
-		if (!vo.isCleanable()) {
-			List<SysRole> notExistsRoles = entity.getRoles().stream().filter(role -> !roles.contains(role)).collect(Collectors.toList());
-			roles.addAll(notExistsRoles);
+	protected void doRun() {
+		SysRole role = roleDao.findByCode(vo.getRoleCode());
+		List<SysEmployee> employees = employeeDao.findByCodes(vo.getEmployeeCodes());
+		for (SysEmployee employee : employees) {
+			if ("add".equals(vo.getAction())) {
+				employee.addRole(role);
+			} else {
+				employee.getRoles().remove(role);
+			}
 		}
-		entity.setRoles(roles);
+		employeeDao.saveAll(employees);
 	}
+
+	@Override
+	protected ActionType getActionType() {
+		return ActionType.MODIFY;
+	}
+
+	@Override
+	protected String getEntityName() {
+		return "批量更新用户角色";
+	}
+
 }

@@ -5,7 +5,7 @@
     :append-to-body="true"
     :close-on-click-modal="false"
     :modal-append-to-body="true"
-    :title="type == 'role' ? '编辑角色' : '关联员工'"
+    title="关联员工"
     width="30%"
     @close="handleCancel">
     <el-form
@@ -16,7 +16,7 @@
       class="new-dialog-form"
       label-position="top">
       <el-form-item
-        :label="type == 'role' ? '设置角色' : '选择员工'"
+        label="选择员工"
         prop="codes">
         <el-select
           v-model="submitForm.codes"
@@ -44,13 +44,11 @@
 
 <script>
 import { employeeRoleModifyAPI, employeeSimpleListAPI } from '@/api/admin/employee'
-import { roleSimpleListAPI } from '@/api/admin/role'
 import { objDeepCopy } from '@/utils'
 
 export default {
   name: 'RoleDialog',
   props: {
-    type: String,
     code: String,
     codes: Array,
     visible: {
@@ -73,12 +71,6 @@ export default {
   watch: {
     codes() {
       this.submitForm = { codes: objDeepCopy(this.codes) }
-      if (this.type == 'role') {
-        roleSimpleListAPI().then(res => {
-          this.optionsList = res.data
-        })
-        return
-      }
       employeeSimpleListAPI().then(res => {
         this.optionsList = res.data
       })
@@ -86,15 +78,7 @@ export default {
   },
   methods: {
     getSubmitForm() {
-      const forms = []
-      if (this.type == 'role') {
-        forms.push({ code: this.code, codes: this.submitForm.codes, cleanable: true })
-        return forms
-      }
-      this.submitForm.codes.forEach(item => {
-        forms.push({ code: item, codes: [this.code], cleanable: false })
-      })
-      return forms
+      return { roleCode: this.code, employeeCodes: this.submitForm.codes, action: 'add' }
     },
     handleConfirm() {
       this.$refs.dialogRef.validate(valid => {

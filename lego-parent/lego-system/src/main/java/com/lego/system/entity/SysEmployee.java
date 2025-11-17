@@ -102,4 +102,10 @@ public class SysEmployee extends BaseEntity {
         }
         return DataScopeType.get(dataScope);
     }
+
+    public void addRole(SysRole role) {
+        if (!this.roles.contains(role)) {
+            this.roles.add(role);
+        }
+    }
 }
