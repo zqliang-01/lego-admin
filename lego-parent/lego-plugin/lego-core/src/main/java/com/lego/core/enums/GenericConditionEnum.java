@@ -54,7 +54,7 @@ public enum GenericConditionEnum {
     }
 
     public boolean isSingleValue() {
-        return !multiValueTypes.contains(this);
+        return !multiValueTypes.contains(this) && !notValueTypes.contains(this);
     }
 
     public static GenericConditionEnum get(String code) {
