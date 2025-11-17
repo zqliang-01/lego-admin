@@ -11,7 +11,7 @@ public interface ISysSceneService {
 
     List<SysSceneInfo> findByForm(String formCode);
 
-    List<SysSceneInfo> findBy(String formCode, boolean visible);
+    List<SysSceneInfo> findBy(String operatorCode, String formCode, boolean visible);
 
     void add(String operatorCode, SysSceneCreateVO vo);
 

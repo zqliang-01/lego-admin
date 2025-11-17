@@ -31,7 +31,7 @@ public class SysSceneController extends BaseController {
 
     @GetMapping("/list-visible")
     public JsonResponse<List<SysSceneInfo>> listVisible(String formCode) {
-        return JsonResponse.success(sceneService.findBy(formCode, true));
+        return JsonResponse.success(sceneService.findBy(getLoginCode(), formCode, true));
     }
 
     @PostMapping("/add")
