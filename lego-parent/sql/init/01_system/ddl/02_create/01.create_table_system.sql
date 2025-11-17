@@ -1,690 +1,690 @@
-CREATE TABLE SYS_APP_SORT
+create table sys_app_sort
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   SN                   INT(5) NOT NULL COMMENT '序号',
-   PERMISSION_ID        BIGINT NOT NULL COMMENT '权限',
-   EMPLOYEE_ID          BIGINT NOT NULL COMMENT '员工',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   sn                   int(5) not null comment '序号',
+   permission_id        bigint not null comment '权限',
+   employee_id          bigint not null comment '员工',
+   primary key (id)
 );
 
-ALTER TABLE SYS_APP_SORT COMMENT '应用排序';
+alter table sys_app_sort comment '应用排序';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_APP_SORT
+create unique index unique_code on sys_app_sort
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_CODE_GENERATOR
+create table sys_code_generator
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   PREFIX               VARCHAR(255) COMMENT '前缀',
-   SERIAL_LENGTH        INT(5) NOT NULL DEFAULT 1 COMMENT '序号长度',
-   DATE_PATTERN         VARCHAR(255) COMMENT '日期格式',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   prefix               varchar(255) comment '前缀',
+   serial_length        int(5) not null default 1 comment '序号长度',
+   date_pattern         varchar(255) comment '日期格式',
+   primary key (id)
 );
 
-ALTER TABLE SYS_CODE_GENERATOR COMMENT '编码生成器表';
+alter table sys_code_generator comment '编码生成器表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_CODE_GENERATOR
+create unique index unique_code on sys_code_generator
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_COLUMN_SORT
+create table sys_column_sort
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CUSTOM_FIELD_ID      BIGINT NOT NULL COMMENT '自定义字段ID',
-   EMPLOYEE_ID          BIGINT NOT NULL COMMENT '员工ID',
-   WIDTH                INT(5) COMMENT '宽度',
-   VISIBLE              INT(1) NOT NULL DEFAULT 0 COMMENT '是否显示',
-   SN                   INT(5) NOT NULL DEFAULT 0 COMMENT '序号',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   custom_field_id      bigint not null comment '自定义字段id',
+   employee_id          bigint not null comment '员工id',
+   width                int(5) comment '宽度',
+   visible              int(1) not null default 0 comment '是否显示',
+   sn                   int(5) not null default 0 comment '序号',
+   primary key (id)
 );
 
-ALTER TABLE SYS_COLUMN_SORT COMMENT '表格列排序表';
+alter table sys_column_sort comment '表格列排序表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_COLUMN_SORT
+create unique index unique_code on sys_column_sort
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_CONFIG
+create table sys_config
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   VALUE                VARCHAR(1000),
-   ENABLE               INT NOT NULL DEFAULT 1 COMMENT '是否生效',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   value                varchar(1000),
+   enable               int not null default 1 comment '是否生效',
+   primary key (id)
 );
 
-ALTER TABLE SYS_CONFIG COMMENT '系统配置表';
+alter table sys_config comment '系统配置表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_CONFIG
+create unique index unique_code on sys_config
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_CUSTOM_FIELD
+create table sys_custom_field
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   FIELD_CODE           VARCHAR(255) COMMENT '属性值（表字段）',
-   FORM_ID              BIGINT NOT NULL COMMENT '表单ID',
-   RELATIVE_FORM_ID     BIGINT COMMENT '关联表单',
-   COMPONENT_NAME       VARCHAR(255) COMMENT '组件名称',
-   DEFAULT_VALUE        VARCHAR(1000) COMMENT '默认值',
-   FORM_TYPE            VARCHAR(255) COMMENT '表单类型',
-   INPUT_TIPS           VARCHAR(255) COMMENT '提示语',
-   STYLE_PERCENT        VARCHAR(255) COMMENT '长度占比',
-   OPTION_DICT_TYPE     VARCHAR(255) COMMENT '选项字典类型',
-   OPTION_DATA_TYPE     VARCHAR(255) COMMENT '选项类型（自定义/字典）',
-   PRECISIONS           INT(5) COMMENT '支持小数位',
-   SETTING              TEXT COMMENT '自定义选项内容',
-   HIDDEN               INT(1) DEFAULT 0 COMMENT '是否隐藏',
-   REQUIRED             INT(1) DEFAULT 0 COMMENT '是否必填',
-   UNIQUENESS           INT(1) DEFAULT 0 COMMENT '是否唯一',
-   MAX_NUM_RESTRICT     INT COMMENT '最大值',
-   MIN_NUM_RESTRICT     INT COMMENT '最小值',
-   X_AXIS               INT(5) NOT NULL DEFAULT 0 COMMENT '行号',
-   Y_AXIS               INT(5) NOT NULL DEFAULT 0 COMMENT '列号',
-   GENERATOR_ID         BIGINT COMMENT '编码生成器',
-   SN                   INT(5) NOT NULL DEFAULT 0 COMMENT '序号',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   field_code           varchar(255) comment '属性值（表字段）',
+   form_id              bigint not null comment '表单id',
+   relative_form_id     bigint comment '关联表单',
+   component_name       varchar(255) comment '组件名称',
+   default_value        varchar(1000) comment '默认值',
+   form_type            varchar(255) comment '表单类型',
+   input_tips           varchar(255) comment '提示语',
+   style_percent        varchar(255) comment '长度占比',
+   option_dict_type     varchar(255) comment '选项字典类型',
+   option_data_type     varchar(255) comment '选项类型（自定义/字典）',
+   precisions           int(5) comment '支持小数位',
+   setting              text comment '自定义选项内容',
+   hidden               int(1) default 0 comment '是否隐藏',
+   required             int(1) default 0 comment '是否必填',
+   uniqueness           int(1) default 0 comment '是否唯一',
+   max_num_restrict     int comment '最大值',
+   min_num_restrict     int comment '最小值',
+   x_axis               int(5) not null default 0 comment '行号',
+   y_axis               int(5) not null default 0 comment '列号',
+   generator_id         bigint comment '编码生成器',
+   sn                   int(5) not null default 0 comment '序号',
+   primary key (id)
 );
 
-ALTER TABLE SYS_CUSTOM_FIELD COMMENT '自定义字段表';
+alter table sys_custom_field comment '自定义字段表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_CUSTOM_FIELD
+create unique index unique_code on sys_custom_field
 (
-   CODE,
-   FORM_ID
+   code,
+   form_id
 );
 
-CREATE TABLE SYS_CUSTOM_FORM
+create table sys_custom_form
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   ENABLE               INT NOT NULL DEFAULT 1 COMMENT '是否生效',
-   TABLE_ID             BIGINT NOT NULL COMMENT '业务表ID',
-   QUERY_API_URL        VARCHAR(255) COMMENT '查询API',
-   DETAIL_API_URL       VARCHAR(255) COMMENT '详情API',
-   ADD_API_URL          VARCHAR(255) COMMENT '新增API',
-   UPDATE_API_URL       VARCHAR(255) COMMENT '修改API',
-   DELETE_API_URL       VARCHAR(255) COMMENT '删除API',
-   EXPORT_API_URL       VARCHAR(255) COMMENT '导出API',
-   EXPORT_ALL_API_URL   VARCHAR(255) COMMENT '导出全部API',
-   SIMPLE_API_URL       VARCHAR(255) COMMENT '简讯API',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   enable               int not null default 1 comment '是否生效',
+   table_id             bigint not null comment '业务表id',
+   query_api_url        varchar(255) comment '查询api',
+   detail_api_url       varchar(255) comment '详情api',
+   add_api_url          varchar(255) comment '新增api',
+   update_api_url       varchar(255) comment '修改api',
+   delete_api_url       varchar(255) comment '删除api',
+   export_api_url       varchar(255) comment '导出api',
+   export_all_api_url   varchar(255) comment '导出全部api',
+   simple_api_url       varchar(255) comment '简讯api',
+   primary key (id)
 );
 
-ALTER TABLE SYS_CUSTOM_FORM COMMENT '自定义表单表';
+alter table sys_custom_form comment '自定义表单表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_CUSTOM_FORM
+create unique index unique_code on sys_custom_form
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_DEPT
+create table sys_dept
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   DELETED              INT NOT NULL DEFAULT 0 COMMENT '逻辑删除状态：1已删除、0未删除',
-   ENABLE               INT NOT NULL DEFAULT 1 COMMENT '生效状态：1生效、0失效',
-   PARENT_ID            BIGINT,
-   SERIAL_NUMBER        INT NOT NULL DEFAULT 1 COMMENT '序号',
-   LEADER_ID            BIGINT COMMENT '负责人',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   deleted              int not null default 0 comment '逻辑删除状态：1已删除、0未删除',
+   enable               int not null default 1 comment '生效状态：1生效、0失效',
+   parent_id            bigint,
+   serial_number        int not null default 1 comment '序号',
+   leader_id            bigint comment '负责人',
+   primary key (id)
 );
 
-ALTER TABLE SYS_DEPT COMMENT '部门表';
+alter table sys_dept comment '部门表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_DEPT
+create unique index unique_code on sys_dept
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_DICTIONARIES
+create table sys_dictionaries
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '值',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   TYPE_ID              BIGINT NOT NULL COMMENT '字典类型',
-   SERIAL_NUMBER        INT(5) NOT NULL DEFAULT 1 COMMENT '序列',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '状态',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '值',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   type_id              bigint not null comment '字典类型',
+   serial_number        int(5) not null default 1 comment '序列',
+   enable               int(1) not null default 0 comment '状态',
+   primary key (id)
 );
 
-ALTER TABLE SYS_DICTIONARIES COMMENT '字典表';
+alter table sys_dictionaries comment '字典表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_DICTIONARIES
+create unique index unique_code on sys_dictionaries
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_EMPLOYEE
+create table sys_employee
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   DELETED              INT NOT NULL DEFAULT 0 COMMENT '逻辑删除状态：1已删除、0未删除',
-   PASSWORD             VARCHAR(255) NOT NULL COMMENT '密码',
-   DEPT_ID              BIGINT NOT NULL COMMENT '所属部门',
-   ENABLE               INT NOT NULL DEFAULT 1 COMMENT '是否生效',
-   IMAGE_ID             BIGINT COMMENT '头像',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   deleted              int not null default 0 comment '逻辑删除状态：1已删除、0未删除',
+   password             varchar(255) not null comment '密码',
+   dept_id              bigint not null comment '所属部门',
+   enable               int not null default 1 comment '是否生效',
+   image_id             bigint comment '头像',
+   primary key (id)
 );
 
-ALTER TABLE SYS_EMPLOYEE COMMENT '员工表';
+alter table sys_employee comment '员工表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_EMPLOYEE
+create unique index unique_code on sys_employee
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_EMPLOYEE_ROLE
+create table sys_employee_role
 (
-   EMPLOYEE_ID          BIGINT NOT NULL,
-   ROLE_ID              BIGINT NOT NULL,
-   PRIMARY KEY (EMPLOYEE_ID, ROLE_ID)
+   employee_id          bigint not null,
+   role_id              bigint not null,
+   primary key (employee_id, role_id)
 );
 
-ALTER TABLE SYS_EMPLOYEE_ROLE COMMENT '员工角色关联表';
+alter table sys_employee_role comment '员工角色关联表';
 
-CREATE TABLE SYS_FILE
+create table sys_file
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   TYPE_ID              BIGINT NOT NULL COMMENT '类型',
-   SIZE                 BIGINT COMMENT '大小（字节）',
-   CREATOR_ID           BIGINT NOT NULL,
-   PATH                 VARCHAR(1000) COMMENT '存储路径',
-   LOCATION_ID          BIGINT NOT NULL COMMENT '存储位置',
-   PERMISSION_ID        BIGINT NOT NULL COMMENT '权限ID',
-   ENTITY_CODE          VARCHAR(255) NOT NULL COMMENT '领域对象编码',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   type_id              bigint not null comment '类型',
+   size                 bigint comment '大小（字节）',
+   creator_id           bigint not null,
+   path                 varchar(1000) comment '存储路径',
+   location_id          bigint not null comment '存储位置',
+   permission_id        bigint not null comment '权限id',
+   entity_code          varchar(255) not null comment '领域对象编码',
+   primary key (id)
 );
 
-ALTER TABLE SYS_FILE COMMENT '附件表';
+alter table sys_file comment '附件表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_FILE
+create unique index unique_code on sys_file
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_GEN_TABLE
+create table sys_gen_table
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '表名',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '功能名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_ID           BIGINT NOT NULL COMMENT '员工ID',
-   COMMENT              VARCHAR(1000) COMMENT '描述',
-   PACKAGE_NAME         VARCHAR(255) NOT NULL COMMENT '包名（JAVA程序包名）',
-   APP_CODE             VARCHAR(255) NOT NULL COMMENT '模块编码（子系统编码）',
-   CLASS_NAME           VARCHAR(255) NOT NULL COMMENT '类名',
-   URL_NAME             VARCHAR(255) NOT NULL COMMENT '资源名称',
-   FIELD_NAME           VARCHAR(255) NOT NULL COMMENT '属性名称',
-   PATH                 VARCHAR(1000) COMMENT '生成路径',
-   PERMISSION_CODE      VARCHAR(255) NOT NULL COMMENT '权限编码',
-   DATA_SOURCE          VARCHAR(255) COMMENT '数据源',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '表名',
+   name                 varchar(255) not null comment '功能名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_id           bigint not null comment '员工id',
+   comment              varchar(1000) comment '描述',
+   package_name         varchar(255) not null comment '包名（java程序包名）',
+   app_code             varchar(255) not null comment '模块编码（子系统编码）',
+   class_name           varchar(255) not null comment '类名',
+   url_name             varchar(255) not null comment '资源名称',
+   field_name           varchar(255) not null comment '属性名称',
+   path                 varchar(1000) comment '生成路径',
+   permission_code      varchar(255) not null comment '权限编码',
+   data_source          varchar(255) comment '数据源',
+   primary key (id)
 );
 
-ALTER TABLE SYS_GEN_TABLE COMMENT '代码生成业务表';
+alter table sys_gen_table comment '代码生成业务表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_GEN_TABLE
+create unique index unique_code on sys_gen_table
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_GEN_TABLE_COLUMN
+create table sys_gen_table_column
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '列名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_ID           BIGINT NOT NULL COMMENT '员工ID',
-   TABLE_ID             BIGINT NOT NULL COMMENT '业务表ID',
-   RELATIVE_TABLE_ID    BIGINT COMMENT '关联表',
-   COMMENT              VARCHAR(255) COMMENT '列描述',
-   DATA_TYPE            VARCHAR(255) COMMENT '字段物理类型',
-   FORM_TYPE            VARCHAR(255) COMMENT '自定义表单字段类型',
-   JAVA_FIELD           VARCHAR(255) COMMENT 'JAVA字段名',
-   JAVA_FIELD_TYPE      VARCHAR(255) COMMENT 'JAVA字段类型',
-   REQUIRED             INT(1) DEFAULT 0 COMMENT '是否必填',
-   UNIQUENESS           INT(1) DEFAULT 0 COMMENT '是否唯一',
-   SN                   INT(5) NOT NULL DEFAULT 1 COMMENT '序号',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '列名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_id           bigint not null comment '员工id',
+   table_id             bigint not null comment '业务表id',
+   relative_table_id    bigint comment '关联表',
+   comment              varchar(255) comment '列描述',
+   data_type            varchar(255) comment '字段物理类型',
+   form_type            varchar(255) comment '自定义表单字段类型',
+   java_field           varchar(255) comment 'java字段名',
+   java_field_type      varchar(255) comment 'java字段类型',
+   required             int(1) default 0 comment '是否必填',
+   uniqueness           int(1) default 0 comment '是否唯一',
+   sn                   int(5) not null default 1 comment '序号',
+   primary key (id)
 );
 
-ALTER TABLE SYS_GEN_TABLE_COLUMN COMMENT '代码生成业务字段表 ';
+alter table sys_gen_table_column comment '代码生成业务字段表 ';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_GEN_TABLE_COLUMN
+create unique index unique_code on sys_gen_table_column
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_GEN_TABLE_COLUMN_ATTR
+create table sys_gen_table_column_attr
 (
-   COLUMN_ID            BIGINT NOT NULL COMMENT 'ID',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '属性key',
-   VALUE                VARCHAR(255) NOT NULL COMMENT '属性值',
-   PRIMARY KEY (COLUMN_ID, NAME)
+   column_id            bigint not null comment 'id',
+   name                 varchar(255) not null comment '属性key',
+   value                varchar(255) not null comment '属性值',
+   primary key (column_id, name)
 );
 
-ALTER TABLE SYS_GEN_TABLE_COLUMN_ATTR COMMENT '代码生成业务字段属性表';
+alter table sys_gen_table_column_attr comment '代码生成业务字段属性表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_GEN_TABLE_COLUMN_ATTR
+create unique index unique_code on sys_gen_table_column_attr
 (
-   NAME
+   name
 );
 
-CREATE TABLE SYS_MESSAGE
+create table sys_message
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) COMMENT '标题',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CONTENT              VARCHAR(2000) COMMENT '消息内容',
-   READED               INT(1) NOT NULL DEFAULT 0 COMMENT '已读',
-   TYPE_ID              BIGINT NOT NULL COMMENT '消息类型',
-   CREATOR_ID           BIGINT NOT NULL COMMENT '创建人',
-   RECIPIENT_ID         BIGINT NOT NULL COMMENT '接收人',
-   ENTITY_CODE          VARCHAR(255) COMMENT '实体编码',
-   READ_TIME            DATETIME COMMENT '已读时间',
-   FORM_ID              BIGINT COMMENT '表单',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) comment '标题',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   content              varchar(2000) comment '消息内容',
+   readed               int(1) not null default 0 comment '已读',
+   type_id              bigint not null comment '消息类型',
+   creator_id           bigint not null comment '创建人',
+   recipient_id         bigint not null comment '接收人',
+   entity_code          varchar(255) comment '实体编码',
+   read_time            datetime comment '已读时间',
+   form_id              bigint comment '表单',
+   primary key (id)
 );
 
-ALTER TABLE SYS_MESSAGE COMMENT '系统消息表';
+alter table sys_message comment '系统消息表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_MESSAGE
+create unique index unique_code on sys_message
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_NOTICE
+create table sys_notice
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) COMMENT '标题',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CONTENT              LONGTEXT COMMENT '公告内容',
-   READED               INT(1) NOT NULL DEFAULT 0 COMMENT '已读',
-   CREATOR_ID           BIGINT NOT NULL COMMENT '创建人',
-   RECIPIENT_ID         BIGINT NOT NULL COMMENT '接收人',
-   READ_TIME            DATETIME COMMENT '已读时间',
-   TEMPLATE_ID          BIGINT NOT NULL COMMENT '通知模板',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) comment '标题',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   content              longtext comment '公告内容',
+   readed               int(1) not null default 0 comment '已读',
+   creator_id           bigint not null comment '创建人',
+   recipient_id         bigint not null comment '接收人',
+   read_time            datetime comment '已读时间',
+   template_id          bigint not null comment '通知模板',
+   primary key (id)
 );
 
-ALTER TABLE SYS_NOTICE COMMENT '系统公告表';
+alter table sys_notice comment '系统公告表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_NOTICE
+create unique index unique_code on sys_notice
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_NOTICE_DEPT
+create table sys_notice_dept
 (
-   NOTICE_ID            BIGINT NOT NULL COMMENT '公告',
-   DEPT_ID              BIGINT NOT NULL COMMENT '部门',
-   PRIMARY KEY (NOTICE_ID, DEPT_ID)
+   notice_id            bigint not null comment '公告',
+   dept_id              bigint not null comment '部门',
+   primary key (notice_id, dept_id)
 );
 
-ALTER TABLE SYS_NOTICE_DEPT COMMENT '系统公告部门表';
+alter table sys_notice_dept comment '系统公告部门表';
 
-CREATE TABLE SYS_NOTICE_EMPLOYEE
+create table sys_notice_employee
 (
-   NOTICE_ID            BIGINT NOT NULL COMMENT '公告',
-   EMPLOYEE_ID          BIGINT NOT NULL COMMENT '员工',
-   PRIMARY KEY (NOTICE_ID, EMPLOYEE_ID)
+   notice_id            bigint not null comment '公告',
+   employee_id          bigint not null comment '员工',
+   primary key (notice_id, employee_id)
 );
 
-ALTER TABLE SYS_NOTICE_EMPLOYEE COMMENT '系统公告员工表';
+alter table sys_notice_employee comment '系统公告员工表';
 
-CREATE TABLE SYS_NOTICE_TEMPLATE
+create table sys_notice_template
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) COMMENT '标题',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CONTENT              LONGTEXT COMMENT '公告内容',
-   CREATOR_ID           BIGINT NOT NULL COMMENT '创建人',
-   PUBLISHED            INT(1) NOT NULL DEFAULT 0 COMMENT '已发布',
-   PUBLISHED_TIME       DATETIME COMMENT '发布时间',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) comment '标题',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   content              longtext comment '公告内容',
+   creator_id           bigint not null comment '创建人',
+   published            int(1) not null default 0 comment '已发布',
+   published_time       datetime comment '发布时间',
+   primary key (id)
 );
 
-ALTER TABLE SYS_NOTICE_TEMPLATE COMMENT '系统公告模板表';
+alter table sys_notice_template comment '系统公告模板表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_NOTICE_TEMPLATE
+create unique index unique_code on sys_notice_template
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_OPERATION_LOG
+create table sys_operation_log
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(50) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   OPERATOR_ID          BIGINT NOT NULL COMMENT '操作员ID',
-   DESCRIPTION          TEXT COMMENT '操作记录',
-   ACTION_TYPE          VARCHAR(50) NOT NULL COMMENT '操作类型',
-   PERMISSION_ID        BIGINT COMMENT '功能ID',
-   ENTITY_CODE          VARCHAR(50) COMMENT '实体编码',
-   ENTITY_NAME          VARCHAR(255) COMMENT '实体名称',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(50) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   operator_id          bigint not null comment '操作员id',
+   description          text comment '操作记录',
+   action_type          varchar(50) not null comment '操作类型',
+   permission_id        bigint comment '功能id',
+   entity_code          varchar(50) comment '实体编码',
+   entity_name          varchar(255) comment '实体名称',
+   primary key (id)
 );
 
-ALTER TABLE SYS_OPERATION_LOG COMMENT '操作日志表';
+alter table sys_operation_log comment '操作日志表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_OPERATION_LOG
+create unique index unique_code on sys_operation_log
 (
-   CODE
+   code
 );
 
-CREATE INDEX GENERIC_ENTITY ON SYS_OPERATION_LOG
+create index generic_entity on sys_operation_log
 (
-   OPERATOR_ID,
-   PERMISSION_ID,
-   ENTITY_CODE
+   operator_id,
+   permission_id,
+   entity_code
 );
 
-CREATE TABLE SYS_PERMISSION
+create table sys_permission
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   ENABLE               INT(1) NOT NULL DEFAULT 1 COMMENT '是否生效',
-   PARENT_ID            BIGINT COMMENT '父权限ID',
-   SN                   INT COMMENT '序号',
-   TYPE_ID              BIGINT NOT NULL COMMENT '类型',
-   ICON                 VARCHAR(255) COMMENT '图标',
-   FORM_ID              BIGINT COMMENT '表单',
-   ROUTE_TYPE_ID        BIGINT COMMENT '路由类型',
-   RELATE_CODE          VARCHAR(255) COMMENT '报表编码',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   enable               int(1) not null default 1 comment '是否生效',
+   parent_id            bigint comment '父权限id',
+   sn                   int comment '序号',
+   type_id              bigint not null comment '类型',
+   icon                 varchar(255) comment '图标',
+   form_id              bigint comment '表单',
+   route_type_id        bigint comment '路由类型',
+   relate_code          varchar(255) comment '报表编码',
+   primary key (id)
 );
 
-ALTER TABLE SYS_PERMISSION COMMENT '权限表';
+alter table sys_permission comment '权限表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_PERMISSION
+create unique index unique_code on sys_permission
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_PRINT_LOG
+create table sys_print_log
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CONTENT              LONGTEXT COMMENT '模板内容',
-   CREATOR_ID           BIGINT NOT NULL DEFAULT 1 COMMENT '创建人',
-   TEMPLATE_ID          BIGINT NOT NULL COMMENT '打印模板',
-   ENTITY_CODE          VARCHAR(255) NOT NULL COMMENT '实体对象编码',
-   PERMISSION_ID        BIGINT NOT NULL COMMENT '操作功能',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   content              longtext comment '模板内容',
+   creator_id           bigint not null default 1 comment '创建人',
+   template_id          bigint not null comment '打印模板',
+   entity_code          varchar(255) not null comment '实体对象编码',
+   permission_id        bigint not null comment '操作功能',
+   primary key (id)
 );
 
-ALTER TABLE SYS_PRINT_LOG COMMENT '打印日志';
+alter table sys_print_log comment '打印日志';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_PRINT_LOG
+create unique index unique_code on sys_print_log
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_PRINT_TEMPLATE
+create table sys_print_template
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CONTENT              LONGTEXT COMMENT '模板内容',
-   CREATOR_ID           BIGINT NOT NULL DEFAULT 1 COMMENT '创建人',
-   FORM_ID              BIGINT NOT NULL COMMENT '关联表单',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   content              longtext comment '模板内容',
+   creator_id           bigint not null default 1 comment '创建人',
+   form_id              bigint not null comment '关联表单',
+   primary key (id)
 );
 
-ALTER TABLE SYS_PRINT_TEMPLATE COMMENT '打印模板';
+alter table sys_print_template comment '打印模板';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_PRINT_TEMPLATE
+create unique index unique_code on sys_print_template
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_ROLE
+create table sys_role
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   DELETED              INT NOT NULL DEFAULT 0 COMMENT '逻辑删除状态：1已删除、0未删除',
-   DATA_SCOPE           INT NOT NULL DEFAULT 0 COMMENT '数据权限：0、本人，1、本部门，2、本部门及下级部门，3、全部 ',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   deleted              int not null default 0 comment '逻辑删除状态：1已删除、0未删除',
+   data_scope           int not null default 0 comment '数据权限：0、本人，1、本部门，2、本部门及下级部门，3、全部 ',
+   primary key (id)
 );
 
-ALTER TABLE SYS_ROLE COMMENT '角色表';
+alter table sys_role comment '角色表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_ROLE
+create unique index unique_code on sys_role
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_ROLE_PERMISSION
+create table sys_role_permission
 (
-   ROLE_ID              BIGINT NOT NULL,
-   PERMISSION_ID        BIGINT NOT NULL,
-   PRIMARY KEY (ROLE_ID, PERMISSION_ID)
+   role_id              bigint not null,
+   permission_id        bigint not null,
+   primary key (role_id, permission_id)
 );
 
-ALTER TABLE SYS_ROLE_PERMISSION COMMENT '角色权限关联表';
+alter table sys_role_permission comment '角色权限关联表';
 
-CREATE TABLE SYS_SCENE
+create table sys_scene
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   VISIBLE              INT NOT NULL DEFAULT 1 COMMENT '是否可见',
-   EMPLOYEE_ID          BIGINT NOT NULL COMMENT '员工ID',
-   DATA                 TEXT COMMENT '自定义数据',
-   CURRENT              INT NOT NULL DEFAULT 0 COMMENT '是否默认',
-   FORM_ID              BIGINT NOT NULL COMMENT '表单ID',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   visible              int not null default 1 comment '是否可见',
+   employee_id          bigint not null comment '员工id',
+   data                 text comment '自定义数据',
+   current              int not null default 0 comment '是否默认',
+   form_id              bigint not null comment '表单id',
+   primary key (id)
 );
 
-ALTER TABLE SYS_SCENE COMMENT '场景表';
+alter table sys_scene comment '场景表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_SCENE
+create unique index unique_code on sys_scene
 (
-   CODE
+   code
 );
 
-CREATE TABLE SYS_SEQUENCE
+create table sys_sequence
 (
-   ID                   BIGINT,
-   NAME                 VARCHAR(50)
+   id                   bigint,
+   name                 varchar(50)
 );
 
-ALTER TABLE SYS_SEQUENCE COMMENT '序列表';
+alter table sys_sequence comment '序列表';
 
-CREATE TABLE SYS_SIMPLE_TYPE
+create table sys_simple_type
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '工号',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CLASS_TYPE           VARCHAR(255) NOT NULL COMMENT '枚举实体类名',
-   SERIAL_NUMBER        INT(5) NOT NULL DEFAULT 1 COMMENT '序列',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '工号',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   class_type           varchar(255) not null comment '枚举实体类名',
+   serial_number        int(5) not null default 1 comment '序列',
+   primary key (id)
 );
 
-ALTER TABLE SYS_SIMPLE_TYPE COMMENT '枚举表';
+alter table sys_simple_type comment '枚举表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON SYS_SIMPLE_TYPE
+create unique index unique_code on sys_simple_type
 (
-   CODE,
-   CLASS_TYPE
+   code,
+   class_type
 );
 
-ALTER TABLE SYS_APP_SORT ADD CONSTRAINT FK_PERMISSION_SORT FOREIGN KEY (PERMISSION_ID)
-      REFERENCES SYS_PERMISSION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_app_sort add constraint fk_permission_sort foreign key (permission_id)
+      references sys_permission (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_COLUMN_SORT ADD CONSTRAINT FK_CUSTOM_FIELD_SORT FOREIGN KEY (CUSTOM_FIELD_ID)
-      REFERENCES SYS_CUSTOM_FIELD (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_column_sort add constraint fk_custom_field_sort foreign key (custom_field_id)
+      references sys_custom_field (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_CUSTOM_FIELD ADD CONSTRAINT FK_CUSTOM_FIELD_FORM FOREIGN KEY (FORM_ID)
-      REFERENCES SYS_CUSTOM_FORM (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_custom_field add constraint fk_custom_field_form foreign key (form_id)
+      references sys_custom_form (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_CUSTOM_FIELD ADD CONSTRAINT FK_RELATIVE_FORM FOREIGN KEY (RELATIVE_FORM_ID)
-      REFERENCES SYS_CUSTOM_FORM (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_custom_field add constraint fk_relative_form foreign key (relative_form_id)
+      references sys_custom_form (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_CUSTOM_FIELD ADD CONSTRAINT FK_SYS_GENERATOR_FIELD FOREIGN KEY (GENERATOR_ID)
-      REFERENCES SYS_CODE_GENERATOR (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_custom_field add constraint fk_sys_generator_field foreign key (generator_id)
+      references sys_code_generator (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_CUSTOM_FORM ADD CONSTRAINT FK_CUSTOM_FORM_TABLE FOREIGN KEY (TABLE_ID)
-      REFERENCES SYS_GEN_TABLE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_custom_form add constraint fk_custom_form_table foreign key (table_id)
+      references sys_gen_table (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_DEPT ADD CONSTRAINT FK_DEPT_LEADER FOREIGN KEY (LEADER_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_dept add constraint fk_dept_leader foreign key (leader_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_DICTIONARIES ADD CONSTRAINT FK_SYS_DICTIONARIES_TYPE FOREIGN KEY (TYPE_ID)
-      REFERENCES SYS_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_dictionaries add constraint fk_sys_dictionaries_type foreign key (type_id)
+      references sys_simple_type (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_EMPLOYEE_ROLE ADD CONSTRAINT FK_EMPLOYEE_ROLE FOREIGN KEY (ROLE_ID)
-      REFERENCES SYS_ROLE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_employee_role add constraint fk_employee_role foreign key (role_id)
+      references sys_role (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_EMPLOYEE_ROLE ADD CONSTRAINT FK_ROLE_EMPLOYEE FOREIGN KEY (EMPLOYEE_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_employee_role add constraint fk_role_employee foreign key (employee_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_FILE ADD CONSTRAINT FK_SYS_FILE_EMPLOYEE FOREIGN KEY (CREATOR_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_file add constraint fk_sys_file_employee foreign key (creator_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_FILE ADD CONSTRAINT FK_SYS_FILE_PERMISSION FOREIGN KEY (PERMISSION_ID)
-      REFERENCES SYS_PERMISSION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_file add constraint fk_sys_file_permission foreign key (permission_id)
+      references sys_permission (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_GEN_TABLE ADD CONSTRAINT FK_GEN_TABLE_CREATOR FOREIGN KEY (CREATOR_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_gen_table add constraint fk_gen_table_creator foreign key (creator_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_GEN_TABLE_COLUMN ADD CONSTRAINT FK_GEN_TABLE_COLUMN_CREATOR FOREIGN KEY (CREATOR_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_gen_table_column add constraint fk_gen_table_column_creator foreign key (creator_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_GEN_TABLE_COLUMN ADD CONSTRAINT FK_SYS_RELATIVE_TABLE FOREIGN KEY (RELATIVE_TABLE_ID)
-      REFERENCES SYS_GEN_TABLE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_gen_table_column add constraint fk_sys_relative_table foreign key (relative_table_id)
+      references sys_gen_table (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_GEN_TABLE_COLUMN_ATTR ADD CONSTRAINT FK_SYS_COLUMN_ATTRIBUTE FOREIGN KEY (COLUMN_ID)
-      REFERENCES SYS_GEN_TABLE_COLUMN (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_gen_table_column_attr add constraint fk_sys_column_attribute foreign key (column_id)
+      references sys_gen_table_column (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_MESSAGE ADD CONSTRAINT FK_MESSAGE_CREATOR FOREIGN KEY (CREATOR_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_message add constraint fk_message_creator foreign key (creator_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_MESSAGE ADD CONSTRAINT FK_MESSAGE_FORM FOREIGN KEY (FORM_ID)
-      REFERENCES SYS_CUSTOM_FORM (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_message add constraint fk_message_form foreign key (form_id)
+      references sys_custom_form (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_MESSAGE ADD CONSTRAINT FK_MESSAGE_RECIPIENT FOREIGN KEY (RECIPIENT_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_message add constraint fk_message_recipient foreign key (recipient_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_NOTICE ADD CONSTRAINT FK_NOTICE_CREATOR FOREIGN KEY (CREATOR_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_notice add constraint fk_notice_creator foreign key (creator_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_NOTICE ADD CONSTRAINT FK_NOTICE_RECIPIENT FOREIGN KEY (RECIPIENT_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_notice add constraint fk_notice_recipient foreign key (recipient_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_NOTICE ADD CONSTRAINT FK_NOTICE_TEMPLATE FOREIGN KEY (TEMPLATE_ID)
-      REFERENCES SYS_NOTICE_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_notice add constraint fk_notice_template foreign key (template_id)
+      references sys_notice_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_NOTICE_DEPT ADD CONSTRAINT FK_DEPT_NOTICE FOREIGN KEY (NOTICE_ID)
-      REFERENCES SYS_NOTICE_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_notice_dept add constraint fk_dept_notice foreign key (notice_id)
+      references sys_notice_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_NOTICE_DEPT ADD CONSTRAINT FK_NOTICE_DEPT FOREIGN KEY (DEPT_ID)
-      REFERENCES SYS_DEPT (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_notice_dept add constraint fk_notice_dept foreign key (dept_id)
+      references sys_dept (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_NOTICE_EMPLOYEE ADD CONSTRAINT FK_EMPLOYEE_NOTICE FOREIGN KEY (NOTICE_ID)
-      REFERENCES SYS_NOTICE_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_notice_employee add constraint fk_employee_notice foreign key (notice_id)
+      references sys_notice_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_NOTICE_EMPLOYEE ADD CONSTRAINT FK_NOTICE_EMPLOYEE FOREIGN KEY (EMPLOYEE_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_notice_employee add constraint fk_notice_employee foreign key (employee_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_OPERATION_LOG ADD CONSTRAINT FK_LOG_EMPLOYEE FOREIGN KEY (OPERATOR_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_operation_log add constraint fk_log_employee foreign key (operator_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_OPERATION_LOG ADD CONSTRAINT FK_LOG_PERMISSION FOREIGN KEY (PERMISSION_ID)
-      REFERENCES SYS_PERMISSION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_operation_log add constraint fk_log_permission foreign key (permission_id)
+      references sys_permission (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_PERMISSION ADD CONSTRAINT FK_PERMISSION_FORM FOREIGN KEY (FORM_ID)
-      REFERENCES SYS_CUSTOM_FORM (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_permission add constraint fk_permission_form foreign key (form_id)
+      references sys_custom_form (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_PERMISSION ADD CONSTRAINT FK_PERMISSION_ROUTE_TYPE FOREIGN KEY (ROUTE_TYPE_ID)
-      REFERENCES SYS_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_permission add constraint fk_permission_route_type foreign key (route_type_id)
+      references sys_simple_type (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_PERMISSION ADD CONSTRAINT FK_PERMISSION_TYPE FOREIGN KEY (TYPE_ID)
-      REFERENCES SYS_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_permission add constraint fk_permission_type foreign key (type_id)
+      references sys_simple_type (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_PRINT_LOG ADD CONSTRAINT FK_PRINT_LOG_PERMISSION FOREIGN KEY (PERMISSION_ID)
-      REFERENCES SYS_PERMISSION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_print_log add constraint fk_print_log_permission foreign key (permission_id)
+      references sys_permission (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_PRINT_LOG ADD CONSTRAINT FK_PRINT_LOG_TEMPLATE FOREIGN KEY (TEMPLATE_ID)
-      REFERENCES SYS_PRINT_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_print_log add constraint fk_print_log_template foreign key (template_id)
+      references sys_print_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_PRINT_TEMPLATE ADD CONSTRAINT FK_PRINT_TEMPLATE_FORM FOREIGN KEY (FORM_ID)
-      REFERENCES SYS_CUSTOM_FORM (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_print_template add constraint fk_print_template_form foreign key (form_id)
+      references sys_custom_form (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_ROLE_PERMISSION ADD CONSTRAINT FK_PERMISSION_ROLE FOREIGN KEY (ROLE_ID)
-      REFERENCES SYS_ROLE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_role_permission add constraint fk_permission_role foreign key (role_id)
+      references sys_role (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_ROLE_PERMISSION ADD CONSTRAINT FK_ROLE_PERMISSION FOREIGN KEY (PERMISSION_ID)
-      REFERENCES SYS_PERMISSION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_role_permission add constraint fk_role_permission foreign key (permission_id)
+      references sys_permission (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_SCENE ADD CONSTRAINT FK_SCENE_EMPLOYEE FOREIGN KEY (EMPLOYEE_ID)
-      REFERENCES SYS_EMPLOYEE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_scene add constraint fk_scene_employee foreign key (employee_id)
+      references sys_employee (id) on delete restrict on update restrict;
 
-ALTER TABLE SYS_SCENE ADD CONSTRAINT FK_SCENE_FORM FOREIGN KEY (FORM_ID)
-      REFERENCES SYS_CUSTOM_FORM (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sys_scene add constraint fk_scene_form foreign key (form_id)
+      references sys_custom_form (id) on delete restrict on update restrict;
 

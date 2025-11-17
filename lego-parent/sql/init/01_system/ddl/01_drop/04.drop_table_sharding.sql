@@ -1,14 +1,14 @@
 
-DROP TABLE IF EXISTS SHARDING_PROPERTIES;
+drop table if exists sharding_properties;
 
-DROP TABLE IF EXISTS SHARDING_TABLE;
+drop table if exists sharding_table;
 
-DROP TABLE IF EXISTS SHARDING_ALGORITHMS;
+drop table if exists sharding_algorithms;
 
-DROP TABLE IF EXISTS SHARDING_DATA_SOURCE;
+drop table if exists sharding_data_source;
 
-DROP TABLE IF EXISTS SHARDING_CONFIG;
+drop table if exists sharding_config;
 
-DROP TABLE IF EXISTS SHARDING_TEMPLATE;
+drop table if exists sharding_template;
 
-DROP TABLE IF EXISTS SHARDING_TEMPLATE_TYPE;
+drop table if exists sharding_template_type;

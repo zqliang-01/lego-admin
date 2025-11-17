@@ -1,16 +1,16 @@
 
-DROP TABLE IF EXISTS DOC_COLLECT;
+drop table if exists doc_collect;
 
-DROP TABLE IF EXISTS DOC_NODE;
+drop table if exists doc_node;
 
-DROP TABLE IF EXISTS DOC_PAGE_DEPT;
+drop table if exists doc_page_dept;
 
-DROP TABLE IF EXISTS DOC_PAGE_USER;
+drop table if exists doc_page_user;
 
-DROP TABLE IF EXISTS DOC_PAGE;
+drop table if exists doc_page;
 
-DROP TABLE IF EXISTS DOC_BOOK;
+drop table if exists doc_book;
 
-DROP TABLE IF EXISTS DOC_FILE;
+drop table if exists doc_file;
 
-DROP TABLE IF EXISTS DOC_SIMPLE_TYPE;
+drop table if exists doc_simple_type;

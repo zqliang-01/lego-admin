@@ -42,7 +42,9 @@ import org.apache.shardingsphere.sqlfederation.api.config.SQLFederationRuleConfi
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -59,6 +61,7 @@ import java.util.TreeMap;
 
 @Slf4j
 @Configuration
+@AutoConfigureBefore(value = DataSourceAutoConfiguration.class)
 public class ShardingDataSourceConfig {
 
     private static final String DATA_SOURCE_TYPE = "type";

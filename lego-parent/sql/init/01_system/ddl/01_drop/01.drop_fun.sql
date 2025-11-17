@@ -1,1 +1,1 @@
-DROP FUNCTION IF EXISTS next_id;
+drop function if exists next_id;

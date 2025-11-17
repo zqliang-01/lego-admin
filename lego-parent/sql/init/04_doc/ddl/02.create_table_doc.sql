@@ -1,215 +1,215 @@
-CREATE TABLE DOC_BOOK
+create table doc_book
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   DESCRIPTION          VARCHAR(1000) COMMENT '描述',
-   OPEN                 INT(1) NOT NULL DEFAULT 0 COMMENT '是否公开',
-   COVER_ID             BIGINT COMMENT '封面',
-   UPDATE_TIME          DATETIME COMMENT '更新时间',
-   SN                   INT(5) NOT NULL DEFAULT 0 COMMENT '序号',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_code         varchar(50) not null comment '创建人',
+   enable               int(1) not null default 0 comment '是否生效',
+   description          varchar(1000) comment '描述',
+   open                 int(1) not null default 0 comment '是否公开',
+   cover_id             bigint comment '封面',
+   update_time          datetime comment '更新时间',
+   sn                   int(5) not null default 0 comment '序号',
+   primary key (id)
 );
 
-ALTER TABLE DOC_BOOK COMMENT '知识库图书';
+alter table doc_book comment '知识库图书';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_BOOK
+create unique index unique_code on doc_book
 (
-   CODE
+   code
 );
 
-CREATE TABLE DOC_COLLECT
+create table doc_collect
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   NODE_ID              BIGINT NOT NULL COMMENT '节点',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_code         varchar(50) not null comment '创建人',
+   enable               int(1) not null default 0 comment '是否生效',
+   node_id              bigint not null comment '节点',
+   primary key (id)
 );
 
-ALTER TABLE DOC_COLLECT COMMENT '知识库收藏表';
+alter table doc_collect comment '知识库收藏表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_COLLECT
+create unique index unique_code on doc_collect
 (
-   CODE
+   code
 );
 
-CREATE UNIQUE INDEX UNIQUE_NODE ON DOC_COLLECT
+create unique index unique_node on doc_collect
 (
-   CREATOR_CODE,
-   NODE_ID
+   creator_code,
+   node_id
 );
 
-CREATE TABLE DOC_FILE
+create table doc_file
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   TYPE_ID              BIGINT NOT NULL COMMENT '类型',
-   SIZE                 BIGINT NOT NULL COMMENT '大小（字节）',
-   PATH                 VARCHAR(1000) COMMENT '存储路径',
-   LOCATION_ID          BIGINT NOT NULL COMMENT '存储位置',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '生效',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_code         varchar(50) not null comment '创建人',
+   type_id              bigint not null comment '类型',
+   size                 bigint not null comment '大小（字节）',
+   path                 varchar(1000) comment '存储路径',
+   location_id          bigint not null comment '存储位置',
+   enable               int(1) not null default 0 comment '生效',
+   primary key (id)
 );
 
-ALTER TABLE DOC_FILE COMMENT '知识库文件表';
+alter table doc_file comment '知识库文件表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_FILE
+create unique index unique_code on doc_file
 (
-   CODE
+   code
 );
 
-CREATE TABLE DOC_NODE
+create table doc_node
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CLASS_TYPE           VARCHAR(255) NOT NULL COMMENT '类类型',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   DESCRIPTION          VARCHAR(1000) COMMENT '描述',
-   PAGE_ID              BIGINT COMMENT '内容',
-   FILE_ID              BIGINT COMMENT '文件',
-   BOOK_ID              BIGINT NOT NULL COMMENT '归属图书',
-   TYPE_ID              BIGINT NOT NULL COMMENT '节点类型',
-   PARENT_ID            BIGINT COMMENT '父节点',
-   UPDATE_TIME          DATETIME COMMENT '更新时间',
-   SN                   INT(5) NOT NULL DEFAULT 0 COMMENT '序号',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   class_type           varchar(255) not null comment '类类型',
+   creator_code         varchar(50) not null comment '创建人',
+   enable               int(1) not null default 0 comment '是否生效',
+   description          varchar(1000) comment '描述',
+   page_id              bigint comment '内容',
+   file_id              bigint comment '文件',
+   book_id              bigint not null comment '归属图书',
+   type_id              bigint not null comment '节点类型',
+   parent_id            bigint comment '父节点',
+   update_time          datetime comment '更新时间',
+   sn                   int(5) not null default 0 comment '序号',
+   primary key (id)
 );
 
-ALTER TABLE DOC_NODE COMMENT '知识库图书节点';
+alter table doc_node comment '知识库图书节点';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_NODE
+create unique index unique_code on doc_node
 (
-   CODE
+   code
 );
 
-CREATE TABLE DOC_PAGE
+create table doc_page
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   CONTENT              LONGTEXT COMMENT '内容',
-   BOOK_ID              BIGINT NOT NULL COMMENT '图书',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_code         varchar(50) not null comment '创建人',
+   enable               int(1) not null default 0 comment '是否生效',
+   content              longtext comment '内容',
+   book_id              bigint not null comment '图书',
+   primary key (id)
 );
 
-ALTER TABLE DOC_PAGE COMMENT '知识库文章表';
+alter table doc_page comment '知识库文章表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_PAGE
+create unique index unique_code on doc_page
 (
-   CODE
+   code
 );
 
-CREATE TABLE DOC_PAGE_DEPT
+create table doc_page_dept
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   DEPT_CODE            VARCHAR(50) NOT NULL COMMENT '部门编码',
-   PAGE_ID              BIGINT NOT NULL COMMENT '文章',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_code         varchar(50) not null comment '创建人',
+   dept_code            varchar(50) not null comment '部门编码',
+   page_id              bigint not null comment '文章',
+   primary key (id)
 );
 
-ALTER TABLE DOC_PAGE_DEPT COMMENT '知识库文章协作部门';
+alter table doc_page_dept comment '知识库文章协作部门';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_PAGE_DEPT
+create unique index unique_code on doc_page_dept
 (
-   CODE
+   code
 );
 
-CREATE TABLE DOC_PAGE_USER
+create table doc_page_user
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   USER_CODE            VARCHAR(50) NOT NULL COMMENT '用户编码',
-   PAGE_ID              BIGINT NOT NULL COMMENT '文章',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   creator_code         varchar(50) not null comment '创建人',
+   user_code            varchar(50) not null comment '用户编码',
+   page_id              bigint not null comment '文章',
+   primary key (id)
 );
 
-ALTER TABLE DOC_PAGE_USER COMMENT '知识库文章协作用户';
+alter table doc_page_user comment '知识库文章协作用户';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_PAGE_USER
+create unique index unique_code on doc_page_user
 (
-   CODE
+   code
 );
 
-CREATE TABLE DOC_SIMPLE_TYPE
+create table doc_simple_type
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CLASS_TYPE           VARCHAR(255) NOT NULL COMMENT '类类型',
-   SERIAL_NUMBER        INT(5) NOT NULL DEFAULT 0 COMMENT '序号',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   class_type           varchar(255) not null comment '类类型',
+   serial_number        int(5) not null default 0 comment '序号',
+   primary key (id)
 );
 
-ALTER TABLE DOC_SIMPLE_TYPE COMMENT '知识库简单类型';
+alter table doc_simple_type comment '知识库简单类型';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON DOC_SIMPLE_TYPE
+create unique index unique_code on doc_simple_type
 (
-   CODE,
-   CLASS_TYPE
+   code,
+   class_type
 );
 
-ALTER TABLE DOC_BOOK ADD CONSTRAINT FK_BOOK_COVER FOREIGN KEY (COVER_ID)
-      REFERENCES DOC_FILE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_book add constraint fk_book_cover foreign key (cover_id)
+      references doc_file (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_COLLECT ADD CONSTRAINT FK_COLLECT_NODE FOREIGN KEY (NODE_ID)
-      REFERENCES DOC_NODE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_collect add constraint fk_collect_node foreign key (node_id)
+      references doc_node (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_FILE ADD CONSTRAINT FK_FILE_LOCATION FOREIGN KEY (LOCATION_ID)
-      REFERENCES DOC_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_file add constraint fk_file_location foreign key (location_id)
+      references doc_simple_type (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_FILE ADD CONSTRAINT FK_FILE_TYPE FOREIGN KEY (TYPE_ID)
-      REFERENCES DOC_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_file add constraint fk_file_type foreign key (type_id)
+      references doc_simple_type (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_NODE ADD CONSTRAINT FK_NODE_BOOK FOREIGN KEY (BOOK_ID)
-      REFERENCES DOC_BOOK (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_node add constraint fk_node_book foreign key (book_id)
+      references doc_book (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_NODE ADD CONSTRAINT FK_NODE_FILE FOREIGN KEY (FILE_ID)
-      REFERENCES DOC_FILE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_node add constraint fk_node_file foreign key (file_id)
+      references doc_file (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_NODE ADD CONSTRAINT FK_NODE_PAGE FOREIGN KEY (PAGE_ID)
-      REFERENCES DOC_PAGE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_node add constraint fk_node_page foreign key (page_id)
+      references doc_page (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_NODE ADD CONSTRAINT FK_NODE_TYPE FOREIGN KEY (TYPE_ID)
-      REFERENCES DOC_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_node add constraint fk_node_type foreign key (type_id)
+      references doc_simple_type (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_PAGE ADD CONSTRAINT FK_PAGE_BOOK FOREIGN KEY (BOOK_ID)
-      REFERENCES DOC_BOOK (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_page add constraint fk_page_book foreign key (book_id)
+      references doc_book (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_PAGE_DEPT ADD CONSTRAINT FK_DEPT_PAGE FOREIGN KEY (PAGE_ID)
-      REFERENCES DOC_PAGE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_page_dept add constraint fk_dept_page foreign key (page_id)
+      references doc_page (id) on delete restrict on update restrict;
 
-ALTER TABLE DOC_PAGE_USER ADD CONSTRAINT FK_USER_PAGE FOREIGN KEY (PAGE_ID)
-      REFERENCES DOC_PAGE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table doc_page_user add constraint fk_user_page foreign key (page_id)
+      references doc_page (id) on delete restrict on update restrict;
 

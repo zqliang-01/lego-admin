@@ -1,140 +1,140 @@
-CREATE TABLE REPORT_CONDITION
+create table report_condition
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   SN                   INT(5) NOT NULL DEFAULT 1 COMMENT '序列',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   DEFINITION_ID        BIGINT NOT NULL COMMENT '报表定义',
-   DEPENDENT_CODE       VARCHAR(50) COMMENT '依赖条件',
-   DATA_DEFINITION_ID   BIGINT COMMENT '数据集定义',
-   REQUIRED             INT(1) NOT NULL DEFAULT 0 COMMENT '是否必须',
-   DEFAULT_VALUE        VARCHAR(255) COMMENT '默认值',
-   TYPE                 VARCHAR(50) NOT NULL COMMENT '类型',
-   SQL_KEY              VARCHAR(50) NOT NULL COMMENT '字段',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   sn                   int(5) not null default 1 comment '序列',
+   enable               int(1) not null default 0 comment '是否生效',
+   definition_id        bigint not null comment '报表定义',
+   dependent_code       varchar(50) comment '依赖条件',
+   data_definition_id   bigint comment '数据集定义',
+   required             int(1) not null default 0 comment '是否必须',
+   default_value        varchar(255) comment '默认值',
+   type                 varchar(50) not null comment '类型',
+   sql_key              varchar(50) not null comment '字段',
+   primary key (id)
 );
 
-ALTER TABLE REPORT_CONDITION COMMENT '报表条件表';
+alter table report_condition comment '报表条件表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON REPORT_CONDITION
+create unique index unique_code on report_condition
 (
-   CODE
+   code
 );
 
-CREATE TABLE REPORT_DEFINITION
+create table report_definition
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   DATA_SOURCE          VARCHAR(255) COMMENT '数据源',
-   SN                   INT(5) NOT NULL DEFAULT 1 COMMENT '序列',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   SQL_TEXT             LONGTEXT NOT NULL COMMENT 'SQL脚本',
-   MAX_EXPORT_SIZE      INT(8) NOT NULL DEFAULT 1000 COMMENT '最大导出数量',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   TYPE                 VARCHAR(50) NOT NULL COMMENT '类型',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   data_source          varchar(255) comment '数据源',
+   sn                   int(5) not null default 1 comment '序列',
+   enable               int(1) not null default 0 comment '是否生效',
+   sql_text             longtext not null comment 'sql脚本',
+   max_export_size      int(8) not null default 1000 comment '最大导出数量',
+   creator_code         varchar(50) not null comment '创建人',
+   type                 varchar(50) not null comment '类型',
+   primary key (id)
 );
 
-ALTER TABLE REPORT_DEFINITION COMMENT '报表定义表';
+alter table report_definition comment '报表定义表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON REPORT_DEFINITION
+create unique index unique_code on report_definition
 (
-   CODE
+   code
 );
 
-CREATE TABLE REPORT_DESIGN
+create table report_design
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   SN                   INT(5) NOT NULL DEFAULT 1 COMMENT '序列',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   DEFINITION_ID        BIGINT NOT NULL COMMENT '报表定义',
-   POSITION             VARCHAR(50) NOT NULL COMMENT '位置',
-   CHART_TYPE           VARCHAR(50) COMMENT '图表类型',
-   DATA_DIMENSION       VARCHAR(50) COMMENT '维度列编码',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   sn                   int(5) not null default 1 comment '序列',
+   enable               int(1) not null default 0 comment '是否生效',
+   creator_code         varchar(50) not null comment '创建人',
+   definition_id        bigint not null comment '报表定义',
+   position             varchar(50) not null comment '位置',
+   chart_type           varchar(50) comment '图表类型',
+   data_dimension       varchar(50) comment '维度列编码',
+   primary key (id)
 );
 
-ALTER TABLE REPORT_DESIGN COMMENT '报表设计';
+alter table report_design comment '报表设计';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON REPORT_DESIGN
+create unique index unique_code on report_design
 (
-   CODE
+   code
 );
 
-CREATE TABLE REPORT_DESIGN_CATEGORY
+create table report_design_category
 (
-   DESIGN_ID            BIGINT NOT NULL COMMENT 'ID',
-   DATA_CATEGORY        VARCHAR(50) NOT NULL COMMENT '编码',
-   PRIMARY KEY (DESIGN_ID, DATA_CATEGORY)
+   design_id            bigint not null comment 'id',
+   data_category        varchar(50) not null comment '编码',
+   primary key (design_id, data_category)
 );
 
-ALTER TABLE REPORT_DESIGN_CATEGORY COMMENT '报表设计分类';
+alter table report_design_category comment '报表设计分类';
 
-CREATE TABLE REPORT_DESIGN_SORT
+create table report_design_sort
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   SN                   INT(5) NOT NULL DEFAULT 1 COMMENT '序列',
-   ENABLE               INT(1) NOT NULL DEFAULT 0 COMMENT '是否生效',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '创建人',
-   DESIGN_CODE          BIGINT NOT NULL COMMENT '报表设计编码',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   sn                   int(5) not null default 1 comment '序列',
+   enable               int(1) not null default 0 comment '是否生效',
+   creator_code         varchar(50) not null comment '创建人',
+   design_code          bigint not null comment '报表设计编码',
+   primary key (id)
 );
 
-ALTER TABLE REPORT_DESIGN_SORT COMMENT '首页排序';
+alter table report_design_sort comment '首页排序';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON REPORT_DESIGN_SORT
+create unique index unique_code on report_design_sort
 (
-   CODE
+   code
 );
 
-CREATE TABLE REPORT_TITLE
+create table report_title
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '姓名',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   SN                   INT(5) NOT NULL DEFAULT 1 COMMENT '序列',
-   ALIGN                VARCHAR(50) NOT NULL COMMENT '对齐方式',
-   DEFINITION_ID        BIGINT NOT NULL COMMENT '定义',
-   SQL_KEY              VARCHAR(50) NOT NULL COMMENT '字段',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '姓名',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   sn                   int(5) not null default 1 comment '序列',
+   align                varchar(50) not null comment '对齐方式',
+   definition_id        bigint not null comment '定义',
+   sql_key              varchar(50) not null comment '字段',
+   primary key (id)
 );
 
-ALTER TABLE REPORT_TITLE COMMENT '报表表头表';
+alter table report_title comment '报表表头表';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON REPORT_TITLE
+create unique index unique_code on report_title
 (
-   CODE
+   code
 );
 
-ALTER TABLE REPORT_CONDITION ADD CONSTRAINT FK_CONDITION_DEFINITION FOREIGN KEY (DEFINITION_ID)
-      REFERENCES REPORT_DEFINITION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table report_condition add constraint fk_condition_definition foreign key (definition_id)
+      references report_definition (id) on delete restrict on update restrict;
 
-ALTER TABLE REPORT_CONDITION ADD CONSTRAINT FK_DATA_DEFINITION FOREIGN KEY (DATA_DEFINITION_ID)
-      REFERENCES REPORT_DEFINITION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table report_condition add constraint fk_data_definition foreign key (data_definition_id)
+      references report_definition (id) on delete restrict on update restrict;
 
-ALTER TABLE REPORT_DESIGN ADD CONSTRAINT FK_DESIGN_DEFINITION FOREIGN KEY (DEFINITION_ID)
-      REFERENCES REPORT_DEFINITION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table report_design add constraint fk_design_definition foreign key (definition_id)
+      references report_definition (id) on delete restrict on update restrict;
 
-ALTER TABLE REPORT_DESIGN_CATEGORY ADD CONSTRAINT FK_DESIGN_CATEGORY FOREIGN KEY (DESIGN_ID)
-      REFERENCES REPORT_DESIGN (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table report_design_category add constraint fk_design_category foreign key (design_id)
+      references report_design (id) on delete restrict on update restrict;
 
-ALTER TABLE REPORT_TITLE ADD CONSTRAINT FK_TITLE_DEFINITION FOREIGN KEY (DEFINITION_ID)
-      REFERENCES REPORT_DEFINITION (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table report_title add constraint fk_title_definition foreign key (definition_id)
+      references report_definition (id) on delete restrict on update restrict;
 

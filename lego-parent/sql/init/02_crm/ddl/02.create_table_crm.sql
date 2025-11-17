@@ -1,96 +1,96 @@
-CREATE TABLE CRM_CONTRACT
+create table crm_contract
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   UPDATE_TIME          DATETIME NOT NULL COMMENT '更新时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '操作员编码',
-   LEAD_ID              BIGINT NOT NULL COMMENT '线索',
-   CUSTOMER_ID          BIGINT NOT NULL COMMENT '客户',
-   START_TIME           DATETIME NOT NULL COMMENT '开始时间',
-   END_TIME             DATETIME NOT NULL COMMENT '结束时间',
-   OWNER                VARCHAR(255) NOT NULL COMMENT '负责人',
-   AMOUNT               DECIMAL(10,2) DEFAULT 0 COMMENT '合同金额',
-   CHECK_STATUS         VARCHAR(255) COMMENT '审批状态',
-   TYPE                 VARCHAR(255) NOT NULL COMMENT '类型',
-   PROVINCE             VARCHAR(255) COMMENT '省份',
-   CITY                 VARCHAR(255) COMMENT '城市',
-   AREA                 VARCHAR(255) COMMENT '地区',
-   DETAIL               VARCHAR(1000) COMMENT '详细地址',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   update_time          datetime not null comment '更新时间',
+   creator_code         varchar(50) not null comment '操作员编码',
+   lead_id              bigint not null comment '线索',
+   customer_id          bigint not null comment '客户',
+   start_time           datetime not null comment '开始时间',
+   end_time             datetime not null comment '结束时间',
+   owner                varchar(255) not null comment '负责人',
+   amount               decimal(10,2) default 0 comment '合同金额',
+   check_status         varchar(255) comment '审批状态',
+   type                 varchar(255) not null comment '类型',
+   province             varchar(255) comment '省份',
+   city                 varchar(255) comment '城市',
+   area                 varchar(255) comment '地区',
+   detail               varchar(1000) comment '详细地址',
+   primary key (id)
 );
 
-ALTER TABLE CRM_CONTRACT COMMENT '合同';
+alter table crm_contract comment '合同';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON CRM_CONTRACT
+create unique index unique_code on crm_contract
 (
-   CODE
+   code
 );
 
-CREATE TABLE CRM_CUSTOMER
+create table crm_customer
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   UPDATE_TIME          DATETIME NOT NULL COMMENT '更新时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '操作员编码',
-   MOBILE               VARCHAR(50) COMMENT '手机号',
-   WEBSITE              VARCHAR(255) COMMENT '网址',
-   EMAIL                VARCHAR(255) COMMENT '邮箱',
-   CHECK_STATUS         VARCHAR(255) COMMENT '审批状态',
-   TYPE                 VARCHAR(255) NOT NULL COMMENT '类型',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   update_time          datetime not null comment '更新时间',
+   creator_code         varchar(50) not null comment '操作员编码',
+   mobile               varchar(50) comment '手机号',
+   website              varchar(255) comment '网址',
+   email                varchar(255) comment '邮箱',
+   check_status         varchar(255) comment '审批状态',
+   type                 varchar(255) not null comment '类型',
+   primary key (id)
 );
 
-ALTER TABLE CRM_CUSTOMER COMMENT '客户';
+alter table crm_customer comment '客户';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON CRM_CUSTOMER
+create unique index unique_code on crm_customer
 (
-   CODE
+   code
 );
 
-CREATE TABLE CRM_LEAD
+create table crm_lead
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   UPDATE_TIME          DATETIME NOT NULL COMMENT '更新时间',
-   CREATOR_CODE         VARCHAR(50) NOT NULL COMMENT '操作员编码',
-   MOBILE               VARCHAR(255) COMMENT '手机号码',
-   AMOUNT               DECIMAL(10,2) COMMENT '金额',
-   BIRTHDAY             DATE COMMENT '生日',
-   ADDRESS              VARCHAR(255) COMMENT '地址',
-   AGE                  INT(3) COMMENT '年龄',
-   SIZE                 DECIMAL(10,2) COMMENT '百分数',
-   STATUS               INT(1) COMMENT '状态',
-   EMAIL                VARCHAR(255) COMMENT '邮箱',
-   EMPLOYEE             VARCHAR(255) COMMENT '员工',
-   DEPT                 VARCHAR(255) COMMENT '部门',
-   CUSTOMER_ID          BIGINT COMMENT '客户',
-   CHECK_STATUS         VARCHAR(255) COMMENT '审批状态',
-   SOURCE               VARCHAR(255) COMMENT '来源',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   update_time          datetime not null comment '更新时间',
+   creator_code         varchar(50) not null comment '操作员编码',
+   mobile               varchar(255) comment '手机号码',
+   amount               decimal(10,2) comment '金额',
+   birthday             date comment '生日',
+   address              varchar(255) comment '地址',
+   age                  int(3) comment '年龄',
+   size                 decimal(10,2) comment '百分数',
+   status               int(1) comment '状态',
+   email                varchar(255) comment '邮箱',
+   employee             varchar(255) comment '员工',
+   dept                 varchar(255) comment '部门',
+   customer_id          bigint comment '客户',
+   check_status         varchar(255) comment '审批状态',
+   source               varchar(255) comment '来源',
+   primary key (id)
 );
 
-ALTER TABLE CRM_LEAD COMMENT '线索';
+alter table crm_lead comment '线索';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON CRM_LEAD
+create unique index unique_code on crm_lead
 (
-   CODE
+   code
 );
 
-ALTER TABLE CRM_CONTRACT ADD CONSTRAINT FK_CRM_CONTRACT_CUSTOMER FOREIGN KEY (CUSTOMER_ID)
-      REFERENCES CRM_CUSTOMER (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table crm_contract add constraint fk_crm_contract_customer foreign key (customer_id)
+      references crm_customer (id) on delete restrict on update restrict;
 
-ALTER TABLE CRM_CONTRACT ADD CONSTRAINT FK_CRM_CONTRACT_LEAD FOREIGN KEY (LEAD_ID)
-      REFERENCES CRM_LEAD (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table crm_contract add constraint fk_crm_contract_lead foreign key (lead_id)
+      references crm_lead (id) on delete restrict on update restrict;
 
-ALTER TABLE CRM_LEAD ADD CONSTRAINT FK_CRM_LEAD_CUSTOMER FOREIGN KEY (CUSTOMER_ID)
-      REFERENCES CRM_CUSTOMER (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table crm_lead add constraint fk_crm_lead_customer foreign key (customer_id)
+      references crm_customer (id) on delete restrict on update restrict;
 

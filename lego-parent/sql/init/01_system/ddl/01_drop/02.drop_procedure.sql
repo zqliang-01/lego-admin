@@ -1,2 +1,2 @@
-DROP PROCEDURE IF EXISTS add_sharding_template;
-DROP PROCEDURE IF EXISTS add_system_permission;
+drop procedure if exists add_sharding_template;
+drop procedure if exists add_system_permission;

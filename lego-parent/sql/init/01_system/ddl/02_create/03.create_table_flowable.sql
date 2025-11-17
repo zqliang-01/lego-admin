@@ -1,8 +1,5 @@
 -- --------------------------------------------------------
--- 主机:                           127.0.0.1
 -- 服务器版本:                        5.7.34-log - MySQL Community Server (GPL)
--- 服务器操作系统:                      Win64
--- HeidiSQL 版本:                  12.5.0.6677
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -14,9 +11,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
--- 导出  表 lego-admin.act_evt_log 结构
-DROP TABLE IF EXISTS `act_evt_log`;
-CREATE TABLE IF NOT EXISTS `act_evt_log` (
+-- 导出  表 act_evt_log 结构
+DROP TABLE IF EXISTS `ACT_EVT_LOG`;
+CREATE TABLE IF NOT EXISTS `ACT_EVT_LOG` (
   `LOG_NR_` bigint(20) NOT NULL AUTO_INCREMENT,
   `TYPE_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
   `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
@@ -32,11 +29,11 @@ CREATE TABLE IF NOT EXISTS `act_evt_log` (
   PRIMARY KEY (`LOG_NR_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_evt_log 的数据：~0 rows (大约)
+-- 正在导出表  act_evt_log 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ge_bytearray 结构
-DROP TABLE IF EXISTS `act_ge_bytearray`;
-CREATE TABLE IF NOT EXISTS `act_ge_bytearray` (
+-- 导出  表 act_ge_bytearray 结构
+DROP TABLE IF EXISTS `ACT_GE_BYTEARRAY`;
+CREATE TABLE IF NOT EXISTS `ACT_GE_BYTEARRAY` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -45,22 +42,22 @@ CREATE TABLE IF NOT EXISTS `act_ge_bytearray` (
   `GENERATED_` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`ID_`),
   KEY `ACT_FK_BYTEARR_DEPL` (`DEPLOYMENT_ID_`),
-  CONSTRAINT `ACT_FK_BYTEARR_DEPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_re_deployment` (`ID_`)
+  CONSTRAINT `ACT_FK_BYTEARR_DEPL` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_RE_DEPLOYMENT` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ge_bytearray 的数据：~0 rows (大约)
+-- 正在导出表  act_ge_bytearray 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ge_property 结构
-DROP TABLE IF EXISTS `act_ge_property`;
-CREATE TABLE IF NOT EXISTS `act_ge_property` (
+-- 导出  表 act_ge_property 结构
+DROP TABLE IF EXISTS `ACT_GE_PROPERTY`;
+CREATE TABLE IF NOT EXISTS `ACT_GE_PROPERTY` (
   `NAME_` varchar(64) COLLATE utf8_bin NOT NULL,
   `VALUE_` varchar(300) COLLATE utf8_bin DEFAULT NULL,
   `REV_` int(11) DEFAULT NULL,
   PRIMARY KEY (`NAME_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ge_property 的数据：~13 rows (大约)
-INSERT INTO `act_ge_property` (`NAME_`, `VALUE_`, `REV_`) VALUES
+-- 正在导出表  act_ge_property 的数据：~13 rows (大约)
+INSERT INTO `ACT_GE_PROPERTY` (`NAME_`, `VALUE_`, `REV_`) VALUES
 	('batch.schema.version', '6.8.0.0', 1),
 	('cfg.execution-related-entities-count', 'true', 1),
 	('cfg.task-related-entities-count', 'true', 1),
@@ -75,9 +72,9 @@ INSERT INTO `act_ge_property` (`NAME_`, `VALUE_`, `REV_`) VALUES
 	('task.schema.version', '6.8.0.0', 1),
 	('variable.schema.version', '6.8.0.0', 1);
 
--- 导出  表 lego-admin.act_hi_actinst 结构
-DROP TABLE IF EXISTS `act_hi_actinst`;
-CREATE TABLE IF NOT EXISTS `act_hi_actinst` (
+-- 导出  表 act_hi_actinst 结构
+DROP TABLE IF EXISTS `ACT_HI_ACTINST`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_ACTINST` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT '1',
   `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
@@ -102,11 +99,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_actinst` (
   KEY `ACT_IDX_HI_ACT_INST_EXEC` (`EXECUTION_ID_`,`ACT_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_actinst 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_actinst 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_attachment 结构
-DROP TABLE IF EXISTS `act_hi_attachment`;
-CREATE TABLE IF NOT EXISTS `act_hi_attachment` (
+-- 导出  表 act_hi_attachment 结构
+DROP TABLE IF EXISTS `ACT_HI_ATTACHMENT`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_ATTACHMENT` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `USER_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -121,11 +118,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_attachment` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_attachment 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_attachment 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_comment 结构
-DROP TABLE IF EXISTS `act_hi_comment`;
-CREATE TABLE IF NOT EXISTS `act_hi_comment` (
+-- 导出  表 act_hi_comment 结构
+DROP TABLE IF EXISTS `ACT_HI_COMMENT`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_COMMENT` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `TIME_` datetime(3) NOT NULL,
@@ -138,11 +135,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_comment` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_comment 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_comment 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_detail 结构
-DROP TABLE IF EXISTS `act_hi_detail`;
-CREATE TABLE IF NOT EXISTS `act_hi_detail` (
+-- 导出  表 act_hi_detail 结构
+DROP TABLE IF EXISTS `ACT_HI_DETAIL`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_DETAIL` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
   `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
@@ -166,11 +163,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_detail` (
   KEY `ACT_IDX_HI_DETAIL_TASK_ID` (`TASK_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_detail 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_detail 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_entitylink 结构
-DROP TABLE IF EXISTS `act_hi_entitylink`;
-CREATE TABLE IF NOT EXISTS `act_hi_entitylink` (
+-- 导出  表 act_hi_entitylink 结构
+DROP TABLE IF EXISTS `ACT_HI_ENTITYLINK`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_ENTITYLINK` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `LINK_TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `CREATE_TIME_` datetime(3) DEFAULT NULL,
@@ -192,11 +189,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_entitylink` (
   KEY `ACT_IDX_HI_ENT_LNK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`,`LINK_TYPE_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_entitylink 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_entitylink 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_identitylink 结构
-DROP TABLE IF EXISTS `act_hi_identitylink`;
-CREATE TABLE IF NOT EXISTS `act_hi_identitylink` (
+-- 导出  表 act_hi_identitylink 结构
+DROP TABLE IF EXISTS `ACT_HI_IDENTITYLINK`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_IDENTITYLINK` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `GROUP_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `TYPE_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -217,11 +214,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_identitylink` (
   KEY `ACT_IDX_HI_IDENT_LNK_PROCINST` (`PROC_INST_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_identitylink 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_identitylink 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_procinst 结构
-DROP TABLE IF EXISTS `act_hi_procinst`;
-CREATE TABLE IF NOT EXISTS `act_hi_procinst` (
+-- 导出  表 act_hi_procinst 结构
+DROP TABLE IF EXISTS `ACT_HI_PROCINST`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_PROCINST` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT '1',
   `PROC_INST_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
@@ -250,11 +247,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_procinst` (
   KEY `ACT_IDX_HI_PRO_SUPER_PROCINST` (`SUPER_PROCESS_INSTANCE_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_procinst 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_procinst 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_taskinst 结构
-DROP TABLE IF EXISTS `act_hi_taskinst`;
-CREATE TABLE IF NOT EXISTS `act_hi_taskinst` (
+-- 导出  表 act_hi_taskinst 结构
+DROP TABLE IF EXISTS `ACT_HI_TASKINST`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_TASKINST` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT '1',
   `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
@@ -290,11 +287,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_taskinst` (
   KEY `ACT_IDX_HI_TASK_INST_PROCINST` (`PROC_INST_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_taskinst 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_taskinst 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_tsk_log 结构
-DROP TABLE IF EXISTS `act_hi_tsk_log`;
-CREATE TABLE IF NOT EXISTS `act_hi_tsk_log` (
+-- 导出  表 act_hi_tsk_log 结构
+DROP TABLE IF EXISTS `ACT_HI_TSK_LOG`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_TSK_LOG` (
   `ID_` bigint(20) NOT NULL AUTO_INCREMENT,
   `TYPE_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
   `TASK_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
@@ -312,11 +309,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_tsk_log` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_tsk_log 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_tsk_log 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_hi_varinst 结构
-DROP TABLE IF EXISTS `act_hi_varinst`;
-CREATE TABLE IF NOT EXISTS `act_hi_varinst` (
+-- 导出  表 act_hi_varinst 结构
+DROP TABLE IF EXISTS `ACT_HI_VARINST`;
+CREATE TABLE IF NOT EXISTS `ACT_HI_VARINST` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT '1',
   `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
@@ -343,11 +340,11 @@ CREATE TABLE IF NOT EXISTS `act_hi_varinst` (
   KEY `ACT_IDX_HI_PROCVAR_EXE` (`EXECUTION_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_hi_varinst 的数据：~0 rows (大约)
+-- 正在导出表  act_hi_varinst 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_procdef_info 结构
-DROP TABLE IF EXISTS `act_procdef_info`;
-CREATE TABLE IF NOT EXISTS `act_procdef_info` (
+-- 导出  表 act_procdef_info 结构
+DROP TABLE IF EXISTS `ACT_PROCDEF_INFO`;
+CREATE TABLE IF NOT EXISTS `ACT_PROCDEF_INFO` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
@@ -356,15 +353,15 @@ CREATE TABLE IF NOT EXISTS `act_procdef_info` (
   UNIQUE KEY `ACT_UNIQ_INFO_PROCDEF` (`PROC_DEF_ID_`),
   KEY `ACT_IDX_INFO_PROCDEF` (`PROC_DEF_ID_`),
   KEY `ACT_FK_INFO_JSON_BA` (`INFO_JSON_ID_`),
-  CONSTRAINT `ACT_FK_INFO_JSON_BA` FOREIGN KEY (`INFO_JSON_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_INFO_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`)
+  CONSTRAINT `ACT_FK_INFO_JSON_BA` FOREIGN KEY (`INFO_JSON_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_INFO_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_procdef_info 的数据：~0 rows (大约)
+-- 正在导出表  act_procdef_info 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_re_deployment 结构
-DROP TABLE IF EXISTS `act_re_deployment`;
-CREATE TABLE IF NOT EXISTS `act_re_deployment` (
+-- 导出  表 act_re_deployment 结构
+DROP TABLE IF EXISTS `ACT_RE_DEPLOYMENT`;
+CREATE TABLE IF NOT EXISTS `ACT_RE_DEPLOYMENT` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -378,11 +375,11 @@ CREATE TABLE IF NOT EXISTS `act_re_deployment` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_re_deployment 的数据：~0 rows (大约)
+-- 正在导出表  act_re_deployment 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_re_model 结构
-DROP TABLE IF EXISTS `act_re_model`;
-CREATE TABLE IF NOT EXISTS `act_re_model` (
+-- 导出  表 act_re_model 结构
+DROP TABLE IF EXISTS `ACT_RE_MODEL`;
+CREATE TABLE IF NOT EXISTS `ACT_RE_MODEL` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `NAME_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -400,16 +397,16 @@ CREATE TABLE IF NOT EXISTS `act_re_model` (
   KEY `ACT_FK_MODEL_SOURCE` (`EDITOR_SOURCE_VALUE_ID_`),
   KEY `ACT_FK_MODEL_SOURCE_EXTRA` (`EDITOR_SOURCE_EXTRA_VALUE_ID_`),
   KEY `ACT_FK_MODEL_DEPLOYMENT` (`DEPLOYMENT_ID_`),
-  CONSTRAINT `ACT_FK_MODEL_DEPLOYMENT` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `act_re_deployment` (`ID_`),
-  CONSTRAINT `ACT_FK_MODEL_SOURCE` FOREIGN KEY (`EDITOR_SOURCE_VALUE_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_MODEL_SOURCE_EXTRA` FOREIGN KEY (`EDITOR_SOURCE_EXTRA_VALUE_ID_`) REFERENCES `act_ge_bytearray` (`ID_`)
+  CONSTRAINT `ACT_FK_MODEL_DEPLOYMENT` FOREIGN KEY (`DEPLOYMENT_ID_`) REFERENCES `ACT_RE_DEPLOYMENT` (`ID_`),
+  CONSTRAINT `ACT_FK_MODEL_SOURCE` FOREIGN KEY (`EDITOR_SOURCE_VALUE_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_MODEL_SOURCE_EXTRA` FOREIGN KEY (`EDITOR_SOURCE_EXTRA_VALUE_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_re_model 的数据：~0 rows (大约)
+-- 正在导出表  act_re_model 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_re_procdef 结构
-DROP TABLE IF EXISTS `act_re_procdef`;
-CREATE TABLE IF NOT EXISTS `act_re_procdef` (
+-- 导出  表 act_re_procdef 结构
+DROP TABLE IF EXISTS `ACT_RE_PROCDEF`;
+CREATE TABLE IF NOT EXISTS `ACT_RE_PROCDEF` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -432,11 +429,11 @@ CREATE TABLE IF NOT EXISTS `act_re_procdef` (
   UNIQUE KEY `ACT_UNIQ_PROCDEF` (`KEY_`,`VERSION_`,`DERIVED_VERSION_`,`TENANT_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_re_procdef 的数据：~0 rows (大约)
+-- 正在导出表  act_re_procdef 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_actinst 结构
-DROP TABLE IF EXISTS `act_ru_actinst`;
-CREATE TABLE IF NOT EXISTS `act_ru_actinst` (
+-- 导出  表 act_ru_actinst 结构
+DROP TABLE IF EXISTS `ACT_RU_ACTINST`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_ACTINST` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT '1',
   `PROC_DEF_ID_` varchar(64) COLLATE utf8_bin NOT NULL,
@@ -464,11 +461,11 @@ CREATE TABLE IF NOT EXISTS `act_ru_actinst` (
   KEY `ACT_IDX_RU_ACTI_TASK` (`TASK_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_actinst 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_actinst 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_deadletter_job 结构
-DROP TABLE IF EXISTS `act_ru_deadletter_job`;
-CREATE TABLE IF NOT EXISTS `act_ru_deadletter_job` (
+-- 导出  表 act_ru_deadletter_job 结构
+DROP TABLE IF EXISTS `ACT_RU_DEADLETTER_JOB`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_DEADLETTER_JOB` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -503,18 +500,18 @@ CREATE TABLE IF NOT EXISTS `act_ru_deadletter_job` (
   KEY `ACT_FK_DEADLETTER_JOB_EXECUTION` (`EXECUTION_ID_`),
   KEY `ACT_FK_DEADLETTER_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
   KEY `ACT_FK_DEADLETTER_JOB_PROC_DEF` (`PROC_DEF_ID_`),
-  CONSTRAINT `ACT_FK_DEADLETTER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`)
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_DEADLETTER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_deadletter_job 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_deadletter_job 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_entitylink 结构
-DROP TABLE IF EXISTS `act_ru_entitylink`;
-CREATE TABLE IF NOT EXISTS `act_ru_entitylink` (
+-- 导出  表 act_ru_entitylink 结构
+DROP TABLE IF EXISTS `ACT_RU_ENTITYLINK`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_ENTITYLINK` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `CREATE_TIME_` datetime(3) DEFAULT NULL,
@@ -537,11 +534,11 @@ CREATE TABLE IF NOT EXISTS `act_ru_entitylink` (
   KEY `ACT_IDX_ENT_LNK_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`,`LINK_TYPE_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_entitylink 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_entitylink 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_event_subscr 结构
-DROP TABLE IF EXISTS `act_ru_event_subscr`;
-CREATE TABLE IF NOT EXISTS `act_ru_event_subscr` (
+-- 导出  表 act_ru_event_subscr 结构
+DROP TABLE IF EXISTS `ACT_RU_EVENT_SUBSCR`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_EVENT_SUBSCR` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `EVENT_TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -563,14 +560,14 @@ CREATE TABLE IF NOT EXISTS `act_ru_event_subscr` (
   KEY `ACT_IDX_EVENT_SUBSCR_CONFIG_` (`CONFIGURATION_`),
   KEY `ACT_IDX_EVENT_SUBSCR_SCOPEREF_` (`SCOPE_ID_`,`SCOPE_TYPE_`),
   KEY `ACT_FK_EVENT_EXEC` (`EXECUTION_ID_`),
-  CONSTRAINT `ACT_FK_EVENT_EXEC` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`)
+  CONSTRAINT `ACT_FK_EVENT_EXEC` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_event_subscr 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_event_subscr 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_execution 结构
-DROP TABLE IF EXISTS `act_ru_execution`;
-CREATE TABLE IF NOT EXISTS `act_ru_execution` (
+-- 导出  表 act_ru_execution 结构
+DROP TABLE IF EXISTS `ACT_RU_EXECUTION`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_EXECUTION` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `PROC_INST_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
@@ -618,17 +615,17 @@ CREATE TABLE IF NOT EXISTS `act_ru_execution` (
   KEY `ACT_FK_EXE_PARENT` (`PARENT_ID_`),
   KEY `ACT_FK_EXE_SUPER` (`SUPER_EXEC_`),
   KEY `ACT_FK_EXE_PROCDEF` (`PROC_DEF_ID_`),
-  CONSTRAINT `ACT_FK_EXE_PARENT` FOREIGN KEY (`PARENT_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE CASCADE,
-  CONSTRAINT `ACT_FK_EXE_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`),
-  CONSTRAINT `ACT_FK_EXE_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `ACT_FK_EXE_SUPER` FOREIGN KEY (`SUPER_EXEC_`) REFERENCES `act_ru_execution` (`ID_`) ON DELETE CASCADE
+  CONSTRAINT `ACT_FK_EXE_PARENT` FOREIGN KEY (`PARENT_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`) ON DELETE CASCADE,
+  CONSTRAINT `ACT_FK_EXE_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_EXE_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `ACT_FK_EXE_SUPER` FOREIGN KEY (`SUPER_EXEC_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_execution 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_execution 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_external_job 结构
-DROP TABLE IF EXISTS `act_ru_external_job`;
-CREATE TABLE IF NOT EXISTS `act_ru_external_job` (
+-- 导出  表 act_ru_external_job 结构
+DROP TABLE IF EXISTS `ACT_RU_EXTERNAL_JOB`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_EXTERNAL_JOB` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -663,15 +660,15 @@ CREATE TABLE IF NOT EXISTS `act_ru_external_job` (
   KEY `ACT_IDX_EJOB_SCOPE` (`SCOPE_ID_`,`SCOPE_TYPE_`),
   KEY `ACT_IDX_EJOB_SUB_SCOPE` (`SUB_SCOPE_ID_`,`SCOPE_TYPE_`),
   KEY `ACT_IDX_EJOB_SCOPE_DEF` (`SCOPE_DEFINITION_ID_`,`SCOPE_TYPE_`),
-  CONSTRAINT `ACT_FK_EXTERNAL_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_EXTERNAL_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`)
+  CONSTRAINT `ACT_FK_EXTERNAL_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_EXTERNAL_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_external_job 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_external_job 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_history_job 结构
-DROP TABLE IF EXISTS `act_ru_history_job`;
-CREATE TABLE IF NOT EXISTS `act_ru_history_job` (
+-- 导出  表 act_ru_history_job 结构
+DROP TABLE IF EXISTS `ACT_RU_HISTORY_JOB`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_HISTORY_JOB` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `LOCK_EXP_TIME_` timestamp(3) NULL DEFAULT NULL,
@@ -689,11 +686,11 @@ CREATE TABLE IF NOT EXISTS `act_ru_history_job` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_history_job 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_history_job 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_identitylink 结构
-DROP TABLE IF EXISTS `act_ru_identitylink`;
-CREATE TABLE IF NOT EXISTS `act_ru_identitylink` (
+-- 导出  表 act_ru_identitylink 结构
+DROP TABLE IF EXISTS `ACT_RU_IDENTITYLINK`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_IDENTITYLINK` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `GROUP_ID_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -715,16 +712,16 @@ CREATE TABLE IF NOT EXISTS `act_ru_identitylink` (
   KEY `ACT_IDX_ATHRZ_PROCEDEF` (`PROC_DEF_ID_`),
   KEY `ACT_FK_TSKASS_TASK` (`TASK_ID_`),
   KEY `ACT_FK_IDL_PROCINST` (`PROC_INST_ID_`),
-  CONSTRAINT `ACT_FK_ATHRZ_PROCEDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`),
-  CONSTRAINT `ACT_FK_IDL_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_TSKASS_TASK` FOREIGN KEY (`TASK_ID_`) REFERENCES `act_ru_task` (`ID_`)
+  CONSTRAINT `ACT_FK_ATHRZ_PROCEDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_IDL_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TSKASS_TASK` FOREIGN KEY (`TASK_ID_`) REFERENCES `ACT_RU_TASK` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_identitylink 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_identitylink 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_job 结构
-DROP TABLE IF EXISTS `act_ru_job`;
-CREATE TABLE IF NOT EXISTS `act_ru_job` (
+-- 导出  表 act_ru_job 结构
+DROP TABLE IF EXISTS `ACT_RU_JOB`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_JOB` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -762,18 +759,18 @@ CREATE TABLE IF NOT EXISTS `act_ru_job` (
   KEY `ACT_FK_JOB_EXECUTION` (`EXECUTION_ID_`),
   KEY `ACT_FK_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
   KEY `ACT_FK_JOB_PROC_DEF` (`PROC_DEF_ID_`),
-  CONSTRAINT `ACT_FK_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`)
+  CONSTRAINT `ACT_FK_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_job 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_job 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_suspended_job 结构
-DROP TABLE IF EXISTS `act_ru_suspended_job`;
-CREATE TABLE IF NOT EXISTS `act_ru_suspended_job` (
+-- 导出  表 act_ru_suspended_job 结构
+DROP TABLE IF EXISTS `ACT_RU_SUSPENDED_JOB`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_SUSPENDED_JOB` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -809,18 +806,18 @@ CREATE TABLE IF NOT EXISTS `act_ru_suspended_job` (
   KEY `ACT_FK_SUSPENDED_JOB_EXECUTION` (`EXECUTION_ID_`),
   KEY `ACT_FK_SUSPENDED_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
   KEY `ACT_FK_SUSPENDED_JOB_PROC_DEF` (`PROC_DEF_ID_`),
-  CONSTRAINT `ACT_FK_SUSPENDED_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`)
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_SUSPENDED_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_suspended_job 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_suspended_job 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_task 结构
-DROP TABLE IF EXISTS `act_ru_task`;
-CREATE TABLE IF NOT EXISTS `act_ru_task` (
+-- 导出  表 act_ru_task 结构
+DROP TABLE IF EXISTS `ACT_RU_TASK`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_TASK` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `EXECUTION_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
@@ -859,16 +856,16 @@ CREATE TABLE IF NOT EXISTS `act_ru_task` (
   KEY `ACT_FK_TASK_EXE` (`EXECUTION_ID_`),
   KEY `ACT_FK_TASK_PROCINST` (`PROC_INST_ID_`),
   KEY `ACT_FK_TASK_PROCDEF` (`PROC_DEF_ID_`),
-  CONSTRAINT `ACT_FK_TASK_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_TASK_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`),
-  CONSTRAINT `ACT_FK_TASK_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`)
+  CONSTRAINT `ACT_FK_TASK_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TASK_PROCDEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`),
+  CONSTRAINT `ACT_FK_TASK_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_task 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_task 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_timer_job 结构
-DROP TABLE IF EXISTS `act_ru_timer_job`;
-CREATE TABLE IF NOT EXISTS `act_ru_timer_job` (
+-- 导出  表 act_ru_timer_job 结构
+DROP TABLE IF EXISTS `ACT_RU_TIMER_JOB`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_TIMER_JOB` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `CATEGORY_` varchar(255) COLLATE utf8_bin DEFAULT NULL,
@@ -907,18 +904,18 @@ CREATE TABLE IF NOT EXISTS `act_ru_timer_job` (
   KEY `ACT_FK_TIMER_JOB_EXECUTION` (`EXECUTION_ID_`),
   KEY `ACT_FK_TIMER_JOB_PROCESS_INSTANCE` (`PROCESS_INSTANCE_ID_`),
   KEY `ACT_FK_TIMER_JOB_PROC_DEF` (`PROC_DEF_ID_`),
-  CONSTRAINT `ACT_FK_TIMER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_TIMER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_TIMER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_TIMER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_TIMER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `act_re_procdef` (`ID_`)
+  CONSTRAINT `ACT_FK_TIMER_JOB_CUSTOM_VALUES` FOREIGN KEY (`CUSTOM_VALUES_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_EXCEPTION` FOREIGN KEY (`EXCEPTION_STACK_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_EXECUTION` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_PROCESS_INSTANCE` FOREIGN KEY (`PROCESS_INSTANCE_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_TIMER_JOB_PROC_DEF` FOREIGN KEY (`PROC_DEF_ID_`) REFERENCES `ACT_RE_PROCDEF` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_timer_job 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_timer_job 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.act_ru_variable 结构
-DROP TABLE IF EXISTS `act_ru_variable`;
-CREATE TABLE IF NOT EXISTS `act_ru_variable` (
+-- 导出  表 act_ru_variable 结构
+DROP TABLE IF EXISTS `ACT_RU_VARIABLE`;
+CREATE TABLE IF NOT EXISTS `ACT_RU_VARIABLE` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `TYPE_` varchar(255) COLLATE utf8_bin NOT NULL,
@@ -941,16 +938,16 @@ CREATE TABLE IF NOT EXISTS `act_ru_variable` (
   KEY `ACT_IDX_VARIABLE_TASK_ID` (`TASK_ID_`),
   KEY `ACT_FK_VAR_EXE` (`EXECUTION_ID_`),
   KEY `ACT_FK_VAR_PROCINST` (`PROC_INST_ID_`),
-  CONSTRAINT `ACT_FK_VAR_BYTEARRAY` FOREIGN KEY (`BYTEARRAY_ID_`) REFERENCES `act_ge_bytearray` (`ID_`),
-  CONSTRAINT `ACT_FK_VAR_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `act_ru_execution` (`ID_`),
-  CONSTRAINT `ACT_FK_VAR_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `act_ru_execution` (`ID_`)
+  CONSTRAINT `ACT_FK_VAR_BYTEARRAY` FOREIGN KEY (`BYTEARRAY_ID_`) REFERENCES `ACT_GE_BYTEARRAY` (`ID_`),
+  CONSTRAINT `ACT_FK_VAR_EXE` FOREIGN KEY (`EXECUTION_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`),
+  CONSTRAINT `ACT_FK_VAR_PROCINST` FOREIGN KEY (`PROC_INST_ID_`) REFERENCES `ACT_RU_EXECUTION` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.act_ru_variable 的数据：~0 rows (大约)
+-- 正在导出表  act_ru_variable 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.flw_channel_definition 结构
-DROP TABLE IF EXISTS `flw_channel_definition`;
-CREATE TABLE IF NOT EXISTS `flw_channel_definition` (
+-- 导出  表 flw_channel_definition 结构
+DROP TABLE IF EXISTS `FLW_CHANNEL_DEFINITION`;
+CREATE TABLE IF NOT EXISTS `FLW_CHANNEL_DEFINITION` (
   `ID_` varchar(255) NOT NULL,
   `NAME_` varchar(255) DEFAULT NULL,
   `VERSION_` int(11) DEFAULT NULL,
@@ -967,11 +964,11 @@ CREATE TABLE IF NOT EXISTS `flw_channel_definition` (
   UNIQUE KEY `ACT_IDX_CHANNEL_DEF_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  lego-admin.flw_channel_definition 的数据：~0 rows (大约)
+-- 正在导出表  flw_channel_definition 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.flw_event_definition 结构
-DROP TABLE IF EXISTS `flw_event_definition`;
-CREATE TABLE IF NOT EXISTS `flw_event_definition` (
+-- 导出  表 flw_event_definition 结构
+DROP TABLE IF EXISTS `FLW_EVENT_DEFINITION`;
+CREATE TABLE IF NOT EXISTS `FLW_EVENT_DEFINITION` (
   `ID_` varchar(255) NOT NULL,
   `NAME_` varchar(255) DEFAULT NULL,
   `VERSION_` int(11) DEFAULT NULL,
@@ -985,11 +982,11 @@ CREATE TABLE IF NOT EXISTS `flw_event_definition` (
   UNIQUE KEY `ACT_IDX_EVENT_DEF_UNIQ` (`KEY_`,`VERSION_`,`TENANT_ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  lego-admin.flw_event_definition 的数据：~0 rows (大约)
+-- 正在导出表  flw_event_definition 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.flw_event_deployment 结构
-DROP TABLE IF EXISTS `flw_event_deployment`;
-CREATE TABLE IF NOT EXISTS `flw_event_deployment` (
+-- 导出  表 flw_event_deployment 结构
+DROP TABLE IF EXISTS `FLW_EVENT_DEPLOYMENT`;
+CREATE TABLE IF NOT EXISTS `FLW_EVENT_DEPLOYMENT` (
   `ID_` varchar(255) NOT NULL,
   `NAME_` varchar(255) DEFAULT NULL,
   `CATEGORY_` varchar(255) DEFAULT NULL,
@@ -999,11 +996,11 @@ CREATE TABLE IF NOT EXISTS `flw_event_deployment` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  lego-admin.flw_event_deployment 的数据：~0 rows (大约)
+-- 正在导出表  flw_event_deployment 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.flw_event_resource 结构
-DROP TABLE IF EXISTS `flw_event_resource`;
-CREATE TABLE IF NOT EXISTS `flw_event_resource` (
+-- 导出  表 flw_event_resource 结构
+DROP TABLE IF EXISTS `FLW_EVENT_RESOURCE`;
+CREATE TABLE IF NOT EXISTS `FLW_EVENT_RESOURCE` (
   `ID_` varchar(255) NOT NULL,
   `NAME_` varchar(255) DEFAULT NULL,
   `DEPLOYMENT_ID_` varchar(255) DEFAULT NULL,
@@ -1011,11 +1008,11 @@ CREATE TABLE IF NOT EXISTS `flw_event_resource` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  lego-admin.flw_event_resource 的数据：~0 rows (大约)
+-- 正在导出表  flw_event_resource 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.flw_ev_databasechangelog 结构
-DROP TABLE IF EXISTS `flw_ev_databasechangelog`;
-CREATE TABLE IF NOT EXISTS `flw_ev_databasechangelog` (
+-- 导出  表 flw_ev_databasechangelog 结构
+DROP TABLE IF EXISTS `FLW_EV_DATABASECHANGELOG`;
+CREATE TABLE IF NOT EXISTS `FLW_EV_DATABASECHANGELOG` (
   `ID` varchar(255) NOT NULL,
   `AUTHOR` varchar(255) NOT NULL,
   `FILENAME` varchar(255) NOT NULL,
@@ -1032,29 +1029,29 @@ CREATE TABLE IF NOT EXISTS `flw_ev_databasechangelog` (
   `DEPLOYMENT_ID` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  lego-admin.flw_ev_databasechangelog 的数据：~3 rows (大约)
-INSERT INTO `flw_ev_databasechangelog` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`) VALUES
+-- 正在导出表  flw_ev_databasechangelog 的数据：~3 rows (大约)
+INSERT INTO `FLW_EV_DATABASECHANGELOG` (`ID`, `AUTHOR`, `FILENAME`, `DATEEXECUTED`, `ORDEREXECUTED`, `EXECTYPE`, `MD5SUM`, `DESCRIPTION`, `COMMENTS`, `TAG`, `LIQUIBASE`, `CONTEXTS`, `LABELS`, `DEPLOYMENT_ID`) VALUES
 	('1', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2024-02-20 17:09:21', 1, 'EXECUTED', '8:1b0c48c9cf7945be799d868a2626d687', 'createTable tableName=FLW_EVENT_DEPLOYMENT; createTable tableName=FLW_EVENT_RESOURCE; createTable tableName=FLW_EVENT_DEFINITION; createIndex indexName=ACT_IDX_EVENT_DEF_UNIQ, tableName=FLW_EVENT_DEFINITION; createTable tableName=FLW_CHANNEL_DEFIN...', '', NULL, '4.9.1', NULL, NULL, '8420161958'),
 	('2', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2024-02-20 17:09:21', 2, 'EXECUTED', '8:0ea825feb8e470558f0b5754352b9cda', 'addColumn tableName=FLW_CHANNEL_DEFINITION; addColumn tableName=FLW_CHANNEL_DEFINITION', '', NULL, '4.9.1', NULL, NULL, '8420161958'),
 	('3', 'flowable', 'org/flowable/eventregistry/db/liquibase/flowable-eventregistry-db-changelog.xml', '2024-02-20 17:09:21', 3, 'EXECUTED', '8:3c2bb293350b5cbe6504331980c9dcee', 'customChange', '', NULL, '4.9.1', NULL, NULL, '8420161958');
 
--- 导出  表 lego-admin.flw_ev_databasechangeloglock 结构
-DROP TABLE IF EXISTS `flw_ev_databasechangeloglock`;
-CREATE TABLE IF NOT EXISTS `flw_ev_databasechangeloglock` (
+-- 导出  表 flw_ev_databasechangeloglock 结构
+DROP TABLE IF EXISTS `FLW_EV_DATABASECHANGELOGLOCK`;
+CREATE TABLE IF NOT EXISTS `FLW_EV_DATABASECHANGELOGLOCK` (
   `ID` int(11) NOT NULL,
-  `LOCKED` bit(1) NOT NULL,
+  `LOCKED` tinyint(1) NOT NULL,
   `LOCKGRANTED` datetime DEFAULT NULL,
   `LOCKEDBY` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- 正在导出表  lego-admin.flw_ev_databasechangeloglock 的数据：~1 rows (大约)
-INSERT INTO `flw_ev_databasechangeloglock` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`) VALUES
-	(1, b'0', NULL, NULL);
+-- 正在导出表  flw_ev_databasechangeloglock 的数据：~1 rows (大约)
+INSERT INTO `FLW_EV_DATABASECHANGELOGLOCK` (`ID`, `LOCKED`, `LOCKGRANTED`, `LOCKEDBY`) VALUES
+	(1, 0, NULL, NULL);
 
--- 导出  表 lego-admin.flw_ru_batch 结构
-DROP TABLE IF EXISTS `flw_ru_batch`;
-CREATE TABLE IF NOT EXISTS `flw_ru_batch` (
+-- 导出  表 flw_ru_batch 结构
+DROP TABLE IF EXISTS `FLW_RU_BATCH`;
+CREATE TABLE IF NOT EXISTS `FLW_RU_BATCH` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `TYPE_` varchar(64) COLLATE utf8_bin NOT NULL,
@@ -1068,11 +1065,11 @@ CREATE TABLE IF NOT EXISTS `flw_ru_batch` (
   PRIMARY KEY (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.flw_ru_batch 的数据：~0 rows (大约)
+-- 正在导出表  flw_ru_batch 的数据：~0 rows (大约)
 
--- 导出  表 lego-admin.flw_ru_batch_part 结构
-DROP TABLE IF EXISTS `flw_ru_batch_part`;
-CREATE TABLE IF NOT EXISTS `flw_ru_batch_part` (
+-- 导出  表 flw_ru_batch_part 结构
+DROP TABLE IF EXISTS `FLW_RU_BATCH_PART`;
+CREATE TABLE IF NOT EXISTS `FLW_RU_BATCH_PART` (
   `ID_` varchar(64) COLLATE utf8_bin NOT NULL,
   `REV_` int(11) DEFAULT NULL,
   `BATCH_ID_` varchar(64) COLLATE utf8_bin DEFAULT NULL,
@@ -1089,10 +1086,10 @@ CREATE TABLE IF NOT EXISTS `flw_ru_batch_part` (
   `TENANT_ID_` varchar(255) COLLATE utf8_bin DEFAULT '',
   PRIMARY KEY (`ID_`),
   KEY `FLW_IDX_BATCH_PART` (`BATCH_ID_`),
-  CONSTRAINT `FLW_FK_BATCH_PART_PARENT` FOREIGN KEY (`BATCH_ID_`) REFERENCES `flw_ru_batch` (`ID_`)
+  CONSTRAINT `FLW_FK_BATCH_PART_PARENT` FOREIGN KEY (`BATCH_ID_`) REFERENCES `FLW_RU_BATCH` (`ID_`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- 正在导出表  lego-admin.flw_ru_batch_part 的数据：~0 rows (大约)
+-- 正在导出表  flw_ru_batch_part 的数据：~0 rows (大约)
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

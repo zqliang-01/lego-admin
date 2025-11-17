@@ -1,12 +1,12 @@
 
-DROP TABLE IF EXISTS REPORT_CONDITION;
+drop table if exists report_condition;
 
-DROP TABLE IF EXISTS REPORT_TITLE;
+drop table if exists report_title;
 
-DROP TABLE IF EXISTS REPORT_DESIGN_CATEGORY;
+drop table if exists report_design_category;
 
-DROP TABLE IF EXISTS REPORT_DESIGN;
+drop table if exists report_design;
 
-DROP TABLE IF EXISTS REPORT_DESIGN_SORT;
+drop table if exists report_design_sort;
 
-DROP TABLE IF EXISTS REPORT_DEFINITION;
+drop table if exists report_definition;

@@ -15,8 +15,8 @@
     <select id="selectLatestByName" resultMap="definitionResultMap">
         SELECT t.ID_, d.NAME_, t.KEY_, t.CATEGORY_ category, CONCAT('v',t.VERSION_) VERSION_,
             t.SUSPENSION_STATE_, d.DEPLOY_TIME_
-        FROM act_re_procdef t
-        JOIN act_re_deployment d ON d.ID_ = t.DEPLOYMENT_ID_
+        FROM ACT_RE_PROCDEF t
+        JOIN ACT_RE_DEPLOYMENT d ON d.ID_ = t.DEPLOYMENT_ID_
         <where>
             <if test="name != null and name != ''">
                 AND d.NAME_ LIKE CONCAT('%', #{name}, '%')

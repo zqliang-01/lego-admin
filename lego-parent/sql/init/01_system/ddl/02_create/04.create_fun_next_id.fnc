@@ -1,16 +1,16 @@
 
-CREATE FUNCTION next_id(vName VARCHAR(50)) RETURNS bigint(15)  
-DETERMINISTIC 
-BEGIN 
-	DECLARE vValue BIGINT;
-	
-	IF vName IS NULL OR vName = '' THEN
-		SET vName = 'general';
-	END IF;
-	
-	UPDATE SYS_SEQUENCE SET id = LAST_INSERT_ID(id + 1)
-	WHERE  NAME = vName;
-	SELECT LAST_INSERT_ID() INTO vValue FROM SYS_SEQUENCE WHERE NAME = vName;
-	
-	RETURN vValue;
-END;
+create function next_id(vname varchar(50)) returns bigint(15)
+deterministic
+begin
+	declare vvalue bigint;
+
+	if vname is null or vname = '' then
+		set vname = 'general';
+	end if;
+
+	update sys_sequence set id = last_insert_id(id + 1)
+	where  name = vname;
+	select last_insert_id() into vvalue from sys_sequence where name = vname;
+
+	return vvalue;
+end;

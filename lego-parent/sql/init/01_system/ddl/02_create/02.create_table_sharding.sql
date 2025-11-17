@@ -1,179 +1,179 @@
-CREATE TABLE SHARDING_ALGORITHMS
+create table sharding_algorithms
 (
-   ID                   INT NOT NULL,
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(50) NOT NULL COMMENT '名称',
-   VERSION              INT NOT NULL DEFAULT 1,
-   ENABLE               INT NOT NULL DEFAULT 0 COMMENT '生效',
-   CREATE_TIME          DATETIME NOT NULL,
-   DESCRIPTION          VARCHAR(255) COMMENT '描述',
-   TEMPLATE_ID          INT NOT NULL COMMENT '模板',
-   CONFIG_ID            INT NOT NULL COMMENT '规则',
-   PRIMARY KEY (ID)
+   id                   int not null,
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(50) not null comment '名称',
+   version              int not null default 1,
+   enable               int not null default 0 comment '生效',
+   create_time          datetime not null,
+   description          varchar(255) comment '描述',
+   template_id          int not null comment '模板',
+   config_id            int not null comment '规则',
+   primary key (id)
 );
 
-ALTER TABLE SHARDING_ALGORITHMS COMMENT '算法表';
+alter table sharding_algorithms comment '算法表';
 
-CREATE UNIQUE INDEX CODE_UNIQUE ON SHARDING_ALGORITHMS
+create unique index code_unique on sharding_algorithms
 (
-   CODE
+   code
 );
 
-CREATE TABLE SHARDING_CONFIG
+create table sharding_config
 (
-   ID                   INT NOT NULL AUTO_INCREMENT,
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(50) NOT NULL COMMENT '名称',
-   VERSION              INT NOT NULL DEFAULT 1,
-   ENABLE               INT NOT NULL DEFAULT 0 COMMENT '生效',
-   CREATE_TIME          DATETIME NOT NULL,
-   DESCRIPTION          VARCHAR(255) COMMENT '描述',
-   PRIMARY KEY (ID)
+   id                   int not null auto_increment,
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(50) not null comment '名称',
+   version              int not null default 1,
+   enable               int not null default 0 comment '生效',
+   create_time          datetime not null,
+   description          varchar(255) comment '描述',
+   primary key (id)
 );
 
-ALTER TABLE SHARDING_CONFIG COMMENT '规则配置表';
+alter table sharding_config comment '规则配置表';
 
-CREATE UNIQUE INDEX CODE_UNIQUE ON SHARDING_CONFIG
+create unique index code_unique on sharding_config
 (
-   CODE
+   code
 );
 
-CREATE TABLE SHARDING_DATA_SOURCE
+create table sharding_data_source
 (
-   ID                   INT NOT NULL,
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(50) NOT NULL COMMENT '名称',
-   VERSION              INT NOT NULL DEFAULT 1,
-   ENABLE               INT NOT NULL DEFAULT 0 COMMENT '生效',
-   CREATE_TIME          DATETIME NOT NULL,
-   DESCRIPTION          VARCHAR(255) COMMENT '描述',
-   TEMPLATE_ID          INT NOT NULL COMMENT '模板',
-   PRIMARY KEY (ID)
+   id                   int not null,
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(50) not null comment '名称',
+   version              int not null default 1,
+   enable               int not null default 0 comment '生效',
+   create_time          datetime not null,
+   description          varchar(255) comment '描述',
+   template_id          int not null comment '模板',
+   primary key (id)
 );
 
-ALTER TABLE SHARDING_DATA_SOURCE COMMENT '数据源配置表';
+alter table sharding_data_source comment '数据源配置表';
 
-CREATE UNIQUE INDEX CODE_UNIQUE ON SHARDING_DATA_SOURCE
+create unique index code_unique on sharding_data_source
 (
-   CODE
+   code
 );
 
-CREATE TABLE SHARDING_PROPERTIES
+create table sharding_properties
 (
-   ID                   INT NOT NULL,
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(1000) NOT NULL COMMENT '值',
-   VERSION              INT NOT NULL DEFAULT 1,
-   ENABLE               INT NOT NULL DEFAULT 0 COMMENT '生效',
-   CREATE_TIME          DATETIME NOT NULL,
-   DESCRIPTION          VARCHAR(255) COMMENT '描述',
-   CONFIG_ID            INT COMMENT '配置',
-   TEMPLATE_ID          INT NOT NULL COMMENT '模板',
-   ENTITY_ID            INT NOT NULL COMMENT '归属ID',
-   PRIMARY KEY (ID)
+   id                   int not null,
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(1000) not null comment '值',
+   version              int not null default 1,
+   enable               int not null default 0 comment '生效',
+   create_time          datetime not null,
+   description          varchar(255) comment '描述',
+   config_id            int comment '配置',
+   template_id          int not null comment '模板',
+   entity_id            int not null comment '归属id',
+   primary key (id)
 );
 
-ALTER TABLE SHARDING_PROPERTIES COMMENT '配置表';
+alter table sharding_properties comment '配置表';
 
-CREATE UNIQUE INDEX CODE_UNIQUE ON SHARDING_PROPERTIES
+create unique index code_unique on sharding_properties
 (
-   CODE,
-   ENTITY_ID
+   code,
+   entity_id
 );
 
-CREATE TABLE SHARDING_TABLE
+create table sharding_table
 (
-   ID                   INT NOT NULL,
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(50) NOT NULL COMMENT '名称',
-   VERSION              INT NOT NULL DEFAULT 1,
-   ENABLE               INT NOT NULL DEFAULT 0 COMMENT '生效',
-   CREATE_TIME          DATETIME NOT NULL,
-   DESCRIPTION          VARCHAR(255) COMMENT '描述',
-   LOGIC_TABLE_NAME     VARCHAR(255) NOT NULL COMMENT '逻辑表名称',
-   ACTUAL_DATA_NODES    VARCHAR(1000) NOT NULL COMMENT '物理表表达式',
-   ALGORITHM_ID         INT COMMENT '算法',
-   SHARDING_COLUMN      VARCHAR(255) COMMENT '本片字段',
-   TEMPLATE_ID          INT NOT NULL COMMENT '模板',
-   CONFIG_ID            INT NOT NULL COMMENT '规则',
-   DATA_SOURCE_ID       INT,
-   PRIMARY KEY (ID)
+   id                   int not null,
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(50) not null comment '名称',
+   version              int not null default 1,
+   enable               int not null default 0 comment '生效',
+   create_time          datetime not null,
+   description          varchar(255) comment '描述',
+   logic_table_name     varchar(255) not null comment '逻辑表名称',
+   actual_data_nodes    varchar(1000) not null comment '物理表表达式',
+   algorithm_id         int comment '算法',
+   sharding_column      varchar(255) comment '本片字段',
+   template_id          int not null comment '模板',
+   config_id            int not null comment '规则',
+   data_source_id       int,
+   primary key (id)
 );
 
-ALTER TABLE SHARDING_TABLE COMMENT '表规则配置表';
+alter table sharding_table comment '表规则配置表';
 
-CREATE UNIQUE INDEX CODE_UNIQUE ON SHARDING_TABLE
+create unique index code_unique on sharding_table
 (
-   CODE
+   code
 );
 
-CREATE TABLE SHARDING_TEMPLATE
+create table sharding_template
 (
-   ID                   INT NOT NULL AUTO_INCREMENT,
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(50) NOT NULL COMMENT '名称',
-   VERSION              INT NOT NULL DEFAULT 1,
-   ENABLE               INT NOT NULL DEFAULT 0 COMMENT '生效',
-   CREATE_TIME          DATETIME NOT NULL,
-   DESCRIPTION          VARCHAR(255) COMMENT '描述',
-   JSON                 TEXT COMMENT '模板内容',
-   TYPE_ID              INT NOT NULL COMMENT '模板类型',
-   PRIMARY KEY (ID)
+   id                   int not null auto_increment,
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(50) not null comment '名称',
+   version              int not null default 1,
+   enable               int not null default 0 comment '生效',
+   create_time          datetime not null,
+   description          varchar(255) comment '描述',
+   json                 text comment '模板内容',
+   type_id              int not null comment '模板类型',
+   primary key (id)
 );
 
-ALTER TABLE SHARDING_TEMPLATE COMMENT '模板表，配置各类操作模板数据';
+alter table sharding_template comment '模板表，配置各类操作模板数据';
 
-CREATE UNIQUE INDEX CODE_UNIQUE ON SHARDING_TEMPLATE
+create unique index code_unique on sharding_template
 (
-   CODE
+   code
 );
 
-CREATE TABLE SHARDING_TEMPLATE_TYPE
+create table sharding_template_type
 (
-   ID                   INT NOT NULL AUTO_INCREMENT,
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(50) NOT NULL COMMENT '名称',
-   VERSION              INT NOT NULL DEFAULT 1,
-   ENABLE               INT NOT NULL DEFAULT 0 COMMENT '生效',
-   CREATE_TIME          DATETIME NOT NULL,
-   DESCRIPTION          VARCHAR(255) COMMENT '描述',
-   PRIMARY KEY (ID)
+   id                   int not null auto_increment,
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(50) not null comment '名称',
+   version              int not null default 1,
+   enable               int not null default 0 comment '生效',
+   create_time          datetime not null,
+   description          varchar(255) comment '描述',
+   primary key (id)
 );
 
-ALTER TABLE SHARDING_TEMPLATE_TYPE COMMENT '模板类型表';
+alter table sharding_template_type comment '模板类型表';
 
-CREATE UNIQUE INDEX CODE_UNIQUE ON SHARDING_TEMPLATE_TYPE
+create unique index code_unique on sharding_template_type
 (
-   CODE
+   code
 );
 
-ALTER TABLE SHARDING_ALGORITHMS ADD CONSTRAINT FK_ALGORITHMS_RULE FOREIGN KEY (CONFIG_ID)
-      REFERENCES SHARDING_CONFIG (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_algorithms add constraint fk_algorithms_rule foreign key (config_id)
+      references sharding_config (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_ALGORITHMS ADD CONSTRAINT FK_ALGORITHMS_TEMPLATE FOREIGN KEY (TEMPLATE_ID)
-      REFERENCES SHARDING_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_algorithms add constraint fk_algorithms_template foreign key (template_id)
+      references sharding_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_DATA_SOURCE ADD CONSTRAINT FK_DATA_SOURCE_TEMPLATE FOREIGN KEY (TEMPLATE_ID)
-      REFERENCES SHARDING_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_data_source add constraint fk_data_source_template foreign key (template_id)
+      references sharding_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_PROPERTIES ADD CONSTRAINT FK_PROPERTIES_RULE FOREIGN KEY (CONFIG_ID)
-      REFERENCES SHARDING_CONFIG (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_properties add constraint fk_properties_rule foreign key (config_id)
+      references sharding_config (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_PROPERTIES ADD CONSTRAINT FK_PROPERTIES_TEMPLATE FOREIGN KEY (TEMPLATE_ID)
-      REFERENCES SHARDING_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_properties add constraint fk_properties_template foreign key (template_id)
+      references sharding_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_TABLE ADD CONSTRAINT FK_TABLE_ALGORITHMS FOREIGN KEY (ALGORITHM_ID)
-      REFERENCES SHARDING_ALGORITHMS (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_table add constraint fk_table_algorithms foreign key (algorithm_id)
+      references sharding_algorithms (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_TABLE ADD CONSTRAINT FK_TABLE_DATASOURCE FOREIGN KEY (DATA_SOURCE_ID)
-      REFERENCES SHARDING_DATA_SOURCE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_table add constraint fk_table_datasource foreign key (data_source_id)
+      references sharding_data_source (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_TABLE ADD CONSTRAINT FK_TABLE_RULE_CONFIG_RULE FOREIGN KEY (CONFIG_ID)
-      REFERENCES SHARDING_CONFIG (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_table add constraint fk_table_rule_config_rule foreign key (config_id)
+      references sharding_config (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_TABLE ADD CONSTRAINT FK_TABLE_RULE_CONFIG_TEMPLATE FOREIGN KEY (TEMPLATE_ID)
-      REFERENCES SHARDING_TEMPLATE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_table add constraint fk_table_rule_config_template foreign key (template_id)
+      references sharding_template (id) on delete restrict on update restrict;
 
-ALTER TABLE SHARDING_TEMPLATE ADD CONSTRAINT FK_TEMPLATE_TYPE FOREIGN KEY (TYPE_ID)
-      REFERENCES SHARDING_TEMPLATE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table sharding_template add constraint fk_template_type foreign key (type_id)
+      references sharding_template_type (id) on delete restrict on update restrict;
 

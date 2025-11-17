@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS CRM_CONTRACT;
+drop table if exists crm_contract;
 
-DROP TABLE IF EXISTS CRM_LEAD;
+drop table if exists crm_lead;
 
-DROP TABLE IF EXISTS CRM_CUSTOMER;
+drop table if exists crm_customer;

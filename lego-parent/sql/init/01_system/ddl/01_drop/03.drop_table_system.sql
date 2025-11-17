@@ -1,55 +1,55 @@
-DROP TABLE IF EXISTS SYS_OPERATION_LOG;
+drop table if exists sys_operation_log;
 
-DROP TABLE IF EXISTS SYS_MESSAGE;
+drop table if exists sys_message;
 
-DROP TABLE IF EXISTS SYS_NOTICE;
+drop table if exists sys_notice;
 
-DROP TABLE IF EXISTS SYS_NOTICE_EMPLOYEE;
+drop table if exists sys_notice_employee;
 
-DROP TABLE IF EXISTS SYS_NOTICE_DEPT;
+drop table if exists sys_notice_dept;
 
-DROP TABLE IF EXISTS SYS_NOTICE_TEMPLATE;
+drop table if exists sys_notice_template;
 
-DROP TABLE IF EXISTS SYS_DEPT;
+drop table if exists sys_dept;
 
-DROP TABLE IF EXISTS SYS_EMPLOYEE_ROLE;
+drop table if exists sys_employee_role;
 
-DROP TABLE IF EXISTS SYS_SCENE;
+drop table if exists sys_scene;
 
-DROP TABLE IF EXISTS SYS_FILE;
+drop table if exists sys_file;
 
-DROP TABLE IF EXISTS SYS_COLUMN_SORT;
+drop table if exists sys_column_sort;
 
-DROP TABLE IF EXISTS SYS_APP_SORT;
+drop table if exists sys_app_sort;
 
-DROP TABLE IF EXISTS SYS_ROLE_PERMISSION;
+drop table if exists sys_role_permission;
 
-DROP TABLE IF EXISTS SYS_PRINT_LOG;
+drop table if exists sys_print_log;
 
-DROP TABLE IF EXISTS SYS_PRINT_TEMPLATE;
+drop table if exists sys_print_template;
 
-DROP TABLE IF EXISTS SYS_PERMISSION;
+drop table if exists sys_permission;
 
-DROP TABLE IF EXISTS SYS_CUSTOM_FIELD;
+drop table if exists sys_custom_field;
 
-DROP TABLE IF EXISTS SYS_CUSTOM_FORM;
+drop table if exists sys_custom_form;
 
-DROP TABLE IF EXISTS SYS_GEN_TABLE_COLUMN_ATTR;
+drop table if exists sys_gen_table_column_attr;
 
-DROP TABLE IF EXISTS SYS_GEN_TABLE_COLUMN;
+drop table if exists sys_gen_table_column;
 
-DROP TABLE IF EXISTS SYS_GEN_TABLE;
+drop table if exists sys_gen_table;
 
-DROP TABLE IF EXISTS SYS_EMPLOYEE;
+drop table if exists sys_employee;
 
-DROP TABLE IF EXISTS SYS_ROLE;
+drop table if exists sys_role;
 
-DROP TABLE IF EXISTS SYS_SEQUENCE;
+drop table if exists sys_sequence;
 
-DROP TABLE IF EXISTS SYS_CONFIG;
+drop table if exists sys_config;
 
-DROP TABLE IF EXISTS SYS_DICTIONARIES;
+drop table if exists sys_dictionaries;
 
-DROP TABLE IF EXISTS SYS_SIMPLE_TYPE;
+drop table if exists sys_simple_type;
 
-DROP TABLE IF EXISTS SYS_CODE_GENERATOR;
+drop table if exists sys_code_generator;

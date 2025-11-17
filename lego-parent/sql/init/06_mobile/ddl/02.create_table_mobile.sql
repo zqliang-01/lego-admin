@@ -1,71 +1,71 @@
-CREATE TABLE MOBILE_APP_CONFIG
+create table mobile_app_config
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   APPID                VARCHAR(50) NOT NULL COMMENT '外系统应用ID',
-   SECRET               VARCHAR(50) NOT NULL COMMENT '外系统应用密钥',
-   TYPE_ID              BIGINT NOT NULL COMMENT '应用类型',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   appid                varchar(50) not null comment '外系统应用id',
+   secret               varchar(50) not null comment '外系统应用密钥',
+   type_id              bigint not null comment '应用类型',
+   primary key (id)
 );
 
-ALTER TABLE MOBILE_APP_CONFIG COMMENT '移动应用配置信息';
+alter table mobile_app_config comment '移动应用配置信息';
 
-CREATE UNIQUE INDEX UNIQUE_APPID ON MOBILE_APP_CONFIG
+create unique index unique_appid on mobile_app_config
 (
-   APPID,
-   TYPE_ID
+   appid,
+   type_id
 );
 
-CREATE TABLE MOBILE_SIMPLE_TYPE
+create table mobile_simple_type
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   CLASS_TYPE           VARCHAR(255) NOT NULL COMMENT '类类型',
-   SERIAL_NUMBER        INT(5) NOT NULL DEFAULT 0 COMMENT '序号',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   class_type           varchar(255) not null comment '类类型',
+   serial_number        int(5) not null default 0 comment '序号',
+   primary key (id)
 );
 
-ALTER TABLE MOBILE_SIMPLE_TYPE COMMENT '移动端简单类型';
+alter table mobile_simple_type comment '移动端简单类型';
 
-CREATE UNIQUE INDEX UNIQUE_CODE ON MOBILE_SIMPLE_TYPE
+create unique index unique_code on mobile_simple_type
 (
-   CODE,
-   CLASS_TYPE
+   code,
+   class_type
 );
 
-CREATE TABLE MOBILE_USER_BIND
+create table mobile_user_bind
 (
-   ID                   BIGINT NOT NULL COMMENT 'ID',
-   CODE                 VARCHAR(50) NOT NULL COMMENT '编码',
-   NAME                 VARCHAR(255) NOT NULL COMMENT '名称',
-   VERSION              VARCHAR(50) NOT NULL COMMENT '版本号',
-   CREATE_TIME          DATETIME NOT NULL COMMENT '创建时间',
-   OPENID               VARCHAR(50) NOT NULL COMMENT '外系统应用ID',
-   UPDATE_TIME          DATETIME NOT NULL COMMENT '更新时间',
-   EXPIRED_TIME         DATETIME NOT NULL COMMENT '到期时间',
-   TYPE_ID              BIGINT NOT NULL COMMENT '应用类型',
-   EMPLOYEE_CODE        VARCHAR(50) NOT NULL COMMENT '登陆工号',
-   TOKEN                VARCHAR(225) COMMENT '登陆Token',
-   PRIMARY KEY (ID)
+   id                   bigint not null comment 'id',
+   code                 varchar(50) not null comment '编码',
+   name                 varchar(255) not null comment '名称',
+   version              varchar(50) not null comment '版本号',
+   create_time          datetime not null comment '创建时间',
+   openid               varchar(50) not null comment '外系统应用id',
+   update_time          datetime not null comment '更新时间',
+   expired_time         datetime not null comment '到期时间',
+   type_id              bigint not null comment '应用类型',
+   employee_code        varchar(50) not null comment '登陆工号',
+   token                varchar(225) comment '登陆token',
+   primary key (id)
 );
 
-ALTER TABLE MOBILE_USER_BIND COMMENT '移动用户绑定信息';
+alter table mobile_user_bind comment '移动用户绑定信息';
 
-CREATE UNIQUE INDEX UNIQUE_OPENID ON MOBILE_USER_BIND
+create unique index unique_openid on mobile_user_bind
 (
-   OPENID,
-   TYPE_ID
+   openid,
+   type_id
 );
 
-ALTER TABLE MOBILE_APP_CONFIG ADD CONSTRAINT FK_MOBILE_APP_TYPE FOREIGN KEY (TYPE_ID)
-      REFERENCES MOBILE_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table mobile_app_config add constraint fk_mobile_app_type foreign key (type_id)
+      references mobile_simple_type (id) on delete restrict on update restrict;
 
-ALTER TABLE MOBILE_USER_BIND ADD CONSTRAINT FK_USER_BIND_TYPE FOREIGN KEY (TYPE_ID)
-      REFERENCES MOBILE_SIMPLE_TYPE (ID) ON DELETE RESTRICT ON UPDATE RESTRICT;
+alter table mobile_user_bind add constraint fk_user_bind_type foreign key (type_id)
+      references mobile_simple_type (id) on delete restrict on update restrict;
 

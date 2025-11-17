@@ -1,6 +1,6 @@
 
-DROP TABLE IF EXISTS MOBILE_USER_BIND;
+drop table if exists mobile_user_bind;
 
-DROP TABLE IF EXISTS MOBILE_APP_CONFIG;
+drop table if exists mobile_app_config;
 
-DROP TABLE IF EXISTS MOBILE_SIMPLE_TYPE;
+drop table if exists mobile_simple_type;
